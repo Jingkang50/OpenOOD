@@ -1,0 +1,24 @@
+# Dataset settings
+benchmark: DIGITS
+id_dataset: mnist
+val_dataset: notmnist
+csid_datasets: [usps, svhn]
+nearood_datasets: [notmnist, fashionmnist]
+farood_datasets: [texture, cifar10, tin, places365]
+
+# Whether to evaluate each dataset individually, or combine them all altogether
+eval_method: each # choices: [each, full]
+batch_size: 200
+# Type of interpolation when resizing images
+interpolation: bilinear # choices: [nearest, bilinear]
+image_size: 28
+
+network: lenet_rgb # 6x14x14=1176 - 16x7x7=784 - 120x1x1=120
+
+# Post-processing method
+postprocess: mds
+postprocess_args:
+   noise: 0.0014
+   feature_type_list: [mean, mean, mean]     # flat/mean/stat
+   alpha_list: # [0, 0, 1]
+   feature_process_list: [none, none, none]   # none/capca/pca/lda

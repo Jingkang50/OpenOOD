@@ -1,0 +1,4 @@
+network:
+  name: lenet
+  pretrained: false
+  checkpoint: none # ignored if pretrained is false

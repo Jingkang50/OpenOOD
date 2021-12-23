@@ -1,0 +1,24 @@
+# Dataset settings
+benchmark: COVID
+id_dataset: cohen
+csid_datasets: [actmed, ricord, rsna, sirm]
+nearood_datasets: [xraybone, ct]
+farood_datasets: [mnist, cifar10, texture, tin]
+
+# Whether to evaluate each dataset individually, or combine them all altogether
+eval_method: each # choices: [each, full]
+batch_size: 64
+# Type of interpolation when resizing images
+interpolation: bilinear # choices: [nearest, bilinear]
+image_size: 224
+
+network: res18L # choices: [lenet_rgb, lenet_bw]
+
+# Post-processing method
+postprocess: llfs # choices: [none, ebo, odin, llfs]
+postprocess_args:
+   num_clusters: 10
+   cluster_layer: -1
+   feature_type: flat
+   feature_process: pca
+   kept_dim: 50

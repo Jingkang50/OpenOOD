@@ -1,0 +1,21 @@
+# Dataset settings
+benchmark: OBJECTS
+id_dataset: cifar10
+csid_datasets: [cifar10c, imagenet]
+nearood_datasets: [cifar100, tin]
+farood_datasets: [mnist, svhn, texture, cifar100c]
+
+# Whether to evaluate each dataset individually, or combine them all altogether
+eval_method: each # choices: [each, full]
+batch_size: 200
+# Type of interpolation when resizing images
+interpolation: nearest # choices: [nearest, bilinear]
+image_size: 32
+
+network: res18 # choices: [res18]
+
+
+# Post-processing method
+postprocess: ebo # choices: [none, ebo, odin]
+postprocess_args:
+   temperature: 1

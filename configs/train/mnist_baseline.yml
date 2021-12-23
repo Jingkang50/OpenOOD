@@ -1,0 +1,17 @@
+exp_name: "'@{dataset.train_id}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.epochs}'_lr'@{optimizer.lr}'"
+output_dir: ./results/
+num_gpus: 1
+num_workers: 0
+
+trainer:
+  name: base
+
+optimizer:
+  name: sgd
+  epochs: 100
+  lr: 0.1
+  momentum: 0.9
+  weight_decay: 0.0005
+
+recoder:
+  save_all_model: False

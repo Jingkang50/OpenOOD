@@ -1,3 +1,7 @@
+# ignore data and output directory
+./data/
+results/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,3 +131,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# vscode debug
+.vscode/
+
+# macos files
+.DS_Store
+
+# check format
+.isort.cfg
