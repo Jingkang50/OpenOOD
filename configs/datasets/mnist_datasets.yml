@@ -1,0 +1,6 @@
+dataset:
+  train_id: mnist
+  image_size: 28
+
+  train_bs: 128
+  test_bs: 200

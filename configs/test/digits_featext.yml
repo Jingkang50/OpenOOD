@@ -1,0 +1,12 @@
+# Dataset settings
+benchmark: DIGITS
+datasets: [mnist, usps, svhn, notmnist, fashionmnist, texture, cifar10, tin, places365]
+
+# Whether to evaluate each dataset individually, or combine them all altogether
+eval_method: each # choices: [each, full]
+batch_size: 200
+# Type of interpolation when resizing images
+interpolation: bilinear # choices: [nearest, bilinear]
+image_size: 28
+
+network: lenet_rgb # choices: [lenet_rgb, lenet_bw]
