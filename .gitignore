@@ -1,5 +1,5 @@
 # ignore data and output directory
-./data/
+data/
 results/
 
 # Byte-compiled / optimized / DLL files
@@ -79,6 +79,7 @@ docs/_build/
 target/
 
 # Jupyter Notebook
+.ipynb
 .ipynb_checkpoints
 
 # IPython
@@ -140,3 +141,6 @@ dmypy.json
 
 # check format
 .isort.cfg
+
+# no jupyter notebook
+.ipynb_checkpoints

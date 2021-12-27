@@ -1,1 +1,1 @@
-from utils import get_evaluator
+from .utils import get_evaluator

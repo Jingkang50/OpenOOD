@@ -9,7 +9,6 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
 from openood.postprocessors import BasePostprocessor
-from openood.utils import Config
 
 from .metrics import compute_all_metrics
 
@@ -17,9 +16,9 @@ from .metrics import compute_all_metrics
 class BaseEvaluator:
     def __init__(
         self,
-        config: Config,
+        net: nn.Module,
     ):
-        self.config = config
+        self.net = net
 
     def inference(self, data_loader: DataLoader,
                   postprocessor: BasePostprocessor):
@@ -45,11 +44,9 @@ class BaseEvaluator:
 
     def eval_classification(
         self,
-        net: nn.Module,
         data_loader: DataLoader,
-        epoch_idx: int,
     ):
-        net.eval()
+        self.net.eval()
 
         loss_avg = 0.0
         correct = 0
@@ -59,7 +56,7 @@ class BaseEvaluator:
                 target = batch['label'].cuda()
 
                 # forward
-                output = net(data)
+                output = self.net(data)
                 loss = F.cross_entropy(output, target)
 
                 # accuracy
@@ -70,7 +67,6 @@ class BaseEvaluator:
                 loss_avg += float(loss.data)
 
         metrics = {}
-        metrics['epoch_idx'] = epoch_idx
         metrics['test_loss'] = loss_avg / len(data_loader)
         metrics['test_accuracy'] = correct / len(data_loader.dataset)
         return metrics

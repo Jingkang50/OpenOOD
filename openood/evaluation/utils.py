@@ -1,21 +1,13 @@
-from typing import Any, Dict
-
 import torch.nn as nn
 from torch.utils.data import DataLoader
+
+from openood.utils import Config
 
 from .base_evaluator import BaseEvaluator
 
 
-def get_evaluator(
-    name: str,
-    net: nn.Module,
-    labeled_train_loader: DataLoader,
-    optim_args: Dict[str, Any],
-    trainer_args: Dict[str, Any],
-):
-    trainers = {
+def get_evaluator(config: Config, ):
+    evaluators = {
         'base': BaseEvaluator,
     }
-
-    return trainers[name](net, labeled_train_loader, **optim_args,
-                          **trainer_args)
+    return evaluators[config.evaluator.name](config)

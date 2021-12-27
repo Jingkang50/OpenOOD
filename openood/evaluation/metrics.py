@@ -5,6 +5,17 @@ import numpy as np
 from sklearn import metrics
 
 
+# accuracy
+def acc(pred, label):
+    ind_pred = pred[label != -1]
+    ind_label = label[label != -1]
+
+    num_tp = np.sum(ind_pred == ind_label)
+    acc = num_tp / len(ind_label)
+
+    return acc
+
+
 # fpr_recall
 def fpr_recall(conf, label, tpr):
     ind_conf = conf[label != -1]
@@ -53,16 +64,6 @@ def ccr_fpr(conf, fpr, pred, label):
     ccr = num_tp / num_ind
 
     return ccr
-
-
-def acc(pred, label):
-    ind_pred = pred[label != -1]
-    ind_label = label[label != -1]
-
-    num_tp = np.sum(ind_pred == ind_label)
-    acc = num_tp / len(ind_label)
-
-    return acc
 
 
 def compute_all_metrics(conf, label, pred, file_path=None, verbose=True):

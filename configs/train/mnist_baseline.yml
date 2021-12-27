@@ -1,17 +1,25 @@
-exp_name: "'@{dataset.train_id}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.epochs}'_lr'@{optimizer.lr}'"
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
 output_dir: ./results/
 num_gpus: 1
 num_workers: 0
+force_merge: True
+
+pipeline:
+  name: train
 
 trainer:
   name: base
 
+evaluator:
+  name: base
+
 optimizer:
   name: sgd
-  epochs: 100
+  num_epochs: 100
   lr: 0.1
   momentum: 0.9
   weight_decay: 0.0005
 
-recoder:
+recorder:
+  name: base
   save_all_model: False

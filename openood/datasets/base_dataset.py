@@ -18,7 +18,8 @@ class BaseDataset(Dataset):
         # in some pytorch versions, input index will be torch.Tensor
         index = int(index)
 
-        # if sampler produce pseudo_index, randomly sample an index, and mark it as pseudo
+        # if sampler produce pseudo_index,
+        # randomly sample an index, and mark it as pseudo
         if index == self.pseudo_index:
             index = random.randrange(len(self))
             pseudo = 1

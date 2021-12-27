@@ -1,56 +1,33 @@
 from pathlib import Path
 
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, dataloader
 
-from .imagename_dataset import ImagenameDataset
+from openood.utils.config import Config
 
-
-def get_dataset(
-    root_dir: str = 'data',
-    benchmark: str = 'DIGITS',
-    num_classes: int = 10,
-    name: str = 'mnist',
-    stage: str = 'train',
-    interpolation: str = 'bilinear',
-    image_size: int = 32,
-):
-    root_dir = Path(root_dir)
-    if benchmark == 'COVID':
-        data_dir = root_dir / 'covid_images'
-    else:
-        data_dir = root_dir / 'images'
-    imglist_dir = root_dir / 'imglist' / f'{benchmark}'
-
-    return ImagenameDataset(
-        name=name,
-        stage=stage,
-        interpolation=interpolation,
-        image_size=image_size,
-        imglist=imglist_dir / f'{stage}_{name}.txt',
-        root=data_dir,
-        num_classes=num_classes,
-    )
+from .imglist_dataset import ImglistDataset
 
 
-def get_dataloader(
-    root_dir: str = 'data',
-    benchmark: str = 'cifar10',
-    num_classes: int = 10,
-    name: str = 'cifar10',
-    stage: str = 'train',
-    interpolation: str = 'bilinear',
-    image_size: int = 32,
-    batch_size: int = 128,
-    shuffle: bool = True,
-    num_workers: int = 4,
-):
-    dataset = get_dataset(root_dir, benchmark, num_classes, name, stage,
-                          interpolation, image_size)
+def get_dataloader(dataset_config: Config):
+    # prepare a dataloader dictionary
+    dataloader_dict = {}
 
-    return DataLoader(
-        dataset,
-        batch_size,
-        shuffle=shuffle,
-        num_workers=num_workers,
-        pin_memory=True,
-    )
+    for split in dataset_config.split_names:
+        split_config = dataset_config[split]
+        CustomDataset = eval(split_config.dataset_class)
+
+        dataset = CustomDataset(name=dataset_config.name + '_' + split,
+                                split=split,
+                                interpolation=split_config.interpolation,
+                                image_size=dataset_config.image_size,
+                                imglist_pth=split_config.imglist_pth,
+                                data_dir=split_config.data_dir,
+                                num_classes=dataset_config.num_classes)
+
+        dataloader = DataLoader(dataset,
+                                batch_size=split_config.batch_size,
+                                shuffle=split_config.shuffle,
+                                num_workers=dataset_config.num_workers)
+
+        dataloader_dict[split] = dataloader
+
+    return dataloader_dict

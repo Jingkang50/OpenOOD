@@ -3,32 +3,26 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
+from openood.utils import Config
 
-def cosine_annealing(step, total_steps, lr_max, lr_min):
-    return lr_min + (lr_max -
-                     lr_min) * 0.5 * (1 + np.cos(step / total_steps * np.pi))
+from .lr_scheduler import cosine_annealing
 
 
 class BaseTrainer:
-    def __init__(
-        self,
-        net: nn.Module,
-        labeled_train_loader: DataLoader,
-        learning_rate: float = 0.1,
-        momentum: float = 0.9,
-        weight_decay: float = 0.0005,
-        epochs: int = 100,
-        placeholder: str = 'placeholder',
-    ) -> None:
+    def __init__(self, net: nn.Module, train_loader: DataLoader,
+                 config: Config) -> None:
+
         self.net = net
-        self.labeled_train_loader = labeled_train_loader
+        self.train_loader = train_loader
+        self.config = config
 
         self.optimizer = torch.optim.SGD(
             net.parameters(),
-            learning_rate,
-            momentum=momentum,
-            weight_decay=weight_decay,
+            config.optimizer.lr,
+            momentum=config.optimizer.momentum,
+            weight_decay=config.optimizer.weight_decay,
             nesterov=True,
         )
 
@@ -36,22 +30,25 @@ class BaseTrainer:
             self.optimizer,
             lr_lambda=lambda step: cosine_annealing(
                 step,
-                epochs * len(labeled_train_loader),
-                1,  # since lr_lambda computes multiplicative factor
-                1e-6 / learning_rate,
+                config.optimizer.num_epochs * len(train_loader),
+                1,
+                1e-6 / config.optimizer.lr,
             ),
         )
 
-    def train_epoch(self):
-        self.net.train()  # enter train mode
+    def train_epoch(self, epoch_idx):
+        self.net.train()
 
         loss_avg = 0.0
-        train_dataiter = iter(self.labeled_train_loader)
+        train_dataiter = iter(self.train_loader)
 
-        for train_step in range(1, len(train_dataiter) + 1):
+        for train_step in tqdm(range(1,
+                                     len(train_dataiter) + 1),
+                               desc='Epoch {:03d}: '.format(epoch_idx)):
             batch = next(train_dataiter)
             data = batch['data'].cuda()
             target = batch['label'].cuda()
+
             # forward
             logits_classifier = self.net(data)
             loss = F.cross_entropy(logits_classifier, target)
@@ -67,23 +64,7 @@ class BaseTrainer:
                 loss_avg = loss_avg * 0.8 + float(loss) * 0.2
 
         metrics = {}
+        metrics['epoch_idx'] = epoch_idx
         metrics['train_loss'] = loss_avg
 
-        return metrics
-
-    def run(self):
-        num_total_sub_epochs = self.config.num_epochs * self.config.num_sub_epochs
-        while self.total_sub_epoch < num_total_sub_epochs:
-            # count from 0
-            self.sub_epoch = self.total_sub_epoch % self.config.num_sub_epochs
-            self.epoch = self.total_sub_epoch // self.config.num_sub_epochs
-
-            # count from 1
-            self.total_sub_epoch += 1
-            self.sub_epoch += 1
-            self.epoch += 1
-
-            self.train_epoch()
-            self.eval_epoch()
-
-            self.save()
+        return self.net, metrics
