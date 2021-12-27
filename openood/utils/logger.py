@@ -21,7 +21,8 @@ def mkdir_if_missing(dirname):
 class Logger:
     """Write console output to external text file.
 
-    Imported from `<https://github.com/Cysu/open-reid/blob/master/reid/utils/logging.py>`
+    Imported from
+    `<https://github.com/Cysu/open-reid/blob/master/reid/utils/logging.py>`
 
     Args:
         fpath (str): directory to save logging file.
@@ -73,7 +74,7 @@ def setup_logger(config):
         config: all configs of the experiment
     """
     output = osp.join(config.output_dir, config.exp_name)
-    if osp.isdir(output):
+    if not config.force_merge and osp.isdir(output):
         ans = input('Exp dir already exists, merge it? (y/n)')
         if ans in ['yes', 'Yes', 'YES', 'y', 'Y', 'can']:
             pass
@@ -83,10 +84,14 @@ def setup_logger(config):
         else:
             raise ValueError('Unexpected Input.')
     else:
+        print('Output directory path: {}'.format(output), flush=True)
         os.makedirs(output, exist_ok=True)
 
-    # save config
+    # Save config
     # FIXME: saved config file is not beautified.
+    print('------------------ Config --------------------------', flush=True)
+    print(config, flush=True)
+    print('----------------------------------------------------', flush=True)
     config_save_path = osp.join(output, 'config.yml')
     with open(config_save_path, 'w') as f:
         yaml.dump(config,

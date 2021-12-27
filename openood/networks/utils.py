@@ -8,48 +8,50 @@ from .resnet18L import ResNet18L
 from .wrn import WideResNet
 
 
-def get_network(config):
+def get_network(network_config):
 
-    if config['name'] == 'res18':
-        net = ResNet18(num_classes=config['num_classes'])
+    num_classes = network_config.num_classes
 
-    elif config['name'] == 'res18L':
-        net = ResNet18L(num_classes=config['num_classes'])
+    if network_config.name == 'res18':
+        net = ResNet18(num_classes=num_classes)
 
-    elif config['name'] == 'lenet_rgb':
-        net = LeNet(num_classes=config['num_classes'], num_channel=3)
+    elif network_config.name == 'res18L':
+        net = ResNet18L(num_classes=num_classes)
 
-    elif config['name'] == 'lenet_bw':
-        net = LeNet(num_classes=config['num_classes'], num_channel=1)
+    elif network_config.name == 'lenet':
+        net = LeNet(num_classes=num_classes, num_channel=3)
 
-    elif config['name'] == 'wrn':
+    elif network_config.name == 'lenet_bw':
+        net = LeNet(num_classes=num_classes, num_channel=1)
+
+    elif network_config.name == 'wrn':
         net = WideResNet(depth=28,
                          widen_factor=10,
                          dropRate=0.0,
-                         num_classes=config['num_classes'])
+                         num_classes=num_classes)
 
-    elif config['name'] == 'densenet':
-        net = DenseNet3(
-            depth=100,
-            growth_rate=12,
-            reduction=0.5,
-            bottleneck=True,
-            dropRate=0.0,
-            num_classes=config['num_classes'],
-        )
+    elif network_config.name == 'densenet':
+        net = DenseNet3(depth=100,
+                        growth_rate=12,
+                        reduction=0.5,
+                        bottleneck=True,
+                        dropRate=0.0,
+                        num_classes=num_classes)
 
     else:
         raise Exception('Unexpected Network Architecture!')
 
-    if config['checkpoint']:
-        net.load_state_dict(torch.load(config['checkpoint']), strict=False)
+    if network_config.pretrained:
+        net.load_state_dict(torch.load(network_config.checkpoint),
+                            strict=False)
         print('Model Loading Completed!')
 
-    if config['ngpu'] > 1:
+    if network_config.num_gpus > 1:
         net = torch.nn.DataParallel(net,
-                                    device_ids=list(range(config['ngpu'])))
+                                    device_ids=list(
+                                        range(network_config.num_gpus)))
 
-    if config['ngpu'] > 0:
+    if network_config.num_gpus > 0:
         net.cuda()
         torch.cuda.manual_seed(1)
 

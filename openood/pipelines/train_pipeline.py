@@ -15,23 +15,27 @@ class TrainPipeline:
         setup_logger(self.config)
 
         # get dataloader
-        train_loader, val_loader = get_dataloader(self.config)
+        loader_dict = get_dataloader(self.config.dataset)
+        train_loader, val_loader = loader_dict['train'], loader_dict['test']
 
         # init network
-        net = get_network(self.config)
+        net = get_network(self.config.network)
 
         # init trainer and evaluator
         trainer = get_trainer(net, train_loader, self.config)
-        evaluator = get_evaluator(net, val_loader, self.config)
+        evaluator = get_evaluator(self.config)
 
         # init recorder
         recorder = get_recorder(self.config)
 
-        for epoch in range(self.config.optimizer.epochs):
+        print('Start training...', flush=True)
+        for epoch_idx in range(1, self.config.optimizer.num_epochs + 1):
             # train and eval the model
-            net, train_metrics = trainer.train_epoch()
-            net, val_metrics = evaluator.eval()
-
+            net, train_metrics = trainer.train_epoch(epoch_idx)
+            val_metrics = evaluator.eval_classification(
+                net, val_loader, epoch_idx)
             # save model and report the result
-            recorder.save_best_model(net, val_metrics, epoch)
-            recorder.report(net, train_metrics, val_metrics, epoch)
+            recorder.save_model(net, val_metrics)
+            recorder.report(train_metrics, val_metrics)
+
+        recorder.summary()

@@ -15,7 +15,8 @@ if __name__ == '__main__':
 
     Note:
         A config file is the minimum requirement.
-        You don't need to add "--config_key new_value" if you don't have anything to modify.
+        You don't need to add "--config_key new_value"
+        if you don't have anything to modify.
     """
 
     # read command line to composite configs.

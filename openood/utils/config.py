@@ -14,10 +14,14 @@ def setup_config(config_process_order=('merge', 'parse_args', 'parse_refs')):
 
     Note:
         The default arguments allow the following equivalent code:
-            config = merge_configs(*config) --> merge multiple YAML config files
-            config.parse_args(unknown_args) --> use command line arguments to overwrite default settings
-            config.parse_refs()             --> replace '@{xxx.yyy}'-like values with referenced values
-        It is recommended to merge before parse_args so that the latter configs can re-use references in the previous configs.
+            config = merge_configs(*config)
+                --> merge multiple YAML config files
+            config.parse_args(unknown_args)
+                --> use command line arguments to overwrite default settings
+            config.parse_refs()
+                --> replace '@{xxx.yyy}'-like values with referenced values
+        It is recommended to merge before parse_args so that the latter configs
+        can re-use references in the previous configs.
         For example, if
             config1.key1 = jkyang
             config1.key2 = '@{key1}'
@@ -28,7 +32,8 @@ def setup_config(config_process_order=('merge', 'parse_args', 'parse_refs')):
             config3.key2 will be yzang rather than jkyang
 
     Return:
-        An object of <class 'openood.utils.config.Config'>. Can be understanded as a dictionary.
+        An object of <class 'openood.utils.config.Config'>.
+        Can be understanded as a dictionary.
     """
 
     parser = argparse.ArgumentParser()
@@ -213,12 +218,13 @@ class Config(dict):
     # for key reference
     def parse_refs(self, subconf=None, stack_depth=1, max_stack_depth=10):
         if stack_depth > max_stack_depth:
-            raise Exception((
-                'Recursively calling `parse_refs` too many times with stack depth > {}. '
-                'A circular reference may exists in your config.\n'
-                'If deeper calling stack is really needed, please call `parse_refs` '
-                'with extra argument like: `parse_refs(max_stack_depth=9999)`'
-            ).format(max_stack_depth))
+            raise Exception(
+                ('Recursively calling `parse_refs` too many times'
+                 'with stack depth > {}. '
+                 'A circular reference may exists in your config.\n'
+                 'If deeper calling stack is really needed,'
+                 'please call `parse_refs` with extra argument like: '
+                 '`parse_refs(max_stack_depth=9999)`').format(max_stack_depth))
         if subconf is None:
             subconf = self
         for key in subconf.keys():
@@ -256,7 +262,8 @@ def merge_configs(*configs):
         config = configs[i]
         if not isinstance(config, Config):
             raise TypeError(
-                'config.merge_configs expect `Config` type inputs, but got `{}`.\n'
+                'config.merge_configs expect `Config` type inputs, '
+                'but got `{}`.\n'
                 'Correct usage: merge_configs(config1, config2, ...)\n'
                 'Incorrect usage: merge_configs([configs1, configs2, ...])'.
                 format(type(config)))
@@ -270,8 +277,9 @@ def consume_dots(config, key, create_default):
 
     if sub_key in Config.__dict__:
         raise KeyError(
-            '"{}" is a preserved API name, which should not be used as normal dictionary key'
-            .format(sub_key))
+            '"{}" is a preserved API name, '
+            'which should not be used as normal dictionary key'.format(
+                sub_key))
 
     if not dict.__contains__(config, sub_key) and len(sub_keys) == 2:
         if create_default:
@@ -300,7 +308,10 @@ def traverse_dfs(root, mode, continue_type, only_leaf, key_prefix=''):
             for kv in traverse_dfs(value, mode, continue_type, only_leaf,
                                    full_key):
                 child_kvs.append(kv)
-        # equivalent: if not (len(child_kvs) > 0 and type(value) == continue_type and only_leaf)
+        # equivalent:
+        # if not (len(child_kvs) > 0 and
+        # type(value) == continue_type and
+        # only_leaf)
         if len(child_kvs
                ) == 0 or type(value) != continue_type or not only_leaf:
             yield {
