@@ -24,7 +24,7 @@ def main(args, config):
     else:
         raise ValueError('Unknown Benchmark!')
 
-    # Init Datasets ############################################################
+    # Init Datasets ###########################################################
     print('Initializing Datasets...')
     get_dataloader_default = partial(
         get_dataloader,
@@ -61,7 +61,7 @@ def main(args, config):
         test_ood_loader = get_dataloader_default(name=name)
         test_farood_loader_list.append(test_ood_loader)
 
-    # Init Network #############################################################
+    # Init Network ############################################################
     print('Initializing Network...')
     net = get_network(
         config['network'],
@@ -79,7 +79,7 @@ def main(args, config):
 
     cudnn.benchmark = True
 
-    # Init Evaluator ###########################################################
+    # Init Evaluator
     print('Starting Evaluation...')
     # Init postprocessor
     postprocess_args = config['postprocess_args'] if config[
@@ -153,7 +153,8 @@ def main(args, config):
 
     elif config['postprocess'] == 'mds':
         # step 1: estimate initial mean and variance from training set
-        from fsood.postprocessors import sample_estimator, get_Mahalanobis_score, alpha_selector
+        from fsood.postprocessors import sample_estimator, \
+            get_Mahalanobis_score, alpha_selector
         train_loader = get_dataloader_default(name=config['id_dataset'],
                                               stage='train')
         num_layer = len(postprocess_args['feature_type_list'])
@@ -165,7 +166,8 @@ def main(args, config):
             'feature_process_list': postprocess_args['feature_process_list']
         }
         feature_mean, feature_prec = sample_estimator(**sample_estimator_args)
-        # step 2: input process and logistic regression for hyperparam searching (alpha)
+
+        # step 2: input process and logistic regression for hyperparam search
         magnitude = postprocess_args['noise']
         if postprocess_args['alpha_list']:
             print('Load predefined alpha list...')
@@ -281,7 +283,6 @@ def main(args, config):
         method=config['eval_method'],
         csv_path=args.csv_path,
     )
-    ###########################################################################################
 
 
 if __name__ == '__main__':

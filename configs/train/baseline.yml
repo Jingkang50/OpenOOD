@@ -1,8 +1,10 @@
 exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
 output_dir: ./results/
+save_output: False
+force_merge: False
+
 num_gpus: 1
 num_workers: 0
-force_merge: True
 
 pipeline:
   name: train
