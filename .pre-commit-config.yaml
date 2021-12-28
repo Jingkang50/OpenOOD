@@ -4,6 +4,7 @@ repos:
     rev: 3.8.3
     hooks:
       - id: flake8
+        exclude: openood/pipelines/finetune_pipeline.py|openood/pipelines/test_ood_pipeline.py
   - repo: https://github.com/asottile/seed-isort-config
     rev: v2.2.0
     hooks:
@@ -21,7 +22,6 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: check-yaml
-        exclude: configs/benchmarks/detectron2/Base-RetinaNet.yaml
       - id: end-of-file-fixer
       - id: double-quote-string-fixer
       - id: check-merge-conflict
@@ -33,6 +33,7 @@ repos:
     rev: v2.1.0
     hooks:
       - id: codespell
+        args: ["--ignore-words=excluded_words.txt"]
   - repo: https://github.com/myint/docformatter
     rev: v1.3.1
     hooks:
