@@ -1,4 +1,5 @@
 # ignore data and output directory
+data
 data/
 results/
 
@@ -144,3 +145,4 @@ dmypy.json
 
 # no jupyter notebook
 .ipynb_checkpoints
+.ipynb
