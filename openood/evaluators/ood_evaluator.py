@@ -1,6 +1,6 @@
 import csv
 import os
-from typing import List
+from typing import Dict
 
 import numpy as np
 import torch.nn as nn
@@ -42,16 +42,11 @@ class OODEvaluator(BaseEvaluator):
 
         return pred_list, conf_list, label_list
 
-    def eval_ood(self,
-                 net: nn.Module,
-                 id_data_loader: List[DataLoader],
-                 ood_data_loaders: List[DataLoader],
-                 postprocessor: BasePostprocessor = None):
+    def eval_ood(self, net: nn.Module, id_data_loader: Dict[DataLoader],
+                 ood_data_loaders: Dict[DataLoader],
+                 postprocessor: BasePostprocessor):
 
         net.eval()
-        if postprocessor is None:
-            postprocessor = BasePostprocessor()
-
         # load training in-distribution data
         assert 'test' in id_data_loader, \
             'id_data_loaders should have the key: test!'
@@ -62,7 +57,7 @@ class OODEvaluator(BaseEvaluator):
         if self.config.recorder.save_scores:
             self._save_scores(id_pred, id_conf, id_gt, dataset_name)
 
-        # load ood data and compute ood metrics
+        # load nearood data and compute ood metrics
         metrics_list = []
         for dataset_name, ood_dl in ood_data_loaders['ood'].items():
             print(f'Performing inference on {dataset_name} dataset...',

@@ -7,7 +7,7 @@ if __name__ == '__main__':
     line.
 
     Example:
-        python tools/run.py \
+        python main.py \
             --config configs/datasets/mnist_datasets.yml \
             configs/train/mnist_baseline.yml \
             --dataset.image_size 32 \

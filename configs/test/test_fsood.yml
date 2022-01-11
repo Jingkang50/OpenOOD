@@ -10,5 +10,12 @@ network:
   pretrained: True
   checkpoint: ./results/mnist_lenet_base_e100_lr0.1/best.ckpt
 
+pipeline:
+  name: test_fsood
+
 evaluator:
   name: fsood
+
+recorder:
+  save_scores: True
+  save_csv: True

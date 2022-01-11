@@ -10,18 +10,20 @@ ood_dataset:
   image_size: 28
   num_workers: '@{num_workers}'
 
-  split_names: [val, ood]
+  split_names: [val, nearood, farood]
   val:
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/digits/val_notmnist.txt
-  ood:
-    datasets: [notmnist, fashionmnist, texture, cifar10, tin, places365]
+  nearood:
+    datasets: [notmnist, fashionmnist]
     notmnist:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_notmnist.txt
     fashionmnist:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_fashionmnist.txt
+  farood:
+    datasets: [texture, cifar10, tin, places365]
     texture:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_texture.txt
