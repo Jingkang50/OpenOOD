@@ -1,9 +1,9 @@
 dataset:
   name: mnist
-  split_names: [train, test]
+  split_names: [train, val, test]
   num_classes: 10
   image_size: 28
-  num_workers: 0
+  num_workers: '@{num_workers}'
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
@@ -11,6 +11,14 @@ dataset:
     batch_size: 128
     shuffle: True
     transform: mnist_train_standard
+    interpolation: bilinear
+  val:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/digits/val_mnist.txt
+    batch_size: 200
+    shuffle: False
+    transform: mnist_test_standard
     interpolation: bilinear
   test:
     dataset_class: ImglistDataset

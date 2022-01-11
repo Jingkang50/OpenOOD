@@ -1,5 +1,5 @@
 from openood.datasets import get_dataloader
-from openood.evaluation import get_evaluator
+from openood.evaluators import get_evaluator
 from openood.networks import get_network
 from openood.recorders import get_recorder
 from openood.trainers import get_trainer

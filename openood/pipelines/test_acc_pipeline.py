@@ -1,5 +1,5 @@
 from openood.datasets import get_dataloader
-from openood.evaluation import get_evaluator
+from openood.evaluators import get_evaluator
 from openood.networks import get_network
 from openood.utils import setup_logger
 
@@ -24,7 +24,7 @@ class TestAccPipeline:
 
         # start calculating accuracy
         print('Start evaluation...', flush=True)
-        val_metrics = evaluator.eval_acc(net, val_loader, -1)
+        val_metrics = evaluator.eval_acc(net, val_loader)
         print('Complete Evaluation, accuracy {:.2f}%'.format(
             100 * val_metrics['test_accuracy']),
               flush=True)

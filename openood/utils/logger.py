@@ -73,8 +73,9 @@ def setup_logger(config):
     """
     print('------------------ Config --------------------------', flush=True)
     print(config, flush=True)
-    print('----------------------------------------------------', flush=True)
-    output = osp.join(config.output_dir, config.exp_name)
+    print(u'\u2500' * 70, flush=True)
+
+    output = config.output_dir
 
     if config.save_output:
 

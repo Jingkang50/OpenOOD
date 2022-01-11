@@ -15,18 +15,13 @@ def to_np(x):
 
 
 class BaseEvaluator:
-    def __init__(
-        self,
-        config: Config,
-    ):
+    def __init__(self, config: Config):
         self.config = config
 
-    def eval_acc(
-        self,
-        net: nn.Module,
-        data_loader: DataLoader,
-        epoch_idx: int,
-    ):
+    def eval_acc(self,
+                 net: nn.Module,
+                 data_loader: DataLoader,
+                 epoch_idx: int = -1):
         net.eval()
 
         loss_avg = 0.0
@@ -53,11 +48,7 @@ class BaseEvaluator:
         metrics['test_accuracy'] = correct / len(data_loader.dataset)
         return metrics
 
-    def extract(
-        self,
-        net: nn.Module,
-        data_loader: DataLoader,
-    ):
+    def extract(self, net: nn.Module, data_loader: DataLoader):
         net.eval()
         feat_list, label_list = [], []
 
@@ -73,7 +64,7 @@ class BaseEvaluator:
         feat_list = np.array(feat_list)
         label_list = np.array(label_list)
 
-        save_dir = os.path.join(self.config.output_dir, self.config.exp_name)
+        save_dir = self.config.output_dir
         os.makedirs(save_dir, exist_ok=True)
         np.savez(os.path.join(save_dir, 'feature'),
                  feat_list=feat_list,

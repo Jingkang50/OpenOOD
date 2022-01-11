@@ -4,7 +4,6 @@ import logging
 import os
 from typing import List
 
-import numpy as np
 import torch
 import torchvision.transforms as trn
 from PIL import Image, ImageFile
@@ -50,7 +49,7 @@ def get_transforms(
             trn.Normalize(mean, std),
         ])
 
-    elif split in ['val', 'test']:
+    else:
         return trn.Compose([
             Convert(color_mode),
             trn.Resize(image_size, interpolation=interpolation),
@@ -84,7 +83,6 @@ class ImglistDataset(BaseDataset):
         mean, std = [[0.5, 0.5, 0.5], [0.5, 0.5, 0.5]]
         self.transform_image = get_transforms(mean, std, split, interpolation,
                                               image_size)
-
         self.num_classes = num_classes
         self.maxlen = maxlen
         self.dummy_read = dummy_read
