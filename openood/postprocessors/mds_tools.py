@@ -2,9 +2,6 @@ import os
 import pickle
 import sys
 
-########################################################################################
-# LDA Calculation
-########################################################################################
 import numpy as np
 import numpy as np
 import torch
@@ -385,9 +382,8 @@ class InverseLDA(LinearDiscriminantAnalysis):
         This solver is based on [1]_, section 3.8.3, pp. 121-124.
         References
         ----------
-        .. [1] R. O. Duda, P. E. Hart, D. G. Stork. Pattern Classification
-           (Second Edition). John Wiley & Sons, Inc., New York, 2001. ISBN
-           0-471-05669-3.
+        [1] Pattern Classification (Second Edition).
+            John Wiley & Sons, Inc., New York, 2001. ISBN
         """
         self.means_ = _class_means(X, y)
         self.covariance_ = _class_cov(X, y, self.priors_, shrinkage)

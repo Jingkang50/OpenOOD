@@ -1,7 +1,6 @@
 import os
 import time
 from pathlib import Path
-from pickle import NONE
 
 import torch
 
@@ -14,18 +13,18 @@ class BaseRecorder:
         self.best_epoch_idx = 0
 
         self.begin_time = time.time()
-        self.output_dir = os.path.join(config.output_dir, config.exp_name)
+        self.output_dir = config.output_dir
 
     def report(self, train_metrics, val_metrics):
-        print(
-            '\nEpoch {:03d} | Time {:5d}s | Train Loss {:.4f} | '\
-            'Test Loss {:.3f} | Test Acc {:.2f}'.format(
-                (train_metrics['epoch_idx']),
-                int(time.time() - self.begin_time),
-                train_metrics['train_loss'],
-                val_metrics['test_loss'],
-                100.0 * val_metrics['test_accuracy'],
-            ), flush=True)
+        print('\nEpoch {:03d} | Time {:5d}s | Train Loss {:.4f} | '
+              'Test Loss {:.3f} | Test Acc {:.2f}'.format(
+                  (train_metrics['epoch_idx']),
+                  int(time.time() - self.begin_time),
+                  train_metrics['train_loss'],
+                  val_metrics['test_loss'],
+                  100.0 * val_metrics['test_accuracy'],
+              ),
+              flush=True)
 
     def save_model(self, net, val_metrics):
         if self.config.recorder.save_all_models:
@@ -56,8 +55,7 @@ class BaseRecorder:
             torch.save(net.state_dict(), save_pth)
 
     def summary(self):
-        print(
-            'Training Completed! '\
-            'Best accuracy: {:.2f} at epoch {:d}'.format(self.best_acc,
-                                                        self.best_epoch_idx)
-            , flush=True)
+        print('Training Completed! '
+              'Best accuracy: {:.2f} '
+              'at epoch {:d}'.format(self.best_acc, self.best_epoch_idx),
+              flush=True)

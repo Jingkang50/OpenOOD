@@ -1,37 +1,27 @@
 ood_dataset:
-  name: digits_benchmark
+  name: mnist_ood
   dataset_class: ImglistDataset
   transform: mnist_test_standard
   interpolation: bilinear
 
   batch_size: 128
-  shuffle: True
+  shuffle: False
   num_classes: 10
   image_size: 28
   num_workers: '@{num_workers}'
 
-  split_names: [val, csid, nearood, farood]
+  split_names: [val, ood]
   val:
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/digits/val_notmnist.txt
-  csid:
-    datasets: [usps, svhn]
-    usps:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/digits/test_usps.txt
-    svhn:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/digits/test_svhn.txt
-  nearood:
-    datasets: [notmnist, fashionmnist]
+  ood:
+    datasets: [notmnist, fashionmnist, texture, cifar10, tin, places365]
     notmnist:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_notmnist.txt
     fashionmnist:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_fashionmnist.txt
-  farood:
-    datasets: [texture, cifar10, tin, places365]
     texture:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_texture.txt

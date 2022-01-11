@@ -5,6 +5,9 @@ import torch.nn as nn
 
 
 class BasePostprocessor:
+    def __init__(self, config):
+        self.config = config
+
     @torch.no_grad()
     def __call__(
         self,

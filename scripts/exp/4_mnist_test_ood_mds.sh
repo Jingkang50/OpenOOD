@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/exp/0_mnist_train.sh
+# sh scripts/exp/4_mnist_ood_mds.sh
 
 GPU=1
 CPU=1
@@ -12,7 +12,8 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 --kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python tools/run.py \
 --config configs/datasets/mnist_datasets.yml \
+configs/datasets/mnist_datasets.yml \
 configs/networks/lenet.yml \
-configs/train/mnist_baseline.yml \
+configs/test/ood_mds.yml \
 --dataset.image_size 28 \
 --network.name lenet

@@ -1,0 +1,8 @@
+pipeline:
+  name: test_ood
+
+postprocessor:
+  name: odin
+  postprocessor_args:
+    temperature: 1000
+    noise: 0.0014

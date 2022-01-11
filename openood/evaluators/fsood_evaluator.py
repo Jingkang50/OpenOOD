@@ -7,21 +7,21 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 from openood.postprocessors import BasePostprocessor
 
 from .metrics import compute_all_metrics
+from .ood_evaluator import OODEvaluator
 
 
-class BaseEvaluator:
-    def __init__(
-        self,
-        net: nn.Module,
-    ):
-        self.net = net
+class FSOODEvaluator(OODEvaluator):
+    def __init__(self, net: nn.Module):
+        super(FSOODEvaluator, self).__init__(net)
 
     def inference(self, data_loader: DataLoader,
                   postprocessor: BasePostprocessor):
+
         pred_list, conf_list, label_list = [], [], []
 
         for batch in data_loader:
@@ -42,40 +42,9 @@ class BaseEvaluator:
 
         return pred_list, conf_list, label_list
 
-    def eval_classification(
-        self,
-        data_loader: DataLoader,
-    ):
-        self.net.eval()
-
-        loss_avg = 0.0
-        correct = 0
-        with torch.no_grad():
-            for batch in data_loader:
-                data = batch['data'].cuda()
-                target = batch['label'].cuda()
-
-                # forward
-                output = self.net(data)
-                loss = F.cross_entropy(output, target)
-
-                # accuracy
-                pred = output.data.max(1)[1]
-                correct += pred.eq(target.data).sum().item()
-
-                # test loss average
-                loss_avg += float(loss.data)
-
-        metrics = {}
-        metrics['test_loss'] = loss_avg / len(data_loader)
-        metrics['test_accuracy'] = correct / len(data_loader.dataset)
-        return metrics
-
-    def eval_csid_classification(
-        self,
-        csid_loaders: List[DataLoader],
-        csv_path: str = None,
-    ):
+    def eval_csid_classification(self,
+                                 csid_loaders: List[DataLoader],
+                                 csv_path: str = None):
         self.net.eval()
 
         for i, csid_dl in enumerate(csid_loaders):
@@ -97,14 +66,12 @@ class BaseEvaluator:
             if csv_path:
                 self._log_acc_results(acc, csv_path, dataset_name=csid_name)
 
-    def eval_ood(
-        self,
-        id_data_loaders: List[DataLoader],
-        ood_data_loaders: List[DataLoader],
-        postprocessor: BasePostprocessor = None,
-        method: str = 'each',
-        csv_path: str = None,
-    ):
+    def eval_ood(self,
+                 id_data_loaders: List[DataLoader],
+                 ood_data_loaders: List[DataLoader],
+                 postprocessor: BasePostprocessor = None,
+                 method: str = 'each',
+                 csv_path: str = None):
         self.net.eval()
 
         if postprocessor is None:
@@ -160,7 +127,7 @@ class BaseEvaluator:
 
             results_matrix = np.array(results_matrix)
 
-            print(f'Computing mean metrics...')
+            print('Computing mean metrics...')
             results_mean = np.mean(results_matrix, axis=0)
             if csv_path:
                 self._log_results(results_mean, csv_path, dataset_name='mean')
@@ -219,3 +186,35 @@ class BaseEvaluator:
             with open(csv_path, 'a', newline='') as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writerow(write_content)
+
+    def eval_acc(
+        self,
+        net: nn.Module,
+        data_loader: DataLoader,
+        epoch_idx: int,
+    ):
+        net.eval()
+
+        loss_avg = 0.0
+        correct = 0
+        with torch.no_grad():
+            for batch in tqdm(data_loader):
+                data = batch['data'].cuda()
+                target = batch['label'].cuda()
+
+                # forward
+                output = net(data)
+                loss = F.cross_entropy(output, target)
+
+                # accuracy
+                pred = output.data.max(1)[1]
+                correct += pred.eq(target.data).sum().item()
+
+                # test loss average
+                loss_avg += float(loss.data)
+
+        metrics = {}
+        metrics['epoch_idx'] = epoch_idx
+        metrics['test_loss'] = loss_avg / len(data_loader)
+        metrics['test_accuracy'] = correct / len(data_loader.dataset)
+        return metrics

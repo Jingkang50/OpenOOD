@@ -7,11 +7,6 @@ from .base_postprocessor import BasePostprocessor
 
 
 class EBOPostprocessor(BasePostprocessor):
-    def __init__(self, temperature: float = 100.0):
-        super().__init__()
-
-        self.temperature = temperature
-
     @torch.no_grad()
     def __call__(
         self,

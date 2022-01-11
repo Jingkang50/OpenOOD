@@ -1,13 +1,14 @@
-import torch.nn as nn
-from torch.utils.data import DataLoader
-
 from openood.utils import Config
 
 from .base_evaluator import BaseEvaluator
+from .fsood_evaluator import FSOODEvaluator
+from .ood_evaluator import OODEvaluator
 
 
-def get_evaluator(config: Config, ):
+def get_evaluator(config: Config):
     evaluators = {
         'base': BaseEvaluator,
+        'ood': OODEvaluator,
+        'fsood': FSOODEvaluator,
     }
     return evaluators[config.evaluator.name](config)
