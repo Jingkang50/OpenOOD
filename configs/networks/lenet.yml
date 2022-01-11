@@ -1,6 +1,6 @@
 network:
   name: lenet
   num_classes: '@{dataset.num_classes}'
-  pretrained: false
-  checkpoint: none # ignored if pretrained is false
+  pretrained: False          # set 'True' to load pretrained model
+  checkpoint: none           # ignore if pretrained is false
   num_gpus: '@{num_gpus}'
