@@ -42,8 +42,8 @@ class OODEvaluator(BaseEvaluator):
 
         return pred_list, conf_list, label_list
 
-    def eval_ood(self, net: nn.Module, id_data_loader: Dict[DataLoader],
-                 ood_data_loaders: Dict[DataLoader],
+    def eval_ood(self, net: nn.Module, id_data_loader: DataLoader,
+                 ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                  postprocessor: BasePostprocessor):
 
         net.eval()

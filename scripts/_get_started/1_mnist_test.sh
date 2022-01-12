@@ -13,6 +13,6 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 python main.py \
 --config configs/datasets/mnist_datasets.yml \
 configs/networks/lenet.yml \
-configs/test/test_acc.yml \
+configs/pipelines/test/test_acc.yml \
 --dataset.image_size 28 \
 --network.name lenet \
