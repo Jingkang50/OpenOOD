@@ -14,7 +14,9 @@ from .ood_evaluator import OODEvaluator
 
 
 class FSOODEvaluator(OODEvaluator):
-    def eval_csid_acc(self, net: nn.Module, csid_loaders: Dict[DataLoader]):
+    def eval_csid_acc(self, net: nn.Module,
+                      csid_loaders: Dict[str, Dict[str, DataLoader]]):
+
         net.eval()
         for dataset_name, csid_dl in csid_loaders.items():
             print(f'Computing accuracy on {dataset_name} dataset...')

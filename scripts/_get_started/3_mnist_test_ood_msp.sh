@@ -14,7 +14,7 @@ python main.py \
 --config configs/datasets/mnist_datasets.yml \
 configs/datasets/mnist_ood.yml \
 configs/networks/lenet.yml \
-configs/test/test_ood.yml \
-configs/ood_postprocessor/msp.yml \
+configs/pipelines/test/test_ood.yml \
+configs/postprocessors/msp.yml \
 --dataset.image_size 28 \
 --network.name lenet

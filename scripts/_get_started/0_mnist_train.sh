@@ -1,9 +1,9 @@
 #!/bin/bash
-# sh scripts/0_get_started/0_mnist_train.sh
+# sh scripts/_get_started/0_mnist_train.sh
 
 GPU=1
 CPU=1
-node=67
+node=73
 jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -13,6 +13,6 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 python main.py \
 --config configs/datasets/mnist_datasets.yml \
 configs/networks/lenet.yml \
-configs/train/baseline.yml \
+configs/pipelines/train/baseline.yml \
 --dataset.image_size 28 \
 --network.name lenet
