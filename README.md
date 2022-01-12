@@ -1,11 +1,32 @@
 # OpenOOD
-Benchmarking Generalized Out-of-Distribution Detection
 
+> Benchmarking Generalized Out-of-Distribution Detection.
+
+This repository includes representative methods within the `Generalized Out-of-Distribution Detection Framework` that proposed
+in [our survey paper](https://arxiv.org/abs/2110.11334).
+
+The topics of anomaly detection, novelty detection, open set recognition,
+and out-of-distribution detection
+are all within the scope of this codebase.
+
+| ![timeline.jpg](assets/timeline.jpg) |
+|:--:|
+| <b>Image from [Fig.3 in our survey](https://arxiv.org/abs/2110.11334) - Timeline for representative methodologies.</b>|
+
+
+## Get Started
+
+The easiest hands-on script is to train MNIST with LeNet.
+```bash
+sh scripts/0_get_started/0_mnist_train.sh
+```
+Tutorials on understanding and contributing the codebase are provided in our documentation.
 
 ## Supported Methods
 
-Results and models are available in the [model zoo](docs/model_zoo.md).
+Indexing follows the structure of [survey paper](https://arxiv.org/abs/2110.11334).
 
+Results and models are available in the [model zoo](docs/model_zoo.md).
 
 ### 3. Anomaly Detection
 
@@ -101,21 +122,22 @@ Results and models are available in the [model zoo](docs/model_zoo.md).
 >     - [x] [MDS (ArXiv'2021)](https://arxiv.org/pdf/2106.08265.pdf)
 >   - **5.1.1.c Outlier Exposure:**
 >     - [x] [OE (ICCV'2021)]()
+>     - [x] [UDG (ICCV'2021)]()
 > - **5.1.2 OOD Data Generation:**
->   - [x] [OE (ICCV'2021)]()
+>   - [x] []()
 > - **5.1.3 Gradient-based Method:**
->   - [x] [OE (ICCV'2021)]()
+>   - [x] []()
 > - **5.1.4 Bayesian Models:**
 >   - [x] [Gram (ICCV'2021)]()
 >   - [x] [DUQ (ICCV'2021)]()
 > - **5.1.5 Large-scale OOD Detection:**
->   - [x] [OE (ICCV'2021)]()
+>   - [x] []()
 </details>
 
 <details open>
 <summary><b>5.2 Density-based Methods:</b></summary>
 
-> - [x] [OE (ICCV'2021)]()
+> - [x] []()
 </details>
 
 
@@ -123,9 +145,5 @@ Results and models are available in the [model zoo](docs/model_zoo.md).
 <summary><b>5.3 Distance-based Methods:</b></summary>
 
 > - [x] [MDS (ArXiv'2021)](https://arxiv.org/pdf/2106.08265.pdf)
+> - [x] [SEM (CVPR'2022)](https://arxiv.org/pdf/2106.08265.pdf)
 </details>
-
-## Command
-```bash
-sh tools/train.py
-```
