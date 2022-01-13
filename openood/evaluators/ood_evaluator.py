@@ -1,6 +1,6 @@
 import csv
 import os
-from typing import Dict
+from typing import Dict, List
 
 import numpy as np
 import torch.nn as nn
@@ -45,7 +45,6 @@ class OODEvaluator(BaseEvaluator):
     def eval_ood(self, net: nn.Module, id_data_loader: DataLoader,
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                  postprocessor: BasePostprocessor):
-
         net.eval()
         # load training in-distribution data
         assert 'test' in id_data_loader, \
@@ -56,10 +55,23 @@ class OODEvaluator(BaseEvaluator):
                                                  postprocessor)
         if self.config.recorder.save_scores:
             self._save_scores(id_pred, id_conf, id_gt, dataset_name)
-
         # load nearood data and compute ood metrics
+        self._eval_ood(net, [id_pred, id_conf, id_gt], ood_data_loaders,
+                       postprocessor, 'nearood')
+        # load farood data and compute ood metrics
+        self._eval_ood(net, [id_pred, id_conf, id_gt], ood_data_loaders,
+                       postprocessor, 'farood')
+
+    def _eval_ood(self,
+                  net: nn.Module,
+                  id_list: List[np.ndarray],
+                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
+                  postprocessor: BasePostprocessor,
+                  keyword: str = 'nearood'):
+        print(f'Processing {keyword}...', flush=True)
+        [id_pred, id_conf, id_gt] = id_list
         metrics_list = []
-        for dataset_name, ood_dl in ood_data_loaders['ood'].items():
+        for dataset_name, ood_dl in ood_data_loaders[keyword].items():
             print(f'Performing inference on {dataset_name} dataset...',
                   flush=True)
             ood_pred, ood_conf, ood_gt = self.inference(
@@ -81,14 +93,12 @@ class OODEvaluator(BaseEvaluator):
         metrics_list = np.array(metrics_list)
         metrics_mean = np.mean(metrics_list, axis=0)
         if self.config.recorder.save_csv:
-            self._save_csv(metrics_mean, dataset_name='mean')
+            self._save_csv(metrics_mean, dataset_name=keyword)
 
     def _save_csv(self, metrics, dataset_name):
-
         [fpr, auroc, aupr_in, aupr_out,
          ccr_4, ccr_3, ccr_2, ccr_1, accuracy] \
          = metrics
-
         write_content = {
             'dataset': dataset_name,
             'FPR@95': '{:.2f}'.format(100 * fpr),

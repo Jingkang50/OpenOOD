@@ -54,5 +54,5 @@ class BaseRecorder:
     def summary(self):
         print('Training Completed! '
               'Best accuracy: {:.2f} '
-              'at epoch {:d}'.format(self.best_acc, self.best_epoch_idx),
+              'at epoch {:d}'.format(100 * self.best_acc, self.best_epoch_idx),
               flush=True)

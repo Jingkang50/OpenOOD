@@ -9,7 +9,6 @@ from torch.utils.data import DataLoader
 
 from openood.postprocessors import BasePostprocessor
 
-from .metrics import compute_all_metrics
 from .ood_evaluator import OODEvaluator
 
 
@@ -95,53 +94,9 @@ class FSOODEvaluator(OODEvaluator):
             id_gt = np.concatenate([id_gt, csid_gt])
 
         # load nearood data and compute ood metrics
-        nearood_metrics_list = []
-        for dataset_name, ood_dl in ood_data_loaders['nearood'].items():
-            print(f'Performing inference on {dataset_name} dataset...',
-                  flush=True)
-            ood_pred, ood_conf, ood_gt = self.inference(
-                net, ood_dl, postprocessor)
-            if self.config.recorder.save_scores:
-                self._save_scores(ood_pred, ood_conf, ood_gt, dataset_name)
-
-            pred = np.concatenate([id_pred, ood_pred])
-            conf = np.concatenate([id_conf, ood_conf])
-            label = np.concatenate([id_gt, ood_gt])
-
-            print(f'Computing metrics on {dataset_name} dataset...')
-            ood_metrics = compute_all_metrics(conf, label, pred)
-            if self.config.recorder.save_csv:
-                self._save_csv(ood_metrics, dataset_name=dataset_name)
-            nearood_metrics_list.append(ood_metrics)
-
-        print('Computing nearood metrics...', flush=True)
-        nearood_metrics_list = np.array(nearood_metrics_list)
-        metrics_mean = np.mean(nearood_metrics_list, axis=0)
-        if self.config.recorder.save_csv:
-            self._save_csv(metrics_mean, dataset_name='nearood')
+        self._eval_ood(net, [id_pred, id_conf, id_gt], ood_data_loaders,
+                       postprocessor, 'nearood')
 
         # load farood data and compute ood metrics
-        farood_metrics_list = []
-        for dataset_name, ood_dl in ood_data_loaders['farood'].items():
-            print(f'Performing inference on {dataset_name} dataset...',
-                  flush=True)
-            ood_pred, ood_conf, ood_gt = self.inference(
-                net, ood_dl, postprocessor)
-            if self.config.recorder.save_scores:
-                self._save_scores(ood_pred, ood_conf, ood_gt, dataset_name)
-
-            pred = np.concatenate([id_pred, ood_pred])
-            conf = np.concatenate([id_conf, ood_conf])
-            label = np.concatenate([id_gt, ood_gt])
-
-            print(f'Computing metrics on {dataset_name} dataset...')
-            ood_metrics = compute_all_metrics(conf, label, pred)
-            if self.config.recorder.save_csv:
-                self._save_csv(ood_metrics, dataset_name=dataset_name)
-            nearood_metrics_list.append(ood_metrics)
-
-        print('Computing farood metrics...', flush=True)
-        farood_metrics_list = np.array(farood_metrics_list)
-        metrics_mean = np.mean(farood_metrics_list, axis=0)
-        if self.config.recorder.save_csv:
-            self._save_csv(metrics_mean, dataset_name='farood')
+        self._eval_ood(net, [id_pred, id_conf, id_gt], ood_data_loaders,
+                       postprocessor, 'farood')

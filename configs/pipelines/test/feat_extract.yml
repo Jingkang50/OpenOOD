@@ -4,7 +4,7 @@ save_output: True
 force_merge: False # disabled if 'save_output' is False
 
 num_gpus: 1
-num_workers: 0
+num_workers: 4
 
 network:
   pretrained: True
