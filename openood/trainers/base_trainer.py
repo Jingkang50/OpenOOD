@@ -1,4 +1,3 @@
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -44,7 +43,9 @@ class BaseTrainer:
 
         for train_step in tqdm(range(1,
                                      len(train_dataiter) + 1),
-                               desc='Epoch {:03d}: '.format(epoch_idx)):
+                               desc='Epoch {:03d}: '.format(epoch_idx),
+                               position=0,
+                               leave=True):
             batch = next(train_dataiter)
             data = batch['data'].cuda()
             target = batch['label'].cuda()
@@ -65,6 +66,6 @@ class BaseTrainer:
 
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
-        metrics['train_loss'] = loss_avg
+        metrics['loss'] = loss_avg
 
         return self.net, metrics

@@ -17,13 +17,10 @@ class BaseRecorder:
 
     def report(self, train_metrics, val_metrics):
         print('\nEpoch {:03d} | Time {:5d}s | Train Loss {:.4f} | '
-              'Test Loss {:.3f} | Test Acc {:.2f}'.format(
+              'Val Loss {:.3f} | Val Acc {:.2f}'.format(
                   (train_metrics['epoch_idx']),
-                  int(time.time() - self.begin_time),
-                  train_metrics['train_loss'],
-                  val_metrics['test_loss'],
-                  100.0 * val_metrics['test_accuracy'],
-              ),
+                  int(time.time() - self.begin_time), train_metrics['loss'],
+                  val_metrics['loss'], 100.0 * val_metrics['acc']),
               flush=True)
 
     def save_model(self, net, val_metrics):
@@ -35,7 +32,7 @@ class BaseRecorder:
                     'model_epoch{}.ckpt'.format(val_metrics['epoch_idx'])))
 
         # enter only if better accuracy occurs
-        if val_metrics['test_accuracy'] >= self.best_acc:
+        if val_metrics['acc'] >= self.best_acc:
 
             # delete the depreciated best model
             old_fname = 'best_epoch{}_acc{}.ckpt'.format(
@@ -45,7 +42,7 @@ class BaseRecorder:
 
             # update the best model
             self.best_epoch_idx = val_metrics['epoch_idx']
-            self.best_acc = val_metrics['test_accuracy']
+            self.best_acc = val_metrics['acc']
             torch.save(net.state_dict(),
                        os.path.join(self.output_dir, 'best.ckpt'))
 
