@@ -78,32 +78,34 @@ def setup_logger(config):
     output = config.output_dir
 
     if config.save_output:
-
         if not config.force_merge and osp.isdir(output):
             ans = input('Exp dir already exists, merge it? (y/n)')
             if ans in ['yes', 'Yes', 'YES', 'y', 'Y', 'can']:
-                pass
+                save_logger(config, output)
             elif ans in ['no', 'No', 'NO', 'n', 'N']:
                 print('Quitting the process...', flush=True)
                 quit()
             else:
                 raise ValueError('Unexpected Input.')
-
         else:
-            print('Output directory path: {}'.format(output), flush=True)
-            os.makedirs(output, exist_ok=True)
-            # Save config
-            # FIXME: saved config file is not beautified.
-            config_save_path = osp.join(output, 'config.yml')
-            with open(config_save_path, 'w') as f:
-                yaml.dump(config,
-                          f,
-                          default_flow_style=False,
-                          sort_keys=False,
-                          indent=2)
-            # save log file
-            fpath = osp.join(output, 'log.txt')
-            sys.stdout = Logger(fpath)
+            save_logger(config, output)
 
     else:
         print('No output directory.', flush=True)
+
+
+def save_logger(config, output):
+    print('Output directory path: {}'.format(output), flush=True)
+    os.makedirs(output, exist_ok=True)
+    # Save config
+    # FIXME: saved config file is not beautified.
+    config_save_path = osp.join(output, 'config.yml')
+    with open(config_save_path, 'w') as f:
+        yaml.dump(config,
+                  f,
+                  default_flow_style=False,
+                  sort_keys=False,
+                  indent=2)
+    # save log file
+    fpath = osp.join(output, 'log.txt')
+    sys.stdout = Logger(fpath)

@@ -3,7 +3,7 @@
 
 GPU=1
 CPU=1
-node=73
+node=68
 jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -17,4 +17,4 @@ configs/pipelines/train/baseline.yml \
 --dataset.image_size 28 \
 --network.name lenet \
 --optimizer.num_epochs 100 \
---num_workers 0
+--num_workers 4

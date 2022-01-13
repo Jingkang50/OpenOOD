@@ -1,4 +1,4 @@
-exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'"
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'_'@{evaluator.name}'_'@{postprocessor.name}'"
 output_dir: ./results/
 save_output: True
 force_merge: False # disabled if 'save_output' is False
@@ -11,7 +11,7 @@ network:
   checkpoint: ./results/mnist_lenet_base_e100_lr0.1/best.ckpt
 
 pipeline:
-  name: test_fsood
+  name: test_ood
 
 evaluator:
   name: fsood

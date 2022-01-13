@@ -28,7 +28,7 @@ class BaseEvaluator:
         correct = 0
         with torch.no_grad():
             for batch in tqdm(data_loader,
-                              desc='Val: ',
+                              desc='Eval: ',
                               position=0,
                               leave=True):
                 data = batch['data'].cuda()

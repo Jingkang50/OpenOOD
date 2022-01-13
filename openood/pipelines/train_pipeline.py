@@ -42,6 +42,7 @@ class TrainPipeline:
         # evaluate on test set
         print('Start testing...', flush=True)
         test_metrics = evaluator.eval_acc(net, test_loader)
-        print('Test Acc {:.2f}'.format(100.0 * test_metrics['acc']),
+        print('\nComplete Evaluation, accuracy {:.2f}'.format(
+            100.0 * test_metrics['acc']),
               flush=True)
         print('Completed!', flush=True)
