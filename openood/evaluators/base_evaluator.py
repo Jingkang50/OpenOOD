@@ -27,7 +27,10 @@ class BaseEvaluator:
         loss_avg = 0.0
         correct = 0
         with torch.no_grad():
-            for batch in tqdm(data_loader):
+            for batch in tqdm(data_loader,
+                              desc='Val: ',
+                              position=0,
+                              leave=True):
                 data = batch['data'].cuda()
                 target = batch['label'].cuda()
 
@@ -44,8 +47,8 @@ class BaseEvaluator:
 
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
-        metrics['test_loss'] = loss_avg / len(data_loader)
-        metrics['test_accuracy'] = correct / len(data_loader.dataset)
+        metrics['loss'] = loss_avg / len(data_loader)
+        metrics['acc'] = correct / len(data_loader.dataset)
         return metrics
 
     def extract(self, net: nn.Module, data_loader: DataLoader):
@@ -53,7 +56,10 @@ class BaseEvaluator:
         feat_list, label_list = [], []
 
         with torch.no_grad():
-            for batch in tqdm(data_loader):
+            for batch in tqdm(data_loader,
+                              desc='Feature Extracting: ',
+                              position=0,
+                              leave=True):
                 data = batch['data'].cuda()
                 label = batch['label']
 
