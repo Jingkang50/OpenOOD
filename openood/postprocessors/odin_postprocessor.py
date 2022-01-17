@@ -15,7 +15,7 @@ class ODINPostprocessor(BasePostprocessor):
         self.temperature = self.args.temperature
         self.noise = self.args.noise
 
-    def __call__(self, net: nn.Module, data: Any):
+    def postprocess(self, net: nn.Module, data: Any):
         data.requires_grad = True
         output = net(data)
 
