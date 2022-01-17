@@ -31,6 +31,7 @@ class BaseEvaluator:
                               desc='Eval: ',
                               position=0,
                               leave=True):
+                # prepare data
                 data = batch['data'].cuda()
                 target = batch['label'].cuda()
 

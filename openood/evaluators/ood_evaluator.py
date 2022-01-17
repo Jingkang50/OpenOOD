@@ -22,26 +22,6 @@ class OODEvaluator(BaseEvaluator):
         """
         super(OODEvaluator, self).__init__(config)
 
-    def inference(self, net: nn.Module, data_loader: DataLoader,
-                  postprocessor: BasePostprocessor):
-
-        pred_list, conf_list, label_list = [], [], []
-        for batch in data_loader:
-            data = batch['data'].cuda()
-            label = batch['label'].cuda()
-            pred, conf = postprocessor(net, data)
-            for idx in range(len(data)):
-                pred_list.append(pred[idx].cpu().tolist())
-                conf_list.append(conf[idx].cpu().tolist())
-                label_list.append(label[idx].cpu().tolist())
-
-        # convert values into numpy array
-        pred_list = np.array(pred_list, dtype=int)
-        conf_list = np.array(conf_list)
-        label_list = np.array(label_list, dtype=int)
-
-        return pred_list, conf_list, label_list
-
     def eval_ood(self, net: nn.Module, id_data_loader: DataLoader,
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                  postprocessor: BasePostprocessor):
@@ -51,31 +31,34 @@ class OODEvaluator(BaseEvaluator):
             'id_data_loaders should have the key: test!'
         dataset_name = self.config.dataset.name
         print(f'Performing inference on {dataset_name} dataset...', flush=True)
-        id_pred, id_conf, id_gt = self.inference(net, id_data_loader['test'],
-                                                 postprocessor)
+        id_pred, id_conf, id_gt = postprocessor.inference(
+            net, id_data_loader['test'])
         if self.config.recorder.save_scores:
             self._save_scores(id_pred, id_conf, id_gt, dataset_name)
         # load nearood data and compute ood metrics
-        self._eval_ood(net, [id_pred, id_conf, id_gt], ood_data_loaders,
-                       postprocessor, 'nearood')
+        self._eval_ood(net, [id_pred, id_conf, id_gt],
+                       ood_data_loaders,
+                       postprocessor,
+                       ood_split='nearood')
         # load farood data and compute ood metrics
-        self._eval_ood(net, [id_pred, id_conf, id_gt], ood_data_loaders,
-                       postprocessor, 'farood')
+        self._eval_ood(net, [id_pred, id_conf, id_gt],
+                       ood_data_loaders,
+                       postprocessor,
+                       ood_split='farood')
 
     def _eval_ood(self,
                   net: nn.Module,
                   id_list: List[np.ndarray],
                   ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                   postprocessor: BasePostprocessor,
-                  keyword: str = 'nearood'):
-        print(f'Processing {keyword}...', flush=True)
+                  ood_split: str = 'nearood'):
+        print(f'Processing {ood_split}...', flush=True)
         [id_pred, id_conf, id_gt] = id_list
         metrics_list = []
-        for dataset_name, ood_dl in ood_data_loaders[keyword].items():
+        for dataset_name, ood_dl in ood_data_loaders[ood_split].items():
             print(f'Performing inference on {dataset_name} dataset...',
                   flush=True)
-            ood_pred, ood_conf, ood_gt = self.inference(
-                net, ood_dl, postprocessor)
+            ood_pred, ood_conf, ood_gt = postprocessor.inference(net, ood_dl)
             if self.config.recorder.save_scores:
                 self._save_scores(ood_pred, ood_conf, ood_gt, dataset_name)
 
@@ -93,12 +76,13 @@ class OODEvaluator(BaseEvaluator):
         metrics_list = np.array(metrics_list)
         metrics_mean = np.mean(metrics_list, axis=0)
         if self.config.recorder.save_csv:
-            self._save_csv(metrics_mean, dataset_name=keyword)
+            self._save_csv(metrics_mean, dataset_name=ood_split)
 
     def _save_csv(self, metrics, dataset_name):
         [fpr, auroc, aupr_in, aupr_out,
          ccr_4, ccr_3, ccr_2, ccr_1, accuracy] \
          = metrics
+
         write_content = {
             'dataset': dataset_name,
             'FPR@95': '{:.2f}'.format(100 * fpr),
@@ -118,7 +102,6 @@ class OODEvaluator(BaseEvaluator):
         print('FPR@95: {:.2f}, AUROC: {:.2f}'.format(100 * fpr, 100 * auroc),
               end=' ',
               flush=True)
-
         print('AUPR_IN: {:.2f}, AUPR_OUT: {:.2f}'.format(
             100 * aupr_in, 100 * aupr_out),
               flush=True)
