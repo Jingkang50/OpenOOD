@@ -2,7 +2,6 @@ from typing import Any
 
 import torch
 import torch.nn as nn
-from traitlets.traitlets import Bool
 
 from .base_postprocessor import BasePostprocessor
 from .gmm_tools import calculate_prob
@@ -21,7 +20,7 @@ class GMMPostprocessor(BasePostprocessor):
         self.alpha_list = alpha_list
 
     @torch.no_grad()
-    def __call__(self, net: nn.Module, data: Any, return_scores: Bool = False):
+    def __call__(self, net: nn.Module, data: Any, return_scores: bool = False):
         output, feature_list = net(data, return_feature_list=True)
         score = torch.softmax(output, dim=1)
         _, pred = torch.max(score, dim=1)
