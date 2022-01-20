@@ -130,3 +130,14 @@ class OODEvaluator(BaseEvaluator):
                  pred=pred,
                  conf=conf,
                  label=gt)
+
+    def eval_acc(self,
+                 net: nn.Module,
+                 data_loader: DataLoader,
+                 postprocessor: BasePostprocessor = None,
+                 epoch_idx: int = -1):
+        net.eval()
+        id_pred, _, id_gt = postprocessor.inference(net, data_loader)
+        metrics = {}
+        metrics['acc'] = sum(id_pred == id_gt) / len(id_pred)
+        return metrics

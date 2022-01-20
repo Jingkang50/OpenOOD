@@ -10,6 +10,9 @@ class BasePostprocessor:
     def __init__(self, config):
         self.config = config
 
+    def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
+        pass
+
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
         output = net(data)

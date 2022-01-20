@@ -32,6 +32,7 @@ class FSOODEvaluator(OODEvaluator):
             acc = correct / len(csid_dl.dataset)
             if self.config.recorder.save_csv:
                 self._save_acc_results(acc, dataset_name)
+        print(u'\u2500' * 70, flush=True)
 
     def _save_acc_results(self, acc, dataset_name):
         write_content = {
@@ -48,7 +49,7 @@ class FSOODEvaluator(OODEvaluator):
         }
         fieldnames = list(write_content.keys())
         # print csid metric results
-        print('CSID[{}] accuracy: {:.2f}'.format(dataset_name, 100 * acc),
+        print('CSID[{}] accuracy: {:.2f}%'.format(dataset_name, 100 * acc),
               flush=True)
         csv_path = os.path.join(self.config.output_dir, 'csid.csv')
         if not os.path.exists(csv_path):
@@ -66,7 +67,6 @@ class FSOODEvaluator(OODEvaluator):
                  postprocessor: BasePostprocessor):
         # ensure the networks in eval mode
         net.eval()
-
         # load training in-distribution data
         assert 'test' in id_data_loader, \
             'id_data_loaders should have the key: test!'
@@ -90,15 +90,18 @@ class FSOODEvaluator(OODEvaluator):
             id_gt = np.concatenate([id_gt, csid_gt])
 
         # compute accuracy on csid
+        print(u'\u2500' * 70, flush=True)
         self.eval_csid_acc(net, ood_data_loaders['csid'])
 
         # load nearood data and compute ood metrics
+        print(u'\u2500' * 70, flush=True)
         self._eval_ood(net, [id_pred, id_conf, id_gt],
                        ood_data_loaders,
                        postprocessor,
                        ood_split='nearood')
 
         # load farood data and compute ood metrics
+        print(u'\u2500' * 70, flush=True)
         self._eval_ood(net, [id_pred, id_conf, id_gt],
                        ood_data_loaders,
                        postprocessor,
