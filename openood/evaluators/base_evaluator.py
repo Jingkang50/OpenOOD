@@ -7,6 +7,7 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
 
 
@@ -21,6 +22,7 @@ class BaseEvaluator:
     def eval_acc(self,
                  net: nn.Module,
                  data_loader: DataLoader,
+                 postprocessor: BasePostprocessor = None,
                  epoch_idx: int = -1):
         net.eval()
 

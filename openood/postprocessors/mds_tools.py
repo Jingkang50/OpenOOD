@@ -1,11 +1,5 @@
-import os
-import pickle
-import sys
-
-import numpy as np
 import numpy as np
 import torch
-import torch.nn.functional as F
 from scipy import linalg
 from sklearn.covariance import (empirical_covariance, ledoit_wolf,
                                 shrunk_covariance)
@@ -13,11 +7,12 @@ from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.linear_model import LogisticRegressionCV
 from sklearn.preprocessing import StandardScaler
-from torch import nn
 from torch.autograd import Variable
 from tqdm import tqdm
 
-to_np = lambda x: x.data.cpu().numpy()
+
+def tensor2list(x):
+    return x.data.cpu().tolist()
 
 
 def get_torch_feature_stat(feature, only_mean=False):
@@ -69,59 +64,73 @@ def reduce_feature_dim(feature_list_full, label_list_full, feature_process):
     return transform_matrix
 
 
-def sample_estimator(train_loader, model, num_classes, feature_type_list,
-                     feature_process_list):
+@torch.no_grad()
+def sample_estimator(model, train_loader, num_classes, feature_type_list,
+                     reduce_dim_list):
     """
     compute sample mean and precision (inverse of covariance)
     return: sample_class_mean: list of class mean
-             precision: list of precisions
+            precision: list of precisions
     """
     import sklearn.covariance
     group_lasso = sklearn.covariance.EmpiricalCovariance(assume_centered=False)
     model.eval()
     num_layer = len(feature_type_list)
-    feature_mean_list = [[None] * num_classes] * num_layer
-    # generate a list of features
-    for layer_idx in range(num_layer):
-        feature_type = feature_type_list[layer_idx]
-        feature_process = feature_process_list[layer_idx]
-        feature_list_full, label_list_full = [], []
-        with torch.no_grad():
-            for batch in train_loader:
-                data = batch['plain_data'].cuda()
-                label = batch['label']
-                _, feature_list = model(data, return_feature_list=True)
-                feature_list = process_feature_type(feature_list[layer_idx],
-                                                    feature_type)
-                feature_list_full.extend(to_np(feature_list))
-                label_list_full.extend(to_np(label))
-        feature_list_full = np.array(feature_list_full)
-        label_list_full = np.array(label_list_full)
-        transform_matrix = reduce_feature_dim(feature_list_full,
-                                              label_list_full, feature_process)
-        new_feature_list = np.dot(feature_list_full, transform_matrix)
-        for feature, label in zip(new_feature_list, label_list_full):
-            if feature_mean_list[layer_idx][label] == None:
-                feature_mean_list[layer_idx][label] = feature
+    feature_class = [[None for x in range(num_classes)]
+                     for y in range(num_layer)]
+    feature_all = [None for x in range(num_layer)]
+    label_list = []
+    # collect features
+    for batch in tqdm(train_loader, desc='Compute mean/std'):
+        data = batch['data_aux'].cuda()
+        label = batch['label']
+        _, feature_list = model(data, return_feature_list=True)
+        label_list.extend(tensor2list(label))
+        for layer_idx in range(num_layer):
+            feature_type = feature_type_list[layer_idx]
+            feature_processed = process_feature_type(feature_list[layer_idx],
+                                                     feature_type)
+            if isinstance(feature_all[layer_idx], type(None)):
+                feature_all[layer_idx] = tensor2list(feature_processed)
             else:
-                feature_mean_list[layer_idx][label].append(feature)
-        import pdb
-        pdb.set_trace()
+                feature_all[layer_idx].extend(tensor2list(feature_processed))
+    label_list = np.array(label_list)
+    # reduce feature dim and split by classes
+    for layer_idx in range(num_layer):
+        feature_sub = np.array(feature_all[layer_idx])
+        transform_matrix = reduce_feature_dim(feature_sub, label_list,
+                                              reduce_dim_list[layer_idx])
+        feature_sub = np.dot(feature_sub, transform_matrix)
+        for feature, label in zip(feature_sub, label_list):
+            feature = feature.reshape([-1, len(feature)])
+            if isinstance(feature_class[layer_idx][label], type(None)):
+                feature_class[layer_idx][label] = feature
+            else:
+                feature_class[layer_idx][label] = np.concatenate(
+                    (feature_class[layer_idx][label], feature), axis=0)
+    # calculate feature mean
+    feature_mean_list = [[
+        np.mean(feature_by_class, axis=0)
+        for feature_by_class in feature_by_layer
+    ] for feature_by_layer in feature_class]
+
+    # calculate precision
     precision_list = []
-    for k in range(num_output):
+    for layer in range(num_layer):
         X = []
-        for i in range(num_classes):
-            X.append(list_features[k][i] - sample_class_mean[k][i])
-        X = torch.cat(X, 0)
-
+        for k in range(num_classes):
+            X.append(feature_class[layer][k] - feature_mean_list[layer][k])
+        X = np.concatenate(X, axis=0)
         # find inverse
-        group_lasso.fit(X.numpy())
-        temp_precision = group_lasso.precision_
-        temp_precision = torch.from_numpy(temp_precision).float().cuda()
-        precision.append(temp_precision)
+        group_lasso.fit(X)
+        precision = group_lasso.precision_
+        precision_list.append(precision)
 
-    sample_class_mean = [t.cuda() for t in sample_class_mean]
-    return sample_class_mean, precision
+    # put mean and precision to cuda
+    feature_mean_list = [torch.Tensor(i).cuda() for i in feature_mean_list]
+    precision_list = [torch.Tensor(p).cuda() for p in precision_list]
+
+    return feature_mean_list, precision_list
 
 
 def get_Mahalanobis_score(model, test_loader, num_classes, sample_mean,
@@ -132,9 +141,8 @@ def get_Mahalanobis_score(model, test_loader, num_classes, sample_mean,
     '''
     model.eval()
     Mahalanobis = []
-    for batch in tqdm(
-            test_loader,
-            desc=f'val_{test_loader.dataset.name}_layer{layer_index}'):
+    for batch in tqdm(test_loader,
+                      desc=f'{test_loader.dataset.name}_layer{layer_index}'):
         data = batch['data'].cuda()
         data = Variable(data, requires_grad=True)
         noise_gaussian_score = compute_noise_Mahalanobis_score(
@@ -152,7 +160,8 @@ def compute_noise_Mahalanobis_score(model,
                                     layer_index,
                                     magnitude,
                                     return_pred=False):
-    _, out_features = model(data, return_feature=True)
+    # extract features
+    _, out_features = model(data, return_feature_list=True)
     out_features = out_features[layer_index]
     out_features = out_features.view(out_features.size(0),
                                      out_features.size(1), -1)
@@ -205,7 +214,7 @@ def compute_noise_Mahalanobis_score(model,
 
     with torch.no_grad():
         _, noise_out_features = model(Variable(tempInputs),
-                                      return_feature=True)
+                                      return_feature_list=True)
         noise_out_features = noise_out_features[layer_index]
         noise_out_features = noise_out_features.view(
             noise_out_features.size(0), noise_out_features.size(1), -1)
@@ -382,18 +391,17 @@ class InverseLDA(LinearDiscriminantAnalysis):
         This solver is based on [1]_, section 3.8.3, pp. 121-124.
         References
         ----------
-        [1] Pattern Classification (Second Edition).
-            John Wiley & Sons, Inc., New York, 2001. ISBN
         """
         self.means_ = _class_means(X, y)
         self.covariance_ = _class_cov(X, y, self.priors_, shrinkage)
 
         Sw = self.covariance_  # within scatter
-        St = _cov(X, shrinkage)  # total scatter
-        Sb = St - Sw  # between scatter
+        # St = _cov(X, shrinkage)  # total scatter
+        # Sb = St - Sw  # between scatter
 
         # Standard LDA: evals, evecs = linalg.eigh(Sb, Sw)
-        # Here we hope to find a mapping to maximize Sw with minimum Sb for class agnostic.
+        # Here we hope to find a mapping
+        # to maximize Sw with minimum Sb for class agnostic.
         evals, evecs = linalg.eigh(Sw)
 
         self.explained_variance_ratio_ = np.sort(

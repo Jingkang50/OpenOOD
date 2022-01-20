@@ -3,7 +3,7 @@
 
 GPU=1
 CPU=1
-node=73
+node=30
 jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -18,4 +18,4 @@ configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/mds.yml \
 --dataset.image_size 28 \
 --network.name lenet \
---num_workers 0
+--num_workers 4
