@@ -1,0 +1,23 @@
+dataset:
+  name: bottle
+  # dataset_class: ImglistDataset
+  num_classes: 1
+
+  image_size: 256
+  num_workers: 4
+
+  split_names: [train, test]
+  train:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images/
+    interpolation: bilinear
+    imglist_pth: ./data/imglist/mvtec/train_bottle.txt
+    batch_size: 8
+    shuffle: True
+  test:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images/
+    interpolation: bilinear
+    imglist_pth: ./data/imglist/mvtec/test_bottle.txt
+    batch_size: 1
+    shuffle: False
