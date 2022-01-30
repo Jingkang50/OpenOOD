@@ -5,7 +5,7 @@ from openood.utils.config import Config
 from .imglist_dataset import ImglistDataset
 
 
-def get_dataloader(dataset_config: Config):
+def get_dataloader(dataset_config: Config, preprocessor):
     # prepare a dataloader dictionary
     dataloader_dict = {}
 
@@ -19,8 +19,8 @@ def get_dataloader(dataset_config: Config):
                                 image_size=dataset_config.image_size,
                                 imglist_pth=split_config.imglist_pth,
                                 data_dir=split_config.data_dir,
-                                num_classes=dataset_config.num_classes)
-
+                                num_classes=dataset_config.num_classes,
+                                preprocessor=preprocessor)
         dataloader = DataLoader(dataset,
                                 batch_size=split_config.batch_size,
                                 shuffle=split_config.shuffle,
