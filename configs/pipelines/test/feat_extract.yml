@@ -8,7 +8,7 @@ num_workers: 4
 
 network:
   pretrained: True
-  checkpoint: ./results/mnist_lenet_base_e100_lr0.1/best.ckpt
+  checkpoint: ./results/mnist_lenet_base_e100_lr0.1/best_epoch100_acc0.996.ckpt
 
 pipeline:
   name: feat_extract

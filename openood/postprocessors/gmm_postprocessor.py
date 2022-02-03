@@ -4,43 +4,45 @@ import torch
 import torch.nn as nn
 
 from .base_postprocessor import BasePostprocessor
-from .gmm_tools import calculate_prob
-from .mds_tools import process_feature_type
+from .gmm_tools import compute_GMM_score, get_GMM_stat
 
 
 class GMMPostprocessor(BasePostprocessor):
-    def __init__(self, feature_type_list, feature_mean_list, feature_prec_list,
-                 component_weight_list, transform_matrix_list, alpha_list):
-        super().__init__()
-        self.feature_type_list = feature_type_list
-        self.feature_mean_list = feature_mean_list
-        self.feature_prec_list = feature_prec_list
-        self.component_weight_list = component_weight_list
-        self.transform_matrix_list = transform_matrix_list
-        self.alpha_list = alpha_list
+    def __init__(self, config):
+        self.config = config
+        self.postprocessor_args = config.postprocessor.postprocessor_args
+        self.feature_type_list = self.postprocessor_args.feature_type_list
+        self.reduce_dim_list = self.postprocessor_args.reduce_dim_list
+        self.num_clusters_list = self.postprocessor_args.num_clusters_list
+        self.alpha_list = self.postprocessor_args.alpha_list
 
-    @torch.no_grad()
-    def __call__(self, net: nn.Module, data: Any, return_scores: bool = False):
-        output, feature_list = net(data, return_feature_list=True)
-        score = torch.softmax(output, dim=1)
-        _, pred = torch.max(score, dim=1)
+        self.num_layer = len(self.feature_type_list)
+        self.feature_mean, self.feature_prec = None, None
+        self.component_weight_list, self.transform_matrix_list = None, None
 
-        for layer_idx in range(len(feature_list)):
-            feature = process_feature_type(feature_list[layer_idx],
-                                           self.feature_type_list[layer_idx])
-            feature = torch.mm(feature, self.transform_matrix_list[layer_idx])
-            score = calculate_prob(feature, self.feature_mean_list[layer_idx],
-                                   self.feature_prec_list[layer_idx],
-                                   self.component_weight_list[layer_idx])
-            if layer_idx == 0:
+    def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
+        self.feature_mean, self.feature_prec, self.component_weight_list, \
+            self.transform_matrix_list = get_GMM_stat(net,
+                                                      id_loader_dict['train'],
+                                                      self.num_clusters_list,
+                                                      self.feature_type_list,
+                                                      self.reduce_dim_list)
+
+    def postprocess(self, net: nn.Module, data: Any):
+        for layer_index in range(self.num_layer):
+            pred, score = compute_GMM_score(net,
+                                            data,
+                                            self.feature_mean,
+                                            self.feature_prec,
+                                            self.component_weight_list,
+                                            self.transform_matrix_list,
+                                            layer_index,
+                                            self.feature_type_list,
+                                            return_pred=True)
+            if layer_index == 0:
                 score_list = score.view([-1, 1])
             else:
                 score_list = torch.cat((score_list, score.view([-1, 1])), 1)
-
-        if return_scores:
-            return score_list
-
-        else:
-            alpha_list = torch.cuda.FloatTensor(self.alpha_list)
-            conf = torch.matmul(score_list, alpha_list)
-            return pred, conf
+        alpha = torch.cuda.FloatTensor(self.alpha_list)
+        conf = torch.matmul(score_list, alpha)
+        return pred, conf
