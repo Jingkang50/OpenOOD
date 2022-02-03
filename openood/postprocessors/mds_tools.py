@@ -29,9 +29,7 @@ def get_torch_feature_stat(feature, only_mean=False):
 
 def process_feature_type(feature_temp, feature_type):
     if feature_type == 'flat':
-        feature_temp = feature_temp.view(
-            [feature_temp.size(0),
-             feature_temp.size(1), -1])
+        feature_temp = feature_temp.view([feature_temp.size(0), -1])
     elif feature_type == 'stat':
         feature_temp = get_torch_feature_stat(feature_temp)
     elif feature_type == 'mean':
@@ -65,12 +63,12 @@ def reduce_feature_dim(feature_list_full, label_list_full, feature_process):
 
 
 @torch.no_grad()
-def sample_estimator(model, train_loader, num_classes, feature_type_list,
-                     reduce_dim_list):
-    """
-    compute sample mean and precision (inverse of covariance)
+def get_MDS_stat(model, train_loader, num_classes, feature_type_list,
+                 reduce_dim_list):
+    """ Compute sample mean and precision (inverse of covariance)
     return: sample_class_mean: list of class mean
             precision: list of precisions
+            transform_matrix_list: list of transform_matrix
     """
     import sklearn.covariance
     group_lasso = sklearn.covariance.EmpiricalCovariance(assume_centered=False)
@@ -96,10 +94,12 @@ def sample_estimator(model, train_loader, num_classes, feature_type_list,
                 feature_all[layer_idx].extend(tensor2list(feature_processed))
     label_list = np.array(label_list)
     # reduce feature dim and split by classes
+    transform_matrix_list = []
     for layer_idx in range(num_layer):
         feature_sub = np.array(feature_all[layer_idx])
         transform_matrix = reduce_feature_dim(feature_sub, label_list,
                                               reduce_dim_list[layer_idx])
+        transform_matrix_list.append(torch.Tensor(transform_matrix).cuda())
         feature_sub = np.dot(feature_sub, transform_matrix)
         for feature, label in zip(feature_sub, label_list):
             feature = feature.reshape([-1, len(feature)])
@@ -130,11 +130,11 @@ def sample_estimator(model, train_loader, num_classes, feature_type_list,
     feature_mean_list = [torch.Tensor(i).cuda() for i in feature_mean_list]
     precision_list = [torch.Tensor(p).cuda() for p in precision_list]
 
-    return feature_mean_list, precision_list
+    return feature_mean_list, precision_list, transform_matrix_list
 
 
-def get_Mahalanobis_score(model, test_loader, num_classes, sample_mean,
-                          precision, layer_index, magnitude):
+def get_Mahalanobis_scores(model, test_loader, num_classes, sample_mean,
+                           precision, layer_index, magnitude):
     '''
     Compute the proposed Mahalanobis confidence score on input dataset
     return: Mahalanobis score from layer_index
@@ -145,21 +145,21 @@ def get_Mahalanobis_score(model, test_loader, num_classes, sample_mean,
                       desc=f'{test_loader.dataset.name}_layer{layer_index}'):
         data = batch['data'].cuda()
         data = Variable(data, requires_grad=True)
-        noise_gaussian_score = compute_noise_Mahalanobis_score(
+        noise_gaussian_score = compute_Mahalanobis_score(
             model, data, num_classes, sample_mean, precision, layer_index,
             magnitude)
         Mahalanobis.extend(noise_gaussian_score.cpu().numpy())
     return Mahalanobis
 
 
-def compute_noise_Mahalanobis_score(model,
-                                    data,
-                                    num_classes,
-                                    sample_mean,
-                                    precision,
-                                    layer_index,
-                                    magnitude,
-                                    return_pred=False):
+def compute_Mahalanobis_score(model,
+                              data,
+                              num_classes,
+                              sample_mean,
+                              precision,
+                              layer_index,
+                              magnitude,
+                              return_pred=False):
     # extract features
     _, out_features = model(data, return_feature_list=True)
     out_features = out_features[layer_index]
