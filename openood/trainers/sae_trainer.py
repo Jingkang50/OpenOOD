@@ -1,9 +1,15 @@
+import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
+from sklearn.mixture import GaussianMixture
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from openood.losses import soft_cross_entropy
+from openood.postprocessors.gmm_tools import compute_single_GMM_score
+from openood.postprocessors.mds_tools import (process_feature_type,
+                                              reduce_feature_dim, tensor2list)
 from openood.utils import Config
 
 from .lr_scheduler import cosine_annealing
@@ -17,6 +23,7 @@ class SAETrainer:
         self.net = net
         self.train_loader = train_loader
         self.config = config
+        self.trainer_args = self.config.trainer.trainer_args
 
         self.optimizer = torch.optim.SGD(
             net.parameters(),
@@ -36,6 +43,43 @@ class SAETrainer:
             ),
         )
 
+    @torch.no_grad()
+    def setup(self):
+        feature_all = None
+        label_all = []
+        # collect features
+        for batch in tqdm(self.train_loader,
+                          desc='Compute GMM Stats [Collecting]'):
+            data = batch['data_aux'].cuda()
+            label = batch['label']
+            _, feature_list = self.net(data, return_feature_list=True)
+            label_all.extend(tensor2list(label))
+            feature_processed = process_feature_type(
+                feature_list[0], self.trainer_args.feature_type)
+            if isinstance(feature_all, type(None)):
+                feature_all = tensor2list(feature_processed)
+            else:
+                feature_all.extend(tensor2list(feature_processed))
+        label_all = np.array(label_all)
+
+        # reduce feature dim and perform gmm estimation
+        feature_all = np.array(feature_all)
+        transform_matrix = reduce_feature_dim(feature_all, label_all,
+                                              self.trainer_args.reduce_dim)
+        feature_all = np.dot(feature_all, transform_matrix)
+        # GMM estimation
+        gm = GaussianMixture(n_components=self.trainer_args.num_clusters,
+                             random_state=0,
+                             covariance_type='tied').fit(feature_all)
+        feature_mean = gm.means_
+        feature_prec = gm.precisions_
+        component_weight = gm.weights_
+
+        self.feature_mean = torch.Tensor(feature_mean).cuda()
+        self.feature_prec = torch.Tensor(feature_prec).cuda()
+        self.component_weight = torch.Tensor(component_weight).cuda()
+        self.transform_matrix = torch.Tensor(transform_matrix).cuda()
+
     def train_epoch(self, epoch_idx):
         self.net.train()
 
@@ -48,17 +92,41 @@ class SAETrainer:
                                position=0,
                                leave=True):
             batch = next(train_dataiter)
-            # data = batch['data'].cuda()
-            # target = batch['label'].cuda()
+            data = batch['data'].cuda()
+            target = batch['label'].cuda()
 
             # mixup operation
-            index, lam = prepare_mixup(batch, self.alpha)
+            index, lam = prepare_mixup(batch, self.trainer_args.alpha)
             data_mix = mixing(batch['data'].cuda(), index, lam)
             soft_label_mix = mixing(batch['soft_label'].cuda(), index, lam)
 
-            # forward
-            logits_classifier = self.net(data_mix)
-            loss = soft_cross_entropy(logits_classifier, soft_label_mix)
+            # classfication loss
+            logits_cls = self.net(data)
+            loss_clsstd = F.cross_entropy(logits_cls, target)  # standard cls
+            logits_mix = self.net(data_mix)
+            loss_clsmix = soft_cross_entropy(logits_mix, soft_label_mix)
+
+            # source awareness enhancement
+            prob_id = compute_single_GMM_score(self.net, data,
+                                               self.feature_mean,
+                                               self.feature_prec,
+                                               self.component_weight,
+                                               self.transform_matrix, 0,
+                                               self.trainer_args.feature_type)
+            prob_ood = compute_single_GMM_score(self.net, data_mix,
+                                                self.feature_mean,
+                                                self.feature_prec,
+                                                self.component_weight,
+                                                self.transform_matrix, 0,
+                                                self.trainer_args.feature_type)
+            loss_sae_id = 1 - torch.mean(prob_id)
+            loss_sae_ood = torch.mean(prob_ood)
+
+            # loss
+            loss = self.trainer_args.loss_weight[0] * loss_clsstd \
+                + self.trainer_args.loss_weight[1] * loss_clsmix \
+                + self.trainer_args.loss_weight[2] * loss_sae_id \
+                + self.trainer_args.loss_weight[3] * loss_sae_ood
 
             # backward
             self.optimizer.zero_grad()

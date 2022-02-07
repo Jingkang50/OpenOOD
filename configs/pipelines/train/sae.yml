@@ -8,10 +8,16 @@ num_gpus: 1
 num_workers: 0
 
 pipeline:
-  name: train
+  name: finetune
 
 trainer:
   name: sae
+  trainer_args:
+    num_clusters: 3
+    feature_type: stat  # flat/mean/stat
+    reduce_dim: none  # none/capca_10/pca_50
+    loss_weight: [0.5, 0.5, 0.1, 0.1] # [cls_std, cls_mix, sae_id, sae_ood]
+    alpha: 0.5
 
 evaluator:
   name: base
