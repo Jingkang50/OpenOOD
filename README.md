@@ -29,26 +29,25 @@ Results and models are available in the [model zoo](docs/model_zoo.md).
 <details open>
 <summary><b>Anomaly Detection</b></summary>
 
-> - [ ] OCC ()
-> - [ ] DeepSVDD ()
-> - [x] KDAD (ArXiv'20)
-> - [x] CutPaste (CVPR'2021)
-> - [x] PatchCore (ArXiv'2021)
-> - [x] DRÆM (ICCV'21)
+> - [ ] [DeepSVDD (ICML'18)](https://github.com/lukasruff/Deep-SVDD-PyTorch)
+> - [x] [KDAD (arXiv'20)]()
+> - [x] [CutPaste (CVPR'2021)]()
+> - [x] [PatchCore (arXiv'2021)]()
+> - [x] [DRÆM (ICCV'21)]()
 </details>
 
 
 <details open>
 <summary><b>Open Set Recognition</b></summary>
 
-> - [ ] OpenMax
-> - [ ] G-OpenMax
-> - [x] OSRCI
-> - [x] C2AE
-> - [ ] CROSR
-> - [x] RPL
-> - [x] MOS
-> - [x] OpenGAN
+> - [ ] [OpenMax (CVPR'16)](https://github.com/13952522076/Open-Set-Recognition)
+> - [ ] [G-OpenMax (BMVC'17)](https://github.com/lwneal/counterfactual-open-set/blob/master/generativeopenset/gen_openmax.py)
+> - [ ] [OSRCI (ECCV'18)](https://github.com/lwneal/counterfactual-open-set/)
+> - [ ] [CROSR (CVPR'19)](https://nae-lab.org/~rei/research/crosr/)
+> - [ ] [OLTR (CVPR'19)](https://liuziwei7.github.io/projects/LongTail.html)
+> - [x] [RPL (ECCV'20)]()
+> - [x] [MOS (CVPR'21)]()
+> - [x] [OpenGAN (ICCV'21)](https://github.com/aimerykong/OpenGAN/tree/main/utils)
 </details>
 
 
@@ -56,18 +55,19 @@ Results and models are available in the [model zoo](docs/model_zoo.md).
 <summary><b>Out-of-Distribution Detection</b></summary>
 
 > No Extra Data:
-> - [x] MSP
-> - [x] ODIN
-> - [x] MDS
-> - [ ] Likelihood Ratio
-> - [ ] G-ODIN
-> - [ ] Gram
-> - [ ] DUQ
-> - [x] EBO
-> - [x] SEM
+> - [x] [MSP (ICLR'17)]()
+> - [x] [ODIN (ICLR'18)]()
+> - [x] [MDS (NeurIPS'18)]()
+> - [ ] [Likelihood Ratio (NeurIPS'19)]()
+> - [ ] [G-ODIN (CVPR'20)]()
+> - [ ] [Gram (ICML'20)]()
+> - [ ] [DUQ (ICML'20)](https://github.com/y0ast/deterministic-uncertainty-quantification)
+> - [ ] [CSI (NeurIPS'20)](https://github.com/alinlab/CSI)
+> - [x] [EBO (NeurIPS'20)]()
+> - [x] [SEM]()
 
 > With Extra Data:
-> - [x] OE
-> - [ ] BGC
-> - [x] UDG
+> - [x] [OE (ICLR'19)]()
+> - [ ] [BGC (arXiv'21)]()
+> - [x] [UDG (ICCV'21)]()
 </details>
