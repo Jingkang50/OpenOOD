@@ -64,7 +64,9 @@ Results and models are available in the [model zoo](docs/model_zoo.md).
 > - [ ] [DUQ (ICML'20)](https://github.com/y0ast/deterministic-uncertainty-quantification)
 > - [ ] [CSI (NeurIPS'20)](https://github.com/alinlab/CSI)
 > - [x] [EBO (NeurIPS'20)]()
-> - [x] [SEM]()
+> - [ ] [MOOD (CVPR'21)]()
+> - [ ] [ReAct (NeurIPS'21)]()
+> - [ ] [VOS (ICLR'22)]()
 
 > With Extra Data:
 > - [x] [OE (ICLR'19)]()
