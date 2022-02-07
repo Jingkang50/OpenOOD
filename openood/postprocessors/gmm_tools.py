@@ -116,3 +116,35 @@ def compute_GMM_score(model,
         return pred, prob
     else:
         return prob
+
+
+def compute_single_GMM_score(model,
+                             data,
+                             feature_mean,
+                             feature_prec,
+                             component_weight,
+                             transform_matrix,
+                             layer_idx,
+                             feature_type_list,
+                             return_pred=False):
+    # extract features
+    pred_list, feature_list = model(data, return_feature_list=True)
+    pred = torch.argmax(pred_list, dim=1)
+    feature_list = process_feature_type(feature_list[layer_idx],
+                                        feature_type_list)
+    feature_list = torch.mm(feature_list, transform_matrix)
+    # compute prob
+    for cluster_idx in range(len(feature_mean)):
+        zero_f = feature_list - feature_mean[cluster_idx]
+        term_gau = -0.5 * torch.mm(torch.mm(zero_f, feature_prec),
+                                   zero_f.t()).diag()
+        prob_gau = torch.exp(term_gau)
+        if cluster_idx == 0:
+            prob_matrix = prob_gau.view([-1, 1])
+        else:
+            prob_matrix = torch.cat((prob_matrix, prob_gau.view(-1, 1)), 1)
+    prob = torch.mm(prob_matrix, component_weight.view(-1, 1))
+    if return_pred:
+        return pred, prob
+    else:
+        return prob
