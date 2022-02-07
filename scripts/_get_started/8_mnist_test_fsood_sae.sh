@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/8_mnist_test_fsood_nda.sh
+# sh scripts/_get_started/8_mnist_test_fsood_sae.sh
 
 GPU=1
 CPU=1
