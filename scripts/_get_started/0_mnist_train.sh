@@ -17,8 +17,4 @@ configs/pipelines/train/baseline.yml \
 --dataset.image_size 28 \
 --network.name lenet \
 --optimizer.num_epochs 100 \
-<<<<<<< HEAD
---num_workers 0
-=======
 --num_workers 8
->>>>>>> dc67651 (add DRAEM ver_0)
