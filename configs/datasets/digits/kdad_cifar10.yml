@@ -1,0 +1,34 @@
+dataset:
+  name: cifar10
+  split_names: [train, val]
+  num_classes: 10
+  image_size: 32
+  num_workers: '@{num_workers}'
+  normal_class: 3
+  train:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/objects/train_cifar10_id_3.txt
+    transform_para: [[0.485, 0.456, 0.406],[0.229, 0.224, 0.225]]
+    batch_size: 16
+    shuffle: True
+    transform: mnist_train_standard
+    interpolation: bilinear
+  val:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/objects/train_cifar10_ood.txt
+    transform_para: [[0.485, 0.456, 0.406],[0.229, 0.224, 0.225]]
+    batch_size: 16
+    shuffle: False
+    transform: mnist_test_standard
+    interpolation: bilinear
+  test:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/objects/train_cifar10_ood.txt
+    transform_para: [[0.485, 0.456, 0.406],[0.229, 0.224, 0.225]]
+    batch_size: 16
+    shuffle: False
+    transform: mnist_test_standard
+    interpolation: bilinear

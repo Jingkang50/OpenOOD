@@ -66,6 +66,7 @@ class ImglistDataset(BaseDataset):
                  interpolation,
                  image_size,
                  imglist_pth,
+                 transform_para,
                  data_dir,
                  num_classes,
                  maxlen=None,
@@ -80,7 +81,7 @@ class ImglistDataset(BaseDataset):
             self.imglist = imgfile.readlines()
         self.data_dir = data_dir
 
-        mean, std = [[0.5, 0.5, 0.5], [0.5, 0.5, 0.5]]
+        mean, std = transform_para
         self.transform_image = get_transforms(mean, std, split, interpolation,
                                               image_size)
         self.num_classes = num_classes

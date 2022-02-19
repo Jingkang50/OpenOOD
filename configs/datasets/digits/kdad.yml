@@ -1,0 +1,12 @@
+# Data parameters
+dataset:
+  last_checkpoint: 200 # should be 201 but need to amend the train.py
+  normal_class: 3 # mvtec:'capsule', mnist:3
+  batch_size: 16 #original 64 , decrease due to capacity of gpu ,max 16
+  split_names: [train,test]
+  dataset_class: cifar10 #[mnist, fashionmnist, cifar10, mvtec, retina]
+  num_classes: 10
+  train:
+   dataset_class: cifar10
+  test:
+   dataset_class: cifar10
