@@ -1,0 +1,5 @@
+postprocessor:
+  name: gmm
+  postprocessor_args:
+    temperature: 1000
+    noise: 0.0014

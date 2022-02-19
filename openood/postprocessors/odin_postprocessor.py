@@ -8,17 +8,14 @@ from .base_postprocessor import BasePostprocessor
 
 
 class ODINPostprocessor(BasePostprocessor):
-    def __init__(self, temperature: float = 1000.0, noise: float = 0.0014):
-        super().__init__()
+    def __init__(self, config):
+        super().__init__(config)
+        self.args = self.config.postprocessor.postprocessor_args
 
-        self.temperature = temperature
-        self.noise = noise
+        self.temperature = self.args.temperature
+        self.noise = self.args.noise
 
-    def __call__(
-        self,
-        net: nn.Module,
-        data: Any,
-    ):
+    def postprocess(self, net: nn.Module, data: Any):
         data.requires_grad = True
         output = net(data)
 
@@ -47,6 +44,7 @@ class ODINPostprocessor(BasePostprocessor):
         tempInputs = torch.add(data.detach(), gradient, alpha=-self.noise)
         output = net(tempInputs)
         output = output / self.temperature
+
         # Calculating the confidence after adding perturbations
         nnOutput = output.detach()
         nnOutput = nnOutput - nnOutput.max(dim=1, keepdims=True).values

@@ -84,6 +84,8 @@ class ImglistDataset(BaseDataset):
         mean, std = transform_para
         self.transform_image = get_transforms(mean, std, split, interpolation,
                                               image_size)
+        self.transform_aux_image = get_transforms(mean, std, 'val',
+                                                  interpolation, image_size)
         self.num_classes = num_classes
         self.maxlen = maxlen
         self.dummy_read = dummy_read
@@ -118,6 +120,7 @@ class ImglistDataset(BaseDataset):
             else:
                 image = Image.open(buff).convert('RGB')
                 sample['data'] = self.transform_image(image)
+                sample['data_aux'] = self.transform_aux_image(image)
             extras = ast.literal_eval(extra_str)
             try:
                 for key, value in extras.items():
