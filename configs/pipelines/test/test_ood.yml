@@ -8,7 +8,7 @@ num_workers: 0
 
 network:
   pretrained: True
-  checkpoint: ./results/mnist_lenet_base_e100_lr0.1/best_epoch100_acc0.996.ckpt
+  checkpoint: ./results/mnist_lenet_base_e100_lr0.1/best.ckpt
 
 pipeline:
   name: test_ood

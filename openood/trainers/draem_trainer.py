@@ -44,15 +44,6 @@ class DRAEMTrainer:
                                                         steps,
                                                         gamma=0.2,
                                                         last_epoch=-1)
-        # self.scheduler = optim.lr_scheduler.MultiStepLR(
-        #     self.optimizer,
-        #     [
-        #         self.config.optimizer.num_epochs*0.8,
-        #         self.config.optimizer.num_epochs*0.9
-        #     ],
-        #     gamma=0.2,
-        #     last_epoch=-1
-        # )
 
         self.losses = get_draem_losses()
 
@@ -73,7 +64,9 @@ class DRAEMTrainer:
             aug_gray_batch = sample_batched['data']['augmented_image'].cuda()
             anomaly_mask = sample_batched['data']['anomaly_mask'].cuda()
 
+            # forward
             gray_rec = self.net['generative'](aug_gray_batch)
+            # conconcat origin and generated
             joined_in = torch.cat((gray_rec, aug_gray_batch), dim=1)
 
             out_mask = self.net['discriminative'](joined_in)
@@ -85,11 +78,12 @@ class DRAEMTrainer:
             segment_loss = self.losses['focal'](out_mask_sm, anomaly_mask)
             loss = l2_loss + ssim_loss + segment_loss
 
+            # backward
             self.optimizer.zero_grad()
-
             loss.backward()
             self.optimizer.step()
 
+            # exponential moving average, show smooth values
             with torch.no_grad():
                 loss_avg = loss_avg * 0.8 + float(loss) * 0.2
 

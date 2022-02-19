@@ -171,9 +171,19 @@ class DRAEMPreprocessor:
 
         return sample
 
-    def __call__(self, path: str, name: str):
-        if name.endswith('_test'):
-            sample = self.get_test_item(path)
-        elif name.endswith('_train'):
-            sample = self.get_train_item(path)
+    def __call__(self, img):
+        if self.name.endswith('_train'):
+            sample = self.get_train_item(self.path)
+        else:
+            sample = self.get_test_item(self.path)
         return sample
+
+    # some setup so that the preprocessor can get the gt map
+    def setup(self, path: str, name: str):
+        self.path = path
+        self.name = name
+
+    # append transforms that will apply after the preprocessor
+    def concat_transform(self, post_preprocessor_transform=None):
+        self.post_preprocessor_transform = post_preprocessor_transform
+        return self

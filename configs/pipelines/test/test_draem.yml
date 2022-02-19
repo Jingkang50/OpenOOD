@@ -11,7 +11,7 @@ network:
   checkpoint: ./checkpoints/DRAEM_test_0.0001_700_bs8_bottle_
 
 pipeline:
-  name: test_DRAEM
+  name: test_ad
 
 evaluator:
   name: DRAEM
