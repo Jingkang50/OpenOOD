@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/-1_DRAEM_train.sh
+# sh scripts/a_anomaly/-1_DRAEM_train.sh
 
 # GPU=1
 # CPU=1

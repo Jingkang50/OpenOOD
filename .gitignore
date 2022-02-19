@@ -1,3 +1,7 @@
+# ignore some temp/test files
+test_*
+*-backup.py
+
 # ignore data and output directory
 data
 data/

@@ -1,7 +1,7 @@
 import torch
 
-from .draem_ssim import SSIM
 from .focal import FocalLoss
+from .ssim import SSIM
 
 
 def get_draem_losses():

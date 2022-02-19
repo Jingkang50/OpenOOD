@@ -1,4 +1,4 @@
-from openood.datasets import get_dataloader
+from openood.datasets import get_dataloader, get_ood_dataloader
 from openood.evaluators import get_evaluator
 from openood.networks import get_network
 from openood.preprocessors.utils import get_preprocessor
@@ -7,7 +7,7 @@ from openood.trainers import get_trainer
 from openood.utils import setup_logger
 
 
-class DRAEMTrainPipeline:
+class AdTrainPipeline:
     def __init__(self, config) -> None:
         self.config = config
 
@@ -19,9 +19,10 @@ class DRAEMTrainPipeline:
         preprocessor = get_preprocessor(self.config)
 
         # get dataloader
-        loader_dict = get_dataloader(self.config.dataset, preprocessor)
-        train_loader = loader_dict['train']
-        test_loader = loader_dict['test']
+        id_loader_dict = get_dataloader(self.config.dataset, preprocessor)
+        ood_loader_dict = get_ood_dataloader(self.config.ood_dataset,
+                                             preprocessor)
+        train_loader = id_loader_dict['train']
 
         # init network
         net = get_network(self.config.network)
@@ -37,9 +38,10 @@ class DRAEMTrainPipeline:
         for epoch_idx in range(1, self.config.optimizer.num_epochs + 1):
             # train the model
             net, train_metrics = trainer.train_epoch(epoch_idx)
-            test_metrics = evaluator.eval(net,
-                                          test_loader,
-                                          epoch_idx=epoch_idx)
+            test_metrics = evaluator.eval_ood(net,
+                                              id_loader_dict,
+                                              ood_loader_dict,
+                                              epoch_idx=epoch_idx)
             # save model and report the result
             recorder.save_model(net, test_metrics)
             recorder.report(train_metrics, test_metrics)
@@ -47,16 +49,5 @@ class DRAEMTrainPipeline:
 
         # evaluate on test set
         print('Start testing...', flush=True)
-        test_metrics = evaluator.eval(net, test_loader)
-        print('Complete Evaluation:\n'
-              '{}\n'
-              '==============================\n'
-              'AUC Image: {:.2f} \nAP Image: {:.2f} \n'
-              'AUC Pixel: {:.2f} \nAP Pixel: {:.2f} \n'
-              '=============================='.format(
-                  self.config.dataset.name, 100.0 * test_metrics['image_auc'],
-                  100.0 * test_metrics['image_ap'],
-                  100.0 * test_metrics['pixel_auc'],
-                  100.0 * test_metrics['pixel_ap']),
-              flush=True)
-        print('Completed!', flush=True)
+        test_metrics = evaluator.eval_ood(net, id_loader_dict, ood_loader_dict)
+        evaluator.report(test_metrics)
