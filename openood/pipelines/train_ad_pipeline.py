@@ -7,7 +7,7 @@ from openood.trainers import get_trainer
 from openood.utils import setup_logger
 
 
-class AdTrainPipeline:
+class TrainAdPipeline:
     def __init__(self, config) -> None:
         self.config = config
 

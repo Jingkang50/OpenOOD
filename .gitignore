@@ -1,5 +1,5 @@
 # ignore some temp/test files
-test_*
+_test_*
 *-backup.py
 
 # ignore data and output directory
