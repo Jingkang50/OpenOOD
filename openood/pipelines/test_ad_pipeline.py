@@ -5,7 +5,7 @@ from openood.preprocessors import get_preprocessor
 from openood.utils import setup_logger
 
 
-class AdTestPipeline:
+class TestAdPipeline:
     def __init__(self, config) -> None:
         self.config = config
 
