@@ -2,6 +2,8 @@ from torch.utils.data import DataLoader
 
 from openood.utils.config import Config
 
+from .imglist_dataset import ImglistDataset
+
 
 def get_dataloader(dataset_config: Config):
     # prepare a dataloader dictionary
