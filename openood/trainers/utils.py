@@ -4,6 +4,7 @@ from torch.utils.data import DataLoader
 from openood.utils import Config
 
 from .base_trainer import BaseTrainer
+from .draem_trainer import DRAEMTrainer
 from .mixup_trainer import MixupTrainer
 from .sae_trainer import SAETrainer
 
@@ -17,5 +18,6 @@ def get_trainer(
         'base': BaseTrainer,
         'mixup': MixupTrainer,
         'sae': SAETrainer,
+        'DRAEM': DRAEMTrainer,
     }
     return trainers[config.trainer.name](net, train_loader, config)

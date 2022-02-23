@@ -5,7 +5,7 @@ from openood.utils.config import Config
 from .imglist_dataset import ImglistDataset
 
 
-def get_dataloader(dataset_config: Config):
+def get_dataloader(dataset_config: Config, preprocessor=None):
     # prepare a dataloader dictionary
     dataloader_dict = {}
 
@@ -19,8 +19,8 @@ def get_dataloader(dataset_config: Config):
                                 image_size=dataset_config.image_size,
                                 imglist_pth=split_config.imglist_pth,
                                 data_dir=split_config.data_dir,
-                                num_classes=dataset_config.num_classes)
-
+                                num_classes=dataset_config.num_classes,
+                                preprocessor=preprocessor)
         dataloader = DataLoader(dataset,
                                 batch_size=split_config.batch_size,
                                 shuffle=split_config.shuffle,
@@ -31,7 +31,7 @@ def get_dataloader(dataset_config: Config):
     return dataloader_dict
 
 
-def get_ood_dataloader(ood_config: Config):
+def get_ood_dataloader(ood_config: Config, preprocessor=None):
     # specify custom dataset class
     CustomDataset = eval(ood_config.dataset_class)
     dataloader_dict = {}
@@ -45,7 +45,8 @@ def get_ood_dataloader(ood_config: Config):
                                     image_size=ood_config.image_size,
                                     imglist_pth=split_config.imglist_pth,
                                     data_dir=split_config.data_dir,
-                                    num_classes=ood_config.num_classes)
+                                    num_classes=ood_config.num_classes,
+                                    preprocessor=preprocessor)
             dataloader = DataLoader(dataset,
                                     batch_size=ood_config.batch_size,
                                     shuffle=ood_config.shuffle,
@@ -62,7 +63,8 @@ def get_ood_dataloader(ood_config: Config):
                                         image_size=ood_config.image_size,
                                         imglist_pth=dataset_config.imglist_pth,
                                         data_dir=dataset_config.data_dir,
-                                        num_classes=ood_config.num_classes)
+                                        num_classes=ood_config.num_classes,
+                                        preprocessor=preprocessor)
                 dataloader = DataLoader(dataset,
                                         batch_size=ood_config.batch_size,
                                         shuffle=ood_config.shuffle,

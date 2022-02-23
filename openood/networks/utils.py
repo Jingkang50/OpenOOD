@@ -2,6 +2,7 @@ import torch
 import torch.backends.cudnn as cudnn
 
 from .densenet import DenseNet3
+from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .lenet import LeNet
 from .resnet18 import ResNet18
 from .resnet18L import ResNet18L
@@ -37,6 +38,24 @@ def get_network(network_config):
                         bottleneck=True,
                         dropRate=0.0,
                         num_classes=num_classes)
+
+    elif network_config.name == 'DRAEM':
+        model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
+        model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
+        if network_config.pretrained:
+            model.load_state_dict(
+                torch.load(network_config.checkpoint + '.ckpt',
+                           map_location='cuda:0'))
+            model_seg.load_state_dict(
+                torch.load(network_config.checkpoint + '_seg.ckpt',
+                           map_location='cuda:0'))
+        if network_config.num_gpus > 1:
+            pass
+        if network_config.num_gpus > 0:
+            model.cuda()
+            model_seg.cuda()
+            torch.cuda.manual_seed(1)
+        return {'generative': model, 'discriminative': model_seg}
 
     else:
         raise Exception('Unexpected Network Architecture!')

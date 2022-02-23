@@ -1,0 +1,29 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_train_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
+output_dir: ./results/DRAEM/
+save_output: True
+force_merge: True
+
+num_gpus: 1
+num_workers: 16
+
+pipeline:
+  name: train_ad
+
+trainer:
+  name: DRAEM
+
+evaluator:
+  name: DRAEM
+
+optimizer:
+  name: MultiStep
+  num_epochs: 3
+  steps: [0.8, 0.9]
+  lr: 0.0001
+  gamma: 0.2
+  last_epoch: -1
+
+recorder:
+  name: DRAEM
+  best_model_basis: image_auc
+  save_all_models: False
