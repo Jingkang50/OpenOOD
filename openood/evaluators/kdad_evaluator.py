@@ -26,7 +26,7 @@ class KdadDetectionEvaluator:
                  postprocessor,
                  epoch_idx=-1):
         config = self.config
-        id_loader = id_loader_dict['train']
+        id_loader = id_loader_dict['test']
         ood_loader = ood_loader_dict['val']
         normal_class = config['normal_class']
         lamda = config['lamda']

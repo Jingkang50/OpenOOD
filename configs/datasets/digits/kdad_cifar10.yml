@@ -9,7 +9,6 @@ dataset:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/objects/train_cifar10_id_3.txt
-    transform_para: [[0.485, 0.456, 0.406],[0.229, 0.224, 0.225]]
     batch_size: 16
     shuffle: True
     transform: mnist_train_standard
@@ -17,8 +16,7 @@ dataset:
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/objects/train_cifar10_ood.txt
-    transform_para: [[0.485, 0.456, 0.406],[0.229, 0.224, 0.225]]
+    imglist_pth: ./data/imglist/objects/train_cifar10_id_3.txt
     batch_size: 16
     shuffle: False
     transform: mnist_test_standard
@@ -26,8 +24,7 @@ dataset:
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/objects/train_cifar10_ood.txt
-    transform_para: [[0.485, 0.456, 0.406],[0.229, 0.224, 0.225]]
+    imglist_pth: ./data/imglist/objects/train_cifar10_id_3.txt
     batch_size: 16
     shuffle: False
     transform: mnist_test_standard

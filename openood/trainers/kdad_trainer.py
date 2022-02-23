@@ -7,10 +7,10 @@ from openood.utils import Config
 
 
 class KdadTrainer:
-    def __init__(self, net, train_loader_dict, config: Config):
+    def __init__(self, net, id_loader_dict, config: Config):
         self.vgg = net['vgg']
         self.model = net['model']
-        self.train_loader = train_loader_dict['train']
+        self.train_loader = id_loader_dict['train']
         self.config = config
         # choose loss type
         if self.config['direction_loss_only']:
