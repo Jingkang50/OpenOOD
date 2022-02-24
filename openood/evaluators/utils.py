@@ -4,6 +4,7 @@ from .base_evaluator import BaseEvaluator
 from .draem_evaluator import DRAEMEvaluator
 from .fsood_evaluator import FSOODEvaluator
 from .ood_evaluator import OODEvaluator
+from .kdad_evaluator import KdadDetectionEvaluator
 
 
 def get_evaluator(config: Config):
@@ -12,5 +13,6 @@ def get_evaluator(config: Config):
         'ood': OODEvaluator,
         'fsood': FSOODEvaluator,
         'DRAEM': DRAEMEvaluator,
+        'kdad':KdadDetectionEvaluator
     }
     return evaluators[config.evaluator.name](config)
