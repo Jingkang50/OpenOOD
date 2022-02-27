@@ -3,7 +3,7 @@ network:
   pretrained: True # True:use pre-trained vgg as source network --- False:use random initialize
   use_bias: False # True:using bias term in neural network layer
   equal_network_size: False # True:using equal network size for cloner and source network --- False:smaller network for cloner
-  load_checkpoint: True #train False ,Test True
+  load_checkpoint: False #train False ,Test True
   exp_name: '@{exp_name}'
   normal_class: '@{normal_class}'
   num_classes: '@{dataset.num_classes}'

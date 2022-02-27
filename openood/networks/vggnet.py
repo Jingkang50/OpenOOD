@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import torch
 from torch import nn
 from torchvision.models import vgg16
@@ -62,8 +64,18 @@ def make_layers(cfg, use_bias, batch_norm=False):
     return nn.Sequential(*layers)
 
 
-def make_arch(idx, cfg, use_bias, batch_norm=False):
+def make_arch(idx, use_bias, batch_norm=False):
     """for clone network."""
+    cfg = {
+        'A': [
+            64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M',
+            512, 512, 512, 'M'
+        ],
+        'B': [
+            16, 16, 'M', 16, 128, 'M', 16, 16, 256, 'M', 16, 16, 512, 'M', 16,
+            16, 512, 'M'
+        ],
+    }
     return VGG(make_layers(cfg[idx], use_bias, batch_norm=batch_norm))
 
 
@@ -91,3 +103,28 @@ class Vgg16(torch.nn.Module):
             if i in [1, 4, 6, 9, 11, 13, 16, 18, 20, 23, 25, 27, 30]:
                 output.append(x)
         return output
+
+
+def load_network(network_config, vgg, model):
+
+    if network_config['load_checkpoint']:
+        last_checkpoint = network_config['last_checkpoint']
+        checkpoint_path = './results/{}/'.format(network_config['exp_name'])
+
+        model.load_state_dict(
+            torch.load('{}Cloner_{}_epoch_{}.pth'.format(
+                checkpoint_path, network_config['normal_class'],
+                last_checkpoint)))
+        if not network_config['pretrained']:
+            vgg.load_state_dict(
+                torch.load('{}Source_{}_random_vgg.pth'.format(
+                    checkpoint_path, network_config['normal_class'])))
+    elif not network_config['pretrained']:
+        checkpoint_path = './results/{}/'.format(network_config['exp_name'])
+
+        Path(checkpoint_path).mkdir(parents=True, exist_ok=True)
+
+        torch.save(
+            vgg.state_dict(), '{}Source_{}_random_vgg.pth'.format(
+                checkpoint_path, network_config['normal_class']))
+        print('Source Checkpoint saved!')

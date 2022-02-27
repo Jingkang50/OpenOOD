@@ -9,8 +9,10 @@ dependencies:
   - cudatoolkit=10.1
   - scikit-learn=0.24.2
   - json5=0.9.6
-  - tqdm=4.62.3
+  - matplotlib=3.3.0
+  - scipy=1.5
   - pip
   - pip:
     - pyyaml==5.4.1
     - pre-commit
+    - opencv-python==4.4.0.46
