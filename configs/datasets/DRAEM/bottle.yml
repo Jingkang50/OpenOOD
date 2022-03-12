@@ -1,6 +1,6 @@
 dataset:
   name: bottle
-  num_classes: 1
+  num_classes: 2
   image_size: 256
   num_workers: 4
 
@@ -22,7 +22,7 @@ dataset:
 
 ood_dataset:
   name: bottle_ood
-  num_classes: 1
+  num_classes: 2
   image_size: 256
   num_workers: 4
 
