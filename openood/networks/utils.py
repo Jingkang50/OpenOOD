@@ -4,6 +4,7 @@ import torch.backends.cudnn as cudnn
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .lenet import LeNet
+from .openGan import Discriminator, Generator
 from .resnet18 import ResNet18
 from .resnet18L import ResNet18L
 from .wrn import WideResNet
@@ -14,7 +15,8 @@ def get_network(network_config):
     num_classes = network_config.num_classes
 
     if network_config.name == 'res18':
-        net = ResNet18(num_classes=num_classes)
+        net = ResNet18(num_classes=num_classes,
+                       image_size=network_config.image_size)
 
     elif network_config.name == 'res18L':
         net = ResNet18L(num_classes=num_classes)
@@ -42,38 +44,65 @@ def get_network(network_config):
     elif network_config.name == 'DRAEM':
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
         model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
-        if network_config.pretrained:
-            model.load_state_dict(
-                torch.load(network_config.checkpoint + '.ckpt',
-                           map_location='cuda:0'))
-            model_seg.load_state_dict(
-                torch.load(network_config.checkpoint + '_seg.ckpt',
-                           map_location='cuda:0'))
-        if network_config.num_gpus > 1:
-            pass
-        if network_config.num_gpus > 0:
-            model.cuda()
-            model_seg.cuda()
-            torch.cuda.manual_seed(1)
-        return {'generative': model, 'discriminative': model_seg}
+
+        net = {'generative': model, 'discriminative': model_seg}
+
+    elif network_config.name == 'openGan':
+        # NetType = eval(network_config.feat_extract_network)
+        # feature_net = NetType()
+        feature_net = get_network(network_config.feat_extract_network)
+
+        netG = Generator(in_channels=network_config.nz,
+                         feature_size=network_config.ngf,
+                         out_channels=network_config.nc)
+        netD = Discriminator(in_channels=network_config.nc,
+                             feature_size=network_config.ndf)
+
+        net = {'netG': netG, 'netD': netD, 'netF': feature_net}
 
     else:
         raise Exception('Unexpected Network Architecture!')
 
     if network_config.pretrained:
-        net.load_state_dict(torch.load(network_config.checkpoint),
-                            strict=False)
-        print('Model Loading Completed!')
+        if type(net) is dict:
+            for subnet, checkpoint in zip(net.values(),
+                                          network_config.checkpoint):
+                if checkpoint is not None:
+                    if checkpoint != 'none':
+                        subnet.load_state_dict(torch.load(checkpoint),
+                                               strict=False)
+        else:
+            net.load_state_dict(torch.load(network_config.checkpoint),
+                                strict=False)
+        print('Model Loading {} Completed!'.format(network_config.name))
 
     if network_config.num_gpus > 1:
-        net = torch.nn.DataParallel(net,
-                                    device_ids=list(
-                                        range(network_config.num_gpus)))
+        if type(net) is dict:
+            for key, subnet in zip(net.keys(), net.values()):
+                net[key] = torch.nn.DataParallel(
+                    subnet, device_ids=list(range(network_config.num_gpus)))
+        else:
+            net = torch.nn.DataParallel(net,
+                                        device_ids=list(
+                                            range(network_config.num_gpus)))
 
     if network_config.num_gpus > 0:
-        net.cuda()
+        if type(net) is dict:
+            for subnet in net.values():
+                subnet.cuda()
+        else:
+            net.cuda()
         torch.cuda.manual_seed(1)
 
     cudnn.benchmark = True
+
+    # try:
+    #     if feature_net is not None:
+    #         net['netF'] = feature_net
+    # except Exception:
+    #     pass
+
+    # if network_config.name == 'openGan':
+    #     net['netF'] = feature_net
 
     return net
