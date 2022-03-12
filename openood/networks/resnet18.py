@@ -78,11 +78,19 @@ class Bottleneck(nn.Module):
 
 
 class ResNet18(nn.Module):
-    def __init__(self, block=BasicBlock, num_blocks=None, num_classes=10):
+    def __init__(self,
+                 block=BasicBlock,
+                 num_blocks=None,
+                 num_classes=10,
+                 image_size=32):
         super(ResNet18, self).__init__()
         if num_blocks is None:
             num_blocks = [2, 2, 2, 2]
         self.in_planes = 64
+        if image_size**2 % 32**2 == 0:
+            logits_expansion = int(image_size**2 / 32**2)
+        else:
+            logits_expansion = False
 
         self.conv1 = nn.Conv2d(3,
                                64,
@@ -95,8 +103,12 @@ class ResNet18(nn.Module):
         self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
         self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)
         self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
-        self.avgpool = nn.AvgPool2d(4)
-        self.fc = nn.Linear(512 * block.expansion, num_classes)
+        if logits_expansion:
+            self.avgpool = nn.AvgPool2d(4)
+            self.fc = nn.Linear(512 * logits_expansion, num_classes)
+        else:
+            self.avgpool = nn.AdaptiveAvgPool2d(1)
+            self.fc = nn.Linear(512 * 1, num_classes)
 
     def _make_layer(self, block, planes, num_blocks, stride):
         strides = [stride] + [1] * (num_blocks - 1)
@@ -106,7 +118,7 @@ class ResNet18(nn.Module):
             self.in_planes = planes * block.expansion
         return nn.Sequential(*layers)
 
-    def forward(self, x, return_feature=False):
+    def forward(self, x, return_feature=False, return_feature_list=False):
         feature1 = F.relu(self.bn1(self.conv1(x)))
         feature2 = self.layer1(feature1)
         feature3 = self.layer2(feature2)
@@ -119,6 +131,8 @@ class ResNet18(nn.Module):
             feature, feature1, feature2, feature3, feature4, feature5
         ]
         if return_feature:
+            return logits_cls, feature
+        elif return_feature_list:
             return logits_cls, feature_list
         else:
             return logits_cls
