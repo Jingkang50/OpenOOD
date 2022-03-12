@@ -51,7 +51,10 @@ def get_network(network_config):
         if type(net) is dict:
             for subnet, checkpoint in zip(net.values(),
                                           network_config.checkpoint):
-                subnet.load_state_dict(torch.load(checkpoint), strict=False)
+                if checkpoint is not None:
+                    if checkpoint != 'none':
+                        subnet.load_state_dict(torch.load(checkpoint),
+                                               strict=False)
         else:
             net.load_state_dict(torch.load(network_config.checkpoint),
                                 strict=False)
