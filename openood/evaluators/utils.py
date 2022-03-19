@@ -3,6 +3,7 @@ from openood.utils import Config
 from .base_evaluator import BaseEvaluator
 from .draem_evaluator import DRAEMEvaluator
 from .fsood_evaluator import FSOODEvaluator
+from .kdad_evaluator import KdadDetectionEvaluator
 from .ood_evaluator import OODEvaluator
 
 
@@ -12,5 +13,6 @@ def get_evaluator(config: Config):
         'ood': OODEvaluator,
         'fsood': FSOODEvaluator,
         'DRAEM': DRAEMEvaluator,
+        'kdad': KdadDetectionEvaluator
     }
     return evaluators[config.evaluator.name](config)

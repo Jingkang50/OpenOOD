@@ -1,0 +1,11 @@
+network:
+  name: 'vgg and model'
+  trainedsource: True
+  pretrained: False
+  use_bias: False
+  equal_network_size: False
+  num_gpus: 1
+  exp_name: '@{exp_name}'
+  normal_class: '@{normal_class}'
+  num_classes: '@{dataset.num_classes}'
+  checkpoint: [None,./results/cifar10_vgg and model_kdad/Cloner_3_epoch_201.pth]
