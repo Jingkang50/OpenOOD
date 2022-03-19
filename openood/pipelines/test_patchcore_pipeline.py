@@ -15,12 +15,10 @@ class TestPatchcorePipeline:
 
         # get dataloader
         id_loader_dict = get_dataloader(self.config.dataset)
-        # ood_loader_dict = get_ood_dataloader(self.config.ood_dataset)
 
         # init network
         net = get_network(self.config.network)
         
-
         # init ood evaluator
         evaluator = get_evaluator(self.config)
 
@@ -39,9 +37,6 @@ class TestPatchcorePipeline:
         print('\nAccuracy {:.2f}%'.format(100 * acc_metrics['acc']),
               flush=True)
         print(u'\u2500' * 70, flush=True)
-
-        # start evaluating ood detection methods
-        #evaluator.eval_ood(net, id_loader_dict, ood_loader_dict, postprocessor)
 
         print('Completed!', flush=True)
         

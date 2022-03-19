@@ -69,6 +69,7 @@ class ImglistDataset(BaseDataset):
                  imglist_pth,
                  data_dir,
                  num_classes,
+                 preprocessor,
                  maxlen=None,
                  dummy_read=False,
                  dummy_size=None,
