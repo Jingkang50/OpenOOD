@@ -1,0 +1,15 @@
+ood_dataset:
+  name: cifar10_ood
+  dataset_class: ImglistDataset
+  transform: mnist_test_standard
+  interpolation: bilinear
+  batch_size: 16
+  shuffle: False
+  num_classes: 10
+  image_size: 32
+  num_workers: '@{num_workers}'
+  split_names: [val]
+  val:
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/objects/train_cifar10_ood.txt
+   

@@ -11,7 +11,6 @@ from .imglist_dataset import ImglistDataset
 def get_dataloader(dataset_config: Config, preprocessor=None):
     # prepare a dataloader dictionary
     dataloader_dict = {}
-
     for split in dataset_config.split_names:
         split_config = dataset_config[split]
         CustomDataset = eval(split_config.dataset_class)
@@ -30,7 +29,6 @@ def get_dataloader(dataset_config: Config, preprocessor=None):
                                 num_workers=dataset_config.num_workers)
 
         dataloader_dict[split] = dataloader
-
     return dataloader_dict
 
 

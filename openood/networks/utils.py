@@ -7,6 +7,7 @@ from .lenet import LeNet
 from .openGan import Discriminator, Generator
 from .resnet18 import ResNet18
 from .resnet18L import ResNet18L
+from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
 
 
@@ -60,6 +61,12 @@ def get_network(network_config):
 
         net = {'netG': netG, 'netD': netD, 'netF': feature_net}
 
+    elif network_config.name == 'vgg and model':
+        vgg = Vgg16(network_config['trainedsource'])
+        model = make_arch(network_config['equal_network_size'],
+                          network_config['use_bias'], True)
+        net = {'vgg': vgg, 'model': model}
+
     else:
         raise Exception('Unexpected Network Architecture!')
 
@@ -95,14 +102,4 @@ def get_network(network_config):
         torch.cuda.manual_seed(1)
 
     cudnn.benchmark = True
-
-    # try:
-    #     if feature_net is not None:
-    #         net['netF'] = feature_net
-    # except Exception:
-    #     pass
-
-    # if network_config.name == 'openGan':
-    #     net['netF'] = feature_net
-
     return net
