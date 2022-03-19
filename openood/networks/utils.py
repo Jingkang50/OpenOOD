@@ -44,7 +44,7 @@ def get_network(network_config):
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
         model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
         net = {'generative': model, 'discriminative': model_seg}
-        
+
     elif network_config.name == 'vgg and model':
         vgg = Vgg16(network_config['trainedsource'])
         model = make_arch(network_config['equal_network_size'],
