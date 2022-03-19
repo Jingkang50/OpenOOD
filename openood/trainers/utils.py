@@ -4,6 +4,7 @@ from torch.utils.data import DataLoader
 from openood.utils import Config
 
 from .base_trainer import BaseTrainer
+from .cutpaste_trainer import CutPasteTrainer
 
 
 def get_trainer(
@@ -13,5 +14,6 @@ def get_trainer(
 ):
     trainers = {
         'base': BaseTrainer,
+        'cutpaste': CutPasteTrainer,
     }
     return trainers[config.trainer.name](net, train_loader, config)

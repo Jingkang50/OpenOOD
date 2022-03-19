@@ -6,6 +6,7 @@ from .lenet import LeNet
 from .resnet18 import ResNet18
 from .resnet18L import ResNet18L
 from .wrn import WideResNet
+from .cutpaste import ProjectionNet
 
 
 def get_network(network_config):
@@ -29,7 +30,10 @@ def get_network(network_config):
                          widen_factor=10,
                          dropRate=0.0,
                          num_classes=num_classes)
-
+        
+    elif network_config.name == 'cutpaste':
+        net = ProjectionNet(num_classes=2)
+                             
     elif network_config.name == 'densenet':
         net = DenseNet3(depth=100,
                         growth_rate=12,
