@@ -11,6 +11,7 @@ dependencies:
   - json5=0.9.6
   - matplotlib=3.3.0
   - scipy=1.5
+  - tqdm=4.62.3
   - pip
   - pip:
     - pyyaml==5.4.1
