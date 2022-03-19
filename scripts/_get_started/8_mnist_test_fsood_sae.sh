@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/7_mnist_test_fsood_gmm.sh
+# sh scripts/_get_started/8_mnist_test_fsood_sae.sh
 
 GPU=1
 CPU=1
@@ -15,8 +15,7 @@ python main.py \
 --config configs/datasets/digits/mnist.yml \
 configs/datasets/digits/benchmark_digits.yml \
 configs/networks/lenet.yml \
-configs/pipelines/test/test_fsood.yml \
-configs/postprocessors/gmm.yml \
+configs/pipelines/train/sae.yml \
 --dataset.image_size 28 \
 --network.name lenet \
 --num_workers 8

@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/7_mnist_test_fsood_gmm.sh
+# sh scripts/others/0_mnist_mixup.sh
 
 GPU=1
 CPU=1
@@ -13,10 +13,9 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 -w SG-IDC1-10-51-2-${node} \
 python main.py \
 --config configs/datasets/digits/mnist.yml \
-configs/datasets/digits/benchmark_digits.yml \
 configs/networks/lenet.yml \
-configs/pipelines/test/test_fsood.yml \
-configs/postprocessors/gmm.yml \
+configs/pipelines/train/mixup.yml \
 --dataset.image_size 28 \
 --network.name lenet \
---num_workers 8
+--optimizer.num_epochs 100 \
+--num_workers 0

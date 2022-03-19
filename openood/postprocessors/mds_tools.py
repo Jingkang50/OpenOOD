@@ -12,7 +12,7 @@ from tqdm import tqdm
 
 
 def tensor2list(x):
-    return x.data.cpu().tolist()
+    return x.data.cuda().tolist()
 
 
 def get_torch_feature_stat(feature, only_mean=False):
@@ -148,7 +148,7 @@ def get_Mahalanobis_score(model, test_loader, num_classes, sample_mean,
         noise_gaussian_score = compute_noise_Mahalanobis_score(
             model, data, num_classes, sample_mean, precision, layer_index,
             magnitude)
-        Mahalanobis.extend(noise_gaussian_score.cpu().numpy())
+        Mahalanobis.extend(noise_gaussian_score.cuda().numpy())
     return Mahalanobis
 
 

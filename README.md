@@ -25,119 +25,51 @@ This part lists all the methods we reproduced in this codebase.
 Organization/Indexing follows the structure of [our survey paper](https://arxiv.org/abs/2110.11334).
 Results and models are available in the [model zoo](docs/model_zoo.md).
 
-### 3. Anomaly Detection
 
 <details open>
-<summary><b>3.1 Density-based Method:</b></summary>
+<summary><b>Anomaly Detection</b></summary>
 
-> - [x] [KDAD (ArXiv'2020)](https://github.com/rohban-lab/Knowledge_Distillation_AD)
-> - [x] [CutPaste (CVPR'2021)](https://arxiv.org/abs/2104.04015)
-> - [x] [PatchCore (ArXiv'2021)](https://arxiv.org/pdf/2106.08265.pdf)
-> - [x] [DRÆM (ICCV'2021)](https://openaccess.thecvf.com/content/ICCV2021/papers/Zavrtanik_DRAEM_-_A_Discriminatively_Trained_Reconstruction_Embedding_for_Surface_Anomaly_ICCV_2021_paper.pdf)
-</details>
-
-<details open>
-<summary><b>3.2 Reconstruction-based Method:</b></summary>
-
-> - [x] [GPND]()
-> - [x] [CoRA]()
-> - [x] [MemAE]()
-> - [x] [SCADN]()
-</details>
-
-<details open>
-<summary><b>3.3 Classification-based Method:</b></summary>
-
-> - [x] [OCC]()
-> - [x] [DeepSVDD]()
-> - [x] [CSI]()
-> - [x] [GOAD]()
-</details>
-
-<details open>
-<summary><b>3.4 Distance-based Method:</b></summary>
-
-> - [x] [DBSCAN]()
-</details>
-
-<details open>
-<summary><b>3.5 Gradient-based Method:</b></summary>
-
-> - [x] [GradAD]()
-</details>
-
-
-### 4. Open Set Recognition
-
-<details open>
-<summary><b>4.1 Classification-based Method:</b></summary>
-
-> - **4.1.1 EVT-based Calibration**
->   - [x] [OpenMax (ArXiv'2020)](https://github.com/rohban-lab/Knowledge_Distillation_AD)
->
-> - **4.1.2 EVT-free Calibration**
->   - [x] [OSRCI]()
->
-> - **4.1.3 Unknown Generation**
->   - [x] [G-OpenMax (CVPR'2021)](https://arxiv.org/abs/2104.04015)
->
-> - **4.1.4 Label Space Redesign**
->   - [x] [MOS]()
->
+> - [ ] [DeepSVDD (ICML'18)](https://github.com/lukasruff/Deep-SVDD-PyTorch)
+> - [x] [KDAD (arXiv'20)]()
+> - [x] [CutPaste (CVPR'2021)]()
+> - [x] [PatchCore (arXiv'2021)]()
+> - [x] [DRÆM (ICCV'21)]()
 </details>
 
 
 <details open>
-<summary><b>4.2 Distance-based Method:</b></summary>
+<summary><b>Open Set Recognition</b></summary>
 
-> - [x] [RPL](https://github.com/rohban-lab/Knowledge_Distillation_AD)
-> - [x] [PEELER](https://arxiv.org/abs/2104.04015)
-</details>
-
-<details open>
-<summary><b>4.3 Reconstruction-based Method:</b></summary>
-
-> - [x] [OpenMax (ArXiv'2020)](https://github.com/rohban-lab/Knowledge_Distillation_AD)
-> - [x] [G-OpenMax (CVPR'2021)](https://arxiv.org/abs/2104.04015)
-</details>
-
-
-### 5. Out-of-Distribution Detection
-
-<details open>
-<summary><b>5.1 Classification-based Method:</b></summary>
-
-> - **5.1.1 Output-based Methods:**
->   - **5.1.1.a Post-hoc Calibration:**
->     - [x] [MSP (ArXiv'2020)](https://github.com/rohban-lab/Knowledge_Distillation_AD)
->     - [x] [ODIN (CVPR'2021)](https://arxiv.org/abs/2104.04015)
->     - [x] [Likelihood Ratio (ICCV'2021)]()
->   - **5.1.1.b Confidence Enhancement:**
->     - [x] [MDS (ArXiv'2021)](https://arxiv.org/pdf/2106.08265.pdf)
->   - **5.1.1.c Outlier Exposure:**
->     - [x] [OE (ICCV'2021)]()
->     - [x] [UDG (ICCV'2021)]()
-> - **5.1.2 OOD Data Generation:**
->   - [x] []()
-> - **5.1.3 Gradient-based Method:**
->   - [x] []()
-> - **5.1.4 Bayesian Models:**
->   - [x] [Gram (ICCV'2021)]()
->   - [x] [DUQ (ICCV'2021)]()
-> - **5.1.5 Large-scale OOD Detection:**
->   - [x] []()
-</details>
-
-<details open>
-<summary><b>5.2 Density-based Methods:</b></summary>
-
-> - [x] []()
+> - [ ] [OpenMax (CVPR'16)](https://github.com/13952522076/Open-Set-Recognition)
+> - [ ] [G-OpenMax (BMVC'17)](https://github.com/lwneal/counterfactual-open-set/blob/master/generativeopenset/gen_openmax.py)
+> - [ ] [OSRCI (ECCV'18)](https://github.com/lwneal/counterfactual-open-set/)
+> - [ ] [CROSR (CVPR'19)](https://nae-lab.org/~rei/research/crosr/)
+> - [x] [ARPL (TPAMI'21)](https://github.com/iCGY96/ARPL)
+> - [x] [MOS (CVPR'21)](https://github.com/deeplearning-wisc/large_scale_ood)
+> - [x] [OpenGAN (ICCV'21)](https://github.com/aimerykong/OpenGAN/tree/main/utils)
 </details>
 
 
 <details open>
-<summary><b>5.3 Distance-based Methods:</b></summary>
+<summary><b>Out-of-Distribution Detection</b></summary>
 
-> - [x] [MDS (ArXiv'2021)](https://arxiv.org/pdf/2106.08265.pdf)
-> - [x] [SEM (CVPR'2022)](https://arxiv.org/pdf/2106.08265.pdf)
+> No Extra Data:
+> - [x] [MSP (ICLR'17)]()
+> - [x] [ODIN (ICLR'18)]()
+> - [x] [MDS (NeurIPS'18)]()
+> - [ ] [Likelihood Ratio (NeurIPS'19)](https://github.com/google-research/google-research/tree/master/genomics_ood)
+> - [ ] [G-ODIN (CVPR'20)](https://github.com/guyera/Generalized-ODIN-Implementation)
+> - [ ] [Gram (ICML'20)](https://github.com/VectorInstitute/gram-ood-detection)
+> - [ ] [DUQ (ICML'20)](https://github.com/y0ast/deterministic-uncertainty-quantification)
+> - [ ] [CSI (NeurIPS'20)](https://github.com/alinlab/CSI)
+> - [x] [EBO (NeurIPS'20)]()
+> - [ ] [MOOD (CVPR'21)](https://github.com/deeplearning-wisc/MOOD)
+> - [ ] [GradNorm (NeurIPS'21)](https://github.com/deeplearning-wisc/gradnorm_ood)
+> - [ ] [ReAct (NeurIPS'21)](https://github.com/deeplearning-wisc/react)
+> - [ ] [VOS (ICLR'22)](https://github.com/deeplearning-wisc/vos)
+
+> With Extra Data:
+> - [x] [OE (ICLR'19)]()
+> - [ ] [BGC (arXiv'21)]()
+> - [x] [UDG (ICCV'21)]()
 </details>

@@ -1,7 +1,13 @@
+# ignore some temp/test files
+_test_*
+*-backup.py
+
 # ignore data and output directory
 data
 data/
 results/
+checkpoints/
+ipynb_checkpoints/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -24,6 +30,7 @@ lib64/
 parts/
 sdist/
 var/
+.vs/
 wheels/
 pip-wheel-metadata/
 share/python-wheels/

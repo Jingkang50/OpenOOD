@@ -19,7 +19,7 @@ class CutPastePreprocessor(object):
         w = img.size[1]
         
         # ratio between area_ratio[0] and area_ratio[1]
-        ratio_area = random.uniform(self.area_ratio[0], self.area_ratio[1]) * w * h
+        ratio_area = random.uniform(0.02, 0.15) * w * h
         
         # sample in log space
         log_ratio = torch.log(torch.tensor((self.aspect_ratio, 1/self.aspect_ratio)))
@@ -37,8 +37,8 @@ class CutPastePreprocessor(object):
         box = [from_location_w, from_location_h, from_location_w + cut_w, from_location_h + cut_h]
         patch = img.crop(box)
         
-        if self.colorJitter:
-            patch = self.colorJitter(patch)
+        # if self.colorJitter:
+        #     patch = self.colorJitter(patch)
         
         to_location_h = int(random.uniform(0, h - cut_h))
         to_location_w = int(random.uniform(0, w - cut_w))

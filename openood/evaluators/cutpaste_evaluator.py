@@ -9,12 +9,12 @@ from tqdm import tqdm
 
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
-from .gaussian_density import GaussianDensityTorch as density
+from .gaussian_density import GaussianDensityTorch
 from openood.postprocessors.cp_tools import get_train_embeds
 
 
 def to_np(x):
-    return x.data.cpu().numpy()
+    return x.data.cuda().numpy()
 
 
 class CutPasteEvaluator:
@@ -39,18 +39,20 @@ class CutPasteEvaluator:
                               position=0,
                               leave=True):
                 # prepare data
-                data = batch['data'].cuda()
+                data = torch.cat(batch['data'], 0)
+                data = data.cuda()
                 # target = batch['label'].cuda()
                 
                 # calculate label
-                y = torch.arange(len(data))
-                y = y.repeat_interleave(data[0].size(0))
+                y = torch.arange(2)
+                y = y.repeat_interleave(len(batch['data'][0]))
                 
                 # forward
                 embed, output = net(data)
                 # loss = F.cross_entropy(output, target)
-                embeds.append(embed.cpu())
+                embeds.append(embed.cuda())
 
+                y = y.cuda()
                 # accuracy
                 pred = output.data.max(1)[1]
                 correct += pred.eq(y.data).sum().item()
@@ -63,6 +65,7 @@ class CutPasteEvaluator:
         
         train_embeds = get_train_embeds(net, self.config)
         train_embeds = torch.nn.functional.normalize(train_embeds, p=2, dim=1)
+        density = GaussianDensityTorch()
         density.fit(train_embeds)
         distances = density.predict(embeds)
 

@@ -14,8 +14,7 @@ class GaussianDensityTorch(object):
 
     def fit(self, embeddings):
         self.mean = torch.mean(embeddings, axis=0)
-        self.inv_cov = torch.Tensor(LW().fit(embeddings.cpu()).precision_,
-                                    device="cpu")
+        self.inv_cov = torch.Tensor(LW().fit(embeddings.cpu()).precision_,device="cpu")
 
     def predict(self, embeddings):
         distances = self.mahalanobis_distance(embeddings,
@@ -38,6 +37,7 @@ class GaussianDensityTorch(object):
             mean = mean.unsqueeze(0)
         x_mu = values - mean  # batch x features
         # Same as dist = x_mu.t() * inv_covariance * x_mu batch wise
+        inv_covariance = inv_covariance.cuda()
         dist = torch.einsum("im,mn,in->i", x_mu, inv_covariance, x_mu)
         
         return dist.sqrt()

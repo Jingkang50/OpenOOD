@@ -1,4 +1,4 @@
-# srun -p dsta --mpi=pmi2 --cpus-per-task=1 --kill-on-bad-exit=1 --job-name=tsne -w SG-IDC1-10-51-2-73 python compute_tsne.py
+# srun -p dsta --mpi=pmi2 --cudas-per-task=1 --kill-on-bad-exit=1 --job-name=tsne -w SG-IDC1-10-51-2-73 python compute_tsne.py
 
 import os
 import time

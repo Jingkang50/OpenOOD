@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 from .mds_tools import process_feature_type, reduce_feature_dim
 
-to_np = lambda x: x.data.cpu().numpy()
+to_np = lambda x: x.data.cuda().numpy()
 
 
 def calculate_prob(feature, feature_mean, feature_prec, component_weight):
