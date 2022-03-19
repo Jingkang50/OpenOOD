@@ -29,7 +29,7 @@ class KdadTrainer:
 
         for train_step in tqdm(range(1,
                                      len(train_dataiter) + 1),
-                               desc='Epoch {:03d}: '.format(epoch_idx),
+                               desc='Epoch {:03d}'.format(epoch_idx),
                                position=0,
                                leave=True):
             batch = next(train_dataiter)

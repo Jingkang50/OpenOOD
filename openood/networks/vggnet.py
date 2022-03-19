@@ -64,7 +64,11 @@ def make_layers(cfg, use_bias, batch_norm=False):
     return nn.Sequential(*layers)
 
 
-def make_arch(idx, use_bias, batch_norm=False):
+def make_arch(equal_size, use_bias, batch_norm=False):
+    if equal_size:
+        idx = 'A'
+    else:
+        idx = 'B'
     """for clone network."""
     cfg = {
         'A': [
