@@ -9,8 +9,6 @@ import torchvision.transforms as trn
 from PIL import Image, ImageFile
 from torchvision.transforms import InterpolationMode
 
-from openood.preprocessors import BasePreprocessor
-
 from .base_dataset import BaseDataset
 
 # to fix "OSError: image file is truncated"
@@ -25,18 +23,14 @@ class Convert:
         return image.convert(self.mode)
 
 
-def get_transforms(mean: List[float],
-                   std: List[float],
-                   split: str,
-                   interpolation: str = 'bilinear',
-                   image_size: int = 32,
-                   preprocessor=None):
-
-    # transform applied after the preprocessor, this is needed due to some
-    # preporcessor may return more then just an image
-    post_preprocessor_transform = trn.Compose(
-        [trn.ToTensor(), trn.Normalize(mean, std)])
-
+def get_transforms(
+    mean: List[float],
+    std: List[float],
+    split: str,
+    interpolation: str = 'bilinear',
+    image_size: int = 256,
+    crop_size: int = 224,
+):
     interpolation_modes = {
         'nearest': InterpolationMode.NEAREST,
         'bilinear': InterpolationMode.BILINEAR,
@@ -46,24 +40,24 @@ def get_transforms(mean: List[float],
     interpolation = interpolation_modes[interpolation]
 
     if split == 'train':
-        total_transform = trn.Compose([
-            Convert(color_mode),
+        return trn.Compose([
+            # Convert(color_mode),
             trn.Resize(image_size, interpolation=interpolation),
-            trn.CenterCrop(image_size),
-            trn.RandomHorizontalFlip(),
-            trn.RandomCrop(image_size, padding=4)
+            trn.CenterCrop(crop_size),
+            # trn.RandomHorizontalFlip(),
+            # trn.RandomCrop(image_size, padding=4),
+            trn.ToTensor(),
+            trn.Normalize(mean, std),
         ])
+
     else:
-        total_transform = trn.Compose([
+        return trn.Compose([
             Convert(color_mode),
             trn.Resize(image_size, interpolation=interpolation),
-            trn.CenterCrop(image_size),
+            trn.CenterCrop(crop_size),
+            trn.ToTensor(),
+            trn.Normalize(mean, std),
         ])
-
-    total_transform.transforms.append(
-        preprocessor.concat_transform(post_preprocessor_transform))
-
-    return total_transform
 
 
 class ImglistDataset(BaseDataset):
@@ -78,7 +72,7 @@ class ImglistDataset(BaseDataset):
                  maxlen=None,
                  dummy_read=False,
                  dummy_size=None,
-                 preprocessor=None,
+                 crop_size = 224,
                  **kwargs):
         super(ImglistDataset, self).__init__(**kwargs)
 
@@ -87,16 +81,12 @@ class ImglistDataset(BaseDataset):
         with open(imglist_pth) as imgfile:
             self.imglist = imgfile.readlines()
         self.data_dir = data_dir
-
-        if preprocessor is None:
-            preprocessor = BasePreprocessor()
-        self.preprocessor = preprocessor
-        mean, std = [[0.5, 0.5, 0.5], [0.5, 0.5, 0.5]]
+        # TODO: mean and std are different from original value
+        mean, std = [[0.485, 0.456, 0.406], [0.229, 0.224, 0.225]]
         self.transform_image = get_transforms(mean, std, split, interpolation,
-                                              image_size, self.preprocessor)
+                                              image_size,crop_size)
         self.transform_aux_image = get_transforms(mean, std, 'val',
-                                                  interpolation, image_size,
-                                                  self.preprocessor)
+                                                  interpolation, image_size,crop_size)
         self.num_classes = num_classes
         self.maxlen = maxlen
         self.dummy_read = dummy_read
@@ -129,9 +119,6 @@ class ImglistDataset(BaseDataset):
             if self.dummy_size is not None:
                 sample['data'] = torch.rand(self.dummy_size)
             else:
-                if type(self.preprocessor).__name__ == 'DRAEMPreprocessor':
-                    self.preprocessor.setup(path, self.name)
-
                 image = Image.open(buff).convert('RGB')
                 sample['data'] = self.transform_image(image)
                 sample['data_aux'] = self.transform_aux_image(image)

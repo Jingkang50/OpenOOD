@@ -7,7 +7,7 @@ from .lenet import LeNet
 from .resnet18 import ResNet18
 from .resnet18L import ResNet18L
 from .wrn import WideResNet
-
+from .wide_resnet50_2 import wide_resnet50_2
 
 def get_network(network_config):
 
@@ -38,6 +38,9 @@ def get_network(network_config):
                         bottleneck=True,
                         dropRate=0.0,
                         num_classes=num_classes)
+
+    elif network_config.name == 'wide_resnet_50_2':
+        net = wide_resnet50_2()
 
     elif network_config.name == 'DRAEM':
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)

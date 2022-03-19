@@ -1,0 +1,30 @@
+dataset:
+  name: mvtec
+  split_names: [train, val, test]
+  num_classes: 10
+  image_size: 256
+  num_workers: '@{num_workers}'
+  train:
+    dataset_class: ImglistDataset
+    data_dir: ./data/
+    imglist_pth: ./data/mvtecList/train_hazelnut.txt
+    batch_size: 32
+    shuffle: True
+    transform: mnist_train_standard
+    interpolation: bilinear
+  val:
+    dataset_class: ImglistDataset
+    data_dir: ./data/
+    imglist_pth: ./data/mvtecList/ground_truth_hazelnut.txt
+    batch_size: 32
+    shuffle: False
+    transform: mnist_test_standard
+    interpolation: bilinear
+  test:
+    dataset_class: ImglistDataset
+    data_dir: ./data/
+    imglist_pth: ./data/mvtecList/hazelnut_test.txt
+    batch_size: 32
+    shuffle: False
+    transform: mnist_test_standard
+    interpolation: bilinear

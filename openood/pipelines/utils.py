@@ -7,6 +7,7 @@ from .test_ad_pipeline import TestAdPipeline
 from .test_ood_pipeline import TestOODPipeline
 from .train_ad_pipeline import TrainAdPipeline
 from .train_pipeline import TrainPipeline
+from .test_patchcore_pipeline import TestPatchcorePipeline
 
 
 def get_pipeline(config: Config):
@@ -16,6 +17,7 @@ def get_pipeline(config: Config):
         'test_acc': TestAccPipeline,
         'feat_extract': FeatExtractPipeline,
         'test_ood': TestOODPipeline,
+        'test_patchcore': TestPatchcorePipeline,
         'test_ad': TestAdPipeline,
         'train_ad': TrainAdPipeline,
     }
