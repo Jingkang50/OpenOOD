@@ -7,6 +7,8 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+from sklearn.metrics import roc_curve, auc
+
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
 from .gaussian_density import GaussianDensityTorch
@@ -32,7 +34,7 @@ class CutPasteEvaluator:
         correct = 0
         
         embeds = []
-        
+        labels = []
         with torch.no_grad():
             for batch in tqdm(data_loader,
                               desc='Eval: ',
@@ -46,13 +48,14 @@ class CutPasteEvaluator:
                 # calculate label
                 y = torch.arange(2)
                 y = y.repeat_interleave(len(batch['data'][0]))
-                
+                labels.append(y)
+                y = y.cuda()
+
                 # forward
                 embed, output = net(data)
                 # loss = F.cross_entropy(output, target)
                 embeds.append(embed.cuda())
 
-                y = y.cuda()
                 # accuracy
                 pred = output.data.max(1)[1]
                 correct += pred.eq(y.data).sum().item()
@@ -60,6 +63,7 @@ class CutPasteEvaluator:
                 # test loss average
                 # loss_avg += float(distances.data)
 
+        labels = torch.cat(labels)
         embeds = torch.cat(embeds)
         embeds = torch.nn.functional.normalize(embeds, p=2, dim=1)
         
@@ -69,10 +73,13 @@ class CutPasteEvaluator:
         density.fit(train_embeds)
         distances = density.predict(embeds)
 
+        fpr, tpr, _ = roc_curve(labels, distances.cpu())
+        roc_auc = auc(fpr, tpr)
+
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
-        metrics['loss'] = distances
-        metrics['acc'] = correct / len(data_loader.dataset)
+        metrics['loss'] = 1 - roc_auc
+        metrics['acc'] = (correct/2) / len(data_loader.dataset)
         return metrics
 
     def extract(self, net: nn.Module, data_loader: DataLoader):

@@ -23,5 +23,5 @@ optimizer:
   weight_decay: 0.0005
 
 recorder:
-  name: base
+  name: cutpaste
   save_all_models: False

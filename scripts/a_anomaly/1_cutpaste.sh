@@ -11,7 +11,7 @@ PYTHONPATH='.':$PYTHONPATH \
 # --cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
 # --kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/digits/mnist.yml \
+---config configs/datasets/DRAEM/bottle.yml \
 configs/networks/CutPaste.yml \
 configs/pipelines/train/baseline.yml \
 configs/preprocessors/cutpaste.yml \
