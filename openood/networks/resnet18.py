@@ -136,3 +136,16 @@ class ResNet18(nn.Module):
             return logits_cls, feature_list
         else:
             return logits_cls
+
+    def forward_threshold(self, x, threshold):
+        feature1 = F.relu(self.bn1(self.conv1(x)))
+        feature2 = self.layer1(feature1)
+        feature3 = self.layer2(feature2)
+        feature4 = self.layer3(feature3)
+        feature5 = self.layer4(feature4)
+        feature = self.avgpool(feature5)
+        feature = feature.clip(max=threshold)
+        feature = feature.view(feature.size(0), -1)
+        logits_cls = self.fc(feature)
+
+        return logits_cls

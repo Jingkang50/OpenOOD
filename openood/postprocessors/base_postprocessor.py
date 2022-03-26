@@ -14,18 +14,24 @@ class BasePostprocessor:
         pass
 
     @torch.no_grad()
-    def postprocess(self, net: nn.Module, data: Any):
-        output = net(data)
+    def postprocess(self, net: nn.Module, data: Any, threshold=None):
+        if threshold:
+            output = net.forward_threshold(data, threshold)
+        else:
+            output = net(data)
         score = torch.softmax(output, dim=1)
         conf, pred = torch.max(score, dim=1)
         return pred, conf
 
-    def inference(self, net: nn.Module, data_loader: DataLoader):
+    def inference(self,
+                  net: nn.Module,
+                  data_loader: DataLoader,
+                  threshold=None):
         pred_list, conf_list, label_list = [], [], []
         for batch in data_loader:
             data = batch['data'].cuda()
             label = batch['label'].cuda()
-            pred, conf = self.postprocess(net, data)
+            pred, conf = self.postprocess(net, data, threshold)
             for idx in range(len(data)):
                 pred_list.append(pred[idx].cpu().tolist())
                 conf_list.append(conf[idx].cpu().tolist())

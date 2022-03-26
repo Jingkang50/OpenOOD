@@ -6,6 +6,7 @@ import numpy as np
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
+from openood.evaluators.react_evaluator import compute_threshold
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
 
@@ -35,30 +36,41 @@ class OODEvaluator(BaseEvaluator):
             net, id_data_loader['test'])
         if self.config.recorder.save_scores:
             self._save_scores(id_pred, id_conf, id_gt, dataset_name)
+
+        threshold = None
+        import pdb
+        pdb.set_trace()
+        if self.config.evaluator.use_react:
+            threshold = compute_threshold(net, id_data_loader['test'])
+
         # load nearood data and compute ood metrics
         self._eval_ood(net, [id_pred, id_conf, id_gt],
                        ood_data_loaders,
                        postprocessor,
-                       ood_split='nearood')
+                       ood_split='nearood',
+                       threshold=threshold)
         # load farood data and compute ood metrics
         self._eval_ood(net, [id_pred, id_conf, id_gt],
                        ood_data_loaders,
                        postprocessor,
-                       ood_split='farood')
+                       ood_split='farood',
+                       threshold=threshold)
 
     def _eval_ood(self,
                   net: nn.Module,
                   id_list: List[np.ndarray],
                   ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                   postprocessor: BasePostprocessor,
-                  ood_split: str = 'nearood'):
+                  ood_split: str = 'nearood',
+                  threshold=None):
         print(f'Processing {ood_split}...', flush=True)
         [id_pred, id_conf, id_gt] = id_list
         metrics_list = []
         for dataset_name, ood_dl in ood_data_loaders[ood_split].items():
             print(f'Performing inference on {dataset_name} dataset...',
                   flush=True)
-            ood_pred, ood_conf, ood_gt = postprocessor.inference(net, ood_dl)
+            ood_pred, ood_conf, ood_gt = postprocessor.inference(
+                net, ood_dl, threshold)
             if self.config.recorder.save_scores:
                 self._save_scores(ood_pred, ood_conf, ood_gt, dataset_name)
 
