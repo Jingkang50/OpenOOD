@@ -82,7 +82,8 @@ class ResNet18(nn.Module):
                  block=BasicBlock,
                  num_blocks=None,
                  num_classes=10,
-                 image_size=32):
+                 image_size=32,
+                 pooling_size=4):
         super(ResNet18, self).__init__()
         if num_blocks is None:
             num_blocks = [2, 2, 2, 2]
@@ -104,8 +105,11 @@ class ResNet18(nn.Module):
         self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)
         self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
         if logits_expansion:
-            self.avgpool = nn.AvgPool2d(4)
-            self.fc = nn.Linear(512 * logits_expansion, num_classes)
+            if image_size == 64:
+                self.avgpool = nn.AvgPool2d(pooling_size)
+            else:
+                self.avgpool = nn.AdaptiveAvgPool2d(1)
+            self.fc = nn.Linear(512 * 4, num_classes)
         else:
             self.avgpool = nn.AdaptiveAvgPool2d(1)
             self.fc = nn.Linear(512 * 1, num_classes)

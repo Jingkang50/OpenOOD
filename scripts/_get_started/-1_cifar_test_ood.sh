@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/-1_cifar_test.sh
+# sh scripts/_get_started/-1_cifar_test_ood.sh
 
 # GPU=1
 # CPU=1
@@ -15,7 +15,7 @@ python main.py \
 configs/datasets/digits/mnist_ood.yml \
 configs/networks/res18.yml \
 configs/pipelines/test/test_ood.yml \
-configs/postprocessors/msp.yml \
+configs/postprocessors/react.yml \
 --num_workers 8 \
 --dataset.train.batch_size 256 \
 --force_merge False \

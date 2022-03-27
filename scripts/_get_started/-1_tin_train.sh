@@ -17,7 +17,8 @@ configs/pipelines/train/baseline.yml \
 --dataset.image_size 64 \
 --optimizer.num_epochs 200 \
 --num_workers 8 \
---dataset.train.batch_size 256 \
+--dataset.train.batch_size 32 \
 --optimizer.lr 0.125 \
 --optimizer.weight_decay 0.0005 \
---force_merge True
+--network.name res50 \
+--save_output False

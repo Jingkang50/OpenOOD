@@ -7,6 +7,7 @@ from .lenet import LeNet
 from .openGan import Discriminator, Generator
 from .resnet18 import ResNet18
 from .resnet18L import ResNet18L
+from .resnet50 import ResNet50
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
 
@@ -21,6 +22,10 @@ def get_network(network_config):
 
     elif network_config.name == 'res18L':
         net = ResNet18L(num_classes=num_classes)
+
+    elif network_config.name == 'res50':
+        net = ResNet50(num_classes=num_classes,
+                       image_size=network_config.image_size)
 
     elif network_config.name == 'lenet':
         net = LeNet(num_classes=num_classes, num_channel=3)
