@@ -1,0 +1,6 @@
+network:
+  name: resnet18_224x224
+  num_classes: '@{dataset.num_classes}'
+  pretrained: False          # set 'True' to load pretrained model
+  checkpoint: none           # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'

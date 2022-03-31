@@ -46,9 +46,9 @@ class BasicBlock(nn.Module):
         return out
 
 
-class ResNet18L(nn.Module):
+class ResNet18_224x224(nn.Module):
     def __init__(self, block=BasicBlock, num_blocks=None, num_classes=10):
-        super(ResNet18L, self).__init__()
+        super(ResNet18_224x224, self).__init__()
         if num_blocks is None:
             num_blocks = [2, 2, 2, 2]
         self.inplanes = 64

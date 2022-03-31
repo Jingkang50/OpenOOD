@@ -5,65 +5,15 @@ import os
 from typing import List
 
 import torch
-import torchvision.transforms as trn
 from PIL import Image, ImageFile
-from torchvision.transforms import InterpolationMode
 
 from openood.preprocessors import BasePreprocessor
+from openood.preprocessors.transform import TestStandard, TrainStandard
 
 from .base_dataset import BaseDataset
 
 # to fix "OSError: image file is truncated"
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-
-
-class Convert:
-    def __init__(self, mode='RGB'):
-        self.mode = mode
-
-    def __call__(self, image):
-        return image.convert(self.mode)
-
-
-def get_transforms(mean: List[float],
-                   std: List[float],
-                   split: str,
-                   interpolation: str = 'bilinear',
-                   image_size: int = 32,
-                   preprocessor=None):
-
-    # transform applied after the preprocessor, this is needed due to some
-    # preporcessor may return more then just an image
-    post_preprocessor_transform = trn.Compose(
-        [trn.ToTensor(), trn.Normalize(mean, std)])
-
-    interpolation_modes = {
-        'nearest': InterpolationMode.NEAREST,
-        'bilinear': InterpolationMode.BILINEAR,
-    }
-    color_mode = 'RGB'
-
-    interpolation = interpolation_modes[interpolation]
-
-    if split == 'train':
-        total_transform = trn.Compose([
-            Convert(color_mode),
-            trn.Resize(image_size, interpolation=interpolation),
-            trn.CenterCrop(image_size),
-            trn.RandomHorizontalFlip(),
-            trn.RandomCrop(image_size, padding=4)
-        ])
-    else:
-        total_transform = trn.Compose([
-            Convert(color_mode),
-            trn.Resize(image_size, interpolation=interpolation),
-            trn.CenterCrop(image_size),
-        ])
-
-    total_transform.transforms.append(
-        preprocessor.concat_transform(post_preprocessor_transform))
-
-    return total_transform
 
 
 class ImglistDataset(BaseDataset):
@@ -91,12 +41,19 @@ class ImglistDataset(BaseDataset):
         if preprocessor is None:
             preprocessor = BasePreprocessor()
         self.preprocessor = preprocessor
-        mean, std = [[0.5, 0.5, 0.5], [0.5, 0.5, 0.5]]
-        self.transform_image = get_transforms(mean, std, split, interpolation,
-                                              image_size, self.preprocessor)
-        self.transform_aux_image = get_transforms(mean, std, 'val',
-                                                  interpolation, image_size,
-                                                  self.preprocessor)
+
+        if split == 'train':
+            self.transform_image = TrainStandard(name, image_size,
+                                                 interpolation,
+                                                 self.preprocessor)
+        else:
+            self.transform_image = TestStandard(name, image_size,
+                                                interpolation,
+                                                self.preprocessor)
+        # some methods requires an auxiliary image without strong aug
+        self.transform_aux_image = TestStandard(name, image_size,
+                                                interpolation,
+                                                self.preprocessor)
         self.num_classes = num_classes
         self.maxlen = maxlen
         self.dummy_read = dummy_read

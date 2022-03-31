@@ -31,7 +31,7 @@ class FinetunePipeline:
 
         # trainer setup
         trainer.setup()
-        print(u'\u2500' * 70, flush=True)
+        print(u'\n\u2500' * 70, flush=True)
 
         print('Start training...', flush=True)
         for epoch_idx in range(1, self.config.optimizer.num_epochs + 1):

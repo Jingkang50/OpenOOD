@@ -10,6 +10,9 @@ num_workers: 0
 pipeline:
   name: finetune
 
+network:
+  pretrained: True
+
 trainer:
   name: sae
   trainer_args:
@@ -24,8 +27,8 @@ evaluator:
 
 optimizer:
   name: sgd
-  num_epochs: 100
-  lr: 0.1
+  num_epochs: 10
+  lr: 0.01
   momentum: 0.9
   weight_decay: 0.0005
 

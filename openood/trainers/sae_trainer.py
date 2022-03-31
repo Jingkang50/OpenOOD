@@ -7,9 +7,10 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from openood.losses import soft_cross_entropy
-from openood.postprocessors.gmm_tools import compute_single_GMM_score
-from openood.postprocessors.mds_tools import (process_feature_type,
-                                              reduce_feature_dim, tensor2list)
+from openood.postprocessors.gmm_postprocessor import compute_single_GMM_score
+from openood.postprocessors.mds_postprocessor import (process_feature_type,
+                                                      reduce_feature_dim,
+                                                      tensor2list)
 from openood.utils import Config
 
 from .lr_scheduler import cosine_annealing

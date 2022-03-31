@@ -77,9 +77,9 @@ class Bottleneck(nn.Module):
         return out
 
 
-class ResNet18(nn.Module):
+class ResNet18_32x32(nn.Module):
     def __init__(self, block=BasicBlock, num_blocks=None, num_classes=10):
-        super(ResNet18, self).__init__()
+        super(ResNet18_32x32, self).__init__()
         if num_blocks is None:
             num_blocks = [2, 2, 2, 2]
         self.in_planes = 64
