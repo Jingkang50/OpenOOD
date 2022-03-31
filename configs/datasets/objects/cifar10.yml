@@ -10,7 +10,6 @@ dataset:
     imglist_pth: ./data/imglist/objects/train_cifar10.txt
     batch_size: 128
     shuffle: True
-    transform: CifarTrainStd
     interpolation: bilinear
   val:
     dataset_class: ImglistDataset
@@ -18,13 +17,11 @@ dataset:
     imglist_pth: ./data/imglist/objects/val_cifar10.txt
     batch_size: 200
     shuffle: False
-    transform: CifarTrainStd
     interpolation: bilinear
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/object/test_mnist.txt
+    imglist_pth: ./data/imglist/objects/test_cifar10.txt
     batch_size: 200
     shuffle: False
-    transform: CifarTrainStd
     interpolation: bilinear

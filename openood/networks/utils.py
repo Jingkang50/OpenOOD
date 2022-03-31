@@ -14,10 +14,10 @@ def get_network(network_config):
 
     num_classes = network_config.num_classes
 
-    if network_config.name == 'res18_32x32':
+    if network_config.name == 'resnet18_32x32':
         net = ResNet18_32x32(num_classes=num_classes)
 
-    elif network_config.name == 'res18_224x224':
+    elif network_config.name == 'resnet18_224x224':
         net = ResNet18_224x224(num_classes=num_classes)
 
     elif network_config.name == 'lenet':
