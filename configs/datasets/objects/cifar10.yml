@@ -14,7 +14,7 @@ dataset:
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/objects/test_cifar10.txt
+    imglist_pth: ./data/imglist/objects/val_cifar10.txt
     batch_size: 200
     shuffle: False
     interpolation: bilinear

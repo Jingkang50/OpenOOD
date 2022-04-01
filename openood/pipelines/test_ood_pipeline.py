@@ -27,10 +27,11 @@ class TestOODPipeline:
         postprocessor = get_postprocessor(self.config)
         # setup for distance-based methods
         postprocessor.setup(net, id_loader_dict, ood_loader_dict)
+        print('\n', flush=True)
         print(u'\u2500' * 70, flush=True)
 
         # start calculating accuracy
-        print('Start evaluation...', flush=True)
+        print('\nStart evaluation...', flush=True)
         acc_metrics = evaluator.eval_acc(net, id_loader_dict['test'],
                                          postprocessor)
         print('\nAccuracy {:.2f}%'.format(100 * acc_metrics['acc']),

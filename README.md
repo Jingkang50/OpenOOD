@@ -29,7 +29,7 @@ Results and models are available in the [model zoo](docs/model_zoo.md).
 <details open>
 <summary><b>Anomaly Detection</b></summary>
 
-> - [ ] [DeepSVDD (ICML'18)](https://github.com/lukasruff/Deep-SVDD-PyTorch)
+> - [x] [DeepSVDD (ICML'18)](https://github.com/lukasruff/Deep-SVDD-PyTorch)
 > - [x] [KDAD (arXiv'20)]()
 > - [x] [CutPaste (CVPR'2021)]()
 > - [x] [PatchCore (arXiv'2021)]()
@@ -40,10 +40,9 @@ Results and models are available in the [model zoo](docs/model_zoo.md).
 <details open>
 <summary><b>Open Set Recognition</b></summary>
 
-> - [ ] [OpenMax (CVPR'16)](https://github.com/13952522076/Open-Set-Recognition)
-> - [ ] [G-OpenMax (BMVC'17)](https://github.com/lwneal/counterfactual-open-set/blob/master/generativeopenset/gen_openmax.py)
-> - [ ] [OSRCI (ECCV'18)](https://github.com/lwneal/counterfactual-open-set/)
-> - [ ] [CROSR (CVPR'19)](https://nae-lab.org/~rei/research/crosr/)
+> - [x] [OpenMax (CVPR'16)](https://github.com/13952522076/Open-Set-Recognition)
+> - [x] [G-OpenMax (BMVC'17)](https://github.com/lwneal/counterfactual-open-set/blob/master/generativeopenset/gen_openmax.py)
+> - [x] [CROSR (CVPR'19)](https://nae-lab.org/~rei/research/crosr/)
 > - [x] [ARPL (TPAMI'21)](https://github.com/iCGY96/ARPL)
 > - [x] [MOS (CVPR'21)](https://github.com/deeplearning-wisc/large_scale_ood)
 > - [x] [OpenGAN (ICCV'21)](https://github.com/aimerykong/OpenGAN/tree/main/utils)
@@ -57,19 +56,21 @@ Results and models are available in the [model zoo](docs/model_zoo.md).
 > - [x] [MSP (ICLR'17)]()
 > - [x] [ODIN (ICLR'18)]()
 > - [x] [MDS (NeurIPS'18)]()
-> - [ ] [Likelihood Ratio (NeurIPS'19)](https://github.com/google-research/google-research/tree/master/genomics_ood)
-> - [ ] [G-ODIN (CVPR'20)](https://github.com/guyera/Generalized-ODIN-Implementation)
-> - [ ] [Gram (ICML'20)](https://github.com/VectorInstitute/gram-ood-detection)
-> - [ ] [DUQ (ICML'20)](https://github.com/y0ast/deterministic-uncertainty-quantification)
-> - [ ] [CSI (NeurIPS'20)](https://github.com/alinlab/CSI)
-> - [x] [EBO (NeurIPS'20)]()
+> - [x] [CONF (arXiv'18)](https://github.com/uoguelph-mlrg/confidence_estimation)
+> - [x] [Likelihood Ratio (NeurIPS'19)](https://github.com/google-research/google-research/tree/master/genomics_ood)
+> - [x] [G-ODIN (CVPR'20)](https://github.com/guyera/Generalized-ODIN-Implementation)
+> - [x] [Gram (ICML'20)](https://github.com/VectorInstitute/gram-ood-detection)
+> - [x] [DUQ (ICML'20)](https://github.com/y0ast/deterministic-uncertainty-quantification)
+> - [x] [CSI (NeurIPS'20)](https://github.com/alinlab/CSI)
+> - [x] [EBO (NeurIPS'20)](https://github.com/wetliu/energy_ood)
 > - [ ] [MOOD (CVPR'21)](https://github.com/deeplearning-wisc/MOOD)
 > - [ ] [GradNorm (NeurIPS'21)](https://github.com/deeplearning-wisc/gradnorm_ood)
 > - [ ] [ReAct (NeurIPS'21)](https://github.com/deeplearning-wisc/react)
+> - [x] [Geo-ODIN (arXiv'21)](https://sites.google.com/view/geometric-decomposition)
 > - [ ] [VOS (ICLR'22)](https://github.com/deeplearning-wisc/vos)
 
 > With Extra Data:
 > - [x] [OE (ICLR'19)]()
-> - [ ] [BGC (arXiv'21)]()
+> - [x] [MCD (ICCV'19)]()
 > - [x] [UDG (ICCV'21)]()
 </details>

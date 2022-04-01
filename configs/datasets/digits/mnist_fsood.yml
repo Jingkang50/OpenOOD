@@ -1,11 +1,10 @@
 ood_dataset:
-  name: digits_benchmark
+  name: mnist_fsood
   dataset_class: ImglistDataset
-  transform: mnist_test_standard
   interpolation: bilinear
 
   batch_size: 128
-  shuffle: True
+  shuffle: False
   num_classes: 10
   image_size: 28
   num_workers: '@{num_workers}'

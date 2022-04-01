@@ -77,14 +77,9 @@ class Bottleneck(nn.Module):
         return out
 
 
-class ResNet18(nn.Module):
-    def __init__(self,
-                 block=BasicBlock,
-                 num_blocks=None,
-                 num_classes=10,
-                 image_size=32,
-                 pooling_size=4):
-        super(ResNet18, self).__init__()
+class ResNet18_32x32(nn.Module):
+    def __init__(self, block=BasicBlock, num_blocks=None, num_classes=10):
+        super(ResNet18_32x32, self).__init__()
         if num_blocks is None:
             num_blocks = [2, 2, 2, 2]
         self.in_planes = 64
@@ -128,12 +123,10 @@ class ResNet18(nn.Module):
         feature3 = self.layer2(feature2)
         feature4 = self.layer3(feature3)
         feature5 = self.layer4(feature4)
-        feature = self.avgpool(feature5)
-        feature = feature.view(feature.size(0), -1)
+        feature5 = self.avgpool(feature5)
+        feature = feature5.view(feature5.size(0), -1)
         logits_cls = self.fc(feature)
-        feature_list = [
-            feature, feature1, feature2, feature3, feature4, feature5
-        ]
+        feature_list = [feature1, feature2, feature3, feature4, feature5]
         if return_feature:
             return logits_cls, feature
         elif return_feature_list:

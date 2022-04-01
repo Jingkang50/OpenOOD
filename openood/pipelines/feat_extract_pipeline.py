@@ -23,7 +23,7 @@ class FeatExtractPipeline:
         evaluator = get_evaluator(self.config)
 
         # start calculating accuracy
-        print('Start evaluation...', flush=True)
+        print('\nStart evaluation...', flush=True)
         test_metrics = evaluator.eval_acc(net, test_loader)
         print('\nComplete Evaluation, accuracy {:.2f}%'.format(
             100 * test_metrics['acc']),
