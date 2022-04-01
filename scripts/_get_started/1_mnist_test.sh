@@ -16,4 +16,5 @@ configs/networks/lenet.yml \
 configs/pipelines/test/test_acc.yml \
 --dataset.image_size 28 \
 --network.name lenet \
+--network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch97_acc0.993.ckpt \
 --num_workers 4

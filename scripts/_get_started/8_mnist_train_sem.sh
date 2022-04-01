@@ -13,7 +13,7 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 -w SG-IDC1-10-51-2-${node} \
 python main.py \
 --config configs/datasets/digits/mnist.yml \
-configs/datasets/digits/benchmark_digits.yml \
+configs/datasets/digits/mnist_fsood.yml \
 configs/networks/lenet.yml \
 configs/pipelines/train/train_sem.yml \
 --network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch100_acc0.996.ckpt \

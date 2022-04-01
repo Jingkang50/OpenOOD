@@ -44,11 +44,11 @@ class MDSPostprocessor(BasePostprocessor):
             print('\n Searching for optimal alpha list...')
             # get in-distribution scores
             for layer_index in range(self.num_layer):
-                M_in = get_Mahalanobis_scores(net, id_loader_dict['val'],
-                                              self.num_classes,
-                                              self.feature_mean,
-                                              self.feature_prec, layer_index,
-                                              self.magnitude)
+                M_in = get_Mahalanobis_scores(
+                    net, id_loader_dict['val'], self.num_classes,
+                    self.feature_mean, self.feature_prec,
+                    self.transform_matrix, layer_index, self.feature_type_list,
+                    self.magnitude)
                 M_in = np.asarray(M_in, dtype=np.float32)
                 if layer_index == 0:
                     Mahalanobis_in = M_in.reshape((M_in.shape[0], -1))
@@ -58,11 +58,11 @@ class MDSPostprocessor(BasePostprocessor):
                         axis=1)
             # get out-of-distribution scores
             for layer_index in range(self.num_layer):
-                M_out = get_Mahalanobis_scores(net, ood_loader_dict['val'],
-                                               self.num_classes,
-                                               self.feature_mean,
-                                               self.feature_prec, layer_index,
-                                               self.magnitude)
+                M_out = get_Mahalanobis_scores(
+                    net, ood_loader_dict['val'], self.num_classes,
+                    self.feature_mean, self.feature_prec,
+                    self.transform_matrix, layer_index, self.feature_type_list,
+                    self.magnitude)
                 M_out = np.asarray(M_out, dtype=np.float32)
                 if layer_index == 0:
                     Mahalanobis_out = M_out.reshape((M_out.shape[0], -1))
@@ -78,6 +78,7 @@ class MDSPostprocessor(BasePostprocessor):
 
     def postprocess(self, net: nn.Module, data: Any):
         for layer_index in range(self.num_layer):
+
             pred, score = compute_Mahalanobis_score(net,
                                                     Variable(
                                                         data,
@@ -85,7 +86,9 @@ class MDSPostprocessor(BasePostprocessor):
                                                     self.num_classes,
                                                     self.feature_mean,
                                                     self.feature_prec,
+                                                    self.transform_matrix,
                                                     layer_index,
+                                                    self.feature_type_list,
                                                     self.magnitude,
                                                     return_pred=True)
             if layer_index == 0:
@@ -220,7 +223,8 @@ def get_MDS_stat(model, train_loader, num_classes, feature_type_list,
 
 
 def get_Mahalanobis_scores(model, test_loader, num_classes, sample_mean,
-                           precision, layer_index, magnitude):
+                           precision, transform_matrix, layer_index,
+                           feature_type_list, magnitude):
     '''
     Compute the proposed Mahalanobis confidence score on input dataset
     return: Mahalanobis score from layer_index
@@ -232,8 +236,8 @@ def get_Mahalanobis_scores(model, test_loader, num_classes, sample_mean,
         data = batch['data'].cuda()
         data = Variable(data, requires_grad=True)
         noise_gaussian_score = compute_Mahalanobis_score(
-            model, data, num_classes, sample_mean, precision, layer_index,
-            magnitude)
+            model, data, num_classes, sample_mean, precision, transform_matrix,
+            layer_index, feature_type_list, magnitude)
         Mahalanobis.extend(noise_gaussian_score.cpu().numpy())
     return Mahalanobis
 
@@ -243,15 +247,16 @@ def compute_Mahalanobis_score(model,
                               num_classes,
                               sample_mean,
                               precision,
+                              transform_matrix,
                               layer_index,
+                              feature_type_list,
                               magnitude,
                               return_pred=False):
     # extract features
     _, out_features = model(data, return_feature_list=True)
-    out_features = out_features[layer_index]
-    out_features = out_features.view(out_features.size(0),
-                                     out_features.size(1), -1)
-    out_features = torch.mean(out_features, 2)
+    out_features = process_feature_type(out_features[layer_index],
+                                        feature_type_list[layer_index])
+    out_features = torch.mm(out_features, transform_matrix[layer_index])
 
     # compute Mahalanobis score
     gaussian_score = 0
@@ -301,10 +306,10 @@ def compute_Mahalanobis_score(model,
     with torch.no_grad():
         _, noise_out_features = model(Variable(tempInputs),
                                       return_feature_list=True)
-        noise_out_features = noise_out_features[layer_index]
-        noise_out_features = noise_out_features.view(
-            noise_out_features.size(0), noise_out_features.size(1), -1)
-        noise_out_features = torch.mean(noise_out_features, 2)
+        noise_out_features = process_feature_type(
+            noise_out_features[layer_index], feature_type_list[layer_index])
+        noise_out_features = torch.mm(noise_out_features,
+                                      transform_matrix[layer_index])
 
     noise_gaussian_score = 0
     for i in range(num_classes):
