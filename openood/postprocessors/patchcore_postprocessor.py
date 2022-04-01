@@ -64,7 +64,7 @@ class PatchcorePostprocessor(BasePostprocessor):
         self.embedding_list = []
         
         #training step
-        train_dataiter = iter(id_loader_dict['train'])
+        train_dataiter = iter(id_loader_dict['patch'])
 
         for train_step in tqdm(range(1,
                                      len(train_dataiter) + 1),
@@ -135,11 +135,19 @@ class PatchcorePostprocessor(BasePostprocessor):
 
         pred = []
         for i in self.pred_list_img_lvl:
-            if(i>6.3):
+            # 6.3 is the value that 
+            if(i>6.3): 
                 pred.append(torch.tensor(1))
             else:
                 pred.append(torch.tensor(0))
         conf = []
         for i in self.pred_list_img_lvl:
-            conf.append(torch.tensor(i))
+            if i<= 10:
+                conf.append(torch.tensor(i*0.1))
+            else:
+                conf.append(torch.tensor(1))
+        
+        # print("conf")
+        # print(conf)
+        # input()
         return pred, conf

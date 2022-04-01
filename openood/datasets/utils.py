@@ -1,3 +1,4 @@
+from statistics import mean
 from torch.utils.data import DataLoader
 
 from openood.utils.config import Config
@@ -20,6 +21,8 @@ def get_dataloader(dataset_config: Config, preprocessor=None):
                                 imglist_pth=split_config.imglist_pth,
                                 data_dir=split_config.data_dir,
                                 num_classes=dataset_config.num_classes,
+                                mean = split_config.mean,
+                                std = split_config.std,
                                 preprocessor=preprocessor)
         dataloader = DataLoader(dataset,
                                 batch_size=split_config.batch_size,

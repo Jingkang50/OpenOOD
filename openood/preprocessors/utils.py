@@ -7,7 +7,7 @@ from .draem_preprocessor import DRAEMPreprocessor
 def get_preprocessor(config: Config):
     preprocessors = {
         'base': BasePreprocessor,
-        'DRAEM': DRAEMPreprocessor,
+        'DRAEM': DRAEMPreprocessor
     }
 
     return preprocessors[config.preprocessor.name](config)

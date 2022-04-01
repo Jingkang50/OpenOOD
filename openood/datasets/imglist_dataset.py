@@ -9,8 +9,6 @@ import torchvision.transforms as trn
 from PIL import Image, ImageFile
 from torchvision.transforms import InterpolationMode
 
-from openood.preprocessors import BasePreprocessor
-
 from .base_dataset import BaseDataset
 
 # to fix "OSError: image file is truncated"
@@ -43,6 +41,17 @@ def get_transforms(
 
     if split == 'train':
         return trn.Compose([
+            Convert(color_mode),
+            trn.Resize(image_size, interpolation=interpolation),
+            trn.CenterCrop(crop_size),
+            trn.RandomHorizontalFlip(),
+            trn.RandomCrop(image_size, padding=4),
+            trn.ToTensor(),
+            trn.Normalize(mean, std),
+        ])
+    
+    elif split == 'patch':
+        return trn.Compose([
             # Convert(color_mode),
             trn.Resize(image_size, interpolation=interpolation),
             trn.CenterCrop(crop_size),
@@ -51,19 +60,15 @@ def get_transforms(
             trn.ToTensor(),
             trn.Normalize(mean, std),
         ])
+
     else:
-        total_transform = trn.Compose([
+        return trn.Compose([
             Convert(color_mode),
             trn.Resize(image_size, interpolation=interpolation),
             trn.CenterCrop(crop_size),
             trn.ToTensor(),
             trn.Normalize(mean, std),
         ])
-
-    total_transform.transforms.append(
-        preprocessor.concat_transform(post_preprocessor_transform))
-
-    return total_transform
 
 
 class ImglistDataset(BaseDataset):
@@ -80,16 +85,18 @@ class ImglistDataset(BaseDataset):
                  dummy_read=False,
                  dummy_size=None,
                  crop_size = 224,
+                 mean = [0.5, 0.5, 0.5],
+                 std = [0.5 ,0.5, 0.5],
                  **kwargs):
         super(ImglistDataset, self).__init__(**kwargs)
-
+        
         self.name = name
         self.image_size = image_size
         with open(imglist_pth) as imgfile:
             self.imglist = imgfile.readlines()
         self.data_dir = data_dir
-        # TODO: mean and std are different from original value
-        mean, std = [[0.485, 0.456, 0.406], [0.229, 0.224, 0.225]]
+        # # TODO: mean and std are different from original value
+        # mean, std = [[0.485, 0.456, 0.406], [0.229, 0.224, 0.225]]
         self.transform_image = get_transforms(mean, std, split, interpolation,
                                               image_size,crop_size)
         self.transform_aux_image = get_transforms(mean, std, 'val',
@@ -126,9 +133,6 @@ class ImglistDataset(BaseDataset):
             if self.dummy_size is not None:
                 sample['data'] = torch.rand(self.dummy_size)
             else:
-                if type(self.preprocessor).__name__ == 'DRAEMPreprocessor':
-                    self.preprocessor.setup(path, self.name)
-
                 image = Image.open(buff).convert('RGB')
                 sample['data'] = self.transform_image(image)
                 sample['data_aux'] = self.transform_aux_image(image)

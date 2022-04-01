@@ -1,5 +1,0 @@
-preprocessor:
-  name: DRAEM
-  preprocessor_args:
-    image_size: 256
-    anomaly_source: ./data/images/dtd/images/

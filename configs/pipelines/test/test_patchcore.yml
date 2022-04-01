@@ -10,7 +10,7 @@ network:
   pretrained: False
 
 pipeline:
-  name: test_patchcore
+  name: test_ad
 
 evaluator:
   name: ood
