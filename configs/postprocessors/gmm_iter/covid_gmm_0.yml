@@ -1,6 +1,10 @@
 exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'\
 _'@{evaluator.name}'_'@{postprocessor.name}'\
-_'@{postprocessor.postprocessor_args.alpha_list}'_'@{mark}'"
+_'@{postprocessor.postprocessor_args.num_clusters_list}'\
+_'@{postprocessor.postprocessor_args.feature_type_list}'\
+_'@{postprocessor.postprocessor_args.alpha_list}'\
+_'@{postprocessor.postprocessor_args.reduce_dim_list}'\
+_'@{mark}'"
 
 postprocessor:
   name: gmm

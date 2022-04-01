@@ -4,8 +4,8 @@ import torch.backends.cudnn as cudnn
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .lenet import LeNet
-from .resnet18 import ResNet18
-from .resnet18L import ResNet18L
+from .resnet18_32x32 import ResNet18_32x32
+from .resnet18_224x224 import ResNet18_224x224
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
 
@@ -14,11 +14,11 @@ def get_network(network_config):
 
     num_classes = network_config.num_classes
 
-    if network_config.name == 'res18':
-        net = ResNet18(num_classes=num_classes)
+    if network_config.name == 'resnet18_32x32':
+        net = ResNet18_32x32(num_classes=num_classes)
 
-    elif network_config.name == 'res18L':
-        net = ResNet18L(num_classes=num_classes)
+    elif network_config.name == 'resnet18_224x224':
+        net = ResNet18_224x224(num_classes=num_classes)
 
     elif network_config.name == 'lenet':
         net = LeNet(num_classes=num_classes, num_channel=3)

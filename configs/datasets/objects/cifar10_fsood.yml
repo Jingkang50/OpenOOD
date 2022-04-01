@@ -1,5 +1,5 @@
 ood_dataset:
-  name: cifar_ood
+  name: cifar_fsood
   dataset_class: ImglistDataset
   interpolation: bilinear
 
@@ -9,10 +9,18 @@ ood_dataset:
   image_size: 32
   num_workers: '@{num_workers}'
 
-  split_names: [val, nearood, farood]
+  split_names: [val, csid, nearood, farood]
   val:
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/objects/val_cifar100.txt
+  csid:
+    datasets: [cifar10c, imagenet10]
+    cifar10c:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_cifar10c.txt
+    imagenet10:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_imagenet10.txt
   nearood:
     datasets: [cifar100, tin]
     cifar100:
@@ -22,13 +30,13 @@ ood_dataset:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/objects/test_tin.txt
   farood:
-    datasets: [mnist, svhn, texture, cifar100c]
+    datasets: [mnist, fashionmnist, texture, cifar100c]
     mnist:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/objects/test_mnist.txt
-    svhn:
+    fashionmnist:
       data_dir: ./data/images/
-      imglist_pth: ./data/imglist/objects/test_svhn.txt
+      imglist_pth: ./data/imglist/digits/test_fashionmnist.txt
     texture:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/objects/test_texture.txt

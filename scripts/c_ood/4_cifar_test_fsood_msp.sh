@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/4_mnist_test_fsood_msp.sh
+# sh scripts/c_ood/4_cifar_test_fsood_msp.sh
 
 GPU=1
 CPU=1
@@ -11,11 +11,11 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 --cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
 --kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/digits/mnist.yml \
-configs/datasets/digits/mnist_fsood.yml \
-configs/networks/lenet.yml \
+--config configs/datasets/objects/cifar10.yml \
+configs/datasets/objects/cifar10_fsood.yml \
+configs/networks/resnet18_32x32.yml \
 configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/msp.yml \
+--network.checkpoint ./results/cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch97_acc0.946.ckpt \
 --num_workers 4 \
---network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch97_acc0.993.ckpt \
 --mark 0331

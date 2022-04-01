@@ -10,8 +10,8 @@ def get_dataloader(dataset_config: Config, preprocessor=None):
     dataloader_dict = {}
     for split in dataset_config.split_names:
         split_config = dataset_config[split]
+        # currently we only support ImglistDataset
         CustomDataset = eval(split_config.dataset_class)
-
         dataset = CustomDataset(name=dataset_config.name + '_' + split,
                                 split=split,
                                 interpolation=split_config.interpolation,

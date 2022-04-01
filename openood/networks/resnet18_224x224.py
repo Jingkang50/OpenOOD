@@ -46,9 +46,9 @@ class BasicBlock(nn.Module):
         return out
 
 
-class ResNet18L(nn.Module):
+class ResNet18_224x224(nn.Module):
     def __init__(self, block=BasicBlock, num_blocks=None, num_classes=10):
-        super(ResNet18L, self).__init__()
+        super(ResNet18_224x224, self).__init__()
         if num_blocks is None:
             num_blocks = [2, 2, 2, 2]
         self.inplanes = 64
@@ -101,21 +101,21 @@ class ResNet18L(nn.Module):
 
         return nn.Sequential(*layers)
 
-    def forward(self, x, return_feature=False):
+    def forward(self, x, return_feature=False, return_feature_list=False):
         feature1 = F.relu(self.bn1(self.conv1(x)))
         feature1 = self.maxpool(feature1)
         feature2 = self.layer1(feature1)
         feature3 = self.layer2(feature2)
         feature4 = self.layer3(feature3)
         feature5 = self.layer4(feature4)
-        feature = self.avgpool(feature5)
-        feature = self.dropout(feature)
+        feature5 = self.avgpool(feature5)
+        feature = self.dropout(feature5)
         feature = feature.view(feature.size(0), -1)
         logits_cls = self.fc(feature)
-        feature_list = [
-            feature, feature1, feature2, feature3, feature4, feature5
-        ]
+        feature_list = [feature1, feature2, feature3, feature4, feature5]
         if return_feature:
+            return logits_cls, feature
+        elif return_feature_list:
             return logits_cls, feature_list
         else:
             return logits_cls
