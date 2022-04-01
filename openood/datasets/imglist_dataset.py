@@ -95,8 +95,6 @@ class ImglistDataset(BaseDataset):
         with open(imglist_pth) as imgfile:
             self.imglist = imgfile.readlines()
         self.data_dir = data_dir
-        # # TODO: mean and std are different from original value
-        # mean, std = [[0.485, 0.456, 0.406], [0.229, 0.224, 0.225]]
         self.transform_image = get_transforms(mean, std, split, interpolation,
                                               image_size,crop_size)
         self.transform_aux_image = get_transforms(mean, std, 'val',

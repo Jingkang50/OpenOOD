@@ -8,51 +8,58 @@ ood_dataset:
   shuffle: True
   num_classes: 10
   image_size: 28
+  crop_size: 28
   num_workers: '@{num_workers}'
   mean: [0.5, 0.5, 0.5]
   std: [0.5, 0.5, 0.5]
+
 
   split_names: [val, csid, nearood, farood]
   val:
     mean: [0.5, 0.5, 0.5]
     std: [0.5, 0.5, 0.5]
+    crop_size: 28
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/digits/val_notmnist.txt
   csid:
     mean: [0.5, 0.5, 0.5]
     std: [0.5, 0.5, 0.5]
+    crop_size: 28
     datasets: [usps, svhn]
     usps:
       mean: [0.5, 0.5, 0.5]
       std: [0.5, 0.5, 0.5]
+      crop_size: 28
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_usps.txt
     svhn:
       mean: [0.5, 0.5, 0.5]
       std: [0.5, 0.5, 0.5]
+      crop_size: 28
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_svhn.txt
   nearood:
-    mean: [0.5, 0.5, 0.5]
-    std: [0.5, 0.5, 0.5]
+    crop_size: 28
     datasets: [notmnist, fashionmnist]
     notmnist:
       mean: [0.5, 0.5, 0.5]
       std: [0.5, 0.5, 0.5]
+      crop_size: 28
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_notmnist.txt
     fashionmnist:
       mean: [0.5, 0.5, 0.5]
       std: [0.5, 0.5, 0.5]
+      crop_size: 28
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_fashionmnist.txt
   farood:
-    mean: [0.5, 0.5, 0.5]
-    std: [0.5, 0.5, 0.5]
+    crop_size: 28
     datasets: [texture, cifar10, tin, places365]
     texture:
       mean: [0.5, 0.5, 0.5]
       std: [0.5, 0.5, 0.5]
+      crop_size: 28
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_texture.txt
     cifar10:

@@ -36,11 +36,11 @@ class BaseEvaluator:
                 # prepare data
                 data = batch['data'].cuda()
                 target = batch['label'].cuda()
-
+                
                 # forward
                 output = net(data)
                 loss = F.cross_entropy(output, target)
-
+                
                 # accuracy
                 pred = output.data.max(1)[1]
                 correct += pred.eq(target.data).sum().item()

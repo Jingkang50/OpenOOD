@@ -137,17 +137,14 @@ class PatchcorePostprocessor(BasePostprocessor):
         for i in self.pred_list_img_lvl:
             # 6.3 is the value that 
             if(i>6.3): 
-                pred.append(torch.tensor(1))
+                pred.append(torch.tensor(-1))
             else:
-                pred.append(torch.tensor(0))
+                pred.append(torch.tensor(1))
         conf = []
         for i in self.pred_list_img_lvl:
-            if i<= 10:
-                conf.append(torch.tensor(i*0.1))
-            else:
-                conf.append(torch.tensor(1))
+            conf.append(i)
+        conf = torch.tensor(conf, dtype = torch.float32)
+        conf = conf.cuda()
+
         
-        # print("conf")
-        # print(conf)
-        # input()
         return pred, conf

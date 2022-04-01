@@ -15,10 +15,8 @@ class TestAdPipeline:
         setup_logger(self.config)
 
         # get preprocessor
-        if self.config.preprocessor.name != None:
-            preprocessor = get_preprocessor(self.config)
-        else:
-            preprocessor = None
+        preprocessor = get_preprocessor(self.config)
+
         
         # get dataloader
         id_loader_dict = get_dataloader(self.config.dataset, preprocessor)

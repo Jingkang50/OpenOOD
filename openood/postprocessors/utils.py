@@ -6,7 +6,7 @@ from .gmm_postprocessor import GMMPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
 from .patchcore_postprocessor import PatchcorePostprocessor
-
+from .openmax_poseprocessor import OpenMax
 
 def get_postprocessor(config: Config):
     postprocessors = {
@@ -16,6 +16,7 @@ def get_postprocessor(config: Config):
         'mds': MDSPostprocessor,
         'gmm': GMMPostprocessor,
         'Patchcore': PatchcorePostprocessor,
+        'OpenMax': OpenMax,
     }
 
     return postprocessors[config.postprocessor.name](config)

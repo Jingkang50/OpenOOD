@@ -13,6 +13,5 @@ python main.py \
 configs/networks/wide_resnet_50_2.yml \
 configs/pipelines/test/test_patchcore.yml \
 configs/postprocessors/patch.yml \
-configs/preprocessors/None_preprocessor.yml
---preprocessor.name None
+configs/preprocessors/None_preprocessor.yml \
 --num_workers 4

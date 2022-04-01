@@ -18,12 +18,13 @@ class TrainPipeline:
         loader_dict = get_dataloader(self.config.dataset)
         train_loader, val_loader = loader_dict['train'], loader_dict['val']
         test_loader = loader_dict['test']
-
+        
         # init network
         net = get_network(self.config.network)
-
+        
         # init trainer and evaluator
         trainer = get_trainer(net, train_loader, self.config)
+        
         evaluator = get_evaluator(self.config)
 
         # init recorder
@@ -37,9 +38,11 @@ class TrainPipeline:
             # save model and report the result
             recorder.save_model(net, val_metrics)
             recorder.report(train_metrics, val_metrics)
+        import pdb
+        pdb.set_trace()
         recorder.summary()
         print(u'\u2500' * 70, flush=True)
-
+        
         # evaluate on test set
         print('Start testing...', flush=True)
         test_metrics = evaluator.eval_acc(net, test_loader)

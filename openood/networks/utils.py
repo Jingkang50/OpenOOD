@@ -8,6 +8,7 @@ from .resnet18 import ResNet18
 from .resnet18L import ResNet18L
 from .wrn import WideResNet
 from .wide_resnet50_2 import wide_resnet50_2
+from .openmax_network import OpenMax
 
 def get_network(network_config):
 
@@ -47,6 +48,8 @@ def get_network(network_config):
         model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
         net = {'generative': model, 'discriminative': model_seg}
 
+    elif network_config.name == 'openmax_network':
+        net = OpenMax(backbone='ResNet18', num_classes=50)
     else:
         raise Exception('Unexpected Network Architecture!')
 

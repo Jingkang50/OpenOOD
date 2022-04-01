@@ -7,6 +7,7 @@ from .base_trainer import BaseTrainer
 from .draem_trainer import DRAEMTrainer
 from .mixup_trainer import MixupTrainer
 from .sae_trainer import SAETrainer
+from .openmax_trainer import OpenMaxTrainer
 
 
 def get_trainer(
@@ -19,5 +20,6 @@ def get_trainer(
         'mixup': MixupTrainer,
         'sae': SAETrainer,
         'DRAEM': DRAEMTrainer,
+        'OpenMax': OpenMaxTrainer,
     }
     return trainers[config.trainer.name](net, train_loader, config)

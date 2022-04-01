@@ -1,0 +1,11 @@
+postprocessor:
+  name: OpenMax
+  postprocessor_args:
+    coreset_sampling_ratio: 0.01
+    n_neighbors: 9
+    phase: test
+    category: test
+    save_src_code: True
+    save_anomaly_map: True
+    noise:
+    feature_type_list:
