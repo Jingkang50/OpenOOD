@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/c_ood/9_cifar_test_fsood_sem.sh
+# sh scripts/c_ood/5_cifar_test_fsood_ebo.sh
 
 GPU=1
 CPU=1
@@ -15,7 +15,7 @@ python main.py \
 configs/datasets/objects/cifar10_fsood.yml \
 configs/networks/resnet18_32x32.yml \
 configs/pipelines/test/test_fsood.yml \
-configs/postprocessors/gmm_iter/cifar_gmm_0.yml \
---network.checkpoint ./results/cifar10_resnet18_32x32_sae_e10_lr0.01/best_epoch8_acc0.943.ckpt \
+configs/postprocessors/ebo.yml \
+--network.checkpoint ./results/cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch97_acc0.946.ckpt \
 --num_workers 4 \
---mark sem_0401
+--mark 0401

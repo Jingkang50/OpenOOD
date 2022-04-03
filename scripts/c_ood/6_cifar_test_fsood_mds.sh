@@ -18,4 +18,4 @@ configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/mds_iter/cifar_mds_0.yml \
 --network.checkpoint ./results/cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch97_acc0.946.ckpt \
 --num_workers 4 \
---mark 0331
+--mark last_0331

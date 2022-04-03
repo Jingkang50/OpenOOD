@@ -36,7 +36,7 @@ ood_dataset:
       imglist_pth: ./data/imglist/objects/test_mnist.txt
     fashionmnist:
       data_dir: ./data/images/
-      imglist_pth: ./data/imglist/digits/test_fashionmnist.txt
+      imglist_pth: ./data/imglist/objects/test_fashionmnist.txt
     texture:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/objects/test_texture.txt
