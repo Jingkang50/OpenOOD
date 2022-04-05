@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_basics/covid_train.sh
+# sh scripts/c_covid/0_covid_train.sh
 
 GPU=1
 CPU=1
@@ -15,7 +15,9 @@ python main.py \
 --config configs/datasets/covid/covid.yml \
 configs/networks/resnet18_224x224.yml \
 configs/pipelines/train/baseline.yml \
---optimizer.num_epochs 200 \
---optimizer.lr 0.0001 \
---optimizer.weight_decay 0.0005 \
+--network.pretrained True \
+--network.checkpoint ./results/covid_resnet18_224x224_base_e200_lr0.001/resnet18-5c106cde.pth \
+--optimizer.num_epochs 50 \
+--optimizer.lr 0.001 \
+--optimizer.weight_decay 0.005 \
 --num_workers 8

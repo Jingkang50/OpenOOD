@@ -1,5 +1,5 @@
 ood_dataset:
-  name: cifar_fsood
+  name: cifar10_fsood
   dataset_class: ImglistDataset
   interpolation: bilinear
 

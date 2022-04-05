@@ -2,7 +2,6 @@ import ast
 import io
 import logging
 import os
-from typing import List
 
 import torch
 from PIL import Image, ImageFile
@@ -50,6 +49,7 @@ class ImglistDataset(BaseDataset):
             self.transform_image = TestStandard(name, image_size,
                                                 interpolation,
                                                 self.preprocessor)
+
         # some methods requires an auxiliary image without strong aug
         self.transform_aux_image = TestStandard(name, image_size,
                                                 interpolation,

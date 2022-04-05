@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_basics/covid_train.sh
+# sh scripts/c_covid/1_covid_test.sh
 
 GPU=1
 CPU=1
@@ -14,8 +14,6 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 python main.py \
 --config configs/datasets/covid/covid.yml \
 configs/networks/resnet18_224x224.yml \
-configs/pipelines/train/baseline.yml \
---optimizer.num_epochs 200 \
---optimizer.lr 0.0001 \
---optimizer.weight_decay 0.0005 \
---num_workers 8
+configs/pipelines/test/test_acc.yml \
+--network.checkpoint ./results/covid_resnet18_224x224_base_e50_lr0.001/last.ckpt \
+--num_workers 4

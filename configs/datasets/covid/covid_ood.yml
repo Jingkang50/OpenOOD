@@ -1,5 +1,5 @@
 ood_dataset:
-  name: covid_fsood
+  name: covid_ood
   dataset_class: ImglistDataset
   interpolation: bilinear
 
@@ -9,18 +9,10 @@ ood_dataset:
   image_size: 224
   num_workers: '@{num_workers}'
 
-  split_names: [val, csid, nearood, farood]
+  split_names: [val, nearood, farood]
   val:
     data_dir: ./data/covid_images/
     imglist_pth: ./data/imglist/covid/val_ct.txt
-  csid:
-    datasets: [actmed, hannover]
-    actmed:
-      data_dir: ./data/covid_images/
-      imglist_pth: ./data/imglist/covid/test_actmed.txt
-    hannover:
-      data_dir: ./data/covid_images/
-      imglist_pth: ./data/imglist/covid/test_hannover.txt
   nearood:
     datasets: [ct, xraybone]
     ct:
