@@ -2,26 +2,26 @@ dataset:
   name: imagenet
   split_names: [train, val, test]
   num_classes: 1000
-  image_size: 256
+  image_size: 224
   num_workers: '@{num_workers}'
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/val_imagenet.txt # update required
+    imglist_pth: ./data/imglist/val_ImageNet.txt
     batch_size: 32
     shuffle: True
     interpolation: bilinear
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/val_imagenet.txt
+    imglist_pth: ./data/imglist/val_ImageNet.txt
     batch_size: 32
     shuffle: False
     interpolation: bilinear
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/val_imagenet.txt
+    imglist_pth: ./data/imglist/val_ImageNet.txt
     batch_size: 32
     shuffle: False
     interpolation: bilinear

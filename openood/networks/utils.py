@@ -9,7 +9,6 @@ from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
-from .resnet50 import resnet50
 
 
 def get_network(network_config):
@@ -22,13 +21,6 @@ def get_network(network_config):
     elif network_config.name == 'resnet18_224x224':
         net = ResNet18_224x224(num_classes=num_classes)
 
-    elif network_config.name == 'res50':
-        # net = ResNet50(num_classes=num_classes,
-        #                image_size=network_config.image_size)
-        net = resnet50(pretrained=True)
-        # torch.hub._validate_not_a_forked_repo=lambda a,b,c: True
-        # net = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=True)
-        # pass
     elif network_config.name == 'lenet':
         net = LeNet(num_classes=num_classes, num_channel=3)
 

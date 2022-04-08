@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/a_anomaly/-1_draem_test.sh
+# sh scripts/a_anomaly/-1_DRAEM_test.sh
 
 # GPU=1
 # CPU=1
@@ -11,7 +11,7 @@ PYTHONPATH='.':$PYTHONPATH \
 #--cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/draem/bottle.yml \
-configs/networks/draem.yml \
-configs/pipelines/test/test_draem.yml \
+--config configs/datasets/DRAEM/bottle.yml \
+configs/networks/DRAEM.yml \
+configs/pipelines/test/test_DRAEM.yml \
 configs/preprocessors/draem_preprocessor.yml
