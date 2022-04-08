@@ -4,17 +4,12 @@ import torch.backends.cudnn as cudnn
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .lenet import LeNet
-<<<<<<< HEAD
 from .openGan import Discriminator, Generator
-from .resnet18 import ResNet18
-from .resnet18L import ResNet18L
-from .resnet50 import ResNet50
-=======
 from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
->>>>>>> c437cb1916782dd69792af1eb8e5fbe1cf6f2f5f
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
+from .resnet50 import resnet50
 
 
 def get_network(network_config):
@@ -28,9 +23,12 @@ def get_network(network_config):
         net = ResNet18_224x224(num_classes=num_classes)
 
     elif network_config.name == 'res50':
-        net = ResNet50(num_classes=num_classes,
-                       image_size=network_config.image_size)
-
+        # net = ResNet50(num_classes=num_classes,
+        #                image_size=network_config.image_size)
+        net = resnet50(pretrained=True)
+        # torch.hub._validate_not_a_forked_repo=lambda a,b,c: True
+        # net = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=True)
+        # pass
     elif network_config.name == 'lenet':
         net = LeNet(num_classes=num_classes, num_channel=3)
 

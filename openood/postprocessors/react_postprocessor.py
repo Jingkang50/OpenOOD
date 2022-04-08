@@ -7,8 +7,8 @@ from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
 
-activation = {}
 
+activation = {}
 
 def get_activation(name):
     def hook(model, input, output):

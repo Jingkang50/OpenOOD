@@ -7,7 +7,7 @@ normalization_dict = {
     'imagenet': [[0.485, 0.456, 0.406], [0.229, 0.224, 0.225]]
 }
 
-center_crop_dict = {28: 28, 32: 32, 224: 256, 299: 320, 331: 352}
+center_crop_dict = {28: 28, 32: 32, 224: 256, 256: 256, 299: 320, 331: 352}
 
 interpolation_modes = {
     'nearest': tvs_trans.InterpolationMode.NEAREST,
