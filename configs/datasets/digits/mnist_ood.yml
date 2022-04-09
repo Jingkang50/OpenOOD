@@ -10,7 +10,7 @@ ood_dataset:
   image_size: 28
   num_workers: '@{num_workers}'
 
-  split_names: [val, nearood, farood]
+  split_names: [val, nearood, farood, openset]
   val:
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/digits/val_notmnist.txt
@@ -32,7 +32,21 @@ ood_dataset:
       imglist_pth: ./data/imglist/digits/test_cifar10.txt
     tin:
       data_dir: ./data/images/
-      imglist_pth: ./data/imglist/digits/test_tin.txt
+      imglist_pth: ./data/imglist/objects/test_tin_new.txt
     places365:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_places365.txt
+  openset:
+    datasets: [cifar10, tin, svhn, mnist]
+    cifar10:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_cifar10.txt
+    tin:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_tin_new.txt
+    svhn:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_svhn.txt
+    mnist:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_mnist.txt

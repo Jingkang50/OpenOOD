@@ -2,7 +2,7 @@ import glob
 import os
 
 import cv2
-#import imgaug.augmenters as iaa
+import imgaug.augmenters as iaa
 import numpy as np
 import torch
 
@@ -67,16 +67,13 @@ class DRAEMPreprocessor:
         base_dir = os.path.basename(dir_path)
         if base_dir == 'good':
             image, mask = self.transform_test_image(path, None)
-            has_anomaly = np.array([0], dtype=np.float32)
         else:
             mask_path = os.path.join(dir_path, '../../ground_truth/')
             mask_path = os.path.join(mask_path, base_dir)
             mask_file_name = file_name.split('.')[0] + '_mask.png'
             mask_path = os.path.join(mask_path, mask_file_name)
             image, mask = self.transform_test_image(path, mask_path)
-            has_anomaly = np.array([1], dtype=np.float32)
         sample['image'] = image
-        sample['has_anomaly'] = has_anomaly
         sample['mask'] = mask
         return sample
 
