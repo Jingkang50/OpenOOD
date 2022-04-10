@@ -16,6 +16,6 @@ configs/datasets/objects/cifar10_fsood.yml \
 configs/networks/resnet18_32x32.yml \
 configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/gmm_iter/cifar_gmm_0.yml \
---network.checkpoint ./results/cifar10_resnet18_32x32_sae_e10_lr0.01/best_epoch8_acc0.943.ckpt \
+--network.checkpoint ./results/cifar10/cifar10_resnet18_32x32_sae_e30_lr0.05/best_epoch26_acc0.953.ckpt \
 --num_workers 4 \
---mark sem_0401
+--mark sem_0401_test

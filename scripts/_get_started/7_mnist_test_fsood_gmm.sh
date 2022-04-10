@@ -17,5 +17,5 @@ configs/networks/lenet.yml \
 configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/gmm.yml \
 --num_workers 8 \
---network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch97_acc0.993.ckpt \
+--network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch89_acc0.9920.ckpt \
 --mark 0331

@@ -3,7 +3,7 @@ ood_dataset:
   dataset_class: ImglistDataset
   interpolation: bilinear
 
-  batch_size: 128
+  batch_size: 20
   shuffle: False
   num_classes: 2
   image_size: 224

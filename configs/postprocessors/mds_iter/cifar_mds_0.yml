@@ -1,7 +1,0 @@
-postprocessor:
-  name: mds
-  postprocessor_args:
-    noise: 0.0014
-    feature_type_list: [mean, mean, mean, mean, mean]     # flat/mean/stat
-    alpha_list: [0, 0, 0, 0, 1]
-    reduce_dim_list: [pca_50, pca_50, pca_50, pca_50, pca_50]   # none/capca/pca/lda

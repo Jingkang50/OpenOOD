@@ -52,7 +52,7 @@ class GMMPostprocessor(BasePostprocessor):
         alpha = torch.cuda.FloatTensor(self.alpha_list)
         # import pdb; pdb.set_trace();
         # conf = torch.matmul(score_list, alpha)
-        conf = torch.matmul(torch.log(score_list + 1e-40), alpha)
+        conf = torch.matmul(torch.log(score_list + 1e-45), alpha)
         return pred, conf
 
 

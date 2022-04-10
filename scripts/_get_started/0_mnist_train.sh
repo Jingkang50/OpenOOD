@@ -17,4 +17,5 @@ configs/pipelines/train/baseline.yml \
 --dataset.image_size 28 \
 --network.name lenet \
 --optimizer.num_epochs 100 \
---num_workers 8
+--num_workers 8 \
+--output_dir ./results/mnist_0408_3

@@ -12,4 +12,3 @@ ood_dataset:
   val:
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/objects/train_cifar10_ood.txt
-   
