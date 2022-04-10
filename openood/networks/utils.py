@@ -4,6 +4,7 @@ import torch.backends.cudnn as cudnn
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .lenet import LeNet
+from .openGan import Discriminator, Generator
 from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
 from .vggnet import Vgg16, make_arch
@@ -40,7 +41,21 @@ def get_network(network_config):
     elif network_config.name == 'DRAEM':
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
         model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
+
         net = {'generative': model, 'discriminative': model_seg}
+
+    elif network_config.name == 'openGan':
+        # NetType = eval(network_config.feat_extract_network)
+        # feature_net = NetType()
+        feature_net = get_network(network_config.feat_extract_network)
+
+        netG = Generator(in_channels=network_config.nz,
+                         feature_size=network_config.ngf,
+                         out_channels=network_config.nc)
+        netD = Discriminator(in_channels=network_config.nc,
+                             feature_size=network_config.ndf)
+
+        net = {'netG': netG, 'netD': netD, 'netF': feature_net}
 
     elif network_config.name == 'vgg and model':
         vgg = Vgg16(network_config['trainedsource'])

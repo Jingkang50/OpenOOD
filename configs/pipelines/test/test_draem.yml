@@ -5,10 +5,10 @@ force_merge: True # disabled if 'save_output' is False
 
 num_gpus: 1
 num_workers: 4
-
 network:
   pretrained: True
-  checkpoint: ./checkpoints/DRAEM_test_0.0001_700_bs8_bottle_
+  checkpoint: ["./checkpoints/DRAEM_test_0.0001_700_bs8_bottle_.ckpt",
+               "./checkpoints/DRAEM_test_0.0001_700_bs8_bottle__seg.ckpt"]
 
 pipeline:
   name: test_ad

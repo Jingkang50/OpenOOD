@@ -6,6 +6,7 @@ from .base_trainer import BaseTrainer
 from .draem_trainer import DRAEMTrainer
 from .kdad_trainer import KdadTrainer
 from .mixup_trainer import MixupTrainer
+from .openGan_trainer import OpenGanTrainer
 from .sae_trainer import SAETrainer
 
 
@@ -19,6 +20,7 @@ def get_trainer(
         'mixup': MixupTrainer,
         'sae': SAETrainer,
         'DRAEM': DRAEMTrainer,
+        'openGan': OpenGanTrainer,
         'kdad': KdadTrainer
     }
     return trainers[config.trainer.name](net, train_loader, config)

@@ -12,6 +12,7 @@ network:
 
 pipeline:
   name: feat_extract
+  extract_target: test
 
 evaluator:
   name: base
