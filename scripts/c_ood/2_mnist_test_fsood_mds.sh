@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/6_mnist_test_fsood_mds.sh
+# sh scripts/c_ood/2_mnist_test_fsood_mds.sh
 
 GPU=1
 CPU=1
@@ -17,5 +17,5 @@ configs/networks/lenet.yml \
 configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/mds.yml \
 --num_workers 4 \
---network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch89_acc0.9920.ckpt \
---mark 0331_pca
+--network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch91_acc0.9950.ckpt \
+--mark 0

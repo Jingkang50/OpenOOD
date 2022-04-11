@@ -17,3 +17,4 @@ dependencies:
     - pyyaml==5.4.1
     - pre-commit
     - opencv-python==4.4.0.46
+    - pandas==1.4.1

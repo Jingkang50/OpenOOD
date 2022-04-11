@@ -1,9 +1,9 @@
 #!/bin/bash
-# sh scripts/_get_started/8_mnist_train_sem.sh
+# sh scripts/0_basics/mnist_train.sh
 
 GPU=1
 CPU=1
-node=79
+node=73
 jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -13,11 +13,9 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 -w SG-IDC1-10-51-2-${node} \
 python main.py \
 --config configs/datasets/digits/mnist.yml \
-configs/datasets/digits/mnist_fsood.yml \
 configs/networks/lenet.yml \
-configs/pipelines/train/train_sem.yml \
---network.checkpoint ./results/mnist_0408_3/mnist_lenet_base_e100_lr0.1/best_epoch77_acc0.9940.ckpt \
+configs/pipelines/train/baseline.yml \
 --dataset.image_size 28 \
 --network.name lenet \
---num_workers 8 \
---output_dir ./results/mnist_0408_3
+--optimizer.num_epochs 100 \
+--num_workers 0

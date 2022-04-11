@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/6_mnist_test_fsood_mds.sh
+# sh scripts/c_ood/14_mnist_test_fsood_sem.sh
 
 GPU=1
 CPU=1
@@ -15,7 +15,7 @@ python main.py \
 configs/datasets/digits/mnist_fsood.yml \
 configs/networks/lenet.yml \
 configs/pipelines/test/test_fsood.yml \
-configs/postprocessors/mds.yml \
---num_workers 4 \
---network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch89_acc0.9920.ckpt \
---mark 0331_pca
+configs/postprocessors/gmm.yml \
+--num_workers 8 \
+--network.checkpoint ./results/mnist_lenet_sae_e30_lr0.05/best_epoch26_acc0.9940.ckpt \
+--mark sem

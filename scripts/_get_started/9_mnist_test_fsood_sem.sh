@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/8_mnist_test_fsood_sem.sh
+# sh scripts/_get_started/9_mnist_test_fsood_sem.sh
 
 GPU=1
 CPU=1
@@ -20,4 +20,6 @@ configs/postprocessors/gmm.yml \
 --dataset.image_size 28 \
 --network.name lenet \
 --num_workers 8 \
---network.checkpoint ./results/mnist_lenet_sae_e10_lr0.01/best_epoch7_acc0.995.ckpt
+--network.checkpoint ./results/mnist_lenet_sae_e30_lr0.05/best_epoch26_acc0.9940.ckpt \
+--dataset.train.shuffle False \
+--mark sem

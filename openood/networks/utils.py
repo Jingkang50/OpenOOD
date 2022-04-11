@@ -24,9 +24,6 @@ def get_network(network_config):
     elif network_config.name == 'lenet':
         net = LeNet(num_classes=num_classes, num_channel=3)
 
-    elif network_config.name == 'lenet_bw':
-        net = LeNet(num_classes=num_classes, num_channel=1)
-
     elif network_config.name == 'wrn':
         net = WideResNet(depth=28,
                          widen_factor=10,
@@ -78,8 +75,15 @@ def get_network(network_config):
                         subnet.load_state_dict(torch.load(checkpoint),
                                                strict=False)
         else:
-            net.load_state_dict(torch.load(network_config.checkpoint),
-                                strict=False)
+            try:
+                net.load_state_dict(torch.load(network_config.checkpoint),
+                                    strict=False)
+            except RuntimeError:
+                # sometimes fc should not be loaded
+                loaded_pth = torch.load(network_config.checkpoint)
+                loaded_pth.pop('fc.weight')
+                loaded_pth.pop('fc.bias')
+                net.load_state_dict(loaded_pth, strict=False)
         print('Model Loading {} Completed!'.format(network_config.name))
 
     if network_config.num_gpus > 1:
