@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/6_mnist_test_fsood_mds.sh
+# sh scripts/0_basics/mnist_test.sh
 
 GPU=1
 CPU=1
@@ -12,10 +12,9 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 --kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
 --config configs/datasets/digits/mnist.yml \
-configs/datasets/digits/mnist_fsood.yml \
 configs/networks/lenet.yml \
-configs/pipelines/test/test_fsood.yml \
-configs/postprocessors/mds.yml \
---num_workers 4 \
---network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch89_acc0.9920.ckpt \
---mark 0331_pca
+configs/pipelines/test/test_acc.yml \
+--dataset.image_size 28 \
+--network.name lenet \
+--network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best.ckpt \
+--num_workers 4
