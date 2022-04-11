@@ -4,7 +4,7 @@ import os
 dataset = 'digits/mnist'
 benchmarks = ['fsood', 'ood']
 methods = ['msp', 'odin', 'ebo', 'mds']
-mark = '0408_4'
+mark = '0408'
 model_path = './results/mnist_lenet_base_e100_lr0.1/best.ckpt'
 
 for benchmark in benchmarks:
