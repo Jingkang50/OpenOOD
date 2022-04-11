@@ -6,7 +6,7 @@ from .base_trainer import BaseTrainer
 from .draem_trainer import DRAEMTrainer
 from .kdad_trainer import KdadTrainer
 from .mixup_trainer import MixupTrainer
-from .openGan_trainer import OpenGanTrainer
+from .opengan_trainer import OpenGanTrainer
 from .sae_trainer import SAETrainer
 
 

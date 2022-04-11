@@ -15,7 +15,5 @@ python main.py \
 --config configs/datasets/digits/mnist.yml \
 configs/networks/lenet.yml \
 configs/pipelines/train/baseline.yml \
---dataset.image_size 28 \
---network.name lenet \
 --optimizer.num_epochs 100 \
---num_workers 0
+--num_workers 8

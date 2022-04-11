@@ -17,5 +17,5 @@ configs/networks/lenet.yml \
 configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/msp.yml \
 --num_workers 4 \
---network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch91_acc0.9950.ckpt \
+--network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best.ckpt \
 --mark 0
