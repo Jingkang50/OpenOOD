@@ -6,7 +6,6 @@ in [our survey paper](https://arxiv.org/abs/2110.11334).
 Topics of anomaly detection, novelty detection, open set recognition,
 and out-of-distribution detection
 are within the scope of this codebase.
-
 This codebase is still under construction. Comments, issues, and contributions are all welcomed!
 
 | ![timeline.jpg](assets/timeline.jpg) |
@@ -30,8 +29,7 @@ sh scripts/c_ood/0_mnist_test_fsood_msp.sh
 [Tutorials](https://github.com/Jingkang50/OpenOOD/wiki) on understanding and contributing the codebase are provided in our wiki pages.
 
 ## Supported Methods
-This part lists all the methods we reproduced in this codebase.
-Organization/Indexing follows the structure of [our survey paper](https://arxiv.org/abs/2110.11334).
+This part lists all the methods we include in this codebase.
 
 
 <details open>
