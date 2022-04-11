@@ -1,9 +1,9 @@
 #!/bin/bash
-# sh scripts/others/0_mnist_mixup.sh
+# sh scripts/0_basics/cifar10_train.sh
 
 GPU=1
 CPU=1
-node=69
+node=73
 jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -12,10 +12,9 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 --kill-on-bad-exit=1 --job-name=${jobname} \
 -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/digits/mnist.yml \
-configs/networks/lenet.yml \
-configs/pipelines/train/mixup.yml \
---dataset.image_size 28 \
---network.name lenet \
+--config configs/datasets/objects/cifar10.yml \
+configs/networks/resnet18_32x32.yml \
+configs/pipelines/train/baseline.yml \
+--dataset.image_size 32 \
 --optimizer.num_epochs 100 \
---num_workers 0
+--num_workers 4

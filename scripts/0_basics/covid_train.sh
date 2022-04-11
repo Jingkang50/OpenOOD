@@ -1,9 +1,9 @@
 #!/bin/bash
-# sh scripts/others/0_mnist_mixup.sh
+# sh scripts/0_basics/covid_train.sh
 
 GPU=1
 CPU=1
-node=69
+node=73
 jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -12,10 +12,10 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 --kill-on-bad-exit=1 --job-name=${jobname} \
 -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/digits/mnist.yml \
-configs/networks/lenet.yml \
+--config configs/datasets/covid/covid.yml \
+configs/networks/resnet18_224x224.yml \
 configs/pipelines/train/baseline.yml \
---dataset.image_size 28 \
---network.name lenet \
---optimizer.num_epochs 100 \
---num_workers 0
+--optimizer.num_epochs 200 \
+--optimizer.lr 0.0001 \
+--optimizer.weight_decay 0.0005 \
+--num_workers 8

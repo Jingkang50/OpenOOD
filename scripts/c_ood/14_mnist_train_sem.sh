@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/8_mnist_train_sem.sh
+# sh scripts/c_ood/14_mnist_train_sem.sh
 
 GPU=1
 CPU=1
@@ -17,7 +17,4 @@ configs/datasets/digits/mnist_fsood.yml \
 configs/networks/lenet.yml \
 configs/pipelines/train/train_sem.yml \
 --network.checkpoint ./results/mnist_0408_3/mnist_lenet_base_e100_lr0.1/best_epoch77_acc0.9940.ckpt \
---dataset.image_size 28 \
---network.name lenet \
---num_workers 8 \
---output_dir ./results/mnist_0408_3
+--num_workers 8

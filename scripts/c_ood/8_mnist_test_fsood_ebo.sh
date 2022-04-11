@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/5_mnist_test_fsood_ebo.sh
+# sh scripts/c_ood/8_mnist_test_fsood_ebo.sh
 
 GPU=1
 CPU=1
@@ -18,4 +18,4 @@ configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/ebo.yml \
 --num_workers 4 \
 --network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch91_acc0.9950.ckpt \
---mark 0331 &
+--mark 0

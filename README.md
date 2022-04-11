@@ -19,10 +19,14 @@ This codebase is still under construction. Comments, issues, and contributions a
 
 ## Get Started
 
-The easiest hands-on script is to train LeNet on MNIST.
+The easiest hands-on script is to train LeNet on MNIST and evaluate its OOD or FS-OOD performance with MSP baseline.
 ```bash
-sh scripts/_get_started/0_mnist_train.sh
+sh scripts/0_basics/mnist_train.sh
+sh scripts/c_ood/0_mnist_test_ood_msp.sh
+sh scripts/c_ood/0_mnist_test_fsood_msp.sh
 ```
+
+
 [Tutorials](https://github.com/Jingkang50/OpenOOD/wiki) on understanding and contributing the codebase are provided in our wiki pages.
 
 ## Supported Methods
