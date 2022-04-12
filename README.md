@@ -100,17 +100,6 @@ This part lists all the methods we include in this codebase.
 > - [ ] [UDG (ICCV'21)]()
 </details>
 
-<details open>
-<summary><b>Model Robustness</b></summary>
-
-> No Extra Data:
-> - [x] [MSP (ICLR'17)]()
-> - [x] [ODIN (ICLR'18)]()
-> - [x] [MDS (NeurIPS'18)]()
-
-</details>
-
-
 ## Citation
 If you find our repository useful for your research, please consider citing our paper:
 ```bibtex
