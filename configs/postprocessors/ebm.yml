@@ -1,6 +1,0 @@
-pipeline:
-  name: postprocess_ood
-  postprocessor: odin
-  postprocessor_args:
-    temperature: 1000
-    noise: 0.0014

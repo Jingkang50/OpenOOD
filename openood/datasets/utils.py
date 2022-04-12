@@ -1,7 +1,10 @@
+import torch
+from numpy import load
 from torch.utils.data import DataLoader
 
 from openood.utils.config import Config
 
+from .feature_dataset import FeatDataset
 from .imglist_dataset import ImglistDataset
 
 
@@ -71,3 +74,25 @@ def get_ood_dataloader(ood_config: Config, preprocessor=None):
             dataloader_dict[split] = sub_dataloader_dict
 
     return dataloader_dict
+
+
+def get_feature_dataloader(dataset_config: Config):
+    # load in the cached feature
+    loaded_data = load(dataset_config.feat_path, allow_pickle=True)
+    total_feat = torch.from_numpy(loaded_data['feat_list'])
+    del loaded_data
+    # reshape the vector to fit in to the network
+    total_feat.unsqueeze_(-1).unsqueeze_(-1)
+    # let's see what we got here should be something like:
+    # torch.Size([total_num, channel_size, 1, 1])
+    print(total_feat.shape)
+
+    split_config = dataset_config['train']
+
+    dataset = FeatDataset(feat=total_feat)
+    dataloader = DataLoader(dataset,
+                            batch_size=split_config.batch_size,
+                            shuffle=split_config.shuffle,
+                            num_workers=dataset_config.num_workers)
+
+    return dataloader

@@ -5,6 +5,7 @@ from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .dsvdd_net import build_network, get_Autoencoder
 from .lenet import LeNet
+from .opengan import Discriminator, Generator
 from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
 from .vggnet import Vgg16, make_arch
@@ -24,9 +25,6 @@ def get_network(network_config):
     elif network_config.name == 'lenet':
         net = LeNet(num_classes=num_classes, num_channel=3)
 
-    elif network_config.name == 'lenet_bw':
-        net = LeNet(num_classes=num_classes, num_channel=1)
-
     elif network_config.name == 'wrn':
         net = WideResNet(depth=28,
                          widen_factor=10,
@@ -44,7 +42,21 @@ def get_network(network_config):
     elif network_config.name == 'DRAEM':
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
         model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
+
         net = {'generative': model, 'discriminative': model_seg}
+
+    elif network_config.name == 'opengan':
+        # NetType = eval(network_config.feat_extract_network)
+        # feature_net = NetType()
+        feature_net = get_network(network_config.feat_extract_network)
+
+        netG = Generator(in_channels=network_config.nz,
+                         feature_size=network_config.ngf,
+                         out_channels=network_config.nc)
+        netD = Discriminator(in_channels=network_config.nc,
+                             feature_size=network_config.ndf)
+
+        net = {'netG': netG, 'netD': netD, 'netF': feature_net}
 
     elif network_config.name == 'vgg and model':
         vgg = Vgg16(network_config['trainedsource'])
@@ -70,8 +82,15 @@ def get_network(network_config):
                         subnet.load_state_dict(torch.load(checkpoint),
                                                strict=False)
         else:
-            net.load_state_dict(torch.load(network_config.checkpoint),
-                                strict=False)
+            try:
+                net.load_state_dict(torch.load(network_config.checkpoint),
+                                    strict=False)
+            except RuntimeError:
+                # sometimes fc should not be loaded
+                loaded_pth = torch.load(network_config.checkpoint)
+                loaded_pth.pop('fc.weight')
+                loaded_pth.pop('fc.bias')
+                net.load_state_dict(loaded_pth, strict=False)
         print('Model Loading {} Completed!'.format(network_config.name))
 
     if network_config.num_gpus > 1:

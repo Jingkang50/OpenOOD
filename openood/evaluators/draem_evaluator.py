@@ -50,9 +50,8 @@ class DRAEMEvaluator():
 
                 # prepare data
                 gray_batch = sample_batched['data']['image'].cuda()
-                is_normal = sample_batched['data']['has_anomaly'].detach(
-                ).numpy()[0, 0]
-                anomaly_score_gt.append(is_normal)
+                anomaly_score_gt.append(
+                    float(sample_batched['label'].numpy()[0]))
                 true_mask = sample_batched['data']['mask']
                 true_mask_cv = true_mask.detach().numpy()[
                     0, :, :, :].transpose((1, 2, 0))

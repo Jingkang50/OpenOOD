@@ -52,7 +52,7 @@ class GMMPostprocessor(BasePostprocessor):
         alpha = torch.cuda.FloatTensor(self.alpha_list)
         # import pdb; pdb.set_trace();
         # conf = torch.matmul(score_list, alpha)
-        conf = torch.matmul(torch.log(score_list + 1e-40), alpha)
+        conf = torch.matmul(torch.log(score_list + 1e-45), alpha)
         return pred, conf
 
 
@@ -159,7 +159,9 @@ def compute_GMM_score(model,
             prob_matrix = prob_gau.view([-1, 1])
         else:
             prob_matrix = torch.cat((prob_matrix, prob_gau.view(-1, 1)), 1)
+
     prob = torch.mm(prob_matrix, component_weight[layer_idx].view(-1, 1))
+
     if return_pred:
         return pred, prob
     else:

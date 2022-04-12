@@ -33,9 +33,8 @@ class BaseRecorder:
 
         # enter only if better accuracy occurs
         if val_metrics['acc'] >= self.best_acc:
-
             # delete the depreciated best model
-            old_fname = 'best_epoch{}_acc{}.ckpt'.format(
+            old_fname = 'best_epoch{}_acc{:.4f}.ckpt'.format(
                 self.best_epoch_idx, self.best_acc)
             old_pth = os.path.join(self.output_dir, old_fname)
             Path(old_pth).unlink(missing_ok=True)
@@ -46,8 +45,15 @@ class BaseRecorder:
             torch.save(net.state_dict(),
                        os.path.join(self.output_dir, 'best.ckpt'))
 
-            save_fname = 'best_epoch{}_acc{}.ckpt'.format(
+            save_fname = 'best_epoch{}_acc{:.4f}.ckpt'.format(
                 self.best_epoch_idx, self.best_acc)
+            save_pth = os.path.join(self.output_dir, save_fname)
+            torch.save(net.state_dict(), save_pth)
+
+        # save last path
+        if val_metrics['epoch_idx'] == self.config.optimizer.num_epochs:
+            save_fname = 'last_epoch{}_acc{:.4f}.ckpt'.format(
+                val_metrics['epoch_idx'], val_metrics['acc'])
             save_pth = os.path.join(self.output_dir, save_fname)
             torch.save(net.state_dict(), save_pth)
 
