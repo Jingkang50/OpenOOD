@@ -67,9 +67,8 @@ This part lists all the methods we include in this codebase.
 <summary><b>Open Set Recognition</b></summary>
 
 > - [x] [OpenMax (CVPR'16)](https://github.com/13952522076/Open-Set-Recognition)
-> - [ ] [CROSR (CVPR'19)](https://nae-lab.org/~rei/research/crosr/)
+> - [ ] [CROSR (CVPR'19)](https://nae-lab.org/~rei/research/crosr/) (@OmegaDING in progress)
 > - [ ] [ARPL (TPAMI'21)](https://github.com/iCGY96/ARPL)
-> - [ ] [MOS (CVPR'21)](https://github.com/deeplearning-wisc/large_scale_ood)
 > - [x] [OpenGAN (ICCV'21)](https://github.com/aimerykong/OpenGAN/tree/main/utils)
 </details>
 
@@ -87,8 +86,9 @@ This part lists all the methods we include in this codebase.
 > - [ ] [DUQ (ICML'20)](https://github.com/y0ast/deterministic-uncertainty-quantification) (@Zzitang in progress)
 > - [ ] [CSI (NeurIPS'20)](https://github.com/alinlab/CSI) (@Prophet-C in progress)
 > - [x] [EBO (NeurIPS'20)](https://github.com/wetliu/energy_ood)
+> - [ ] [MOS (CVPR'21)](https://github.com/deeplearning-wisc/large_scale_ood)
 > - [ ] [MOOD (CVPR'21)](https://github.com/deeplearning-wisc/MOOD)
-> - [ ] [GradNorm (NeurIPS'21)](https://github.com/deeplearning-wisc/gradnorm_ood)
+> - [ ] [GradNorm (NeurIPS'21)](https://github.com/deeplearning-wisc/gradnorm_ood) (@haoqiwang in progress)
 > - [x] [ReAct (NeurIPS'21)](https://github.com/deeplearning-wisc/react)
 > - [ ] [VOS (ICLR'22)](https://github.com/deeplearning-wisc/vos)
 > - [ ] [VIM (CVPR'22)](https://ooddetection.github.io/) (@haoqiwang in progress)
@@ -99,6 +99,17 @@ This part lists all the methods we include in this codebase.
 > - [ ] [MCD (ICCV'19)]()
 > - [ ] [UDG (ICCV'21)]()
 </details>
+
+<details open>
+<summary><b>Model Robustness</b></summary>
+
+> No Extra Data:
+> - [x] [MSP (ICLR'17)]()
+> - [x] [ODIN (ICLR'18)]()
+> - [x] [MDS (NeurIPS'18)]()
+
+</details>
+
 
 ## Citation
 If you find our repository useful for your research, please consider citing our paper:
