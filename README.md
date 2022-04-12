@@ -11,7 +11,7 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Updates
-- **12 April, 2022**: Primary release to support Full-Spectrum OOD Detection.
+- **12 April, 2022**: Primary release to support [Full-Spectrum OOD Detection](https://arxiv.org/abs/2204.05306).
 
 ## Get Started
 
@@ -92,7 +92,7 @@ This part lists all the methods we include in this codebase.
 > - [x] [ReAct (NeurIPS'21)](https://github.com/deeplearning-wisc/react)
 > - [ ] [VOS (ICLR'22)](https://github.com/deeplearning-wisc/vos)
 > - [ ] [VIM (CVPR'22)](https://ooddetection.github.io/) (@haoqiwang in progress)
-> - [x] [SEM (arXiv'22)]()
+> - [x] [SEM (arXiv'22)](https://arxiv.org/abs/2204.05306)
 
 > With Extra Data:
 > - [ ] [OE (ICLR'19)]()
@@ -112,6 +112,7 @@ If you find our repository useful for your research, please consider citing our 
 @article{yang2022fsood,
     author = {Yang, Jingkang and Zhou, Kaiyang and Liu, Ziwei},
     title = {Full-Spectrum Out-of-Distribution Detection},
+    journal={arXiv preprint arXiv:2204.05306},
     year = {2022}
 }
 
