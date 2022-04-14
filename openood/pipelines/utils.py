@@ -22,4 +22,5 @@ def get_pipeline(config: Config):
         'train_ad': TrainAdPipeline,
     }
 
+
     return pipelines[config.pipeline.name](config)

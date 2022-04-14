@@ -8,6 +8,7 @@ from .odin_postprocessor import ODINPostprocessor
 from .patchcore_postprocessor import PatchcorePostprocessor
 from .openmax_poseprocessor import OpenMax
 
+
 def get_postprocessor(config: Config):
     postprocessors = {
         'msp': BasePostprocessor,

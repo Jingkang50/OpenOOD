@@ -6,6 +6,7 @@ from .fsood_evaluator import FSOODEvaluator
 from .ood_evaluator import OODEvaluator
 from .openmax_evaluator import OpenMaxEvaluator
 
+
 def get_evaluator(config: Config):
     evaluators = {
         'base': BaseEvaluator,
