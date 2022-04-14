@@ -50,6 +50,7 @@ def get_network(network_config):
 
     elif network_config.name == 'openmax_network':
         net = OpenMax(backbone='ResNet18', num_classes=50)
+
     else:
         raise Exception('Unexpected Network Architecture!')
 

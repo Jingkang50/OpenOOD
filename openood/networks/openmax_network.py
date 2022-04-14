@@ -9,7 +9,7 @@ class OpenMax(nn.Module):
     def __init__(self, backbone='ResNet18', num_classes=50,embed_dim=None):
         super(OpenMax, self).__init__()
         self.backbone_name = backbone
-        self.backbone = ResNet18(num_classes = 50)
+        self.backbone = ResNet18(num_classes = num_classes)
 
         self.dim = self.get_backbone_last_layer_out_channel()
         if embed_dim:

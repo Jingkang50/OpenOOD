@@ -5,6 +5,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 
+from tqdm import tqdm
 import torchvision
 import numpy as np
 import torchvision.transforms as transforms
@@ -35,16 +36,38 @@ def compute_channel_distances(mavs, features, eu_weight=0.5):
 
 def compute_train_score_and_mavs_and_dists(train_class_num,trainloader,device,net):
     scores = [[] for _ in range(train_class_num)]
+    # with torch.no_grad():
+    #     for batch_idx, (inputs, targets) in enumerate(trainloader):
+    #         inputs, targets = inputs.to(device), targets.to(device)
+
+    #         # this must cause error for cifar
+    #         _, outputs = net(inputs)
+    #         for score, t in zip(outputs, targets):
+    #             # print(f"torch.argmax(score) is {torch.argmax(score)}, t is {t}")
+    #             if torch.argmax(score) == t:
+    #                 scores[t].append(score.unsqueeze(dim=0).unsqueeze(dim=0))
+
+    train_dataiter = iter(trainloader)
     with torch.no_grad():
-        for batch_idx, (inputs, targets) in enumerate(trainloader):
-            inputs, targets = inputs.to(device), targets.to(device)
+        for train_step in tqdm(range(1,
+                                        len(train_dataiter) + 1),
+                                desc='Epoch {:03d}: '.format(1),
+                                position=0,
+                                leave=True):
+            batch = next(train_dataiter)
+            data = batch['data'].cuda()
+            target = batch['label'].cuda()
 
             # this must cause error for cifar
-            _, outputs = net(inputs)
-            for score, t in zip(outputs, targets):
+            outputs = net(data)
+            for score, t in zip(outputs, target):
+                
                 # print(f"torch.argmax(score) is {torch.argmax(score)}, t is {t}")
                 if torch.argmax(score) == t:
                     scores[t].append(score.unsqueeze(dim=0).unsqueeze(dim=0))
+    
+
+
     scores = [torch.cat(x).cpu().numpy() for x in scores]  # (N_c, 1, C) * C
     mavs = np.array([np.mean(x, axis=0) for x in scores])  # (C, 1, C)
     dists = [compute_channel_distances(mcv, score) for mcv, score in zip(mavs, scores)]
@@ -148,16 +171,18 @@ class OpenMax(BasePostprocessor):
     def __init__(self, config):
         super(OpenMax, self).__init__(config)
         self.nc = config.dataset.num_classes
+        self.ood_nc = config.ood_dataset.num_classes
         self.weibull_alpha = 3
         self.weibull_threshold =0.9
         self.weibull_tail = 20
         
     
-    def setup(self, net: nn.Module, train_loader_dict):
+    def setup(self, net: nn.Module, train_loader_dict,ood_loder_dict):
+        
         # Fit the weibull distribution from training data.
         print("Fittting Weibull distribution...")
-        _, mavs, dists = compute_train_score_and_mavs_and_dists(self.nc -1, train_loader_dict['train'], device='cuda',net = net)
-        categories = list(range(0, self.nc-1))
+        _, mavs, dists = compute_train_score_and_mavs_and_dists(self.nc, train_loader_dict['train'], device='cuda',net = net)
+        categories = list(range(0, self.nc))
         self.weibull_model = fit_weibull(mavs, dists, categories, self.weibull_tail, "euclidean")
 
 
@@ -167,7 +192,7 @@ class OpenMax(BasePostprocessor):
         test_loss = 0
         correct = 0
         total = 0
-        device = '0'
+        device = 'cuda'
         scores = []
         with torch.no_grad():
             for inputs in data.split(1,dim=0):
@@ -187,7 +212,7 @@ class OpenMax(BasePostprocessor):
         scores = np.array(scores)[:, np.newaxis, :]
 
 
-        categories = list(range(0, self.nc-1))
+        categories = list(range(0, self.nc))
         
         pred_openmax = []
         score_openmax = []
@@ -199,7 +224,15 @@ class OpenMax(BasePostprocessor):
             score_openmax.append(so)
         
 
-        pred = pred_openmax
-        conf = score_openmax
+        pred = []
+        for i in pred_openmax:
+            pred.append(torch.tensor(i))
+            
+        conf = []
+        for i in score_openmax:
+            conf.append(i)
 
+        conf = torch.tensor(conf, dtype = torch.float32)
+        conf = conf.cuda()
+        
         return pred, conf

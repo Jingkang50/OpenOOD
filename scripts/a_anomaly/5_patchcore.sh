@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/6_mnist_test_fsood_mds.sh
+# sh scripts/a_anomaly/5_patchcore.sh
 
 GPU=1
 CPU=1

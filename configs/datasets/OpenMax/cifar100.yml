@@ -39,15 +39,16 @@ dataset:
     interpolation: bilinear
 
 ood_dataset:
-  name: mvtec
-  num_classes: 10
-  image_size: 256
-  crop_size: 224
+  name: cifar100
+  num_classes: 100
+  image_size: 32
+  crop_size: 32
   num_workers: 4
-
+  mean: [0.4914, 0.4822, 0.4465]
+  std: [0.4914, 0.4822, 0.4465]
   dataset_class: ImglistDataset
   interpolation: bilinear
-  batch_size: 32
+  batch_size: 256
   shuffle: False
 
   split_names: [nearood, farood]
@@ -55,34 +56,34 @@ ood_dataset:
     dataset_class: ImglistDataset
     transform: mnist_train_standard
     interpolation: bilinear
-    batch_size: 32
+    batch_size: 256
     shuffle: True
-    mean: [0.485, 0.456, 0.406]
-    std: [0.229, 0.224, 0.225]
+    mean: [0.4914, 0.4822, 0.4465]
+    std: [0.4914, 0.4822, 0.4465]
     data_dir: ./data/
-    imglist_pth: ./data/mvtecList/hazelnut_test.txt
+    imglist_pth: ./data/cifar100List/test.txt
   nearood:
     dataset_class: ImglistDataset
     transform: mnist_train_standard
     interpolation: bilinear
-    batch_size: 32
+    batch_size: 256
     shuffle: True
-    mean: [0.485, 0.456, 0.406]
-    std: [0.229, 0.224, 0.225]
-    datasets: [mvtec]
-    mvtec:
+    datasets: [near_cifar100]
+    near_cifar100:
+      mean: [0.4914, 0.4822, 0.4465]
+      std: [0.4914, 0.4822, 0.4465]
       data_dir: ./data/
-      imglist_pth: ./data/mvtecList/hazelnut_test.txt
+      imglist_pth: ./data/cifar100List/test.txt
   farood:
     dataset_class: ImglistDataset
     transform: mnist_train_standard
     interpolation: bilinear
-    batch_size: 32
+    batch_size: 256
     shuffle: True
-    mean: [0.485, 0.456, 0.406]
-    std: [0.229, 0.224, 0.225]
-    datasets: [mvtec]
-    mvtec:
+    datasets: [far_cifar100]
+    far_cifar100:
+      mean: [0.4914, 0.4822, 0.4465]
+      std: [0.4914, 0.4822, 0.4465]
       data_dir: ./data/
-      imglist_pth: ./data/mvtecList/hazelnut_test.txt
+      imglist_pth: ./data/cifar100List/test.txt
 
