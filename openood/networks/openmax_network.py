@@ -1,5 +1,5 @@
 import sys
-from .resnet18 import ResNet18
+from .resnet import ResNet18
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

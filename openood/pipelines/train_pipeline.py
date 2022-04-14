@@ -38,8 +38,7 @@ class TrainPipeline:
             # save model and report the result
             recorder.save_model(net, val_metrics)
             recorder.report(train_metrics, val_metrics)
-        import pdb
-        pdb.set_trace()
+        
         recorder.summary()
         print(u'\u2500' * 70, flush=True)
         

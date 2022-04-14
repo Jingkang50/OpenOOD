@@ -1,3 +1,4 @@
+# sh scripts/b_osr/-1_test_openmax.sh
 GPU=1
 CPU=1
 node=30

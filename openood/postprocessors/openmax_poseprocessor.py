@@ -36,17 +36,7 @@ def compute_channel_distances(mavs, features, eu_weight=0.5):
 
 def compute_train_score_and_mavs_and_dists(train_class_num,trainloader,device,net):
     scores = [[] for _ in range(train_class_num)]
-    # with torch.no_grad():
-    #     for batch_idx, (inputs, targets) in enumerate(trainloader):
-    #         inputs, targets = inputs.to(device), targets.to(device)
-
-    #         # this must cause error for cifar
-    #         _, outputs = net(inputs)
-    #         for score, t in zip(outputs, targets):
-    #             # print(f"torch.argmax(score) is {torch.argmax(score)}, t is {t}")
-    #             if torch.argmax(score) == t:
-    #                 scores[t].append(score.unsqueeze(dim=0).unsqueeze(dim=0))
-
+    
     train_dataiter = iter(trainloader)
     with torch.no_grad():
         for train_step in tqdm(range(1,
@@ -66,8 +56,6 @@ def compute_train_score_and_mavs_and_dists(train_class_num,trainloader,device,ne
                 if torch.argmax(score) == t:
                     scores[t].append(score.unsqueeze(dim=0).unsqueeze(dim=0))
     
-
-
     scores = [torch.cat(x).cpu().numpy() for x in scores]  # (N_c, 1, C) * C
     mavs = np.array([np.mean(x, axis=0) for x in scores])  # (C, 1, C)
     dists = [compute_channel_distances(mcv, score) for mcv, score in zip(mavs, scores)]
@@ -206,7 +194,6 @@ class OpenMax(BasePostprocessor):
                 # total += targets.size(0)
                 # correct += predicted.eq(targets).sum().item()
         
-
         # Get the prdict results.
         scores = torch.cat(scores,dim=0).cpu().numpy()
         scores = np.array(scores)[:, np.newaxis, :]

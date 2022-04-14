@@ -1,3 +1,4 @@
+from cgi import print_form
 from turtle import shape
 from cv2 import split
 from sklearn.random_projection import SparseRandomProjection
@@ -147,9 +148,9 @@ class PatchcorePostprocessor(BasePostprocessor):
         for i in self.pred_list_img_lvl:
             # 6.3 is the value that 
             if(i>6.3): 
-                pred.append(torch.tensor(-1))
-            else:
                 pred.append(torch.tensor(1))
+            else:
+                pred.append(torch.tensor(-1))
         conf = []
         for i in self.pred_list_img_lvl:
             conf.append(i)

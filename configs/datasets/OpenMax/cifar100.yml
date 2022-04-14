@@ -23,7 +23,7 @@ dataset:
     batch_size: 256
     shuffle: True
     mean: [0.4914, 0.4822, 0.4465]
-    std: [0.4914, 0.4822, 0.4465]
+    std: [0.2023, 0.1994, 0.2010]
     transform: mnist_train_standard
     interpolation: bilinear
 
@@ -34,18 +34,18 @@ dataset:
     batch_size: 256
     shuffle: True
     mean: [0.4914, 0.4822, 0.4465]
-    std: [0.4914, 0.4822, 0.4465]
+    std: [0.2023, 0.1994, 0.2010]
     transform: mnist_train_standard
     interpolation: bilinear
 
 ood_dataset:
   name: cifar100
-  num_classes: 100
+  num_classes: 51
   image_size: 32
   crop_size: 32
   num_workers: 4
   mean: [0.4914, 0.4822, 0.4465]
-  std: [0.4914, 0.4822, 0.4465]
+  std: [0.2023, 0.1994, 0.2010]
   dataset_class: ImglistDataset
   interpolation: bilinear
   batch_size: 256
@@ -59,7 +59,7 @@ ood_dataset:
     batch_size: 256
     shuffle: True
     mean: [0.4914, 0.4822, 0.4465]
-    std: [0.4914, 0.4822, 0.4465]
+    std: [0.2023, 0.1994, 0.2010]
     data_dir: ./data/
     imglist_pth: ./data/cifar100List/test.txt
   nearood:
@@ -71,7 +71,7 @@ ood_dataset:
     datasets: [near_cifar100]
     near_cifar100:
       mean: [0.4914, 0.4822, 0.4465]
-      std: [0.4914, 0.4822, 0.4465]
+      std: [0.2023, 0.1994, 0.2010]
       data_dir: ./data/
       imglist_pth: ./data/cifar100List/test.txt
   farood:
@@ -83,7 +83,7 @@ ood_dataset:
     datasets: [far_cifar100]
     far_cifar100:
       mean: [0.4914, 0.4822, 0.4465]
-      std: [0.4914, 0.4822, 0.4465]
+      std: [0.2023, 0.1994, 0.2010]
       data_dir: ./data/
       imglist_pth: ./data/cifar100List/test.txt
 

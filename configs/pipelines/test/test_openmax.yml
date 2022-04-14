@@ -13,7 +13,7 @@ trainer:
   name: OpenMax
 
 evaluator:
-  name: ood
+  name: openmax
 
 optimizer:
   name: sgd

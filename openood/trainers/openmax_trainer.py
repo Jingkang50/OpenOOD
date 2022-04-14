@@ -58,7 +58,6 @@ class OpenMaxTrainer:
             
             loss.backward()
             self.optimizer.step()
-
             train_loss += loss.item()
             _, predicted = outputs.max(1)
             total += target.size(0)
@@ -72,5 +71,8 @@ class OpenMaxTrainer:
         metrics['epoch_idx'] = epoch_idx
         metrics['loss'] = loss_avg
         metrics['acc'] = correct/total
+        print("training acc: " + str(metrics['acc']))
+        print('\nLearning rate: %f' % (self.optimizer.param_groups[0]['lr']))
+        
 
         return self.net, metrics

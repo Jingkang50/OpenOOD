@@ -140,6 +140,10 @@ class OODEvaluator(BaseEvaluator):
                  data_loader: DataLoader,
                  postprocessor: BasePostprocessor = None,
                  epoch_idx: int = -1):
+        """
+        Returns the accuracy score of the labels and predictions.
+        :return: float
+        """
         net.eval()
         id_pred, _, id_gt = postprocessor.inference(net, data_loader)
         metrics = {}
