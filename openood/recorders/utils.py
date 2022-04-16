@@ -3,7 +3,7 @@ from openood.utils import Config
 from .base_recorder import BaseRecorder
 from .draem_recorder import DRAEMRecorder
 from .kdad_recorder import KdadRecorder
-from .openGan_recorder import OpenGanRecorder
+from .opengan_recorder import OpenGanRecorder
 
 
 def get_recorder(config: Config, ):
