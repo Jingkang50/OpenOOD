@@ -1,0 +1,5 @@
+postprocessor:
+  name: godin
+  postprocessor_args:
+    score_func: h   # use h or g
+    noise_magnitude: 0.0025   # in range of [0, 0.0025, 0.005, 0.01, 0.02, 0.04, 0.08]

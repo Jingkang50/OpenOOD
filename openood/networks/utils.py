@@ -3,6 +3,7 @@ import torch.backends.cudnn as cudnn
 
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
+from .godinnet import GodinNet
 from .lenet import LeNet
 from .opengan import Discriminator, Generator
 from .resnet18_32x32 import ResNet18_32x32
@@ -38,15 +39,20 @@ def get_network(network_config):
                         dropRate=0.0,
                         num_classes=num_classes)
 
+    elif network_config.name == 'godinnet':
+        backbone = get_network(network_config.backbone)
+        net = GodinNet(feature_net=backbone,
+                       feature_size=backbone.feature_size,
+                       num_classes=num_classes,
+                       similarity_measure=network_config.similarity_measure)
+
     elif network_config.name == 'DRAEM':
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
         model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
 
         net = {'generative': model, 'discriminative': model_seg}
 
-    elif network_config.name == 'opengan':
-        # NetType = eval(network_config.feat_extract_network)
-        # feature_net = NetType()
+    elif network_config.name == 'openGan':
         feature_net = get_network(network_config.feat_extract_network)
 
         netG = Generator(in_channels=network_config.nz,

@@ -83,11 +83,6 @@ class ResNet18_32x32(nn.Module):
         if num_blocks is None:
             num_blocks = [2, 2, 2, 2]
         self.in_planes = 64
-        if image_size**2 % 32**2 == 0:
-            logits_expansion = int(image_size**2 / 32**2)
-        else:
-            logits_expansion = False
-
         self.conv1 = nn.Conv2d(3,
                                64,
                                kernel_size=3,
@@ -99,15 +94,9 @@ class ResNet18_32x32(nn.Module):
         self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
         self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)
         self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
-        if logits_expansion:
-            if image_size == 64:
-                self.avgpool = nn.AvgPool2d(pooling_size)
-            else:
-                self.avgpool = nn.AdaptiveAvgPool2d(1)
-            self.fc = nn.Linear(512 * 4, num_classes)
-        else:
-            self.avgpool = nn.AdaptiveAvgPool2d(1)
-            self.fc = nn.Linear(512 * 1, num_classes)
+        self.avgpool = nn.AvgPool2d(4)
+        self.fc = nn.Linear(512 * block.expansion, num_classes)
+        self.feature_size = 512 * block.expansion
 
     def _make_layer(self, block, planes, num_blocks, stride):
         strides = [stride] + [1] * (num_blocks - 1)

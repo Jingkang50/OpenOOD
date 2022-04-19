@@ -4,6 +4,7 @@ from openood.utils import Config
 
 from .base_trainer import BaseTrainer
 from .draem_trainer import DRAEMTrainer
+from .godin_trainer import GodinTrainer
 from .kdad_trainer import KdadTrainer
 from .mixup_trainer import MixupTrainer
 from .opengan_trainer import OpenGanTrainer
@@ -21,6 +22,7 @@ def get_trainer(
         'sae': SAETrainer,
         'DRAEM': DRAEMTrainer,
         'openGan': OpenGanTrainer,
-        'kdad': KdadTrainer
+        'kdad': KdadTrainer,
+        'godin': GodinTrainer,
     }
     return trainers[config.trainer.name](net, train_loader, config)
