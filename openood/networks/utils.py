@@ -9,6 +9,7 @@ from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
+from .BiT import KNOWN_MODELS
 
 
 def get_network(network_config):
@@ -62,6 +63,9 @@ def get_network(network_config):
         model = make_arch(network_config['equal_network_size'],
                           network_config['use_bias'], True)
         net = {'vgg': vgg, 'model': model}
+
+    elif network_config.name == 'bit':
+        net = KNOWN_MODELS[network_config.model]()
 
     else:
         raise Exception('Unexpected Network Architecture!')

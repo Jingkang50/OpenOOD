@@ -121,7 +121,10 @@ class Config(dict):
     # access by '[]'
     def __getitem__(self, key):
         sub_cfg, sub_key = consume_dots(self, key, create_default=False)
-        return dict.__getitem__(sub_cfg, sub_key)
+        try:
+            return dict.__getitem__(sub_cfg, sub_key)
+        except:
+            import ipdb; ipdb.set_trace()
 
     def __setitem__(self, key, value):
         sub_cfg, sub_key = consume_dots(self, key, create_default=True)

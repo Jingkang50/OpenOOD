@@ -7,21 +7,21 @@ dataset:
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/val_ImageNet.txt
+    imglist_pth: ./data_lists/imagenet2012_train_list.txt
     batch_size: 32
     shuffle: True
     interpolation: bilinear
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/val_ImageNet.txt
+    imglist_pth: ./data_lists/imagenet2012_val_list.txt
     batch_size: 32
     shuffle: False
     interpolation: bilinear
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/val_ImageNet.txt
+    imglist_pth: ./data_lists/imagenet2012_val_list.txt
     batch_size: 32
     shuffle: False
     interpolation: bilinear

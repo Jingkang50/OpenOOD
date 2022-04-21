@@ -10,8 +10,8 @@ normalization_dict = {
 center_crop_dict = {28: 28, 32: 32, 224: 224, 299: 320, 331: 352}
 
 interpolation_modes = {
-    'nearest': tvs_trans.InterpolationMode.NEAREST,
-    'bilinear': tvs_trans.InterpolationMode.BILINEAR,
+    'nearest': 1,
+    'bilinear': 2,
 }
 
 
