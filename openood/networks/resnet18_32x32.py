@@ -129,8 +129,8 @@ class ResNet18_32x32(nn.Module):
         feature3 = self.layer2(feature2)
         feature4 = self.layer3(feature3)
         feature5 = self.layer4(feature4)
-        feature = self.avgpool(feature5)
-        feature = feature.clip(max=threshold)
+        feature5 = self.avgpool(feature5)
+        feature = feature5.clip(max=threshold)
         feature = feature.view(feature.size(0), -1)
         logits_cls = self.fc(feature)
 

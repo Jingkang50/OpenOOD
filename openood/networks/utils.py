@@ -6,8 +6,10 @@ from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .godinnet import GodinNet
 from .lenet import LeNet
 from .opengan import Discriminator, Generator
+from .reactnet import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
+from .resnet50 import ResNet50
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
 
@@ -21,6 +23,9 @@ def get_network(network_config):
 
     elif network_config.name == 'resnet18_224x224':
         net = ResNet18_224x224(num_classes=num_classes)
+
+    elif network_config.name == 'resnet50':
+        net = ResNet50(num_classes=num_classes)
 
     elif network_config.name == 'lenet':
         net = LeNet(num_classes=num_classes, num_channel=3)
@@ -41,10 +46,14 @@ def get_network(network_config):
 
     elif network_config.name == 'godinnet':
         backbone = get_network(network_config.backbone)
-        net = GodinNet(feature_net=backbone,
+        net = GodinNet(backbone=backbone,
                        feature_size=backbone.feature_size,
                        num_classes=num_classes,
                        similarity_measure=network_config.similarity_measure)
+
+    elif network_config.name == 'reactnet':
+        backbone = get_network(network_config.backbone)
+        net = ReactNet(backbone)
 
     elif network_config.name == 'DRAEM':
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)

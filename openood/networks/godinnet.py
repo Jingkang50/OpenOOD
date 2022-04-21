@@ -63,7 +63,7 @@ class InnerDeconf(nn.Module):
 
 
 class GodinNet(nn.Module):
-    def __init__(self, feature_net, feature_size, num_classes,
+    def __init__(self, backbone, feature_size, num_classes,
                  similarity_measure):
         super(GodinNet, self).__init__()
 
@@ -75,7 +75,7 @@ class GodinNet(nn.Module):
 
         self.num_classes = num_classes
 
-        self.feature_net = feature_net
+        self.backbone = backbone
 
         self.h = h_dict[similarity_measure](feature_size, num_classes)
 
@@ -85,7 +85,7 @@ class GodinNet(nn.Module):
         self.softmax = nn.Softmax()
 
     def forward(self, x, inference=False, score_func='h'):
-        _, feature = self.feature_net(x, return_feature=True)
+        _, feature = self.backbone(x, return_feature=True)
 
         numerators = self.h(feature)
 

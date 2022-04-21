@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/0_basics/godin_test.sh
+# sh scripts/c_ood/-1_cifar_train_godin.sh
 
 # GPU=1
 # CPU=1
@@ -13,11 +13,13 @@ PYTHONPATH='.':$PYTHONPATH \
 # -w SG-IDC1-10-51-2-${node} \
 python main.py \
 --config configs/datasets/objects/cifar10.yml \
-configs/datasets/objects/cifar10_ood.yml \
 configs/networks/godinnet.yml \
-configs/pipelines/test/test_ood.yml \
+configs/pipelines/train/baseline.yml \
 configs/postprocessors/godin.yml \
 --dataset.image_size 32 \
+--optimizer.num_epochs 5 \
 --num_workers 8 \
---network.checkpoint ./results/cifar10_deconfnet_generalized_odin_e300_lr0.1/best.ckpt \
---force_merge False
+--trainer.name 'godin' \
+--force_merge True \
+--dataset.train.batch_size 128 \
+--optimizer.weight_decay 0.0005
