@@ -7,7 +7,7 @@ dataset:
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data_lists/imagenet2012_train_list.txt
+    imglist_pth: ./data_lists/imagenet2012_train_random_200k.txt
     batch_size: 32
     shuffle: True
     interpolation: bilinear

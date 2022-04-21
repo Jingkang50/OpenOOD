@@ -14,7 +14,7 @@ python main.py \
 --config configs/datasets/imagenet/imagenet.yml \
 configs/datasets/imagenet/imagenet_ood.yml \
 configs/networks/bit.yml \
-configs/pipelines/test/test_fsood.yml \
+configs/pipelines/test/test_ood.yml \
 configs/postprocessors/vim.yml \
 --num_workers 4 \
 --network.checkpoint ./bit_pretrained_models/BiT-S-R101x1.npz \

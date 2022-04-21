@@ -24,10 +24,10 @@ ood_dataset:
     imageneto:
       dataset_class: ImglistDataset
       data_dir: ./data/imagenet-o/
-      imglist_pth: ./data/openimage_clean/openimage_clean.txt
+      imglist_pth: ./data/imagenet-o/imagenet-o.txt
   farood:
     datasets: [texture]
     texture:
       dataset_class: ImglistDataset
       data_dir: ./data/Texture_clean/images/
-      imglist_pth: ./data/imglist/objects/test_tin.txt
+      imglist_pth: ./data/Texture_clean/texture_clean.txt

@@ -29,7 +29,7 @@ class VIMPostprocessor(BasePostprocessor):
                 data = batch['data'].cuda()
                 data = data.float()
 
-                feature_id_train = net(data, return_feature=True)[..., 0, 0].cpu()
+                feature_id_train = net(data, return_feature=True)[..., 0, 0].cpu().numpy()
                 logit_id_train = feature_id_train @ self.w.T + self.b
 
             print("Extracting id testing feature")
@@ -39,7 +39,7 @@ class VIMPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-            feature_id_val = net(data, return_feature=True)[..., 0, 0].cpu()
+            feature_id_val = net(data, return_feature=True)[..., 0, 0].cpu().numpy()
             logit_id_val = feature_id_val @ self.w.T + self.b
 
         self.u = -np.matmul(pinv(self.w), self.b)
@@ -61,7 +61,7 @@ class VIMPostprocessor(BasePostprocessor):
         feature_ood = net.forward(data, return_feature = True)[..., 0, 0].cpu()
         logit_ood = feature_ood @ self.w.T + self.b
         _, pred = torch.max(logit_ood, dim=1)
-        energy_ood = logsumexp(logit_ood, axis=-1)
-        vlogit_ood = norm(np.matmul(feature_ood - self.u, self.NS), axis=-1) * self.alpha
+        energy_ood = logsumexp(logit_ood.numpy(), axis=-1)
+        vlogit_ood = norm(np.matmul(feature_ood.numpy() - self.u, self.NS), axis=-1) * self.alpha
         score_ood = -vlogit_ood + energy_ood
-        return pred, -score_ood
+        return pred, torch.from_numpy(-score_ood)
