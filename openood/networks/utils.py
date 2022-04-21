@@ -1,5 +1,6 @@
 import torch
 import torch.backends.cudnn as cudnn
+import numpy as np
 
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
@@ -78,6 +79,8 @@ def get_network(network_config):
                     if checkpoint != 'none':
                         subnet.load_state_dict(torch.load(checkpoint),
                                                strict=False)
+        elif network_config.name == 'bit':
+            net.load_from(np.load(network_config.checkpoint))
         else:
             try:
                 net.load_state_dict(torch.load(network_config.checkpoint),

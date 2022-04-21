@@ -20,7 +20,7 @@ class VIMPostprocessor(BasePostprocessor):
         net.eval()
 
         with torch.no_grad():
-            self.w, self.b = net.get_fc() #TO_DO
+            self.w, self.b = net.get_fc()
             print("Extracting id training feature")
             for batch in tqdm(id_loader_dict['train'],
                               desc='Eval: ',
@@ -29,7 +29,7 @@ class VIMPostprocessor(BasePostprocessor):
                 data = batch['data'].cuda()
                 data = data.float()
 
-                _, feature_id_train = net(data, return_feature=True)
+                feature_id_train = net(data, return_feature=True)[..., 0, 0].cpu()
                 logit_id_train = feature_id_train @ self.w.T + self.b
 
             print("Extracting id testing feature")
@@ -39,7 +39,7 @@ class VIMPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-            _, feature_id_val = net(data, return_feature=True)
+            feature_id_val = net(data, return_feature=True)[..., 0, 0].cpu()
             logit_id_val = feature_id_val @ self.w.T + self.b
 
         self.u = -np.matmul(pinv(self.w), self.b)
@@ -58,7 +58,7 @@ class VIMPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        feature_ood = net.forward(data, return_feature = True)
+        feature_ood = net.forward(data, return_feature = True)[..., 0, 0].cpu()
         logit_ood = feature_ood @ self.w.T + self.b
         _, pred = torch.max(logit_ood, dim=1)
         energy_ood = logsumexp(logit_ood, axis=-1)

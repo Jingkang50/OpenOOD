@@ -17,5 +17,5 @@ configs/networks/bit.yml \
 configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/vim.yml \
 --num_workers 4 \
---network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best.ckpt \
+--network.checkpoint ./bit_pretrained_models/BiT-S-R101x1.npz \
 --mark 0

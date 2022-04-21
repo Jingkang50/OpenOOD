@@ -1,5 +1,6 @@
-dataset:
+ood_dataset:
   name: imagenet_ood
+  dataset_class: ImglistDataset
   interpolation: bilinear
   batch_size: 32
   shuffle: False
@@ -8,14 +9,10 @@ dataset:
   num_workers: '@{num_workers}'
   split_names: [val, nearood]
   val:
-    dataset_class: ImglistDataset
-    datasets: [inaturalist, openimageo]
     data_dir: ./data/images/
     imglist_pth: ./data_lists/imagenet2012_val_list.txt
   nearood:
     datasets: [inaturalist, openimageo]
-    dataset_class: ImglistDataset
-    interpolation: bilinear
     inaturalist:
       dataset_class: ImglistDataset
       data_dir: ./data/iNaturalist/images/
@@ -30,7 +27,6 @@ dataset:
       imglist_pth: ./data/openimage_clean/openimage_clean.txt
   farood:
     datasets: [texture]
-    dataset_class: ImglistDataset
     texture:
       dataset_class: ImglistDataset
       data_dir: ./data/Texture_clean/images/
