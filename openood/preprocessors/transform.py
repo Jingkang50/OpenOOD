@@ -3,6 +3,7 @@ import torchvision.transforms as tvs_trans
 normalization_dict = {
     'cifar10': [[0.4914, 0.4822, 0.4465], [0.2470, 0.2435, 0.2616]],
     'cifar100': [[0.5071, 0.4867, 0.4408], [0.2675, 0.2565, 0.2761]],
+    'cifar100_openmax':[[0.4914, 0.4822, 0.4465], [0.2023, 0.1994, 0.2010]],
     'imagenet': [[0.485, 0.456, 0.406], [0.229, 0.224, 0.225]],
     'covid': [[0.4907, 0.4907, 0.4907], [0.2697, 0.2697, 0.2697]],
 }
@@ -80,6 +81,33 @@ class TestStandard:
             CustomPreprocessor,
             tvs_trans.ToTensor(),
             tvs_trans.Normalize(mean=mean, std=std),
+        ])
+
+    def __call__(self, image):
+        return self.transform(image)
+
+class PatchStandard:
+    def __init__(self,
+                 name: str,
+                 image_size: int,
+                 interpolation: str = 'bilinear',
+                 CustomPreprocessor=None):
+        pre_size = center_crop_dict[image_size]
+        dataset_name = name.split('_')[0]
+        if dataset_name in normalization_dict.keys():
+            mean = normalization_dict[dataset_name][0]
+            std = normalization_dict[dataset_name][1]
+        else:
+            mean = [0.485, 0.456, 0.406]
+            std = [0.229, 0.224, 0.225]
+
+        interpolation = interpolation_modes[interpolation]
+
+        self.transform = tvs_trans.Compose([
+            tvs_trans.Resize(image_size, interpolation=interpolation),
+            tvs_trans.CenterCrop(224),
+            tvs_trans.ToTensor(),
+            tvs_trans.Normalize(mean, std),
         ])
 
     def __call__(self, image):

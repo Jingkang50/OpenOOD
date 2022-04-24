@@ -1,5 +1,5 @@
 dataset:
-  name: mvtec
+  name: cifar100_openmax
   split_names: [train, val, test]
   num_classes: 50
   image_size: 32
