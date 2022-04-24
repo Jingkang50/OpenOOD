@@ -1,0 +1,37 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'\
+_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
+output_dir: ./results/
+save_output: True
+force_merge: False
+
+num_gpus: 1
+num_workers: 0
+
+pipeline:
+  name: finetune
+
+network:
+  pretrained: True
+
+trainer:
+  name: sae
+  trainer_args:
+    num_clusters: 3
+    feature_type: stat  # flat/mean/stat
+    reduce_dim: pca_50  # none/capca_10/pca_50
+    loss_weight: [0.5, 0.5, 0.1, 0.1] # [cls_std, cls_mix, sae_id, sae_ood]
+    alpha: 0.5
+
+evaluator:
+  name: base
+
+optimizer:
+  name: sgd
+  num_epochs: 30
+  lr: 0.05
+  momentum: 0.9
+  weight_decay: 0.0005
+
+recorder:
+  name: base
+  save_all_models: False

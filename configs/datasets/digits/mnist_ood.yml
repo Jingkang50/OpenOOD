@@ -33,7 +33,7 @@ ood_dataset:
       imglist_pth: ./data/imglist/digits/test_cifar10.txt
     tin:
       data_dir: ./data/images/
-      imglist_pth: ./data/imglist/digits/test_tin.txt
+      imglist_pth: ./data/imglist/objects/test_tin.txt
     places365:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/digits/test_places365.txt

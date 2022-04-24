@@ -1,8 +1,10 @@
+from openood.evaluators.openGan_evaluator import OpenGanEvaluator
 from openood.utils import Config
 
 from .base_evaluator import BaseEvaluator
 from .draem_evaluator import DRAEMEvaluator
 from .fsood_evaluator import FSOODEvaluator
+from .kdad_evaluator import KdadDetectionEvaluator
 from .ood_evaluator import OODEvaluator
 from .openmax_evaluator import OpenMaxEvaluator
 
@@ -13,5 +15,7 @@ def get_evaluator(config: Config):
         'fsood': FSOODEvaluator,
         'DRAEM': DRAEMEvaluator,
         'openmax': OpenMaxEvaluator,
+        'openGan': OpenGanEvaluator,
+        'kdad': KdadDetectionEvaluator,
     }
     return evaluators[config.evaluator.name](config)

@@ -79,6 +79,7 @@ def setup_logger(config):
 
     if config.save_output:
         if not config.force_merge and osp.isdir(output):
+            print('Output dir: {}'.format(output), flush=True)
             ans = input('Exp dir already exists, merge it? (y/n)')
             if ans in ['yes', 'Yes', 'YES', 'y', 'Y', 'can']:
                 save_logger(config, output)

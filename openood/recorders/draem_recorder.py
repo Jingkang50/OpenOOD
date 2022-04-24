@@ -4,10 +4,9 @@ from pathlib import Path
 
 import torch
 
-from openood.recorders.base_recorder import BaseRecorder
+from .base_recorder import BaseRecorder
 
 
-# TODO: find best model in different way(AUC Image)
 class DRAEMRecorder(BaseRecorder):
     def __init__(self, config) -> None:
         super().__init__(config)
@@ -33,7 +32,10 @@ class DRAEMRecorder(BaseRecorder):
             },
         }
 
+        self.best_epoch_idx = 0
         self.best_result = -1
+
+        self.begin_time = time.time()
 
         self.run_name = ('DRAEM_test_' + str(self.config.optimizer.lr) + '_' +
                          str(self.config.optimizer.num_epochs) + '_bs' +
@@ -49,7 +51,6 @@ class DRAEMRecorder(BaseRecorder):
                   test_metrics[self.best_model_basis]),
               flush=True)
 
-    # TODO: change suffix
     def save_model(self, net, test_metrics):
         if self.config.recorder.save_all_models:
 
@@ -61,7 +62,6 @@ class DRAEMRecorder(BaseRecorder):
                        save_pth + '_seg.ckpt')
 
         # enter only if lower loss occurs
-        # (which is bad, but I don't have the val set so, damn it)
         if self.best_result == -1 or test_metrics[
                 self.best_model_basis] >= self.best_result:
 

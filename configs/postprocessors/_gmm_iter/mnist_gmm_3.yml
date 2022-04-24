@@ -1,0 +1,10 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'\
+_'@{evaluator.name}'_gmm3_'@{mark}'"
+
+postprocessor:
+  name: gmm
+  postprocessor_args:
+    num_clusters_list: [3, 1, 10]
+    feature_type_list: [stat, mean, flat]     # flat/mean/stat
+    alpha_list: [-0.01, 0, 1]
+    reduce_dim_list: [none, none, pca_50]   # none/capca_10/pca_50

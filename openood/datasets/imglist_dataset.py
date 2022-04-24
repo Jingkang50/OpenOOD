@@ -2,73 +2,17 @@ import ast
 import io
 import logging
 import os
-from typing import List
 
 import torch
-import torchvision.transforms as trn
 from PIL import Image, ImageFile
-from torchvision.transforms import InterpolationMode
+
+from openood.preprocessors import BasePreprocessor
+from openood.preprocessors.transform import TestStandard, TrainStandard, PatchStandard
 
 from .base_dataset import BaseDataset
 
 # to fix "OSError: image file is truncated"
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-
-
-class Convert:
-    def __init__(self, mode='RGB'):
-        self.mode = mode
-
-    def __call__(self, image):
-        return image.convert(self.mode)
-
-
-def get_transforms(
-    mean: List[float],
-    std: List[float],
-    split: str,
-    interpolation: str = 'bilinear',
-    image_size: int = 256,
-    crop_size: int = 224,
-):
-    interpolation_modes = {
-        'nearest': InterpolationMode.NEAREST,
-        'bilinear': InterpolationMode.BILINEAR,
-    }
-    color_mode = 'RGB'
-
-    interpolation = interpolation_modes[interpolation]
-
-    if split == 'train':
-        return trn.Compose([
-            Convert(color_mode),
-            trn.Resize(image_size, interpolation=interpolation),
-            trn.CenterCrop(crop_size),
-            trn.RandomHorizontalFlip(),
-            trn.RandomCrop(image_size, padding=4),
-            trn.ToTensor(),
-            trn.Normalize(mean, std),
-        ])
-    
-    elif split == 'patch':
-        return trn.Compose([
-            # Convert(color_mode),
-            trn.Resize(image_size, interpolation=interpolation),
-            trn.CenterCrop(crop_size),
-            # trn.RandomHorizontalFlip(),
-            # trn.RandomCrop(image_size, padding=4),
-            trn.ToTensor(),
-            trn.Normalize(mean, std),
-        ])
-
-    else:
-        return trn.Compose([
-            Convert(color_mode),
-            trn.Resize(image_size, interpolation=interpolation),
-            trn.CenterCrop(crop_size),
-            trn.ToTensor(),
-            trn.Normalize(mean, std),
-        ])
 
 
 class ImglistDataset(BaseDataset):
@@ -95,10 +39,28 @@ class ImglistDataset(BaseDataset):
         with open(imglist_pth) as imgfile:
             self.imglist = imgfile.readlines()
         self.data_dir = data_dir
-        self.transform_image = get_transforms(mean, std, split, interpolation,
-                                              image_size,crop_size)
-        self.transform_aux_image = get_transforms(mean, std, 'val',
-                                                  interpolation, image_size,crop_size)
+
+        if preprocessor is None:
+            preprocessor = BasePreprocessor()
+        self.preprocessor = preprocessor
+
+        if split == 'train':
+            self.transform_image = TrainStandard(name, image_size,
+                                                 interpolation,
+                                                 self.preprocessor)
+        elif split == 'patch':
+            self.transform_image = PatchStandard(name, image_size,
+                                                interpolation,
+                                                self.preprocessor)
+        else:
+            self.transform_image = TestStandard(name, image_size,
+                                                interpolation,
+                                                self.preprocessor)
+
+        # some methods requires an auxiliary image without strong aug
+        self.transform_aux_image = TestStandard(name, image_size,
+                                                interpolation,
+                                                self.preprocessor)
         self.num_classes = num_classes
         self.maxlen = maxlen
         self.dummy_read = dummy_read

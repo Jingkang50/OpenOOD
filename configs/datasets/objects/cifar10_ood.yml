@@ -1,0 +1,37 @@
+ood_dataset:
+  name: cifar10_ood
+  dataset_class: ImglistDataset
+  interpolation: bilinear
+
+  batch_size: 128
+  shuffle: False
+  num_classes: 10
+  image_size: 32
+  num_workers: '@{num_workers}'
+
+  split_names: [val, nearood, farood]
+  val:
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/objects/val_cifar100.txt
+  nearood:
+    datasets: [cifar100, tin]
+    cifar100:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_cifar100.txt
+    tin:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_tin.txt
+  farood:
+    datasets: [mnist, svhn, texture, cifar100c]
+    mnist:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_mnist.txt
+    svhn:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_svhn.txt
+    texture:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_texture.txt
+    cifar100c:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_cifar100c.txt

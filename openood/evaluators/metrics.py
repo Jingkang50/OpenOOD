@@ -34,15 +34,20 @@ def acc(pred, label):
 
 # fpr_recall
 def fpr_recall(conf, label, tpr):
-    ind_conf = conf[label != -1]
-    ood_conf = conf[label == -1]
-    num_ind = len(ind_conf)
-    num_ood = len(ood_conf)
+    # ind_conf = conf[label != -1]
+    # ood_conf = conf[label == -1]
+    # num_ind = len(ind_conf)
+    # num_ood = len(ood_conf)
+    gt = np.ones_like(label)
+    gt[label == -1] = 0
+    # recall_num = int(np.floor(tpr * num_ind))
+    # thresh = np.sort(ind_conf)[-recall_num]
+    # num_fp = np.sum(ood_conf > thresh)
+    # fpr = num_fp / num_ood
 
-    recall_num = int(np.floor(tpr * num_ind))
-    thresh = np.sort(ind_conf)[-recall_num]
-    num_fp = np.sum(ood_conf > thresh)
-    fpr = num_fp / num_ood
+    fpr_list, tpr_list, threshold_list = metrics.roc_curve(gt, conf)
+    fpr = fpr_list[np.argmax(tpr_list >= tpr)]
+    thresh = threshold_list[np.argmax(tpr_list >= tpr)]
     return fpr, thresh
 
 

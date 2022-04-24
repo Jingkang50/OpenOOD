@@ -1,0 +1,4 @@
+postprocessor:
+  name: ebo
+  postprocessor_args:
+    temperature: 1000

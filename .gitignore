@@ -153,3 +153,8 @@ dmypy.json
 # no jupyter notebook
 .ipynb_checkpoints
 .ipynb
+
+# ignore custom config and scripts
+config/*/_*/
+scripts/_*/
+scripts/sweep/_*
