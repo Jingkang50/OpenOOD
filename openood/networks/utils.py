@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 import torch.backends.cudnn as cudnn
 
 from .densenet import DenseNet3
@@ -56,6 +57,42 @@ def get_network(network_config):
                              feature_size=network_config.ndf)
 
         net = {'netG': netG, 'netD': netD, 'netF': feature_net}
+
+    elif network_config.name == 'arpl_gan':
+        from .arpl_net import resnet34ABN, Generator, Discriminator, Generator32, Discriminator32
+        from .arpl_layer import ARPLayer
+        feature_net = resnet34ABN(num_classes=num_classes, num_bns=2)
+        dim_centers = feature_net.fc.weight.shape[1]
+        feature_net.fc = nn.Identity()
+
+        criterion = ARPLayer(feat_dim=dim_centers, num_classes=num_classes, 
+                            weight_pl=network_config.weight_pl, temp=network_config.temp)
+
+        assert network_config.image_size == 32 or network_config.image_size == 64, "ARPL-GAN only supports 32x32 or 64x64 images!"
+
+        if network_config.image_size == 64:
+            netG = Generator(1, network_config.nz, network_config.ngf, network_config.nc) # ngpu, nz, ngf, nc
+            netD = Discriminator(1, network_config.nc, network_config.ndf) # ngpu, nc, ndf
+        else:
+            netG = Generator32(1, network_config.nz, network_config.ngf, network_config.nc) # ngpu, nz, ngf, nc
+            netD = Discriminator32(1, network_config.nc, network_config.ndf) # ngpu, nc, ndf
+
+        net = {'netF': feature_net, 'criterion': criterion, 'netG': netG, 'netD': netD}
+
+    elif network_config.name == 'arpl_net':
+        from .arpl_layer import ARPLayer
+        feature_net = get_network(network_config.feat_extract_network)
+        try:
+            dim_centers = feature_net.fc.weight.shape[1]
+            feature_net.fc = nn.Identity()
+        except:
+            dim_centers = feature_net.classifier[0].weight.shape[1]
+            feature_net.classifier = nn.Identity()
+
+        criterion = ARPLayer(feat_dim=dim_centers, num_classes=num_classes, 
+                            weight_pl=network_config.weight_pl, temp=network_config.temp)
+
+        net = {'netF': feature_net, 'criterion': criterion}
 
     elif network_config.name == 'vgg and model':
         vgg = Vgg16(network_config['trainedsource'])
