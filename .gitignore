@@ -160,3 +160,4 @@ dmypy.json
 config/*/_*/
 scripts/_*/
 scripts/sweep/_*
+*.pkl

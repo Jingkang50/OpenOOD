@@ -4,6 +4,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from tqdm import tqdm
+import pickle
 from numpy.linalg import norm, pinv
 from scipy.special import logsumexp
 from sklearn.covariance import EmpiricalCovariance
@@ -22,24 +23,34 @@ class VIMPostprocessor(BasePostprocessor):
         with torch.no_grad():
             self.w, self.b = net.get_fc()
             print("Extracting id training feature")
-            for batch in tqdm(id_loader_dict['train'],
+            feature_id_train = []
+            for batch in tqdm(id_loader_dict['train_sub'],
                               desc='Eval: ',
                               position=0,
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
 
-                feature_id_train = net(data, return_feature=True)[..., 0, 0].cpu().numpy()
-                logit_id_train = feature_id_train @ self.w.T + self.b
+                feature = net(data, return_feature=True)[..., 0, 0].cpu().numpy()
+                feature_id_train.append(feature)
+            feature_id_train = np.concatenate(feature_id_train, axis=0)
+            with open("feature_id_train.pkl", 'wb') as f:
+                pickle.dump(feature_id_train, f)
+            logit_id_train = feature_id_train @ self.w.T + self.b
 
             print("Extracting id testing feature")
+            feature_id_val = []
             for batch in tqdm(id_loader_dict['test'],
                               desc='Eval: ',
                               position=0,
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-            feature_id_val = net(data, return_feature=True)[..., 0, 0].cpu().numpy()
+                feature = net(data, return_feature=True)[..., 0, 0].cpu().numpy()
+                feature_id_val.append(feature)
+            feature_id_val = np.concatenate(feature_id_val, axis=0)
+            with open("feature_id_val.pkl", 'wb') as f:
+                pickle.dump(feature_id_val, f)
             logit_id_val = feature_id_val @ self.w.T + self.b
 
         self.u = -np.matmul(pinv(self.w), self.b)
