@@ -78,12 +78,12 @@ class Bottleneck(nn.Module):
 
 
 class ResNet18_32x32(nn.Module):
-    def __init__(self, block=BasicBlock, num_blocks=None, num_classes=10):
+    def __init__(self, block=BasicBlock, num_blocks=None, num_classes=10, image_size=32):
         super(ResNet18_32x32, self).__init__()
         if num_blocks is None:
             num_blocks = [2, 2, 2, 2]
         self.in_planes = 64
-        if image_size**2 % 32**2 == 0:
+        if image_size != 32 and image_size**2 % 32**2 == 0:
             logits_expansion = int(image_size**2 / 32**2)
         else:
             logits_expansion = False

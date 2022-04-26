@@ -6,7 +6,7 @@ from .draem_evaluator import DRAEMEvaluator
 from .fsood_evaluator import FSOODEvaluator
 from .kdad_evaluator import KdadDetectionEvaluator
 from .ood_evaluator import OODEvaluator
-
+from .arpl_evaluator import ARPLEvaluator
 
 def get_evaluator(config: Config):
     evaluators = {
@@ -16,5 +16,6 @@ def get_evaluator(config: Config):
         'DRAEM': DRAEMEvaluator,
         'openGan': OpenGanEvaluator,
         'kdad': KdadDetectionEvaluator,
+        'arpl': ARPLEvaluator,
     }
     return evaluators[config.evaluator.name](config)
