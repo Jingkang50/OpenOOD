@@ -4,11 +4,14 @@ import torch.backends.cudnn as cudnn
 
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
+from .godinnet import GodinNet
 from .dsvdd_net import build_network, get_Autoencoder
 from .lenet import LeNet
 from .opengan import Discriminator, Generator
+from .reactnet import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
+from .resnet50 import ResNet50
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
 
@@ -22,6 +25,9 @@ def get_network(network_config):
 
     elif network_config.name == 'resnet18_224x224':
         net = ResNet18_224x224(num_classes=num_classes)
+
+    elif network_config.name == 'resnet50':
+        net = ResNet50(num_classes=num_classes)
 
     elif network_config.name == 'lenet':
         net = LeNet(num_classes=num_classes, num_channel=3)
@@ -40,15 +46,24 @@ def get_network(network_config):
                         dropRate=0.0,
                         num_classes=num_classes)
 
+    elif network_config.name == 'godinnet':
+        backbone = get_network(network_config.backbone)
+        net = GodinNet(backbone=backbone,
+                       feature_size=backbone.feature_size,
+                       num_classes=num_classes,
+                       similarity_measure=network_config.similarity_measure)
+
+    elif network_config.name == 'reactnet':
+        backbone = get_network(network_config.backbone)
+        net = ReactNet(backbone)
+
     elif network_config.name == 'DRAEM':
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
         model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
 
         net = {'generative': model, 'discriminative': model_seg}
 
-    elif network_config.name == 'opengan':
-        # NetType = eval(network_config.feat_extract_network)
-        # feature_net = NetType()
+    elif network_config.name == 'openGan':
         feature_net = get_network(network_config.feat_extract_network)
 
         netG = Generator(in_channels=network_config.nz,

@@ -10,7 +10,7 @@ normalization_dict = {
     'covid': [[0.4907, 0.4907, 0.4907], [0.2697, 0.2697, 0.2697]],
 }
 
-center_crop_dict = {28: 28, 32: 32, 224: 224, 299: 320, 331: 352}
+center_crop_dict = {28: 28, 32: 32, 224: 256, 256: 256, 299: 320, 331: 352}
 
 interpolation_modes = {
     'nearest': tvs_trans.InterpolationMode.NEAREST,
