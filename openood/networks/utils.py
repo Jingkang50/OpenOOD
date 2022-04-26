@@ -4,6 +4,7 @@ import torch.backends.cudnn as cudnn
 
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
+from .dsvdd_net import build_network, get_Autoencoder
 from .lenet import LeNet
 from .opengan import Discriminator, Generator
 from .resnet18_32x32 import ResNet18_32x32
@@ -99,6 +100,12 @@ def get_network(network_config):
         model = make_arch(network_config['equal_network_size'],
                           network_config['use_bias'], True)
         net = {'vgg': vgg, 'model': model}
+
+    elif network_config.name == 'dcae':
+        net = get_Autoencoder(network_config.type)
+
+    elif network_config.name == 'dsvdd':
+        net = build_network(network_config.type)
 
     else:
         raise Exception('Unexpected Network Architecture!')

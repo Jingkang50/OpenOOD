@@ -4,6 +4,7 @@ from openood.utils import Config
 
 from .base_trainer import BaseTrainer
 from .draem_trainer import DRAEMTrainer
+from .dsvdd_trainer import AETrainer, DSVDDTrainer
 from .kdad_trainer import KdadTrainer
 from .mixup_trainer import MixupTrainer
 from .opengan_trainer import OpenGanTrainer
@@ -22,6 +23,9 @@ def get_trainer(
         'mixup': MixupTrainer,
         'sae': SAETrainer,
         'DRAEM': DRAEMTrainer,
+        'kdad': KdadTrainer,
+        'dcae': AETrainer,
+        'dsvdd': DSVDDTrainer,
         'openGan': OpenGanTrainer,
         'kdad': KdadTrainer,
         'arpl': ARPLTrainer,
