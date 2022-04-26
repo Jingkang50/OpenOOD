@@ -1,6 +1,7 @@
 import torch
 import torch.backends.cudnn as cudnn
 
+from .conf_widernet import Conf_WideResNet
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .lenet import LeNet
@@ -50,6 +51,11 @@ def get_network(network_config):
         model = make_arch(network_config['equal_network_size'],
                           network_config['use_bias'], True)
         net = {'vgg': vgg, 'model': model}
+
+    elif network_config.name == 'conf_wideresnet':
+        net = Conf_WideResNet(depth=16,
+                              num_classes=num_classes,
+                              widen_factor=8)
 
     else:
         raise Exception('Unexpected Network Architecture!')
