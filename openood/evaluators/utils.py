@@ -7,7 +7,7 @@ from .dsvdd_evaluator import DCAEEvaluator, DSVDDEvaluator
 from .fsood_evaluator import FSOODEvaluator
 from .kdad_evaluator import KdadDetectionEvaluator
 from .ood_evaluator import OODEvaluator
-
+from .arpl_evaluator import ARPLEvaluator
 
 def get_evaluator(config: Config):
     evaluators = {
@@ -19,5 +19,6 @@ def get_evaluator(config: Config):
         'kdad': KdadDetectionEvaluator,
         'dcae': DCAEEvaluator,
         'dsvdd': DSVDDEvaluator
+        'arpl': ARPLEvaluator,
     }
     return evaluators[config.evaluator.name](config)

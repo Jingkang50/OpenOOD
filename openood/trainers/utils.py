@@ -9,6 +9,8 @@ from .kdad_trainer import KdadTrainer
 from .mixup_trainer import MixupTrainer
 from .opengan_trainer import OpenGanTrainer
 from .sae_trainer import SAETrainer
+from .arpl_trainer import ARPLTrainer
+from .arpl_gan_trainer import ARPLGANTrainer
 
 
 def get_trainer(
@@ -25,6 +27,8 @@ def get_trainer(
         'dcae': AETrainer,
         'dsvdd': DSVDDTrainer,
         'openGan': OpenGanTrainer,
-        'kdad': KdadTrainer
+        'kdad': KdadTrainer,
+        'arpl': ARPLTrainer,
+        'arpl_gan': ARPLGANTrainer,
     }
     return trainers[config.trainer.name](net, train_loader, config)
