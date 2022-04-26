@@ -1,5 +1,5 @@
 ood_dataset:
-  name: conf_ood
+  name: imagenet
   dataset_class: ImglistDataset
   transform: mnist_test_standard
   interpolation: bilinear
