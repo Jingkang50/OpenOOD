@@ -6,6 +6,7 @@ normalization_dict = {
     'cifar10': [[0.4914, 0.4822, 0.4465], [0.2470, 0.2435, 0.2616]],
     'cifar100': [[0.5071, 0.4867, 0.4408], [0.2675, 0.2565, 0.2761]],
     'imagenet': [[0.485, 0.456, 0.406], [0.229, 0.224, 0.225]],
+    'svhn': [[0.431, 0.430, 0.446], [0.196, 0.198, 0.199]],
     'cifar10-3': [[-31.7975, -31.7975, -31.7975], [42.8907, 42.8907, 42.8907]],
     'covid': [[0.4907, 0.4907, 0.4907], [0.2697, 0.2697, 0.2697]],
 }
@@ -51,8 +52,6 @@ class TrainStandard:
             tvs_trans.RandomCrop(image_size, padding=4),
             CustomPreprocessor,
             tvs_trans.ToTensor(),
-            tvs_trans.Lambda(
-                lambda x: global_contrast_normalization(x, scale='l1')),
             tvs_trans.Normalize(mean=mean, std=std),
         ])
 
@@ -84,37 +83,8 @@ class TestStandard:
             tvs_trans.CenterCrop(image_size),
             CustomPreprocessor,
             tvs_trans.ToTensor(),
-            tvs_trans.Lambda(
-                lambda x: global_contrast_normalization(x, scale='l1')),
             tvs_trans.Normalize(mean=mean, std=std),
         ])
 
     def __call__(self, image):
         return self.transform(image)
-
-
-def global_contrast_normalization(x: torch.tensor, scale='l2'):
-    """Apply global contrast normalization to tensor, i.e. subtract mean across
-    features (pixels) and normalize by scale, which is either the standard
-    deviation, L1- or L2-norm across features (pixels).
-
-    Note this is a *per sample* normalization globally across features (and not
-    across the dataset).
-    """
-
-    assert scale in ('l1', 'l2')
-
-    n_features = int(np.prod(x.shape))
-
-    mean = torch.mean(x)  # mean over all features (pixels) per sample
-    x -= mean
-
-    if scale == 'l1':
-        x_scale = torch.mean(torch.abs(x))
-
-    if scale == 'l2':
-        x_scale = torch.sqrt(torch.sum(x**2)) / n_features
-
-    x /= x_scale
-
-    return x

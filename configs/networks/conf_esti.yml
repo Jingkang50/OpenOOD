@@ -1,0 +1,6 @@
+network:
+  name: conf_wideresnet
+  num_classes: '@{dataset.num_classes}'
+  pretrained: True # set 'True' to load pretrained model
+  num_gpus: '@{num_gpus}'
+  checkpoint: ./results/svhn_conf_wideresnet_conf_esti/best_epoch171_acc0.9660.pth

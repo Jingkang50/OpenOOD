@@ -45,6 +45,7 @@ class ImglistDataset(BaseDataset):
             self.transform_image = TrainStandard(name, image_size,
                                                  interpolation,
                                                  self.preprocessor)
+
         else:
             self.transform_image = TestStandard(name, image_size,
                                                 interpolation,

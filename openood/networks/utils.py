@@ -1,11 +1,12 @@
 import torch
-import torch.nn as nn
 import torch.backends.cudnn as cudnn
+import torch.nn as nn
 
+from .conf_widernet import Conf_WideResNet
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
-from .godinnet import GodinNet
 from .dsvdd_net import build_network, get_Autoencoder
+from .godinnet import GodinNet
 from .lenet import LeNet
 from .opengan import Discriminator, Generator
 from .reactnet import ReactNet
@@ -81,19 +82,30 @@ def get_network(network_config):
         dim_centers = feature_net.fc.weight.shape[1]
         feature_net.fc = nn.Identity()
 
-        criterion = ARPLayer(feat_dim=dim_centers, num_classes=num_classes, 
-                            weight_pl=network_config.weight_pl, temp=network_config.temp)
+        criterion = ARPLayer(feat_dim=dim_centers,
+                             num_classes=num_classes,
+                             weight_pl=network_config.weight_pl,
+                             temp=network_config.temp)
 
-        assert network_config.image_size == 32 or network_config.image_size == 64, "ARPL-GAN only supports 32x32 or 64x64 images!"
+        assert network_config.image_size == 32 or network_config.image_size == 64, 'ARPL-GAN only supports 32x32 or 64x64 images!'
 
         if network_config.image_size == 64:
-            netG = Generator(1, network_config.nz, network_config.ngf, network_config.nc) # ngpu, nz, ngf, nc
-            netD = Discriminator(1, network_config.nc, network_config.ndf) # ngpu, nc, ndf
+            netG = Generator(1, network_config.nz, network_config.ngf,
+                             network_config.nc)  # ngpu, nz, ngf, nc
+            netD = Discriminator(1, network_config.nc,
+                                 network_config.ndf)  # ngpu, nc, ndf
         else:
-            netG = Generator32(1, network_config.nz, network_config.ngf, network_config.nc) # ngpu, nz, ngf, nc
-            netD = Discriminator32(1, network_config.nc, network_config.ndf) # ngpu, nc, ndf
+            netG = Generator32(1, network_config.nz, network_config.ngf,
+                               network_config.nc)  # ngpu, nz, ngf, nc
+            netD = Discriminator32(1, network_config.nc,
+                                   network_config.ndf)  # ngpu, nc, ndf
 
-        net = {'netF': feature_net, 'criterion': criterion, 'netG': netG, 'netD': netD}
+        net = {
+            'netF': feature_net,
+            'criterion': criterion,
+            'netG': netG,
+            'netD': netD
+        }
 
     elif network_config.name == 'arpl_net':
         from .arpl_layer import ARPLayer
@@ -105,8 +117,10 @@ def get_network(network_config):
             dim_centers = feature_net.classifier[0].weight.shape[1]
             feature_net.classifier = nn.Identity()
 
-        criterion = ARPLayer(feat_dim=dim_centers, num_classes=num_classes, 
-                            weight_pl=network_config.weight_pl, temp=network_config.temp)
+        criterion = ARPLayer(feat_dim=dim_centers,
+                             num_classes=num_classes,
+                             weight_pl=network_config.weight_pl,
+                             temp=network_config.temp)
 
         net = {'netF': feature_net, 'criterion': criterion}
 
@@ -116,6 +130,10 @@ def get_network(network_config):
                           network_config['use_bias'], True)
         net = {'vgg': vgg, 'model': model}
 
+    elif network_config.name == 'conf_wideresnet':
+        net = Conf_WideResNet(depth=16,
+                              num_classes=num_classes,
+                              widen_factor=8)
     elif network_config.name == 'dcae':
         net = get_Autoencoder(network_config.type)
 
