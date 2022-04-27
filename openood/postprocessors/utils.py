@@ -6,7 +6,8 @@ from .gmm_postprocessor import GMMPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
 from .react_postprocessor import ReactPostprocessor
-
+from .vim_postprocessor import VIMPostprocessor
+from openood.postprocessors.gradnorm_postprocessor import GradNormPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
@@ -16,6 +17,8 @@ def get_postprocessor(config: Config):
         'mds': MDSPostprocessor,
         'gmm': GMMPostprocessor,
         'react': ReactPostprocessor,
+        'vim': VIMPostprocessor,
+        'gradnorm': GradNormPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)
