@@ -8,8 +8,6 @@ data/
 results/
 checkpoints/
 ipynb_checkpoints/
-bit_pretrained_models
-data_lists/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -160,9 +158,3 @@ dmypy.json
 config/*/_*/
 scripts/_*/
 scripts/sweep/_*
-
-# datasets
-data/
-
-# results
-results*/
