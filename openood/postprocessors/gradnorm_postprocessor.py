@@ -65,4 +65,4 @@ class GradNormPostprocessor(BasePostprocessor):
         score_ood = self.gradnorm(feature_ood, self.w, self.b)
         logit_ood = feature_ood @ self.w.T + self.b
         _, pred = torch.max(logit_ood, dim=1)
-        return pred, torch.from_numpy(-score_ood)
+        return pred, torch.from_numpy(score_ood)
