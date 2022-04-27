@@ -1,6 +1,5 @@
 import torch
 import torch.backends.cudnn as cudnn
-import numpy as np
 
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
@@ -10,7 +9,6 @@ from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
-from .bit import KNOWN_MODELS
 
 
 def get_network(network_config):
@@ -65,9 +63,6 @@ def get_network(network_config):
                           network_config['use_bias'], True)
         net = {'vgg': vgg, 'model': model}
 
-    elif network_config.name == 'bit':
-        net = KNOWN_MODELS[network_config.model]()
-
     else:
         raise Exception('Unexpected Network Architecture!')
 
@@ -79,8 +74,6 @@ def get_network(network_config):
                     if checkpoint != 'none':
                         subnet.load_state_dict(torch.load(checkpoint),
                                                strict=False)
-        elif network_config.name == 'bit':
-            net.load_from(np.load(network_config.checkpoint))
         else:
             try:
                 net.load_state_dict(torch.load(network_config.checkpoint),
