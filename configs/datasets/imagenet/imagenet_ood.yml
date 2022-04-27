@@ -5,7 +5,7 @@ ood_dataset:
   batch_size: 32
   shuffle: False
   num_classes: 1000
-  image_size: 480
+  image_size: 224
   num_workers: '@{num_workers}'
   split_names: [val, nearood, farood]
   val:

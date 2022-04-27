@@ -6,3 +6,7 @@ network:
   pretrained: True          # set 'True' to load pretrained model
   checkpoint: ./bit_pretrained_models/BiT-S-R101x1.npz           # ignore if pretrained is false
   num_gpus: '@{num_gpus}'
+dataset:
+  image_size: 480
+ood_dataset:
+  image_size: 480
