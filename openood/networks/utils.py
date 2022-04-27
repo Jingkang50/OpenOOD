@@ -48,10 +48,9 @@ def get_network(network_config):
 
         net = {'generative': model, 'discriminative': model_seg}
 
-<<<<<<< HEAD
     elif network_config.name == 'openmax_network':
         net = OpenMax(backbone='ResNet18', num_classes=50)
-=======
+        
     elif network_config.name == 'opengan':
         # NetType = eval(network_config.feat_extract_network)
         # feature_net = NetType()
@@ -70,7 +69,6 @@ def get_network(network_config):
         model = make_arch(network_config['equal_network_size'],
                           network_config['use_bias'], True)
         net = {'vgg': vgg, 'model': model}
->>>>>>> aea7e8dfa83e6c79831d67ff0966831acafb56c0
 
     else:
         raise Exception('Unexpected Network Architecture!')

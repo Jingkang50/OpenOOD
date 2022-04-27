@@ -13,7 +13,7 @@ pipeline:
   name: test_ad
 
 evaluator:
-  name: ood
+  name: patch
 
 recorder:
   save_scores: True

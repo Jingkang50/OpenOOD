@@ -7,6 +7,7 @@ from .fsood_evaluator import FSOODEvaluator
 from .kdad_evaluator import KdadDetectionEvaluator
 from .ood_evaluator import OODEvaluator
 from .openmax_evaluator import OpenMaxEvaluator
+from .patchcore_evaluator import PatchCoreEvaluator
 
 def get_evaluator(config: Config):
     evaluators = {
@@ -17,5 +18,6 @@ def get_evaluator(config: Config):
         'openmax': OpenMaxEvaluator,
         'openGan': OpenGanEvaluator,
         'kdad': KdadDetectionEvaluator,
+        'patch': PatchCoreEvaluator
     }
     return evaluators[config.evaluator.name](config)

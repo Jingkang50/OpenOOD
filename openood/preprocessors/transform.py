@@ -1,4 +1,5 @@
 import torchvision.transforms as tvs_trans
+from PIL import Image
 
 normalization_dict = {
     'cifar10': [[0.4914, 0.4822, 0.4465], [0.2470, 0.2435, 0.2616]],
@@ -8,7 +9,7 @@ normalization_dict = {
     'covid': [[0.4907, 0.4907, 0.4907], [0.2697, 0.2697, 0.2697]],
 }
 
-center_crop_dict = {28: 28, 32: 32, 224: 224, 299: 320, 331: 352}
+center_crop_dict = {28: 28, 32: 32, 224: 224, 256: 256, 299: 320, 331: 352}
 
 interpolation_modes = {
     'nearest': tvs_trans.InterpolationMode.NEAREST,
@@ -92,7 +93,7 @@ class PatchStandard:
                  image_size: int,
                  interpolation: str = 'bilinear',
                  CustomPreprocessor=None):
-        pre_size = center_crop_dict[image_size]
+        # pre_size = center_crop_dict[image_size]
         dataset_name = name.split('_')[0]
         if dataset_name in normalization_dict.keys():
             mean = normalization_dict[dataset_name][0]
@@ -104,10 +105,36 @@ class PatchStandard:
         interpolation = interpolation_modes[interpolation]
 
         self.transform = tvs_trans.Compose([
-            tvs_trans.Resize(image_size, interpolation=interpolation),
+            tvs_trans.Resize((image_size, image_size), Image.ANTIALIAS),
             tvs_trans.CenterCrop(224),
             tvs_trans.ToTensor(),
             tvs_trans.Normalize(mean, std),
+        ])
+
+    def __call__(self, image):
+        return self.transform(image)
+
+class PatchGTStandard:
+    def __init__(self,
+                 name: str,
+                 image_size: int,
+                 interpolation: str = 'bilinear',
+                 CustomPreprocessor=None):
+        # pre_size = center_crop_dict[image_size]
+        dataset_name = name.split('_')[0]
+        if dataset_name in normalization_dict.keys():
+            mean = normalization_dict[dataset_name][0]
+            std = normalization_dict[dataset_name][1]
+        else:
+            mean = [0.485, 0.456, 0.406]
+            std = [0.229, 0.224, 0.225]
+
+        interpolation = interpolation_modes[interpolation]
+
+        self.transform = tvs_trans.Compose([
+            tvs_trans.Resize((image_size, image_size)),
+            tvs_trans.CenterCrop(224),
+            tvs_trans.ToTensor()
         ])
 
     def __call__(self, image):

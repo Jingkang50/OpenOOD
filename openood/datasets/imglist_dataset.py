@@ -7,7 +7,7 @@ import torch
 from PIL import Image, ImageFile
 
 from openood.preprocessors import BasePreprocessor
-from openood.preprocessors.transform import TestStandard, TrainStandard, PatchStandard
+from openood.preprocessors.transform import TestStandard, TrainStandard, PatchStandard, PatchGTStandard
 
 from .base_dataset import BaseDataset
 
@@ -28,9 +28,6 @@ class ImglistDataset(BaseDataset):
                  maxlen=None,
                  dummy_read=False,
                  dummy_size=None,
-                 crop_size = 224,
-                 mean = [0.5, 0.5, 0.5],
-                 std = [0.5 ,0.5, 0.5],
                  **kwargs):
         super(ImglistDataset, self).__init__(**kwargs)
         
@@ -48,8 +45,12 @@ class ImglistDataset(BaseDataset):
             self.transform_image = TrainStandard(name, image_size,
                                                  interpolation,
                                                  self.preprocessor)
-        elif split == 'patch':
+        elif split == 'patch' or split =='patchTest' or split =='patchTestGood':
             self.transform_image = PatchStandard(name, image_size,
+                                                interpolation,
+                                                self.preprocessor)
+        elif split == 'patchGT':
+            self.transform_image = PatchGTStandard(name, image_size,
                                                 interpolation,
                                                 self.preprocessor)
         else:

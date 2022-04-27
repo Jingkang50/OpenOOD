@@ -1,6 +1,6 @@
 dataset:
   name: mvtec
-  split_names: [patch, test]
+  split_names: [patch, patchTest, patchTestGood, patchGT]
   num_classes: 10
   image_size: 256
   crop_size: 224
@@ -12,18 +12,40 @@ dataset:
     data_dir: ./data/
     imglist_pth: ./data/mvtecList/hazelnut_train_good.txt
     batch_size: 32
-    shuffle: True
+    shuffle: False
     mean: [0.485, 0.456, 0.406]
     std: [0.229, 0.224, 0.225]
     transform: mnist_train_standard
     interpolation: bilinear
 
-  test:
+  patchGT:
+    dataset_class: ImglistDataset
+    data_dir: ./data/
+    imglist_pth: ./data/mvtecList/hazelnut_ground_truth.txt
+    batch_size: 32
+    shuffle: False
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+    transform: mnist_train_standard
+    interpolation: bilinear
+    
+  patchTest:
+    dataset_class: ImglistDataset
+    data_dir: ./data/
+    imglist_pth: ./data/mvtecList/hazelnut_test.txt
+    batch_size: 32
+    shuffle: False
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+    transform: mnist_train_standard
+    interpolation: bilinear
+
+  patchTestGood:
     dataset_class: ImglistDataset
     data_dir: ./data/
     imglist_pth: ./data/mvtecList/hazelnut_test_good.txt
     batch_size: 32
-    shuffle: True
+    shuffle: False
     mean: [0.485, 0.456, 0.406]
     std: [0.229, 0.224, 0.225]
     transform: mnist_train_standard

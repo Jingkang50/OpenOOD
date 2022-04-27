@@ -121,7 +121,9 @@ class PatchcorePostprocessor(BasePostprocessor):
 
 
     def postprocess(self, net: nn.Module, data):
+        
         self.init_results_list()
+        score_patch=[]
         # extract embedding
         for x in data.split(1,dim=0):
             features = self.model.forward(x, return_feature = True)
@@ -133,6 +135,8 @@ class PatchcorePostprocessor(BasePostprocessor):
             embedding_test = np.array(reshape_embedding(np.array(embedding_)))
             score_patches, _ = self.index.search(embedding_test , k=self.n_neighbors)
 
+            score_patch.append(score_patches)
+
             anomaly_map = score_patches[:,0].reshape((28,28))
             N_b = score_patches[np.argmax(score_patches[:,0])]
             w = (1 - (np.max(np.exp(N_b))/np.sum(np.exp(N_b))))
@@ -142,7 +146,8 @@ class PatchcorePostprocessor(BasePostprocessor):
             anomaly_map_resized_blur = gaussian_filter(anomaly_map_resized, sigma=4)
             self.pred_list_px_lvl.extend(anomaly_map_resized_blur.ravel())
             self.pred_list_img_lvl.append(score)
-            
+        
+        
 
         pred = []
         for i in self.pred_list_img_lvl:
@@ -152,7 +157,7 @@ class PatchcorePostprocessor(BasePostprocessor):
             else:
                 pred.append(torch.tensor(-1))
         conf = []
-        for i in self.pred_list_img_lvl:
+        for i in score_patch:
             conf.append(i)
         conf = torch.tensor(conf, dtype = torch.float32)
         conf = conf.cuda()
