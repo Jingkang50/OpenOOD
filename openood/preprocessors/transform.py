@@ -11,11 +11,11 @@ normalization_dict = {
     'covid': [[0.4907, 0.4907, 0.4907], [0.2697, 0.2697, 0.2697]],
 }
 
-center_crop_dict = {28: 28, 32: 32, 224: 256, 256: 256, 299: 320, 331: 352}
+center_crop_dict = {28: 28, 32: 32, 224: 256, 256: 256, 299: 320, 331: 352, 480: 480}
 
 interpolation_modes = {
-    'nearest': tvs_trans.InterpolationMode.NEAREST,
-    'bilinear': tvs_trans.InterpolationMode.BILINEAR,
+    'nearest': 1,
+    'bilinear': 2,
 }
 
 
@@ -77,14 +77,12 @@ class TestStandard:
 
         interpolation = interpolation_modes[interpolation]
 
+        #TODO
         self.transform = tvs_trans.Compose([
-            Convert('RGB'),
-            tvs_trans.Resize(pre_size, interpolation=interpolation),
-            tvs_trans.CenterCrop(image_size),
-            CustomPreprocessor,
-            tvs_trans.ToTensor(),
-            tvs_trans.Normalize(mean=mean, std=std),
-        ])
+        tvs_trans.Resize((image_size, image_size)),
+        tvs_trans.ToTensor(),
+        tvs_trans.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+    ])
 
     def __call__(self, image):
         return self.transform(image)

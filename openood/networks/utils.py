@@ -1,6 +1,7 @@
 import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
+import numpy as np
 
 from .conf_widernet import Conf_WideResNet
 from .densenet import DenseNet3
@@ -15,6 +16,7 @@ from .resnet18_224x224 import ResNet18_224x224
 from .resnet50 import ResNet50
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
+from .bit import KNOWN_MODELS
 
 
 def get_network(network_config):
@@ -130,6 +132,8 @@ def get_network(network_config):
                           network_config['use_bias'], True)
         net = {'vgg': vgg, 'model': model}
 
+    elif network_config.name == 'bit':
+        net = KNOWN_MODELS[network_config.model]()
     elif network_config.name == 'conf_wideresnet':
         net = Conf_WideResNet(depth=16,
                               num_classes=num_classes,
@@ -151,6 +155,8 @@ def get_network(network_config):
                     if checkpoint != 'none':
                         subnet.load_state_dict(torch.load(checkpoint),
                                                strict=False)
+        elif network_config.name == 'bit':
+            net.load_from(np.load(network_config.checkpoint))
         else:
             try:
                 net.load_state_dict(torch.load(network_config.checkpoint),
