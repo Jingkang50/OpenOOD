@@ -77,6 +77,7 @@ class TestStandard:
 
         interpolation = interpolation_modes[interpolation]
 
+        #TODO
         self.transform = tvs_trans.Compose([
         tvs_trans.Resize((image_size, image_size)),
         tvs_trans.ToTensor(),

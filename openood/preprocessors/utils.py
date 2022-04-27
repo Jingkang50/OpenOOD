@@ -8,6 +8,7 @@ from .transform import TestStandard, TrainStandard
 def get_preprocessor(config: Config):
     preprocessors = {
         'base': BasePreprocessor,
+        'DRAEM': DRAEMPreprocessor,
     }
 
     return preprocessors[config.preprocessor.name](config)
