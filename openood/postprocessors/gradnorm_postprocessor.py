@@ -15,7 +15,6 @@ class GradNormPostprocessor(BasePostprocessor):
     def __init__(self, config):
         super().__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
-        self.dim = self.args.dim
 
     def gradnorm(x, w, b):
         fc = torch.nn.Linear(*w.shape[::-1])
