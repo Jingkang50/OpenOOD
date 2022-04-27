@@ -26,14 +26,11 @@ def get_trainer(
         'mixup': MixupTrainer,
         'sae': SAETrainer,
         'DRAEM': DRAEMTrainer,
-<<<<<<< HEAD
         'OpenMax': OpenMaxTrainer,
-=======
         'kdad': KdadTrainer,
         'conf_esti': Conf_Esti_Trainer,
         'dcae': AETrainer,
         'dsvdd': DSVDDTrainer,
->>>>>>> 0bd2b977797b18f0a858c53eab438afad3ed2c0a
         'openGan': OpenGanTrainer,
         'kdad': KdadTrainer,
         'godin': GodinTrainer,

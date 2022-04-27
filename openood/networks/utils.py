@@ -1,10 +1,7 @@
 import torch
 import torch.backends.cudnn as cudnn
-<<<<<<< HEAD
-=======
 import torch.nn as nn
 import numpy as np
->>>>>>> 0bd2b977797b18f0a858c53eab438afad3ed2c0a
 
 from .conf_widernet import Conf_WideResNet
 from .densenet import DenseNet3
@@ -52,10 +49,8 @@ def get_network(network_config):
                         dropRate=0.0,
                         num_classes=num_classes)
 
-<<<<<<< HEAD
     elif network_config.name == 'wide_resnet_50_2':
         net = wide_resnet50_2()
-=======
     elif network_config.name == 'godinnet':
         backbone = get_network(network_config.backbone)
         net = GodinNet(backbone=backbone,
@@ -66,7 +61,6 @@ def get_network(network_config):
     elif network_config.name == 'reactnet':
         backbone = get_network(network_config.backbone)
         net = ReactNet(backbone)
->>>>>>> 0bd2b977797b18f0a858c53eab438afad3ed2c0a
 
     elif network_config.name == 'DRAEM':
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
@@ -74,16 +68,12 @@ def get_network(network_config):
 
         net = {'generative': model, 'discriminative': model_seg}
 
-<<<<<<< HEAD
     elif network_config.name == 'openmax_network':
         net = OpenMax(backbone='ResNet18', num_classes=50)
         
-    elif network_config.name == 'opengan':
+    elif network_config.name == 'openGan':
         # NetType = eval(network_config.feat_extract_network)
         # feature_net = NetType()
-=======
-    elif network_config.name == 'openGan':
->>>>>>> 0bd2b977797b18f0a858c53eab438afad3ed2c0a
         feature_net = get_network(network_config.feat_extract_network)
 
         netG = Generator(in_channels=network_config.nz,
@@ -149,8 +139,6 @@ def get_network(network_config):
                           network_config['use_bias'], True)
         net = {'vgg': vgg, 'model': model}
 
-<<<<<<< HEAD
-=======
     elif network_config.name == 'bit':
         net = KNOWN_MODELS[network_config.model]()
     elif network_config.name == 'conf_wideresnet':
@@ -163,7 +151,6 @@ def get_network(network_config):
     elif network_config.name == 'dsvdd':
         net = build_network(network_config.type)
 
->>>>>>> 0bd2b977797b18f0a858c53eab438afad3ed2c0a
     else:
         raise Exception('Unexpected Network Architecture!')
 
