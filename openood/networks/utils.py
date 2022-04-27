@@ -92,7 +92,7 @@ def get_network(network_config):
 
         assert network_config.image_size == 32 \
             or network_config.image_size == 64, \
-                'ARPL-GAN only supports 32x32 or 64x64 images!'
+            'ARPL-GAN only supports 32x32 or 64x64 images!'
 
         if network_config.image_size == 64:
             netG = Generator(1, network_config.nz, network_config.ngf,
