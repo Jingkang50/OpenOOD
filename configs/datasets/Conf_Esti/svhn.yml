@@ -1,0 +1,27 @@
+dataset:
+  name: svhn
+  split_names: [train, val, test]
+  num_classes: 10
+  image_size: 32
+  num_workers: '@{num_workers}'
+  train:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/digits/train_svhn.txt
+    batch_size: 128
+    shuffle: True
+    interpolation: bilinear
+  val:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/digits/test_svhn.txt
+    batch_size: 128
+    shuffle: False
+    interpolation: bilinear
+  test:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/digits/test_svhn.txt
+    batch_size: 128
+    shuffle: False
+    interpolation: bilinear
