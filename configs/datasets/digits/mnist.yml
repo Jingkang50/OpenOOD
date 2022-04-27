@@ -1,6 +1,5 @@
 dataset:
   name: mnist
-  preprocessor:  CutPastePreprocessor
   split_names: [train, val, test]
   num_classes: 10
   image_size: 28
@@ -29,6 +28,3 @@ dataset:
     shuffle: False
     transform: mnist_test_standard
     interpolation: bilinear
-
-preprocessor:
-  name: cutpaste 

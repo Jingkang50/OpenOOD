@@ -27,9 +27,9 @@ class BasePostprocessor:
             label = batch['label'].cuda()
             pred, conf = self.postprocess(net, data)
             for idx in range(len(data)):
-                pred_list.append(pred[idx].cuda().tolist())
-                conf_list.append(conf[idx].cuda().tolist())
-                label_list.append(label[idx].cuda().tolist())
+                pred_list.append(pred[idx].cpu().tolist())
+                conf_list.append(conf[idx].cpu().tolist())
+                label_list.append(label[idx].cpu().tolist())
 
         # convert values into numpy array
         pred_list = np.array(pred_list, dtype=int)

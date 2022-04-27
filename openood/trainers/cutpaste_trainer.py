@@ -1,10 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-
 
 from openood.utils import Config
 
@@ -51,40 +49,17 @@ class CutPasteTrainer:
                                position=0,
                                leave=True):
             batch = next(train_dataiter)
-            # print(type(batch))
-            # data = []
-            # For cutpaste, batch['data'] contains both origin & augmented img
-            # for data in batch['data']:
-            #    data.cuda()
-            # for i in len(batch['data']):
-            #    data[i] = batch['data'][i].cuda()
             data = torch.cat(batch['data'], 0)
             data = data.cuda()
-            # print(type(batch['data']))
-            # print((np.array(batch['data'])).shape)
-            # print((np.array(batch['data'][0])).shape)
-            # data = [data.cuda() for data in batch['data']]
-            # data = batch['data'][0].cuda()
-            # data += batch['data'][1].cuda()
-
-            # target = batch['label'].cuda()
-            # print((np.array(data)).shape)
-            
-            # calculate label
             y = torch.arange(2)
             y = y.repeat_interleave(len(batch['data'][0]))
             y = y.cuda()
-            # print(len(data))
-            # print(data[0].size(0))
-        
-        
             # forward
             embed, logits_classifier = self.net(data)
-            # print(np.array(y).shape)
-            # print(np.array(logits_classifier).shape)
             loss = F.cross_entropy(logits_classifier, y)
+
             embeds.append(embed.cuda())
-            
+
             # backward
             self.optimizer.zero_grad()
             loss.backward()
@@ -97,7 +72,7 @@ class CutPasteTrainer:
 
         embeds = torch.cat(embeds)
         embeds = torch.nn.functional.normalize(embeds, p=2, dim=1)
-        
+
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
         metrics['loss'] = loss_avg

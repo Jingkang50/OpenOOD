@@ -1,66 +1,152 @@
+from __future__ import division, print_function
+
 from typing import Any
 
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.autograd import Variable
+from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
-# from .gram_tools import detect
-from .gram_tools import Detector
 
 
 class GRAMPostprocessor(BasePostprocessor):
     def __init__(self, config):
         self.config = config
         self.postprocessor_args = config.postprocessor.postprocessor_args
+        self.num_classes = self.config.dataset.num_classes
+        self.powers = self.postprocessor_args.powers
+
+        self.feature_min, self.feature_max = None, None
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
-        data_train = id_loader_dict['train']
-        data_test = id_loader_dict['test']
-        self.train_preds = []
-        self.train_confs = []
-        self.train_logits = []
-        for idx in range(0, len(data_train), 128):
-            batch = torch.squeeze(torch.stack([x[0] for x in data_train[idx:idx+128]]), dim=1).cpu()
-            
-            logits = net(batch)
-            confs = F.softmax(logits, dim=1).cpu().detach().numpy()
-            preds = np.argmax(confs, axis=1)
-            logits = (logits.cpu().detach().numpy())
 
-            self.train_confs.extend(np.max(confs, axis=1))    
-            self.train_preds.extend(preds)
-            self.train_logits.extend(logits)
-        print("Done")
-
-        self.test_preds = []
-        self.test_confs = []
-        self.test_logits = []
-
-        for idx in range(0, len(data_test), 128):
-            batch = torch.squeeze(torch.stack([x[0] for x in data_test[idx:idx+128]]), dim=1).cpu()
-            
-            logits = net(batch)
-            confs = F.softmax(logits, dim=1).cpu().detach().numpy()
-            preds = np.argmax(confs, axis=1)
-            logits = (logits.cpu().detach().numpy())
-
-            self.test_confs.extend(np.max(confs, axis=1))   
-            self.test_preds.extend(preds)
-            self.test_logits.extend(logits)
-        print("Done")
-        
-        self.detector = Detector(net, self.train_confs, self.train_logits,
-                                 self.train_preds, self.test_confs,
-                                 self.test_logits, self.test_preds, data_test)
-        self.detector.compute_minmaxs(data_train, POWERS=range(1, 11))
-        self.detector.compute_test_deviations(POWERS=range(1, 11))
+        self.feature_min, self.feature_max = sample_estimator(
+            net, id_loader_dict['train'], self.num_classes, self.powers)
 
     def postprocess(self, net: nn.Module, data: Any):
-        data = list(data)
-        
-        results = self.detector.compute_ood_deviations(data, POWERS=range(1, 11))
-        pred = results.max(1)[1]
-        return pred, results
+        preds, deviations = get_deviations(net, data, self.feature_min,
+                                           self.feature_max, self.num_classes,
+                                           self.powers)
+        return preds, deviations
+
+
+def tensor2list(x):
+    return x.data.cuda().tolist()
+
+
+@torch.no_grad()
+def sample_estimator(model, train_loader, num_classes, powers):
+
+    model.eval()
+
+    num_layer = 5
+    num_poles_list = powers
+    num_poles = len(num_poles_list)
+    feature_class = [[[None for x in range(num_poles)]
+                      for y in range(num_layer)] for z in range(num_classes)]
+    label_list = []
+
+    mins = [[[None for x in range(num_poles)] for y in range(num_layer)]
+            for z in range(num_classes)]
+    maxs = [[[None for x in range(num_poles)] for y in range(num_layer)]
+            for z in range(num_classes)]
+
+    # collect features
+    for batch in tqdm(train_loader, desc='Compute min/max'):
+        data = batch['data'].cuda()
+        label = batch['label']
+        _, feature_list = model(data, return_feature_list=True)
+        label_list = tensor2list(label)
+        for layer_idx in range(num_layer):
+
+            for pole_idx, p in enumerate(num_poles_list):
+                temp = feature_list[layer_idx].detach()
+
+                temp = temp**p
+                temp = temp.reshape(temp.shape[0], temp.shape[1], -1)
+                temp = ((torch.matmul(temp,
+                                      temp.transpose(dim0=2,
+                                                     dim1=1)))).sum(dim=2)
+                temp = (temp.sign() * torch.abs(temp)**(1 / p)).reshape(
+                    temp.shape[0], -1)
+
+                temp = tensor2list(temp)
+                for feature, label in zip(temp, label_list):
+                    if isinstance(feature_class[label][layer_idx][pole_idx],
+                                  type(None)):
+                        feature_class[label][layer_idx][pole_idx] = feature
+                    else:
+                        feature_class[label][layer_idx][pole_idx].extend(
+                            feature)
+    for label in range(num_classes):
+        for layer_idx in range(num_layer):
+            for poles_idx in range(num_poles):
+                feature = torch.tensor(
+                    np.array(feature_class[label][layer_idx][poles_idx]))
+                current_min = feature.min(dim=0, keepdim=True)[0]
+                current_max = feature.max(dim=0, keepdim=True)[0]
+
+                if mins[label][layer_idx][poles_idx] is None:
+                    mins[label][layer_idx][poles_idx] = current_min
+                    maxs[label][layer_idx][poles_idx] = current_max
+                else:
+                    mins[label][layer_idx][poles_idx] = torch.min(
+                        current_min, mins[label][layer_idx][poles_idx])
+                    maxs[label][layer_idx][poles_idx] = torch.max(
+                        current_min, maxs[label][layer_idx][poles_idx])
+
+    return mins, maxs
+
+
+def get_deviations(model, data, mins, maxs, num_classes, powers):
+    model.eval()
+
+    num_layer = 5
+    num_poles_list = powers
+    exist = 1
+    pred_list = []
+    dev = [0 for x in range(200)]
+
+    logits, feature_list = model(data, return_feature_list=True)
+    confs = F.softmax(logits, dim=1).cpu().detach().numpy()
+    preds = np.argmax(confs, axis=1)
+
+    predsList = preds.tolist()
+    preds = torch.tensor(preds)
+
+    for pred in predsList:
+        exist = 1
+        if len(pred_list) == 0:
+            pred_list.extend([pred])
+        else:
+            for pred_now in pred_list:
+                if pred_now == pred:
+                    exist = 0
+            if exist == 1:
+                pred_list.extend([pred])
+
+    for layer_idx in range(num_layer):
+        for pole_idx, p in enumerate(num_poles_list):
+            temp = feature_list[layer_idx].detach()
+            temp = temp**p
+            temp = temp.reshape(temp.shape[0], temp.shape[1], -1)
+            temp = ((torch.matmul(temp, temp.transpose(dim0=2,
+                                                       dim1=1)))).sum(dim=2)
+            temp = (temp.sign() * torch.abs(temp)**(1 / p)).reshape(
+                temp.shape[0], -1)
+
+            temp = tensor2list(temp)
+            for idx in range(len(temp)):
+                dev[idx] += (F.relu(mins[preds[idx]][layer_idx][pole_idx] -
+                                    sum(temp[idx])) /
+                             torch.abs(mins[preds[idx]][layer_idx][pole_idx] +
+                                       10**-6)).sum()
+                dev[idx] += (F.relu(
+                    sum(temp[idx]) - maxs[preds[idx]][layer_idx][pole_idx]) /
+                             torch.abs(maxs[preds[idx]][layer_idx][pole_idx] +
+                                       10**-6)).sum()
+
+    conf = [i / 50 for i in dev]
+    return preds, torch.tensor(conf)

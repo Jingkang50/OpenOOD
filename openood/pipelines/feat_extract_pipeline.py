@@ -14,7 +14,7 @@ class FeatExtractPipeline:
 
         # get dataloader
         loader_dict = get_dataloader(self.config.dataset)
-        test_loader = loader_dict['test']
+        test_loader = loader_dict[self.config.pipeline.extract_target]
 
         # init network
         net = get_network(self.config.network)
@@ -23,7 +23,7 @@ class FeatExtractPipeline:
         evaluator = get_evaluator(self.config)
 
         # start calculating accuracy
-        print('Start evaluation...', flush=True)
+        print('\nStart evaluation...', flush=True)
         test_metrics = evaluator.eval_acc(net, test_loader)
         print('\nComplete Evaluation, accuracy {:.2f}%'.format(
             100 * test_metrics['acc']),

@@ -1,9 +1,12 @@
+from openood.evaluators.openGan_evaluator import OpenGanEvaluator
 from openood.utils import Config
 
 from .base_evaluator import BaseEvaluator
-from .fsood_evaluator import FSOODEvaluator
-from .ood_evaluator import OODEvaluator
 from .cutpaste_evaluator import CutPasteEvaluator
+from .draem_evaluator import DRAEMEvaluator
+from .fsood_evaluator import FSOODEvaluator
+from .kdad_evaluator import KdadDetectionEvaluator
+from .ood_evaluator import OODEvaluator
 
 
 def get_evaluator(config: Config):
@@ -11,6 +14,9 @@ def get_evaluator(config: Config):
         'base': BaseEvaluator,
         'ood': OODEvaluator,
         'fsood': FSOODEvaluator,
+        'DRAEM': DRAEMEvaluator,
+        'openGan': OpenGanEvaluator,
+        'kdad': KdadDetectionEvaluator,
         'cutpaste': CutPasteEvaluator,
     }
     return evaluators[config.evaluator.name](config)

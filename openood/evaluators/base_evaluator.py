@@ -12,7 +12,7 @@ from openood.utils import Config
 
 
 def to_np(x):
-    return x.data.cuda().numpy()
+    return x.data.cpu().numpy()
 
 
 class BaseEvaluator:

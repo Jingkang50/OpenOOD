@@ -1,7 +1,6 @@
 from openood.datasets import get_dataloader
 from openood.evaluators import get_evaluator
 from openood.networks import get_network
-from openood.preprocessors import get_preprocessor
 from openood.recorders import get_recorder
 from openood.trainers import get_trainer
 from openood.utils import setup_logger
@@ -15,11 +14,8 @@ class TrainPipeline:
         # generate output directory and save the full config file
         setup_logger(self.config)
 
-        # get preprocessor
-        preprocessor = get_preprocessor(self.config)
-              
         # get dataloader
-        loader_dict = get_dataloader(self.config.dataset, preprocessor)
+        loader_dict = get_dataloader(self.config.dataset)
         train_loader, val_loader = loader_dict['train'], loader_dict['val']
         test_loader = loader_dict['test']
 
@@ -37,16 +33,17 @@ class TrainPipeline:
         for epoch_idx in range(1, self.config.optimizer.num_epochs + 1):
             # train and eval the model
             net, train_metrics = trainer.train_epoch(epoch_idx)
-            val_metrics = evaluator.eval_acc(net, val_loader, epoch_idx)
+            val_metrics = evaluator.eval_acc(net, val_loader, None, epoch_idx)
             # save model and report the result
             recorder.save_model(net, val_metrics)
             recorder.report(train_metrics, val_metrics)
         recorder.summary()
+        print(u'\u2500' * 70, flush=True)
 
         # evaluate on test set
         print('Start testing...', flush=True)
         test_metrics = evaluator.eval_acc(net, test_loader)
-        print('\nComplete Evaluation, accuracy {:.2f}'.format(
+        print('\nComplete Evaluation, Last accuracy {:.2f}'.format(
             100.0 * test_metrics['acc']),
               flush=True)
         print('Completed!', flush=True)
