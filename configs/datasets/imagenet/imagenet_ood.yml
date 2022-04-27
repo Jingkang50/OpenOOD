@@ -5,14 +5,14 @@ ood_dataset:
   batch_size: 32
   shuffle: False
   num_classes: 1000
-  image_size: 224
+  image_size: 480
   num_workers: '@{num_workers}'
-  split_names: [val, nearood]
+  split_names: [val, nearood, farood]
   val:
     data_dir: ./data/images/
     imglist_pth: ./data_lists/imagenet2012_val_list.txt
   nearood:
-    datasets: [inaturalist, openimageo]
+    datasets: [inaturalist, openimageo, imageneto]
     inaturalist:
       dataset_class: ImglistDataset
       data_dir: ./data/iNaturalist/images/
@@ -24,10 +24,10 @@ ood_dataset:
     imageneto:
       dataset_class: ImglistDataset
       data_dir: ./data/imagenet-o/
-      imglist_pth: ./data/imagenet-o/imagenet-o.txt
+      imglist_pth: ./data/imagenet-o/imageneto.txt
   farood:
     datasets: [texture]
     texture:
       dataset_class: ImglistDataset
       data_dir: ./data/Texture_clean/images/
-      imglist_pth: ./data/Texture_clean/texture_clean.txt
+      imglist_pth: ./data/Texture_clean/texture.txt

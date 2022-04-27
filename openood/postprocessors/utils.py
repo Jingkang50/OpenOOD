@@ -16,7 +16,7 @@ def get_postprocessor(config: Config):
         'mds': MDSPostprocessor,
         'gmm': GMMPostprocessor,
         'react': ReactPostprocessor,
-        'vim': VIMPostprocessor
+        'vim': VIMPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)

@@ -1,4 +1,3 @@
-# copied from MOS https://github.com/deeplearning-wisc/large_scale_ood
 """Bottleneck ResNet v2 with GroupNorm and Weight Standardization."""
 
 from collections import OrderedDict
@@ -105,7 +104,7 @@ class PreActBottleneck(nn.Module):
 class ResNetV2(nn.Module):
     """Implementation of Pre-activation (v2) ResNet mode."""
 
-    def __init__(self, block_units, width_factor, head_size=21843, zero_head=False, gauss_head = True, num_block_open=-1):
+    def __init__(self, block_units, width_factor, head_size=1000, num_block_open=-1):
         super().__init__()
         wf = width_factor  # shortcut 'cause we'll use it a lot.
 
@@ -161,9 +160,6 @@ class ResNetV2(nn.Module):
             ))),
         ]))
 
-        self.zero_head = zero_head
-        self.gauss_head = gauss_head
-
         self.before_head = nn.Sequential(OrderedDict([
             ('gn', nn.GroupNorm(32, 2048 * wf)),
             ('relu', nn.ReLU(inplace=True)),
@@ -173,7 +169,6 @@ class ResNetV2(nn.Module):
         self.head = nn.Sequential(OrderedDict([
             ('conv', nn.Conv2d(2048 * wf, head_size, kernel_size=1, bias=True)),
         ]))
-        # self.head = ArcMarginProduct(2048 * wf, head_size, s=30, m=0.5, easy_margin=False)
 
         if 'root' in self.fix_parts:
             for param in self.root.parameters():
@@ -271,18 +266,9 @@ class ResNetV2(nn.Module):
             self.before_head.gn.weight.copy_(tf2th(weights[f'{prefix}group_norm/gamma']))
             self.before_head.gn.bias.copy_(tf2th(weights[f'{prefix}group_norm/beta']))
 
-            if self.zero_head:
-                nn.init.zeros_(self.head.conv.weight)
-                nn.init.zeros_(self.head.conv.bias)
-            elif self.gauss_head:
-                nn.init.zeros_(self.head.conv.weight)
-                nn.init.zeros_(self.head.conv.bias)
-                self.head.conv.weight[1000:].normal_(mean=0, std=1e-3)
-            else:
-                print('orig head loaded')
-                self.head.conv.weight.copy_(
-                    tf2th(weights[f'{prefix}head/conv2d/kernel']))  # pylint: disable=line-too-long
-                self.head.conv.bias.copy_(tf2th(weights[f'{prefix}head/conv2d/bias']))
+            self.head.conv.weight.copy_(
+                tf2th(weights[f'{prefix}head/conv2d/kernel']))  # pylint: disable=line-too-long
+            self.head.conv.bias.copy_(tf2th(weights[f'{prefix}head/conv2d/bias']))
 
 
             for bname, block in self.body.named_children():
@@ -312,6 +298,7 @@ class ResNetV2(nn.Module):
         else:
             self.before_head.train(mode)
         return self
+
 
 KNOWN_MODELS = OrderedDict([
     ('BiT-M-R50x1', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 1, *a, **kw)),

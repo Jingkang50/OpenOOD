@@ -30,12 +30,9 @@ class VIMPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-
                 feature = net(data, return_feature=True)[..., 0, 0].cpu().numpy()
                 feature_id_train.append(feature)
             feature_id_train = np.concatenate(feature_id_train, axis=0)
-            with open("feature_id_train.pkl", 'wb') as f:
-                pickle.dump(feature_id_train, f)
             logit_id_train = feature_id_train @ self.w.T + self.b
 
             print("Extracting id testing feature")
@@ -49,8 +46,6 @@ class VIMPostprocessor(BasePostprocessor):
                 feature = net(data, return_feature=True)[..., 0, 0].cpu().numpy()
                 feature_id_val.append(feature)
             feature_id_val = np.concatenate(feature_id_val, axis=0)
-            with open("feature_id_val.pkl", 'wb') as f:
-                pickle.dump(feature_id_val, f)
             logit_id_val = feature_id_val @ self.w.T + self.b
 
         self.u = -np.matmul(pinv(self.w), self.b)
@@ -75,4 +70,4 @@ class VIMPostprocessor(BasePostprocessor):
         energy_ood = logsumexp(logit_ood.numpy(), axis=-1)
         vlogit_ood = norm(np.matmul(feature_ood.numpy() - self.u, self.NS), axis=-1) * self.alpha
         score_ood = -vlogit_ood + energy_ood
-        return pred, torch.from_numpy(-score_ood)
+        return pred, torch.from_numpy(score_ood)
