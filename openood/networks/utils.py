@@ -1,12 +1,22 @@
 import torch
 import torch.backends.cudnn as cudnn
+<<<<<<< HEAD
+=======
+import torch.nn as nn
+import numpy as np
+>>>>>>> 0bd2b977797b18f0a858c53eab438afad3ed2c0a
 
+from .conf_widernet import Conf_WideResNet
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
+from .dsvdd_net import build_network, get_Autoencoder
+from .godinnet import GodinNet
 from .lenet import LeNet
 from .opengan import Discriminator, Generator
+from .reactnet import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
+from .resnet50 import ResNet50
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
 from .wide_resnet50_2 import wide_resnet50_2
@@ -21,6 +31,9 @@ def get_network(network_config):
 
     elif network_config.name == 'resnet18_224x224':
         net = ResNet18_224x224(num_classes=num_classes)
+
+    elif network_config.name == 'resnet50':
+        net = ResNet50(num_classes=num_classes)
 
     elif network_config.name == 'lenet':
         net = LeNet(num_classes=num_classes, num_channel=3)
@@ -39,8 +52,21 @@ def get_network(network_config):
                         dropRate=0.0,
                         num_classes=num_classes)
 
+<<<<<<< HEAD
     elif network_config.name == 'wide_resnet_50_2':
         net = wide_resnet50_2()
+=======
+    elif network_config.name == 'godinnet':
+        backbone = get_network(network_config.backbone)
+        net = GodinNet(backbone=backbone,
+                       feature_size=backbone.feature_size,
+                       num_classes=num_classes,
+                       similarity_measure=network_config.similarity_measure)
+
+    elif network_config.name == 'reactnet':
+        backbone = get_network(network_config.backbone)
+        net = ReactNet(backbone)
+>>>>>>> 0bd2b977797b18f0a858c53eab438afad3ed2c0a
 
     elif network_config.name == 'DRAEM':
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
@@ -48,12 +74,16 @@ def get_network(network_config):
 
         net = {'generative': model, 'discriminative': model_seg}
 
+<<<<<<< HEAD
     elif network_config.name == 'openmax_network':
         net = OpenMax(backbone='ResNet18', num_classes=50)
         
     elif network_config.name == 'opengan':
         # NetType = eval(network_config.feat_extract_network)
         # feature_net = NetType()
+=======
+    elif network_config.name == 'openGan':
+>>>>>>> 0bd2b977797b18f0a858c53eab438afad3ed2c0a
         feature_net = get_network(network_config.feat_extract_network)
 
         netG = Generator(in_channels=network_config.nz,
@@ -64,12 +94,76 @@ def get_network(network_config):
 
         net = {'netG': netG, 'netD': netD, 'netF': feature_net}
 
+    elif network_config.name == 'arpl_gan':
+        from .arpl_net import resnet34ABN, Generator, Discriminator, Generator32, Discriminator32
+        from .arpl_layer import ARPLayer
+        feature_net = resnet34ABN(num_classes=num_classes, num_bns=2)
+        dim_centers = feature_net.fc.weight.shape[1]
+        feature_net.fc = nn.Identity()
+
+        criterion = ARPLayer(feat_dim=dim_centers,
+                             num_classes=num_classes,
+                             weight_pl=network_config.weight_pl,
+                             temp=network_config.temp)
+
+        assert network_config.image_size == 32 or network_config.image_size == 64, 'ARPL-GAN only supports 32x32 or 64x64 images!'
+
+        if network_config.image_size == 64:
+            netG = Generator(1, network_config.nz, network_config.ngf,
+                             network_config.nc)  # ngpu, nz, ngf, nc
+            netD = Discriminator(1, network_config.nc,
+                                 network_config.ndf)  # ngpu, nc, ndf
+        else:
+            netG = Generator32(1, network_config.nz, network_config.ngf,
+                               network_config.nc)  # ngpu, nz, ngf, nc
+            netD = Discriminator32(1, network_config.nc,
+                                   network_config.ndf)  # ngpu, nc, ndf
+
+        net = {
+            'netF': feature_net,
+            'criterion': criterion,
+            'netG': netG,
+            'netD': netD
+        }
+
+    elif network_config.name == 'arpl_net':
+        from .arpl_layer import ARPLayer
+        feature_net = get_network(network_config.feat_extract_network)
+        try:
+            dim_centers = feature_net.fc.weight.shape[1]
+            feature_net.fc = nn.Identity()
+        except:
+            dim_centers = feature_net.classifier[0].weight.shape[1]
+            feature_net.classifier = nn.Identity()
+
+        criterion = ARPLayer(feat_dim=dim_centers,
+                             num_classes=num_classes,
+                             weight_pl=network_config.weight_pl,
+                             temp=network_config.temp)
+
+        net = {'netF': feature_net, 'criterion': criterion}
+
     elif network_config.name == 'vgg and model':
         vgg = Vgg16(network_config['trainedsource'])
         model = make_arch(network_config['equal_network_size'],
                           network_config['use_bias'], True)
         net = {'vgg': vgg, 'model': model}
 
+<<<<<<< HEAD
+=======
+    elif network_config.name == 'bit':
+        net = KNOWN_MODELS[network_config.model]()
+    elif network_config.name == 'conf_wideresnet':
+        net = Conf_WideResNet(depth=16,
+                              num_classes=num_classes,
+                              widen_factor=8)
+    elif network_config.name == 'dcae':
+        net = get_Autoencoder(network_config.type)
+
+    elif network_config.name == 'dsvdd':
+        net = build_network(network_config.type)
+
+>>>>>>> 0bd2b977797b18f0a858c53eab438afad3ed2c0a
     else:
         raise Exception('Unexpected Network Architecture!')
 
