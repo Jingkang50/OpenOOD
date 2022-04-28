@@ -1,15 +1,13 @@
+import pickle
 from typing import Any
 
 import numpy as np
 import torch
 import torch.nn as nn
 from tqdm import tqdm
-import pickle
-from numpy.linalg import norm, pinv
-from scipy.special import logsumexp
-from sklearn.covariance import EmpiricalCovariance
 
 from .base_postprocessor import BasePostprocessor
+
 
 class GradNormPostprocessor(BasePostprocessor):
     def __init__(self, config):
@@ -30,9 +28,11 @@ class GradNormPostprocessor(BasePostprocessor):
         for i in x:
             targets = torch.ones((1, 1000)).cuda()
             fc.zero_grad()
-            loss = torch.mean(torch.sum(-targets * logsoftmax(fc(i[None])), dim=-1))
+            loss = torch.mean(
+                torch.sum(-targets * logsoftmax(fc(i[None])), dim=-1))
             loss.backward()
-            layer_grad_norm = torch.sum(torch.abs(fc.weight.grad.data)).cpu().numpy()
+            layer_grad_norm = torch.sum(torch.abs(
+                fc.weight.grad.data)).cpu().numpy()
             confs.append(layer_grad_norm)
 
         return np.array(confs)
@@ -43,7 +43,7 @@ class GradNormPostprocessor(BasePostprocessor):
 
         with torch.no_grad():
 
-            print("Extracting id testing feature")
+            print('Extracting id testing feature')
             feature_id_val = []
             for batch in tqdm(id_loader_dict['test'],
                               desc='Eval: ',
@@ -51,7 +51,8 @@ class GradNormPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                feature = net(data, return_feature=True)[..., 0, 0].cpu().numpy()
+                feature = net(data, return_feature=True)[..., 0,
+                                                         0].cpu().numpy()
                 feature_id_val.append(feature)
             feature_id_val = np.concatenate(feature_id_val, axis=0)
 

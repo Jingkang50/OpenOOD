@@ -1,4 +1,3 @@
-from openood.evaluators.openGan_evaluator import OpenGanEvaluator
 from openood.utils import Config
 
 from .arpl_evaluator import ARPLEvaluator
@@ -9,6 +8,7 @@ from .dsvdd_evaluator import DCAEEvaluator, DSVDDEvaluator
 from .fsood_evaluator import FSOODEvaluator
 from .kdad_evaluator import KdadDetectionEvaluator
 from .ood_evaluator import OODEvaluator
+from .opengan_evaluator import OpenGanEvaluator
 
 
 def get_evaluator(config: Config):
