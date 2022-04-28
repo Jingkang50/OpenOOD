@@ -15,6 +15,72 @@ from .base_dataset import BaseDataset
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
+class Convert:
+    def __init__(self, mode='RGB'):
+        self.mode = mode
+
+    def __call__(self, image):
+        return image.convert(self.mode)
+
+
+def get_transforms(
+    mean: List[float],
+    std: List[float],
+    split: str,
+    interpolation: str = 'bilinear',
+    image_size: int = 256,
+    crop_size: int = 224,
+    preprocessor=None):
+
+    # transform applied after the preprocessor, this is needed due to some
+    # preporcessor may return more then just an image
+    post_preprocessor_transform = trn.Compose(
+        [trn.ToTensor(), trn.Normalize(mean, std)])
+
+    interpolation_modes = {
+        'nearest': InterpolationMode.NEAREST,
+        'bilinear': InterpolationMode.BILINEAR,
+    }
+    color_mode = 'RGB'
+
+    interpolation = interpolation_modes[interpolation]
+
+    if split == 'train':
+        total_transform =  trn.Compose([
+            Convert(color_mode),
+            trn.Resize(image_size, interpolation=interpolation),
+            trn.CenterCrop(crop_size),
+            trn.RandomHorizontalFlip(),
+            trn.RandomCrop(image_size, padding=4),
+            trn.ToTensor(),
+            trn.Normalize(mean, std),
+        ])
+    
+    elif split == 'patch':
+        total_transform =  trn.Compose([
+            # Convert(color_mode),
+            trn.Resize(image_size, interpolation=interpolation),
+            trn.CenterCrop(crop_size),
+            # trn.RandomHorizontalFlip(),
+            # trn.RandomCrop(image_size, padding=4),
+            trn.ToTensor(),
+            trn.Normalize(mean, std),
+        ])
+
+    else:
+        total_transform =  trn.Compose([
+            Convert(color_mode),
+            trn.Resize(image_size, interpolation=interpolation),
+            trn.CenterCrop(crop_size),
+            trn.ToTensor(),
+            trn.Normalize(mean, std),
+        ])
+    total_transform.transforms.append(
+        preprocessor.concat_transform(post_preprocessor_transform))
+
+    return total_transform
+
+
 class ImglistDataset(BaseDataset):
     def __init__(self,
                  name,
@@ -24,7 +90,6 @@ class ImglistDataset(BaseDataset):
                  imglist_pth,
                  data_dir,
                  num_classes,
-                 preprocessor,
                  maxlen=None,
                  dummy_read=False,
                  dummy_size=None,
@@ -95,6 +160,9 @@ class ImglistDataset(BaseDataset):
             if self.dummy_size is not None:
                 sample['data'] = torch.rand(self.dummy_size)
             else:
+                if type(self.preprocessor).__name__ == 'DRAEMPreprocessor':
+                    self.preprocessor.setup(path, self.name)
+
                 image = Image.open(buff).convert('RGB')
                 sample['data'] = self.transform_image(image)
         # sample['data_aux'] = self.transform_aux_image(image)

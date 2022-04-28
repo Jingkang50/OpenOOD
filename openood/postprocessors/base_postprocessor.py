@@ -35,5 +35,5 @@ class BasePostprocessor:
         pred_list = np.array(pred_list, dtype=int)
         conf_list = np.array(conf_list)
         label_list = np.array(label_list, dtype=int)
-        
+
         return pred_list, conf_list, label_list

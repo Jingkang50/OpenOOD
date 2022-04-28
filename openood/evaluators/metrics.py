@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn import metrics
-from sklearn.metrics import roc_auc_score
+
 
 def compute_all_metrics(conf, label, pred):
     recall = 0.95
@@ -56,6 +56,7 @@ def auc(conf, label):
 
     ind_indicator = np.zeros_like(label)
     ind_indicator[label != -1] = 1
+    
     fpr, tpr, thresholds = metrics.roc_curve(ind_indicator, conf)
 
     precision_in, recall_in, thresholds_in \

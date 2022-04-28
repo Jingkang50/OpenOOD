@@ -12,6 +12,7 @@ from .ood_evaluator import OODEvaluator
 from .openmax_evaluator import OpenMaxEvaluator
 from .patchcore_evaluator import PatchCoreEvaluator
 
+
 def get_evaluator(config: Config):
     evaluators = {
         'base': BaseEvaluator,

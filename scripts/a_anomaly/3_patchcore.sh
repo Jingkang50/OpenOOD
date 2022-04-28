@@ -1,3 +1,5 @@
+#!/bin/bash
+# sh scripts/a_anomaly/5_patchcore.sh
 GPU=1
 CPU=1
 node=30

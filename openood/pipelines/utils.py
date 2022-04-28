@@ -28,4 +28,5 @@ def get_pipeline(config: Config):
         'train_arplgan': TrainARPLGANPipeline,
     }
 
+
     return pipelines[config.pipeline.name](config)

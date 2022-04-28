@@ -19,6 +19,7 @@ from .wrn import WideResNet
 from .wide_resnet50_2 import wide_resnet50_2
 from .openmax_network import OpenMax
 
+
 def get_network(network_config):
 
     num_classes = network_config.num_classes
