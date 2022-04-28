@@ -14,7 +14,7 @@ class GradNormPostprocessor(BasePostprocessor):
         super().__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
 
-    def gradnorm(x, w, b):
+    def gradnorm(self, x, w, b):
         fc = torch.nn.Linear(*w.shape[::-1])
         fc.weight.data[...] = torch.from_numpy(w)
         fc.bias.data[...] = torch.from_numpy(b)
@@ -25,7 +25,7 @@ class GradNormPostprocessor(BasePostprocessor):
 
         confs = []
 
-        for i in tqdm(x):
+        for i in x:
             targets = torch.ones((1, 1000)).cuda()
             fc.zero_grad()
             loss = torch.mean(
@@ -38,10 +38,10 @@ class GradNormPostprocessor(BasePostprocessor):
         return np.array(confs)
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
+        self.w, self.b = net.get_fc()
         net.eval()
 
         with torch.no_grad():
-            self.w, self.b = net.get_fc()
 
             print('Extracting id testing feature')
             feature_id_val = []
@@ -55,15 +55,15 @@ class GradNormPostprocessor(BasePostprocessor):
                                                          0].cpu().numpy()
                 feature_id_val.append(feature)
             feature_id_val = np.concatenate(feature_id_val, axis=0)
-            with open('feature_id_val.pkl', 'wb') as f:
-                pickle.dump(feature_id_val, f)
 
         self.score_id = self.gradnorm(feature_id_val, self.w, self.b)
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        feature_ood = net.forward(data, return_feature=True)[..., 0, 0].cpu()
-        score_ood = self.gradnorm(feature_ood, self.w, self.b)
-        logit_ood = feature_ood @ self.w.T + self.b
-        _, pred = torch.max(logit_ood, dim=1)
+        feature_ood = net.forward(data, return_feature = True)[..., 0, 0].cpu()
+        with torch.enable_grad():
+            score_ood = self.gradnorm(feature_ood.numpy(), self.w, self.b)
+        with torch.no_grad():
+            logit_ood = feature_ood @ self.w.T + self.b
+            _, pred = torch.max(logit_ood, dim=1)
         return pred, torch.from_numpy(score_ood)
