@@ -93,6 +93,7 @@ class ImglistDataset(BaseDataset):
                  maxlen=None,
                  dummy_read=False,
                  dummy_size=None,
+                 preprocessor=None,
                  **kwargs):
         super(ImglistDataset, self).__init__(**kwargs)
         
