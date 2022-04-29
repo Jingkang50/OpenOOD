@@ -16,7 +16,9 @@ Comments, issues, contributions, and collaborations are all welcomed!
 ## Get Started
 
 
-To setup the environment, we use `conda` to manage our dependencies, and CUDA 10.1 to run our experiments.
+To setup the environment, we use `conda` to manage our dependencies.
+
+Our developers use `CUDA 10.1` to do experiments.
 
 You can specify the appropriate `cudatoolkit` version to install on your machine in the `environment.yml` file, and then run the following to create the `conda` environment:
 ```bash
@@ -45,62 +47,71 @@ sh scripts/c_ood/0_mnist_test_fsood_msp.sh
 ```
 
 
-[More tutorials](https://github.com/Jingkang50/OpenOOD/wiki/Get-Started) are provided in our [wiki]() pages.
+[More tutorials](https://github.com/Jingkang50/OpenOOD/wiki/Get-Started) are provided in our [wiki](https://github.com/Jingkang50/OpenOOD/wiki) pages.
 
 
 ---
 ## Supported Benchmarks
-This part lists all the methods we include in this codebase. In `v0.5`, we totally support **30** popular methods for generalized OOD detection.
+This part lists all the benchmarks we
 
 
 <details open>
 <summary><b>Anomaly Detection (1)</b></summary>
 
-> - [x] [MVTec-AD (ICML'18)](https://github.com/lukasruff/Deep-SVDD-PyTorch)
+> - [x] [MVTec-AD](https://www.mvtec.com/company/research/datasets/mvtec-ad)
 </details>
 
 <summary><b>Open Set Recognition (3)</b></summary>
 
-> - [x] [CIFAR-60/40](https://github.com/lukasruff/Deep-SVDD-PyTorch)
-> - [x] [TinyImageNet](https://github.com/lukasruff/Deep-SVDD-PyTorch)
-> - [x] [ImageNet-ImageNet21K](https://github.com/lukasruff/Deep-SVDD-PyTorch)
+> - [x] [CIFAR-60 / 40]()
+> - [x] [ImageNet1K / ImageNet21K-P]()
 </details>
 
 <summary><b>Out-of-Distribution Detection (4)</b></summary>
 
-> - [x] [COVID](https://github.com/lukasruff/Deep-SVDD-PyTorch)
-> - [x] [DIGITS](https://github.com/lukasruff/Deep-SVDD-PyTorch)
-> - [x] [OBJECTS](https://github.com/lukasruff/Deep-SVDD-PyTorch)
-> - [x] [IMAGENET](https://github.com/lukasruff/Deep-SVDD-PyTorch)
+> - [x] [COVID]()
+(ID: `X-Ray-COVID`;
+Near-OOD: `X-Ray-Bones`; `CT-SCAN`;
+Far-OOD: `MNIST`, `CIFAR`, `Texture`, `Tiny-ImageNet`, etc.)
+> - [x] [DIGITS]()
+(ID: `MNIST`;
+Near-OOD: `NotMNIST`, `FashionMNIST`;
+Far-OOD: `CIFAR`, `Texture`, `Tiny-ImageNet`, `Places-365`, etc.)
+> - [x] [OBJECTS]()
+(ID: `CIFAR-10`;
+Near-OOD: `CIFAR-100`, `Tiny-ImageNet`;
+Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-100-C`, etc.)
+> - [x] [IMAGENET]()
+(ID: `ImageNet-1K`; OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`, `Texture`, etc.)
 </details>
 
 
 
 ---
 ## Supported Backbones
-This part lists all the methods we include in this codebase. In `v0.5`, we totally support **30** popular methods for generalized OOD detection.
+This part lists all the backbones we will support in our codebase, including CNN-based and Transformer-based models. Backbones like ResNet-50 and Transformer have ImageNet-1K/22K pretrained models.
 
 <details open>
-<summary><b>CNN Architectures</b></summary>
+<summary><b>CNN-based Backbones (4)</b></summary>
 
-> - [x] [LeNet-5]()
-> - [x] [ResNet-18]()
-> - [x] [WideResNet-28]()
-> - [x] [ResNet-50]()
-> - [x] [BiT]()
+> - [x] [LeNet-5](http://yann.lecun.com/exdb/lenet/)
+> - [x] [ResNet-18](https://openaccess.thecvf.com/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html)
+> - [x] [WideResNet-28](https://arxiv.org/abs/1605.07146)
+> - [x] [ResNet-50](https://openaccess.thecvf.com/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html) ([BiT](https://github.com/google-research/big_transfer))
 </details>
 
 
 <details open>
-<summary><b>Transformer Architectures</b></summary>
+<summary><b>Transformer-based Architectures (3)</b></summary>
 
-> - [x] [DeiT]()
-> - [x] [Swin Transformer]()
+> - [x] [ViT](https://github.com/google-research/vision_transformer)
+> - [x] [DeiT](https://github.com/facebookresearch/deit)
+> - [x] [Swin Transformer](https://openaccess.thecvf.com/content/ICCV2021/html/Liu_Swin_Transformer_Hierarchical_Vision_Transformer_Using_Shifted_Windows_ICCV_2021_paper.html)
 </details>
 
 ---
 ## Supported Methods
-This part lists all the methods we include in this codebase. In `v0.5`, we totally support **30** popular methods for generalized OOD detection.
+This part lists all the methods we include in this codebase. In `v0.5`, we totally support **more than 30 popular methods** for generalized OOD detection.
 
 
 <details open>
@@ -142,6 +153,7 @@ This part lists all the methods we include in this codebase. In `v0.5`, we total
 > - [ ] [VOS (ICLR'22)](https://github.com/deeplearning-wisc/vos) (@JediWarriorZou in progress)
 > - [x] [VIM (CVPR'22)](https://ooddetection.github.io/)
 > - [x] [SEM (arXiv'22)](https://arxiv.org/abs/2204.05306)
+> - [x] [MLS (arXiv'22)](https://github.com/hendrycks/anomaly-seg)
 
 > With Extra Data (3):
 > - [x] [OE (ICLR'19)]()
@@ -151,12 +163,14 @@ This part lists all the methods we include in this codebase. In `v0.5`, we total
 
 
 <details open>
-<summary><b>Uncertainty Estimation (4)</b></summary>
+<summary><b>Other Methods on Robustness and Uncertainty (6)</b></summary>
 
-> - [x] [DeepEnsemble (ICML'18)](https://github.com/lukasruff/Deep-SVDD-PyTorch)
-> - [x] [MCDropout (arXiv'20)]()
-> - [x] [TempScale (CVPR'2021)]()
-> - [x] [Mixup (CVPR'2021)]()
+> - [ ] [MCDropout (ICML'16)]()
+> - [ ] [DeepEnsemble (NeurIPS'17)]()
+> - [ ] [TempScale (ICML'17)]()
+> - [ ] [Mixup (ICLR'18)]()
+> - [ ] [AugMix (ICLR'20)]()
+> - [ ] [PixMix (CVPR'21)]()
 </details>
 
 ---
