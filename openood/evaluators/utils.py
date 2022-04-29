@@ -1,4 +1,3 @@
-from openood.evaluators.openGan_evaluator import OpenGanEvaluator
 from openood.utils import Config
 
 from .arpl_evaluator import ARPLEvaluator
@@ -11,6 +10,7 @@ from .kdad_evaluator import KdadDetectionEvaluator
 from .ood_evaluator import OODEvaluator
 from .openmax_evaluator import OpenMaxEvaluator
 from .patchcore_evaluator import PatchCoreEvaluator
+from .opengan_evaluator import OpenGanEvaluator
 
 
 def get_evaluator(config: Config):

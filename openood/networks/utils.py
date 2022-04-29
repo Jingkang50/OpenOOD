@@ -1,8 +1,9 @@
+import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
-import numpy as np
 
+from .bit import KNOWN_MODELS
 from .conf_widernet import Conf_WideResNet
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
@@ -86,7 +87,8 @@ def get_network(network_config):
         net = {'netG': netG, 'netD': netD, 'netF': feature_net}
 
     elif network_config.name == 'arpl_gan':
-        from .arpl_net import resnet34ABN, Generator, Discriminator, Generator32, Discriminator32
+        from .arpl_net import (resnet34ABN, Generator, Discriminator,
+                               Generator32, Discriminator32)
         from .arpl_layer import ARPLayer
         feature_net = resnet34ABN(num_classes=num_classes, num_bns=2)
         dim_centers = feature_net.fc.weight.shape[1]
@@ -97,7 +99,9 @@ def get_network(network_config):
                              weight_pl=network_config.weight_pl,
                              temp=network_config.temp)
 
-        assert network_config.image_size == 32 or network_config.image_size == 64, 'ARPL-GAN only supports 32x32 or 64x64 images!'
+        assert network_config.image_size == 32 \
+            or network_config.image_size == 64, \
+            'ARPL-GAN only supports 32x32 or 64x64 images!'
 
         if network_config.image_size == 64:
             netG = Generator(1, network_config.nz, network_config.ngf,
@@ -163,6 +167,8 @@ def get_network(network_config):
                     if checkpoint != 'none':
                         subnet.load_state_dict(torch.load(checkpoint),
                                                strict=False)
+        elif network_config.name == 'bit':
+            net.load_from(np.load(network_config.checkpoint))
         else:
             try:
                 net.load_state_dict(torch.load(network_config.checkpoint),
