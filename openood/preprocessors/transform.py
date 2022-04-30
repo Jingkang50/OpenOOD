@@ -61,7 +61,7 @@ class TrainStandard:
                 tvs_trans.ToTensor(),
                 tvs_trans.Normalize(mean=mean, std=std),
             ])
-        else: 
+        else:
             self.transform = CustomPreprocessor
 
     def __call__(self, image):
@@ -94,9 +94,8 @@ class TestStandard:
                 tvs_trans.ToTensor(),
                 tvs_trans.Normalize(mean=mean, std=std),
             ])
-        else: 
+        else:
             self.transform = CustomPreprocessor
-        
 
     def __call__(self, image):
         return self.transform(image)

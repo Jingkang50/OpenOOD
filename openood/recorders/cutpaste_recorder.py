@@ -1,6 +1,7 @@
 import os
 import time
 from pathlib import Path
+
 import torch
 
 
@@ -17,9 +18,9 @@ class CutpasteRecorder:
     def report(self, train_metrics, val_metrics):
         print('\nEpoch {:03d} | Time {:5d}s | Train Loss {:.4f} | '
               'AUROC {:.3f}'.format((val_metrics['epoch_idx']),
-                                       int(time.time() - self.begin_time),
-                                       train_metrics['loss'],
-                                       val_metrics['AUROC']),
+                                    int(time.time() - self.begin_time),
+                                    train_metrics['loss'],
+                                    val_metrics['AUROC']),
               flush=True)
 
     def save_model(self, net, val_metrics):

@@ -7,14 +7,18 @@ from .metrics import compute_all_metrics
 
 
 class CutPasteEvaluator:
-    def __init__(self, config:Config):
+    def __init__(self, config: Config):
         self.config = config
 
     def report(self, test_metrics):
         print('Complete testing, AUROC:{}'.format(test_metrics['AUROC']))
 
-    def eval_ood(self, net, id_data_loader, ood_data_loaders,
-                 postprocessor: BasePostprocessor, epoch_idx: int = -1):
+    def eval_ood(self,
+                 net,
+                 id_data_loader,
+                 ood_data_loaders,
+                 postprocessor: BasePostprocessor,
+                 epoch_idx: int = -1):
         net.eval()
         # load training in-distribution data
         assert 'test' in id_data_loader, \
@@ -29,9 +33,9 @@ class CutPasteEvaluator:
 
         # load ood data and compute ood metrics
         metrics = self._eval_ood(net, [id_pred, id_conf, id_gt],
-                       ood_data_loaders,
-                       postprocessor,
-                       ood_split='val')
+                                 ood_data_loaders,
+                                 postprocessor,
+                                 ood_split='val')
         metrics['epoch_idx'] = epoch_idx
         return metrics
 
@@ -43,7 +47,8 @@ class CutPasteEvaluator:
                   ood_split: str = 'val'):
         [id_pred, id_conf, id_gt] = id_list
         metrics_list = []
-        ood_pred, ood_conf, ood_gt = postprocessor.inference(net, ood_data_loaders[ood_split])
+        ood_pred, ood_conf, ood_gt = postprocessor.inference(
+            net, ood_data_loaders[ood_split])
         ood_gt = -1 * np.ones_like(ood_pred)  # hard set to -1 as ood
 
         pred = np.concatenate([id_pred, ood_pred])
@@ -55,5 +60,3 @@ class CutPasteEvaluator:
         metrics = {}
 
         return metrics
-        
-

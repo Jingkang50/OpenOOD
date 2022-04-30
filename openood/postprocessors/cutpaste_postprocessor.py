@@ -3,9 +3,9 @@ from __future__ import division, print_function
 from typing import Any
 
 import numpy as np
-from sklearn.covariance import LedoitWolf as LW
 import torch
 import torch.nn as nn
+from sklearn.covariance import LedoitWolf as LW
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
@@ -14,7 +14,7 @@ class CutPastePostprocessor:
     def __init__(self, config):
         self.config = config
         self.postprocessor_args = config.postprocessor.postprocessor_args
-    
+
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         # get train embeds
         train_loader = id_loader_dict['train']
@@ -22,8 +22,8 @@ class CutPastePostprocessor:
         train_dataiter = iter(train_loader)
         with torch.no_grad():
             for train_step in tqdm(range(1,
-                                        len(train_dataiter) + 1),
-                                desc='Train embeds:'):
+                                         len(train_dataiter) + 1),
+                                   desc='Train embeds:'):
                 batch = next(train_dataiter)
                 data = torch.cat(batch['data'], 0)
                 data = data.cuda()
@@ -31,7 +31,8 @@ class CutPastePostprocessor:
                 train_embed.append(embed.cuda())
         train_embeds = torch.cat(train_embed)
         self.train_embeds = torch.nn.functional.normalize(train_embeds,
-                                                         p=2, dim=1)
+                                                          p=2,
+                                                          dim=1)
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
@@ -55,7 +56,6 @@ class CutPastePostprocessor:
         for batch in data_loader:
             data = torch.cat(batch['data'], 0)
             data = data.cuda()
-            #label = batch['label'].cuda()
             label = torch.arange(2)
             label = label.repeat_interleave(len(batch['data'][0])).cuda()
             pred, conf = self.postprocess(net, data)
@@ -70,6 +70,7 @@ class CutPastePostprocessor:
         label_list = np.array(label_list, dtype=int)
 
         return pred_list, conf_list, label_list
+
 
 class Density(object):
     def fit(self, embeddings):
