@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/a_anomaly/5_patchcore.sh
+# sh scripts/a_anomaly/3_patchcore.sh
 GPU=1
 CPU=1
 node=30
@@ -12,6 +12,6 @@ python main.py \
 configs/networks/wide_resnet_50_2.yml \
 configs/pipelines/test/test_patchcore.yml \
 configs/postprocessors/patch.yml \
-configs/preprocessors/None_preprocessor.yml
---preprocessor.name None
+configs/preprocessors/None_preprocessor.yml \
+--preprocessor.name base \
 --num_workers 4

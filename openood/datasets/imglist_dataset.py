@@ -7,7 +7,8 @@ import torch
 from PIL import Image, ImageFile
 
 from openood.preprocessors import BasePreprocessor
-from openood.preprocessors.transform import TestStandard, TrainStandard, PatchStandard, PatchGTStandard
+from openood.preprocessors.transform import (PatchGTStandard, PatchStandard,
+                                             TestStandard, TrainStandard)
 
 from .base_dataset import BaseDataset
 
@@ -21,64 +22,6 @@ class Convert:
 
     def __call__(self, image):
         return image.convert(self.mode)
-
-
-def get_transforms(
-    mean: List[float],
-    std: List[float],
-    split: str,
-    interpolation: str = 'bilinear',
-    image_size: int = 256,
-    crop_size: int = 224,
-    preprocessor=None):
-
-    # transform applied after the preprocessor, this is needed due to some
-    # preporcessor may return more then just an image
-    post_preprocessor_transform = trn.Compose(
-        [trn.ToTensor(), trn.Normalize(mean, std)])
-
-    interpolation_modes = {
-        'nearest': InterpolationMode.NEAREST,
-        'bilinear': InterpolationMode.BILINEAR,
-    }
-    color_mode = 'RGB'
-
-    interpolation = interpolation_modes[interpolation]
-
-    if split == 'train':
-        total_transform =  trn.Compose([
-            Convert(color_mode),
-            trn.Resize(image_size, interpolation=interpolation),
-            trn.CenterCrop(crop_size),
-            trn.RandomHorizontalFlip(),
-            trn.RandomCrop(image_size, padding=4),
-            trn.ToTensor(),
-            trn.Normalize(mean, std),
-        ])
-    
-    elif split == 'patch':
-        total_transform =  trn.Compose([
-            # Convert(color_mode),
-            trn.Resize(image_size, interpolation=interpolation),
-            trn.CenterCrop(crop_size),
-            # trn.RandomHorizontalFlip(),
-            # trn.RandomCrop(image_size, padding=4),
-            trn.ToTensor(),
-            trn.Normalize(mean, std),
-        ])
-
-    else:
-        total_transform =  trn.Compose([
-            Convert(color_mode),
-            trn.Resize(image_size, interpolation=interpolation),
-            trn.CenterCrop(crop_size),
-            trn.ToTensor(),
-            trn.Normalize(mean, std),
-        ])
-    total_transform.transforms.append(
-        preprocessor.concat_transform(post_preprocessor_transform))
-
-    return total_transform
 
 
 class ImglistDataset(BaseDataset):
@@ -96,7 +39,7 @@ class ImglistDataset(BaseDataset):
                  preprocessor=None,
                  **kwargs):
         super(ImglistDataset, self).__init__(**kwargs)
-        
+
         self.name = name
         self.image_size = image_size
         with open(imglist_pth) as imgfile:
@@ -111,14 +54,15 @@ class ImglistDataset(BaseDataset):
             self.transform_image = TrainStandard(name, image_size,
                                                  interpolation,
                                                  self.preprocessor)
-        elif split == 'patch' or split =='patchTest' or split =='patchTestGood':
+        elif split == 'patch' or split == 'patchTest' \
+                or split == 'patchTestGood':
             self.transform_image = PatchStandard(name, image_size,
-                                                interpolation,
-                                                self.preprocessor)
+                                                 interpolation,
+                                                 self.preprocessor)
         elif split == 'patchGT':
             self.transform_image = PatchGTStandard(name, image_size,
-                                                interpolation,
-                                                self.preprocessor)
+                                                   interpolation,
+                                                   self.preprocessor)
         else:
             self.transform_image = TestStandard(name, image_size,
                                                 interpolation,

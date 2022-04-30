@@ -7,16 +7,9 @@ node=73
 jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
-<<<<<<< HEAD:scripts/_get_started/7_mnist_test_fsood_gmm.sh
-# srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
-# --cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
-# --kill-on-bad-exit=1 --job-name=${jobname} \
-# -w SG-IDC1-10-51-2-${node} \
-=======
 srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 --cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
 --kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
->>>>>>> aea7e8dfa83e6c79831d67ff0966831acafb56c0:scripts/c_ood/14_mnist_test_fsood_gmm.sh
 python main.py \
 --config configs/datasets/digits/mnist.yml \
 configs/datasets/digits/mnist_fsood.yml \
