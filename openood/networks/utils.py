@@ -17,7 +17,7 @@ from .resnet18_224x224 import ResNet18_224x224
 from .resnet50 import ResNet50
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
-from .wide_resnet50_2 import wide_resnet50_2
+from .patchcore_net import patchcore_net
 from .openmax_network import OpenMax
 
 
@@ -52,7 +52,9 @@ def get_network(network_config):
                         num_classes=num_classes)
 
     elif network_config.name == 'wide_resnet_50_2':
-        net = wide_resnet50_2()
+        module = torch.hub.load('pytorch/vision:v0.9.0', 'wide_resnet50_2', pretrained=True)
+        net = patchcore_net(module)
+
     elif network_config.name == 'godinnet':
         backbone = get_network(network_config.backbone)
         net = GodinNet(backbone=backbone,

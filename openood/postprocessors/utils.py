@@ -8,7 +8,7 @@ from .gradnorm_postprocessor import GradNormPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
 from .patchcore_postprocessor import PatchcorePostprocessor
-from .openmax_poseprocessor import OpenMax
+from .openmax_postprocessor import OpenMax
 from .react_postprocessor import ReactPostprocessor
 from .vim_postprocessor import VIMPostprocessor
 from openood.postprocessors.gradnorm_postprocessor import GradNormPostprocessor
@@ -22,8 +22,8 @@ def get_postprocessor(config: Config):
         'odin': ODINPostprocessor,
         'mds': MDSPostprocessor,
         'gmm': GMMPostprocessor,
-        'Patchcore': PatchcorePostprocessor,
-        'OpenMax': OpenMax,
+        'patchcore': PatchcorePostprocessor,
+        'openmax': OpenMax,
         'react': ReactPostprocessor,
         'vim': VIMPostprocessor,
         'gradnorm': GradNormPostprocessor,

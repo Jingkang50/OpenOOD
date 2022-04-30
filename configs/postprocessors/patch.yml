@@ -1,5 +1,5 @@
 postprocessor:
-  name: Patchcore
+  name: patchcore
   postprocessor_args:
     coreset_sampling_ratio: 0.01
     n_neighbors: 9

@@ -59,8 +59,6 @@ class PatchcorePostprocessor(BasePostprocessor):
     def setup(self, net: nn.Module, id_loader_dict):
         # step 1:
         self.model = net
-        #imagenet
-        self.inv_normalize = transforms.Normalize(mean=[-0.485/0.229, -0.456/0.224, -0.406/0.255], std=[1/0.229, 1/0.224, 1/0.255])
         # on train start
         self.model.eval() # to stop running_var move (maybe not critical)
         self.embedding_list = []
@@ -137,21 +135,17 @@ class PatchcorePostprocessor(BasePostprocessor):
 
             score_patch.append(score_patches)
 
-            anomaly_map = score_patches[:,0].reshape((28,28))
             N_b = score_patches[np.argmax(score_patches[:,0])]
             w = (1 - (np.max(np.exp(N_b))/np.sum(np.exp(N_b))))
             score = w*max(score_patches[:,0]) # Image-level score
 
-            anomaly_map_resized = cv2.resize(anomaly_map, (self.config.dataset.image_size, self.config.dataset.image_size))
-            anomaly_map_resized_blur = gaussian_filter(anomaly_map_resized, sigma=4)
-            self.pred_list_px_lvl.extend(anomaly_map_resized_blur.ravel())
             self.pred_list_img_lvl.append(score)
         
         
 
         pred = []
         for i in self.pred_list_img_lvl:
-            # 6.3 is the value that 
+            # 6.3 is the trial value.
             if(i>6.3): 
                 pred.append(torch.tensor(1))
             else:

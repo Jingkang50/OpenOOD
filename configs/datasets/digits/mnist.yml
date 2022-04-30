@@ -4,12 +4,7 @@ dataset:
   num_classes: 10
   image_size: 28
   num_workers: '@{num_workers}'
-  mean: [0.5, 0.5, 0.5]
-  std: [0.5, 0.5, 0.5]
-  crop_size: 28
   train:
-    mean: [0.5, 0.5, 0.5]
-    std: [0.5, 0.5, 0.5]
     dataset_class: ImglistDataset
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/digits/train_mnist.txt
@@ -18,8 +13,6 @@ dataset:
     transform: mnist_train_standard
     interpolation: bilinear
   val:
-    mean: [0.5, 0.5, 0.5]
-    std: [0.5, 0.5, 0.5]
     dataset_class: ImglistDataset
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/digits/val_mnist.txt
@@ -28,8 +21,6 @@ dataset:
     transform: mnist_test_standard
     interpolation: bilinear
   test:
-    mean: [0.5, 0.5, 0.5]
-    std: [0.5, 0.5, 0.5]
     dataset_class: ImglistDataset
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/digits/test_mnist.txt

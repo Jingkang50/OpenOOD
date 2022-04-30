@@ -5,15 +5,15 @@ import torch.nn as nn
 from torch._C import import_ir_module
 logger = logging.getLogger(__name__)
 
-class wide_resnet50_2(nn.Module):
+class patchcore_net(nn.Module):
 
-    def __init__(self):
-        super(wide_resnet50_2, self).__init__()
+    def __init__(self, backbone):
+        super(patchcore_net, self).__init__()
 
         def hook_t(module, input, output):
             self.features.append(output)
 
-        self.module = torch.hub.load('pytorch/vision:v0.9.0', 'wide_resnet50_2', pretrained=True)
+        self.module = backbone
         self.module.layer2[-1].register_forward_hook(hook_t)
         self.module.layer3[-1].register_forward_hook(hook_t)
         
