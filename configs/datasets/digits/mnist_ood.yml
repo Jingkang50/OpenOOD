@@ -8,7 +8,6 @@ ood_dataset:
   shuffle: False
   num_classes: 10
   image_size: 28
-  crop_size: 28
   num_workers: '@{num_workers}'
 
   split_names: [val, nearood, farood]
