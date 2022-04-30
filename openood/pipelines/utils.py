@@ -9,6 +9,7 @@ from .train_ad_pipeline import TrainAdPipeline
 from .train_dsvdd_pipeline import TrainDSVDDPipeline
 from .train_opengan_pipeline import TrainOpenGanPipeline
 from .train_pipeline import TrainPipeline
+from .test_patchcore_pipeline import TestPatchcorePipeline
 from .train_arplgan_pipeline import TrainARPLGANPipeline
 
 
@@ -19,11 +20,13 @@ def get_pipeline(config: Config):
         'test_acc': TestAccPipeline,
         'feat_extract': FeatExtractPipeline,
         'test_ood': TestOODPipeline,
+        'test_patchcore': TestPatchcorePipeline,
         'test_ad': TestAdPipeline,
         'train_ad': TrainAdPipeline,
         'train_dsvdd': TrainDSVDDPipeline,
         'train_opengan': TrainOpenGanPipeline,
         'train_arplgan': TrainARPLGANPipeline,
     }
+
 
     return pipelines[config.pipeline.name](config)
