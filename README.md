@@ -61,28 +61,31 @@ This part lists all the benchmarks we
 > - [x] [MVTec-AD](https://www.mvtec.com/company/research/datasets/mvtec-ad)
 </details>
 
-<summary><b>Open Set Recognition (3)</b></summary>
+<details open>
+<summary><b>Open Set Recognition (2)</b></summary>
 
-> - [x] [CIFAR-60 / 40]()
+> - [x] [TinyImageNet-20/180]()
 > - [x] [ImageNet1K / ImageNet21K-P]()
 </details>
 
+<details open>
 <summary><b>Out-of-Distribution Detection (4)</b></summary>
 
-> - [x] [COVID]()
-(ID: `X-Ray-COVID`;
-Near-OOD: `X-Ray-Bones`; `CT-SCAN`;
-Far-OOD: `MNIST`, `CIFAR`, `Texture`, `Tiny-ImageNet`, etc.)
+> - [x] [COVID]() <br>
+>      > ID: `BIMCV`; (CS-ID: `ActMed`, `Hannover`;)<br>
+>      > Near-OOD: `CT-SCAN`, `X-Ray-Bones`; <br>
+>      > Far-OOD: `MNIST`, `CIFAR-10`, `Texture`, `Tiny-ImageNet`;
 > - [x] [DIGITS]()
-(ID: `MNIST`;
-Near-OOD: `NotMNIST`, `FashionMNIST`;
-Far-OOD: `CIFAR`, `Texture`, `Tiny-ImageNet`, `Places-365`, etc.)
+>      > ID: `MNIST`; (CS-ID: `USPS`, `SVHN`;)<br>
+>      > Near-OOD: `NotMNIST`, `FashionMNIST`;<br>
+>      > Far-OOD: `Texture`, `CIFAR-10`, `Tiny-ImageNet`, `Places-365`;
 > - [x] [OBJECTS]()
-(ID: `CIFAR-10`;
-Near-OOD: `CIFAR-100`, `Tiny-ImageNet`;
-Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-100-C`, etc.)
+>      > ID: `CIFAR-10`; (CS-ID: `CIFAR-10-C`, `ImageNet-10`;)<br>
+>      > Near-OOD: `CIFAR-100`, `Tiny-ImageNet`;<br>
+>      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-100-C`;
 > - [x] [IMAGENET]()
-(ID: `ImageNet-1K`; OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`, `Texture`, etc.)
+>      > ID: `ImageNet-1K`; (CS-ID: `ImageNet-C`, `ImageNet-v2`)<br>
+>      > OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`, `Texture`;
 </details>
 
 
