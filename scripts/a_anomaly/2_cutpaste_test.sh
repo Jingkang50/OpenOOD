@@ -12,6 +12,7 @@ PYTHONPATH='.':$PYTHONPATH \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
 --config configs/datasets/mvtec/bottle.yml \
-configs/networks/CutPaste.yml \
+configs/networks/cutpaste.yml \
 configs/pipelines/test/test_cutpaste.yml \
-configs/preprocessors/cutpaste_preprocessor.yml
+configs/postprocessors/cutpaste.yml \
+configs/preprocessors/cutpaste_preprocessor.yml \

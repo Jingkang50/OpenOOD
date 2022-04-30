@@ -30,7 +30,7 @@ ood_dataset:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/objects/test_tin.txt
   farood:
-    datasets: [mnist, fashionmnist, texture, cifar100c, svhn]
+    datasets: [mnist, fashionmnist, texture, cifar100c]
     mnist:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/objects/test_mnist.txt
@@ -43,6 +43,3 @@ ood_dataset:
     cifar100c:
       data_dir: ./data/images/
       imglist_pth: ./data/imglist/objects/test_cifar100c.txt
-    svhn:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/objects/test_svhn.txt

@@ -19,7 +19,6 @@ class ProjectionNet(nn.Module):
             last_layer = num_neurons
 
         # the last layer without activation
-
         head = nn.Sequential(*sequential_layers)
         self.resnet18.fc = nn.Identity()
         self.head = head
@@ -30,16 +29,3 @@ class ProjectionNet(nn.Module):
         tmp = self.head(embeds)
         logits = self.out(tmp)
         return embeds, logits
-
-    def freeze_resnet(self):
-        for param in self.resnet18.parameters():
-            param.requires_grad = False
-
-        # unfreeze head:
-        for param in self.resnet18.fc.parameters():
-            param.requires_grad = True
-
-    def unfreeze(self):
-        # unfreeze all:
-        for param in self.parameters():
-            param.requires_grad = True

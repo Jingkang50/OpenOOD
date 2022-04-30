@@ -1,6 +1,7 @@
 from openood.datasets import get_dataloader, get_ood_dataloader
 from openood.evaluators import get_evaluator
 from openood.networks import get_network
+from openood.postprocessors import get_postprocessor
 from openood.preprocessors.utils import get_preprocessor
 from openood.recorders import get_recorder
 from openood.trainers import get_trainer
@@ -31,6 +32,10 @@ class TrainAdPipeline:
         trainer = get_trainer(net, train_loader, self.config)
         evaluator = get_evaluator(self.config)
 
+        postprocessor = get_postprocessor(self.config)
+        # setup for distance-based methods
+        postprocessor.setup(net, id_loader_dict, ood_loader_dict)
+
         # init recorder
         recorder = get_recorder(self.config)
 
@@ -41,6 +46,7 @@ class TrainAdPipeline:
             test_metrics = evaluator.eval_ood(net,
                                               id_loader_dict,
                                               ood_loader_dict,
+                                              postprocessor=postprocessor,
                                               epoch_idx=epoch_idx)
             # save model and report the result
             recorder.save_model(net, test_metrics)
@@ -49,5 +55,6 @@ class TrainAdPipeline:
 
         # evaluate on test set
         print('Start testing...', flush=True)
-        test_metrics = evaluator.eval_ood(net, id_loader_dict, ood_loader_dict)
+        test_metrics = evaluator.eval_ood(net, id_loader_dict, ood_loader_dict,
+                                          postprocessor=postprocessor)
         evaluator.report(test_metrics)

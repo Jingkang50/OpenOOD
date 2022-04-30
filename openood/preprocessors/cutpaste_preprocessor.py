@@ -1,7 +1,15 @@
 import math
 import random
-
 import torch
+import torchvision.transforms as tvs_trans
+
+
+class Convert:
+    def __init__(self, mode='RGB'):
+        self.mode = mode
+
+    def __call__(self, image):
+        return image.convert(self.mode)
 
 
 class CutPastePreprocessor(object):
@@ -9,11 +17,23 @@ class CutPastePreprocessor(object):
         self.area_ratio = area_ratio
         self.aspect_ratio = aspect_ratio
 
-    def concat_transform(self, after_preprocessor_transform):
-        self.after_preprocessor_transform = after_preprocessor_transform
-        return self
+        mean = [0.5, 0.5, 0.5]
+        std = [0.5, 0.5, 0.5]
+        self.before_preprocessor_transform = tvs_trans.Compose([
+            Convert('RGB'),
+            tvs_trans.Resize(256, interpolation=tvs_trans.InterpolationMode.BILINEAR),
+            tvs_trans.CenterCrop(256),
+            tvs_trans.RandomHorizontalFlip(),
+            tvs_trans.RandomCrop(256, padding=4),
+        ])
+        self.after_preprocessor_transform = tvs_trans.Compose([
+            tvs_trans.ToTensor(),
+            tvs_trans.Normalize(mean=mean, std=std),
+        ])
 
     def __call__(self, img):
+        img = self.before_preprocessor_transform(img)
+
         h = img.size[0]
         w = img.size[1]
 
@@ -51,8 +71,7 @@ class CutPastePreprocessor(object):
         augmented = img.copy()
         augmented.paste(patch, insert_box)
 
-        if self.after_preprocessor_transform:
-            img = self.after_preprocessor_transform(img)
-            augmented = self.after_preprocessor_transform(augmented)
+        img = self.after_preprocessor_transform(img)
+        augmented = self.after_preprocessor_transform(augmented)
 
         return img, augmented

@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/c_ood/7_cifar_test_fsood_gram.sh
+# sh scripts/c_ood/7_cifar_test_ood_gram.sh
 
 GPU=1
 CPU=1
@@ -12,7 +12,7 @@ PYTHONPATH='.':$PYTHONPATH \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
 --config configs/datasets/objects/cifar10.yml \
-configs/datasets/objects/cifar10_fsood.yml \
+configs/datasets/objects/cifar10_ood.yml \
 configs/networks/gram.yml \
 configs/pipelines/test/test_gram.yml \
 configs/postprocessors/gram.yml \

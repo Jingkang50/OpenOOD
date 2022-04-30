@@ -18,10 +18,11 @@ evaluator:
 optimizer:
   name: sgd
   num_epochs: 100
-  lr: 0.1
+  lr: 0.03
   momentum: 0.9
   weight_decay: 0.0005
 
 recorder:
   name: cutpaste
   save_all_models: False
+  save_csv: False

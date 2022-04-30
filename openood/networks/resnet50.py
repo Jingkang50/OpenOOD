@@ -1,56 +1,44 @@
-import torch
-
-from openood.networks.resnet18 import Bottleneck, ResNet18
+from torchvision.models.resnet import Bottleneck, ResNet
 
 
-class ResNet50(ResNet18):
+class ResNet50(ResNet):
     def __init__(self,
                  block=Bottleneck,
-                 num_blocks=[3, 4, 6, 3],
-                 num_classes=10,
-                 image_size=32,
-                 pooling_size=7):
-        super(ResNet50, self).__init__(block, num_blocks, num_classes,
-                                       image_size, pooling_size)
-        self.load_state_dict()
+                 layers=[3, 4, 6, 3],
+                 num_classes=1000):
+        super(ResNet50, self).__init__(block=Bottleneck,
+                                       layers=[3, 4, 6, 3],
+                                       num_classes=1000)
 
-    def load_state_dict(
-            self,
-            state_dict=torch.load('./checkpoints/resnet50-19c8e357.pth'),
-            strict=True):
+    def forward(self, x, return_feature=False, return_feature_list=False):
+        feature1 = self.relu(self.bn1(self.conv1(x)))
+        feature1 = self.maxpool(feature1)
+        feature2 = self.layer1(feature1)
+        feature3 = self.layer2(feature2)
+        feature4 = self.layer3(feature3)
+        feature5 = self.layer4(feature4)
+        feature5 = self.avgpool(feature5)
+        feature = feature5.view(feature5.size(0), -1)
+        logits_cls = self.fc(feature)
 
-        missing_keys = []
-        unexpected_keys = []
-        error_msgs = []
+        feature_list = [feature1, feature2, feature3, feature4, feature5]
+        if return_feature:
+            return logits_cls, feature
+        elif return_feature_list:
+            return logits_cls, feature_list
+        else:
+            return logits_cls
 
-        # copy state_dict so _load_from_state_dict can modify it
-        metadata = getattr(state_dict, '_metadata', None)
-        state_dict = state_dict.copy()
-        if metadata is not None:
-            state_dict._metadata = metadata
+    def forward_threshold(self, x, threshold):
+        feature1 = self.relu(self.bn1(self.conv1(x)))
+        feature1 = self.maxpool(feature1)
+        feature2 = self.layer1(feature1)
+        feature3 = self.layer2(feature2)
+        feature4 = self.layer3(feature3)
+        feature5 = self.layer4(feature4)
+        feature5 = self.avgpool(feature5)
+        feature = feature5.clip(max=threshold)
+        feature = feature.view(feature.size(0), -1)
+        logits_cls = self.fc(feature)
 
-        def load(module, prefix=''):
-            local_metadata = {} if metadata is None else metadata.get(
-                prefix[:-1], {})
-            module._load_from_state_dict(state_dict, prefix, local_metadata,
-                                         strict, missing_keys, unexpected_keys,
-                                         error_msgs)
-            for name, child in module._modules.items():
-                if child is not None:
-                    load(child, prefix + name + '.')
-
-        load(self)
-
-        if strict:
-            if len(unexpected_keys) > 0:
-                error_msgs.insert(
-                    0, 'Unexpected key(s) in state_dict: {}. '.format(
-                        ', '.join('"{}"'.format(k) for k in unexpected_keys)))
-            if len(missing_keys) > 0:
-                error_msgs.insert(
-                    0, 'Missing key(s) in state_dict: {}. '.format(', '.join(
-                        '"{}"'.format(k) for k in missing_keys)))
-
-        if len(error_msgs) > 0:
-            print('Warning(s) in loading state_dict for {}:\n\t{}'.format(
-                self.__class__.__name__, '\n\t'.join(error_msgs)))
+        return logits_cls

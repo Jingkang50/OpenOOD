@@ -8,9 +8,14 @@ num_workers: 0
 
 network:
   pretrained: True
-  checkpoint: ./results/bottle_cutpaste_cutpaste_e100_lr0.1/best_epoch80_loss0.022499999999999964.ckpt
+  checkpoint: results/bottle_projectionNet_cutpaste_e100_lr0.03/best_epoch15_auroc97.48015873015873.ckpt
+
 pipeline:
   name: test_ad
 
 evaluator:
   name: cutpaste
+
+recorder:
+  save_scores: True
+  save_csv: True

@@ -4,10 +4,20 @@ normalization_dict = {
     'cifar10': [[0.4914, 0.4822, 0.4465], [0.2470, 0.2435, 0.2616]],
     'cifar100': [[0.5071, 0.4867, 0.4408], [0.2675, 0.2565, 0.2761]],
     'imagenet': [[0.485, 0.456, 0.406], [0.229, 0.224, 0.225]],
+    'svhn': [[0.431, 0.430, 0.446], [0.196, 0.198, 0.199]],
+    'cifar10-3': [[-31.7975, -31.7975, -31.7975], [42.8907, 42.8907, 42.8907]],
     'covid': [[0.4907, 0.4907, 0.4907], [0.2697, 0.2697, 0.2697]],
 }
 
-center_crop_dict = {28: 28, 32: 32, 224: 224, 299: 320, 331: 352}
+center_crop_dict = {
+    28: 28,
+    32: 32,
+    224: 256,
+    256: 256,
+    299: 320,
+    331: 352,
+    480: 480
+}
 
 interpolation_modes = {
     'nearest': tvs_trans.InterpolationMode.NEAREST,
@@ -40,16 +50,19 @@ class TrainStandard:
 
         interpolation = interpolation_modes[interpolation]
 
-        self.transform = tvs_trans.Compose([
-            Convert('RGB'),
-            tvs_trans.Resize(pre_size, interpolation=interpolation),
-            tvs_trans.CenterCrop(image_size),
-            tvs_trans.RandomHorizontalFlip(),
-            tvs_trans.RandomCrop(image_size, padding=4),
-            CustomPreprocessor,
-            tvs_trans.ToTensor(),
-            tvs_trans.Normalize(mean=mean, std=std),
-        ])
+        if CustomPreprocessor == None:
+            self.transform = tvs_trans.Compose([
+                Convert('RGB'),
+                tvs_trans.Resize(pre_size, interpolation=interpolation),
+                tvs_trans.CenterCrop(image_size),
+                tvs_trans.RandomHorizontalFlip(),
+                tvs_trans.RandomCrop(image_size, padding=4),
+                CustomPreprocessor,
+                tvs_trans.ToTensor(),
+                tvs_trans.Normalize(mean=mean, std=std),
+            ])
+        else: 
+            self.transform = CustomPreprocessor
 
     def __call__(self, image):
         return self.transform(image)
@@ -73,14 +86,17 @@ class TestStandard:
 
         interpolation = interpolation_modes[interpolation]
 
-        self.transform = tvs_trans.Compose([
-            Convert('RGB'),
-            tvs_trans.Resize(pre_size, interpolation=interpolation),
-            tvs_trans.CenterCrop(image_size),
-            CustomPreprocessor,
-            tvs_trans.ToTensor(),
-            tvs_trans.Normalize(mean=mean, std=std),
-        ])
+        if CustomPreprocessor == None:
+            self.transform = tvs_trans.Compose([
+                Convert('RGB'),
+                tvs_trans.Resize(pre_size, interpolation=interpolation),
+                tvs_trans.CenterCrop(image_size),
+                tvs_trans.ToTensor(),
+                tvs_trans.Normalize(mean=mean, std=std),
+            ])
+        else: 
+            self.transform = CustomPreprocessor
+        
 
     def __call__(self, image):
         return self.transform(image)

@@ -47,13 +47,12 @@ def sample_estimator(model, train_loader, num_classes, powers):
     feature_class = [[[None for x in range(num_poles)]
                       for y in range(num_layer)] for z in range(num_classes)]
     label_list = []
-
     mins = [[[None for x in range(num_poles)] for y in range(num_layer)]
             for z in range(num_classes)]
     maxs = [[[None for x in range(num_poles)] for y in range(num_layer)]
             for z in range(num_classes)]
 
-    # collect features
+    # collect features and compute gram metrix
     for batch in tqdm(train_loader, desc='Compute min/max'):
         data = batch['data'].cuda()
         label = batch['label']
@@ -80,6 +79,7 @@ def sample_estimator(model, train_loader, num_classes, powers):
                     else:
                         feature_class[label][layer_idx][pole_idx].extend(
                             feature)
+    # compute mins/maxs 
     for label in range(num_classes):
         for layer_idx in range(num_layer):
             for poles_idx in range(num_poles):
@@ -109,10 +109,10 @@ def get_deviations(model, data, mins, maxs, num_classes, powers):
     pred_list = []
     dev = [0 for x in range(200)]
 
+    # get predictions
     logits, feature_list = model(data, return_feature_list=True)
     confs = F.softmax(logits, dim=1).cpu().detach().numpy()
     preds = np.argmax(confs, axis=1)
-
     predsList = preds.tolist()
     preds = torch.tensor(preds)
 
@@ -127,8 +127,10 @@ def get_deviations(model, data, mins, maxs, num_classes, powers):
             if exist == 1:
                 pred_list.extend([pred])
 
+    # compute sample level deviation
     for layer_idx in range(num_layer):
         for pole_idx, p in enumerate(num_poles_list):
+            # get gram metirx
             temp = feature_list[layer_idx].detach()
             temp = temp**p
             temp = temp.reshape(temp.shape[0], temp.shape[1], -1)
@@ -136,8 +138,9 @@ def get_deviations(model, data, mins, maxs, num_classes, powers):
                                                        dim1=1)))).sum(dim=2)
             temp = (temp.sign() * torch.abs(temp)**(1 / p)).reshape(
                 temp.shape[0], -1)
-
             temp = tensor2list(temp)
+
+            # compute the deviations with train data
             for idx in range(len(temp)):
                 dev[idx] += (F.relu(mins[preds[idx]][layer_idx][pole_idx] -
                                     sum(temp[idx])) /
@@ -147,6 +150,6 @@ def get_deviations(model, data, mins, maxs, num_classes, powers):
                     sum(temp[idx]) - maxs[preds[idx]][layer_idx][pole_idx]) /
                              torch.abs(maxs[preds[idx]][layer_idx][pole_idx] +
                                        10**-6)).sum()
-
     conf = [i / 50 for i in dev]
+
     return preds, torch.tensor(conf)

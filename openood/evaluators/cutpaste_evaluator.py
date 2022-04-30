@@ -1,131 +1,65 @@
+import csv
+import os
+import numpy as np
 import torch
-from sklearn.covariance import LedoitWolf as LW
 from sklearn.metrics import auc, roc_curve
+from torch.autograd import Variable
 from tqdm import tqdm
 
-from openood.datasets import get_dataloader
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
 
-
-def to_np(x):
-    return x.data.cuda().numpy()
+from .metrics import compute_all_metrics
 
 
 class CutPasteEvaluator:
-    def __init__(self, config: Config):
+    def __init__(self, config:Config):
         self.config = config
 
-    def eval_ood(self,
-                 net,
-                 id_data_loader,
-                 ood_loader_dict,
-                 postprocessor: BasePostprocessor = None,
-                 epoch_idx: int = -1):
+    def report(self, test_metrics):
+        print('Complete testing, AUROC:{}'.format(test_metrics['AUROC']))
+
+    def eval_ood(self, net, id_data_loader, ood_data_loaders,
+                 postprocessor: BasePostprocessor, epoch_idx: int = -1):
         net.eval()
+        # load training in-distribution data
+        assert 'test' in id_data_loader, \
+            'id_data_loaders should have the key: test!'
+        dataset_name = self.config.dataset.name
+        print(f'Performing inference on {dataset_name} dataset...', flush=True)
+        id_pred, id_conf, id_gt = postprocessor.inference(
+            net, id_data_loader['test'])
+        for idx in range(len(id_gt)):
+            if id_gt[idx] == 1:
+                id_gt[idx] == -1
 
-        # loss_avg = 0.0
-        correct = 0
-
-        embeds = []
-        labels = []
-        data_loader = ood_loader_dict['val']
-        with torch.no_grad():
-            for batch in tqdm(data_loader,
-                              desc='Eval: ',
-                              position=0,
-                              leave=True):
-                data = torch.cat(batch['data'], 0)
-                data = data.cuda()
-                y = torch.arange(2)
-                y = y.repeat_interleave(len(batch['data'][0]))
-                labels.append(y)
-                y = y.cuda()
-
-                # forward
-                embed, output = net(data)
-                embeds.append(embed.cuda())
-
-                # accuracy
-                pred = output.data.max(1)[1]
-                correct += pred.eq(y.data).sum().item()
-
-        labels = torch.cat(labels)
-        embeds = torch.cat(embeds)
-        embeds = torch.nn.functional.normalize(embeds, p=2, dim=1)
-
-        train_embeds = get_train_embeds(net, self.config)
-        train_embeds = torch.nn.functional.normalize(train_embeds, p=2, dim=1)
-        density = GaussianDensityTorch()
-        density.fit(train_embeds)
-        distances = density.predict(embeds)
-
-        fpr, tpr, _ = roc_curve(labels, distances.cpu())
-        cp_auc = auc(fpr, tpr)
-
-        metrics = {}
+        # load ood data and compute ood metrics
+        metrics = self._eval_ood(net, [id_pred, id_conf, id_gt],
+                       ood_data_loaders,
+                       postprocessor,
+                       ood_split='val')
         metrics['epoch_idx'] = epoch_idx
-        metrics['auc'] = cp_auc
         return metrics
 
+    def _eval_ood(self,
+                  net,
+                  id_list,
+                  ood_data_loaders,
+                  postprocessor: BasePostprocessor,
+                  ood_split: str = 'val'):
+        [id_pred, id_conf, id_gt] = id_list
+        metrics_list = []
+        ood_pred, ood_conf, ood_gt = postprocessor.inference(net, ood_data_loaders[ood_split])
+        ood_gt = -1 * np.ones_like(ood_pred)  # hard set to -1 as ood
 
-class Density(object):
-    def fit(self, embeddings):
-        raise NotImplementedError
+        pred = np.concatenate([id_pred, ood_pred])
+        conf = np.concatenate([id_conf, ood_conf])
+        label = np.concatenate([id_gt, ood_gt])
 
-    def predict(self, embeddings):
-        raise NotImplementedError
+        ood_metrics = compute_all_metrics(conf, label, pred)
+        metrics_list.append(ood_metrics)
+        metrics = {}
 
+        return metrics
+        
 
-class GaussianDensityTorch(object):
-    def fit(self, embeddings):
-        self.mean = torch.mean(embeddings, axis=0)
-        self.inv_cov = torch.Tensor(LW().fit(embeddings.cpu()).precision_,
-                                    device='cpu')
-
-    def predict(self, embeddings):
-        distances = self.mahalanobis_distance(embeddings, self.mean,
-                                              self.inv_cov)
-        return distances
-
-    @staticmethod
-    def mahalanobis_distance(values: torch.Tensor, mean: torch.Tensor,
-                             inv_covariance: torch.Tensor) -> torch.Tensor:
-
-        assert values.dim() == 2
-        assert 1 <= mean.dim() <= 2
-        assert len(inv_covariance.shape) == 2
-        assert values.shape[1] == mean.shape[-1]
-        assert mean.shape[-1] == inv_covariance.shape[0]
-        assert inv_covariance.shape[0] == inv_covariance.shape[1]
-
-        if mean.dim() == 1:  # Distribution mean.
-            mean = mean.unsqueeze(0)
-        x_mu = values - mean  # batch x features
-        # Same as dist = x_mu.t() * inv_covariance * x_mu batch wise
-        inv_covariance = inv_covariance.cuda()
-        dist = torch.einsum('im,mn,in->i', x_mu, inv_covariance, x_mu)
-
-        return dist.sqrt()
-
-
-def get_train_embeds(net, config):
-
-    preprocessor = None
-    loader_dict = get_dataloader(config.dataset, preprocessor)
-    train_loader = loader_dict['train']
-
-    train_embed = []
-    train_dataiter = iter(train_loader)
-    with torch.no_grad():
-        for train_step in tqdm(range(1,
-                                     len(train_dataiter) + 1),
-                               desc='Train embeds:'):
-            batch = next(train_dataiter)
-            data = batch['data'].cuda()
-            embed, logit = net(data)
-            train_embed.append(embed.cuda())
-
-    train_embed = torch.cat(train_embed)
-
-    return train_embed

@@ -2,7 +2,7 @@ exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'"
 output_dir: ./results/
 save_output: True
 force_merge: False # disabled if 'save_output' is False
-normal_class: 3
+normal_class: 3 
 lamda: 0.01
 dataset_name: '@{dataset.name}'
 direction_loss_only: False

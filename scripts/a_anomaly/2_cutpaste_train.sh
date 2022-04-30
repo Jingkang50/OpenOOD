@@ -14,10 +14,9 @@ python main.py \
 --config configs/datasets/mvtec/bottle.yml \
 configs/networks/cutpaste.yml \
 configs/pipelines/train/train_cutpaste.yml \
+configs/postprocessors/cutpaste.yml \
 configs/preprocessors/cutpaste_preprocessor.yml \
---dataset.image_size 28 \
---ood_dataset.image_size 28 \
---network.name cutpaste \
+--network.name projectionNet \
 --trainer.name cutpaste \
 --evaluator.name cutpaste \
 --optimizer.num_epochs 100 \

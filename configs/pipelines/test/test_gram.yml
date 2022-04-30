@@ -14,7 +14,7 @@ pipeline:
   name: test_ood
 
 evaluator:
-  name: fsood
+  name: ood
 
 recorder:
   save_scores: True
