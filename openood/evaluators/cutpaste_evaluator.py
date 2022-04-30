@@ -1,10 +1,4 @@
-import csv
-import os
 import numpy as np
-import torch
-from sklearn.metrics import auc, roc_curve
-from torch.autograd import Variable
-from tqdm import tqdm
 
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config

@@ -50,7 +50,7 @@ class TrainStandard:
 
         interpolation = interpolation_modes[interpolation]
 
-        if CustomPreprocessor == None:
+        if CustomPreprocessor is None:
             self.transform = tvs_trans.Compose([
                 Convert('RGB'),
                 tvs_trans.Resize(pre_size, interpolation=interpolation),
@@ -86,7 +86,7 @@ class TestStandard:
 
         interpolation = interpolation_modes[interpolation]
 
-        if CustomPreprocessor == None:
+        if CustomPreprocessor is None:
             self.transform = tvs_trans.Compose([
                 Convert('RGB'),
                 tvs_trans.Resize(pre_size, interpolation=interpolation),

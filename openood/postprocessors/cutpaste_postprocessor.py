@@ -6,11 +6,9 @@ import numpy as np
 from sklearn.covariance import LedoitWolf as LW
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from .base_postprocessor import BasePostprocessor
 
 class CutPastePostprocessor:
     def __init__(self, config):
@@ -32,7 +30,8 @@ class CutPastePostprocessor:
                 embed, logit = net(data)
                 train_embed.append(embed.cuda())
         train_embeds = torch.cat(train_embed)
-        self.train_embeds = torch.nn.functional.normalize(train_embeds, p=2, dim=1)
+        self.train_embeds = torch.nn.functional.normalize(train_embeds,
+                                                         p=2, dim=1)
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
