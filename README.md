@@ -1,4 +1,6 @@
 # OpenOOD: Benchmarking Generalized OOD Detection
+[![paper](https://img.shields.io/badge/Paper-arxiv-b31b1b?style=for-the-badge)]()
+
 
 This repository reproduces representative methods within the [`Generalized Out-of-Distribution Detection Framework`](https://arxiv.org/abs/2110.11334),
 aiming to make a fair comparison across methods that initially developed for anomaly detection, novelty detection, open set recognition, and out-of-distribution detection.
@@ -11,6 +13,7 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Updates
+- **6 May, 2022**: We release `v0.5` to support .
 - **12 April, 2022**: Primary release to support [Full-Spectrum OOD Detection](https://arxiv.org/abs/2204.05306).
 
 ## Get Started
@@ -51,7 +54,7 @@ sh scripts/c_ood/0_mnist_test_fsood_msp.sh
 
 
 ---
-## Supported Benchmarks
+## Supported Benchmarks (7)
 This part lists all the benchmarks we
 
 
@@ -91,7 +94,7 @@ This part lists all the benchmarks we
 
 
 ---
-## Supported Backbones
+## Supported Backbones (6)
 This part lists all the backbones we will support in our codebase, including CNN-based and Transformer-based models. Backbones like ResNet-50 and Transformer have ImageNet-1K/22K pretrained models.
 
 <details open>
@@ -105,16 +108,15 @@ This part lists all the backbones we will support in our codebase, including CNN
 
 
 <details open>
-<summary><b>Transformer-based Architectures (3)</b></summary>
+<summary><b>Transformer-based Architectures (2)</b></summary>
 
-> - [x] [ViT](https://github.com/google-research/vision_transformer)
-> - [x] [DeiT](https://github.com/facebookresearch/deit)
+> - [x] [ViT](https://github.com/google-research/vision_transformer) ([DeiT](https://github.com/facebookresearch/deit))
 > - [x] [Swin Transformer](https://openaccess.thecvf.com/content/ICCV2021/html/Liu_Swin_Transformer_Hierarchical_Vision_Transformer_Using_Shifted_Windows_ICCV_2021_paper.html)
 </details>
 
 ---
-## Supported Methods
-This part lists all the methods we include in this codebase. In `v0.5`, we totally support **more than 30 popular methods** for generalized OOD detection.
+## Supported Methods (32)
+This part lists all the methods we include in this codebase. In `v0.5`, we totally support **more than 32 popular methods** for generalized OOD detection.
 
 All the supported methodolgies can be placed in the following four categories.
 
@@ -200,7 +202,18 @@ distance: f4d5b3 -->
 > - [x] [![](https://img.shields.io/badge/CVPR'21-PixMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 </details>
 
+
 ---
+## Contributing
+We appreciate all contributions to improve OpenOOD.
+We sincerely welcome community users to participate in these projects. Please refer to [CONTRIBUTING.md](https://github.com/Jingkang50/OpenOOD/blob/v0.5/CONTRIBUTING.md) for the contributing guideline.
+
+## Contributors
+<a href="https://github.com/jingkang50/openood/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jingkang50/openood" />
+</a>
+
+
 ## Citation
 If you find our repository useful for your research, please consider citing our paper:
 ```bibtex
@@ -224,12 +237,6 @@ If you find our repository useful for your research, please consider citing our 
     year={2021}
 }
 
-@InProceedings{yang2021scood,
-    author = {Yang, Jingkang and Wang, Haoqi and Feng, Litong and Yan, Xiaopeng and Zheng, Huabin and Zhang, Wayne and Liu, Ziwei},
-    title = {Semantically Coherent Out-of-Distribution Detection},
-    booktitle = {Proceedings of the IEEE International Conference on Computer Vision},
-    year = {2021}
-}
 ```
 
 
