@@ -53,9 +53,10 @@ def fpr_recall(conf, label, tpr):
 
 # auc
 def auc(conf, label):
+
     ind_indicator = np.zeros_like(label)
     ind_indicator[label != -1] = 1
-
+    
     fpr, tpr, thresholds = metrics.roc_curve(ind_indicator, conf)
 
     precision_in, recall_in, thresholds_in \

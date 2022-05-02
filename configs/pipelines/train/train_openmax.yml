@@ -1,0 +1,27 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
+output_dir: ./results/
+save_output: True
+force_merge: False
+
+num_gpus: 1
+num_workers: 0
+
+pipeline:
+  name: train
+
+trainer:
+  name: OpenMax
+
+evaluator:
+  name: base
+
+optimizer:
+  name: sgd
+  num_epochs: 100
+  lr: 0.1
+  momentum: 0.9
+  weight_decay: 0.0005
+
+recorder:
+  name: base
+  save_all_models: False
