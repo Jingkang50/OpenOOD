@@ -32,10 +32,11 @@ class CutPasteEvaluator:
                 id_gt[idx] == -1
 
         # load ood data and compute ood metrics
-        metrics = self._eval_ood(net, [id_pred, id_conf, id_gt],
-                                 ood_data_loaders,
-                                 postprocessor,
-                                 ood_split='val')
+        metrics = {}
+        metrics['AUROC'] = self._eval_ood(net, [id_pred, id_conf, id_gt],
+                                          ood_data_loaders,
+                                          postprocessor,
+                                          ood_split='val')
         metrics['epoch_idx'] = epoch_idx
         return metrics
 
@@ -46,7 +47,6 @@ class CutPasteEvaluator:
                   postprocessor: BasePostprocessor,
                   ood_split: str = 'val'):
         [id_pred, id_conf, id_gt] = id_list
-        metrics_list = []
         ood_pred, ood_conf, ood_gt = postprocessor.inference(
             net, ood_data_loaders[ood_split])
         ood_gt = -1 * np.ones_like(ood_pred)  # hard set to -1 as ood
@@ -56,7 +56,5 @@ class CutPasteEvaluator:
         label = np.concatenate([id_gt, ood_gt])
 
         ood_metrics = compute_all_metrics(conf, label, pred)
-        metrics_list.append(ood_metrics)
-        metrics = {}
 
-        return metrics
+        return ood_metrics[1]

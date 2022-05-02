@@ -11,6 +11,8 @@ from .dsvdd_net import build_network, get_Autoencoder
 from .godinnet import GodinNet
 from .lenet import LeNet
 from .opengan import Discriminator, Generator
+from .openmax_network import OpenMax
+from .patchcore_net import patchcore_net
 from .projectionnet import ProjectionNet
 from .reactnet import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
@@ -50,6 +52,12 @@ def get_network(network_config):
                         dropRate=0.0,
                         num_classes=num_classes)
 
+    elif network_config.name == 'wide_resnet_50_2':
+        module = torch.hub.load('pytorch/vision:v0.9.0',
+                                'wide_resnet50_2',
+                                pretrained=True)
+        net = patchcore_net(module)
+
     elif network_config.name == 'godinnet':
         backbone = get_network(network_config.backbone)
         net = GodinNet(backbone=backbone,
@@ -67,7 +75,12 @@ def get_network(network_config):
 
         net = {'generative': model, 'discriminative': model_seg}
 
+    elif network_config.name == 'openmax_network':
+        net = OpenMax(backbone='ResNet18', num_classes=50)
+
     elif network_config.name == 'openGan':
+        # NetType = eval(network_config.feat_extract_network)
+        # feature_net = NetType()
         feature_net = get_network(network_config.feat_extract_network)
 
         netG = Generator(in_channels=network_config.nz,

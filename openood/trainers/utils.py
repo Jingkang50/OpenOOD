@@ -13,6 +13,7 @@ from .godin_trainer import GodinTrainer
 from .kdad_trainer import KdadTrainer
 from .mixup_trainer import MixupTrainer
 from .opengan_trainer import OpenGanTrainer
+from .openmax_trainer import OpenMaxTrainer
 from .sae_trainer import SAETrainer
 
 
@@ -26,6 +27,7 @@ def get_trainer(
         'mixup': MixupTrainer,
         'sae': SAETrainer,
         'DRAEM': DRAEMTrainer,
+        'OpenMax': OpenMaxTrainer,
         'kdad': KdadTrainer,
         'conf_esti': Conf_Esti_Trainer,
         'dcae': AETrainer,

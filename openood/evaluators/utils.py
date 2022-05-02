@@ -10,6 +10,8 @@ from .fsood_evaluator import FSOODEvaluator
 from .kdad_evaluator import KdadDetectionEvaluator
 from .ood_evaluator import OODEvaluator
 from .opengan_evaluator import OpenGanEvaluator
+from .openmax_evaluator import OpenMaxEvaluator
+from .patchcore_evaluator import PatchCoreEvaluator
 
 
 def get_evaluator(config: Config):
@@ -18,10 +20,11 @@ def get_evaluator(config: Config):
         'ood': OODEvaluator,
         'fsood': FSOODEvaluator,
         'DRAEM': DRAEMEvaluator,
-        'kdad': KdadDetectionEvaluator,
-        'conf_esti': Conf_Esti_Evaluator,
+        'openmax': OpenMaxEvaluator,
         'openGan': OpenGanEvaluator,
         'kdad': KdadDetectionEvaluator,
+        'conf_esti': Conf_Esti_Evaluator,
+        'patch': PatchCoreEvaluator,
         'dcae': DCAEEvaluator,
         'dsvdd': DSVDDEvaluator,
         'arpl': ARPLEvaluator,

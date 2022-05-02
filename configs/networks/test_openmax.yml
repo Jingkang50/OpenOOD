@@ -1,0 +1,6 @@
+network:
+  name: openmax_network
+  num_classes: '@{dataset.num_classes}'
+  pretrained: True          # set 'True' to load pretrained model
+  checkpoint: ./results/mvtec_openmax_network_OpenMax_e100_lr0.1/best.ckpt           # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'
