@@ -13,7 +13,7 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Updates
-- **6 May, 2022**: We release `v0.5` to support .
+- **6 May, 2022**: We release `v0.5` to finalize all implemented methods.
 - **12 April, 2022**: Primary release to support [Full-Spectrum OOD Detection](https://arxiv.org/abs/2204.05306).
 
 ## Get Started
@@ -54,7 +54,7 @@ sh scripts/c_ood/0_mnist_test_fsood_msp.sh
 
 
 ---
-## Supported Benchmarks (7)
+## Supported Benchmarks (8)
 This part lists all the benchmarks we
 
 
@@ -65,10 +65,11 @@ This part lists all the benchmarks we
 </details>
 
 <details open>
-<summary><b>Open Set Recognition (2)</b></summary>
+<summary><b>Open Set Recognition (3)</b></summary>
 
+> - [x] [CIFAR-4/6]()
+> - [x] [CIFAR-40/60]()
 > - [x] [TinyImageNet-20/180]()
-> - [x] [ImageNet1K / ImageNet21K-P]()
 </details>
 
 <details open>
@@ -76,16 +77,20 @@ This part lists all the benchmarks we
 
 > - [x] [MNIST]()
 >      > Near-OOD: `NotMNIST`, `FashionMNIST`;<br>
->      > Far-OOD: `Texture`, `CIFAR-10`, `Tiny-ImageNet`, `Places-365`;
+>      > Far-OOD: `Texture`, `CIFAR-10`, `TinyImageNet`, `Places-365`;<br>
+>      > CS-ID: `SVHN`, `USPS`;
 > - [x] [CIFAR-10]()
->      > Near-OOD: `CIFAR-100`, `Tiny-ImageNet`;<br>
->      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-100-C`;
+>      > Near-OOD: `CIFAR-100`, `TinyImageNet`;<br>
+>      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-100-C`;<br>
+>      > CS-ID: `CINIC-10`, `CIFAR-10-C`;
 > - [x] [CIFAR-100]()
->      > Near-OOD: `CIFAR-10`, `CINIC-10`, `Tiny-ImageNet`;<br>
->      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-10-C`;
-> - [x] [IMAGENET]()
->      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`;<br>
->      > Far-OOD:  `Texture`, `MNIST`, `SVHN`, `Places365`
+>      > Near-OOD: `CIFAR-10`, `CINIC-10`, `TinyImageNet`;<br>
+>      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-10-C`;<br>
+>      > CS-ID: `TinyImageNet-C100`, `CIFAR-100-C`;
+> - [x] [ImageNet-1K]()
+>      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`, `ImageNet21K-P`;<br>
+>      > Far-OOD:  `Texture`, `MNIST`, `SVHN`, `Places365`;<br>
+>      > CS-ID: `ImageNet-v2`, `ImageNet-C`;
 </details>
 
 
@@ -112,7 +117,7 @@ This part lists all the backbones we will support in our codebase, including CNN
 </details>
 
 ---
-## Supported Methods (32)
+## Supported Methods (34)
 This part lists all the methods we include in this codebase. In `v0.5`, we totally support **more than 32 popular methods** for generalized OOD detection.
 
 All the supported methodolgies can be placed in the following four categories.
@@ -155,7 +160,7 @@ distance: f4d5b3 -->
 
 
 <details open>
-<summary><b>Out-of-Distribution Detection (18)</b></summary>
+<summary><b>Out-of-Distribution Detection (20)</b></summary>
 
 <!--
 density: d0e9ff,
@@ -163,13 +168,13 @@ reconstruction: c2e2de,
 classification: fdd7e6,
 distance: f4d5b3 -->
 
-> No Extra Data (15):
+> No Extra Data (17):
 > - [x] [![msp](https://img.shields.io/badge/ICLR'17-MSP-fdd7e6?style=for-the-badge)]()
 > - [x] [![odin](https://img.shields.io/badge/ICLR'18-ODIN-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![mds](https://img.shields.io/badge/NeurIPS'18-MDS-f4d5b3?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]
-> - [x] [![](https://img.shields.io/badge/arXiv'19-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
-> - [x] [![](https://img.shields.io/badge/arXiv'19-KL&#8211;Matching-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
+> - [ ] [![mls](https://img.shields.io/badge/arXiv'19-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
+> - [ ] [![kld](https://img.shields.io/badge/arXiv'19-KL&#8211;Matching-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
 > - [x] [![godin](https://img.shields.io/badge/CVPR'20-G&#8211;ODIN-fdd7e6?style=for-the-badge)](https://github.com/guyera/Generalized-ODIN-Implementation)  &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![gram](https://img.shields.io/badge/ICML'20-Gram-f4d5b3?style=for-the-badge)](https://github.com/VectorInstitute/gram-ood-detection)  &nbsp;&nbsp; ![postprocess]
 > - [ ] [![duq](https://img.shields.io/badge/ICML'20-DUQ-f4d5b3?style=for-the-badge)](https://github.com/y0ast/deterministic-uncertainty-quantification)  &nbsp;&nbsp; ![postprocess] (@Zzitang in progress)
@@ -184,21 +189,21 @@ distance: f4d5b3 -->
 
 
 > With Extra Data (3):
-> - [x] [![](https://img.shields.io/badge/ICLR'19-OE-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata]
-> - [x] [![](https://img.shields.io/badge/ICCV'19-MCD-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata] &nbsp; ![training]
-> - [x] [![](https://img.shields.io/badge/ICCV'21-UDG-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata] &nbsp; ![training]
+> - [x] [![oe](https://img.shields.io/badge/ICLR'19-OE-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata]
+> - [x] [![mcd](https://img.shields.io/badge/ICCV'19-MCD-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata] &nbsp; ![training]
+> - [x] [![udg](https://img.shields.io/badge/ICCV'21-UDG-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata] &nbsp; ![training]
 </details>
 
 
 <details open>
 <summary><b>Other Methods on Robustness and Uncertainty (6)</b></summary>
 
-> - [x] [![](https://img.shields.io/badge/ICML'16-MC&#8211;Dropout-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
-> - [x] [![](https://img.shields.io/badge/NeurIPS'17-Deep&#8211;Ensemble-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training]
-> - [x] [![](https://img.shields.io/badge/ICML'17-Temp&#8211;Scaling-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
-> - [x] [![](https://img.shields.io/badge/ICLR'18-Mixup-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
-> - [x] [![](https://img.shields.io/badge/ICLR'20-AugMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
-> - [x] [![](https://img.shields.io/badge/CVPR'21-PixMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
+> - [x] [![mcdropout](https://img.shields.io/badge/ICML'16-MC&#8211;Dropout-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
+> - [x] [![deepensemble](https://img.shields.io/badge/NeurIPS'17-Deep&#8211;Ensemble-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training]
+> - [x] [![tempscale](https://img.shields.io/badge/ICML'17-Temp&#8211;Scaling-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
+> - [x] [![mixup](https://img.shields.io/badge/ICLR'18-Mixup-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
+> - [x] [![augmix](https://img.shields.io/badge/ICLR'20-AugMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
+> - [x] [![pixmix](https://img.shields.io/badge/CVPR'21-PixMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 </details>
 
 
