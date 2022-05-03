@@ -132,7 +132,7 @@ distance: f4d5b3 -->
 <details open>
 <summary><b>Anomaly Detection (5)</b></summary>
 
-> - [x] [![](https://img.shields.io/badge/ICML'18-DeepSVDD-f4d5b3?style=for-the-badge)](https://github.com/lukasruff/Deep-SVDD-PyTorch) ![training] ![postprocess]
+> - [x] [![](https://img.shields.io/badge/ICML'18-Deep&#8211;SVDD-f4d5b3?style=for-the-badge)](https://github.com/lukasruff/Deep-SVDD-PyTorch) ![training] ![postprocess]
 > - [x] [![](https://img.shields.io/badge/arXiv'20-KDAD-f4d5b3?style=for-the-badge)]()
 ![training] ![postprocess]
 > - [x] [![](https://img.shields.io/badge/CVPR'21-CutPaste-d0e9ff?style=for-the-badge)](https://github.com/lukasruff/Deep-SVDD-PyTorch)
@@ -168,7 +168,8 @@ distance: f4d5b3 -->
 > - [x] [![odin](https://img.shields.io/badge/ICLR'18-ODIN-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![mds](https://img.shields.io/badge/NeurIPS'18-MDS-f4d5b3?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]
-> - [x] [![](https://img.shields.io/badge/arXiv'19-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg)
+> - [x] [![](https://img.shields.io/badge/arXiv'19-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
+> - [x] [![](https://img.shields.io/badge/arXiv'19-KL&#8211;Matching-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
 > - [x] [![godin](https://img.shields.io/badge/CVPR'20-G&#8211;ODIN-fdd7e6?style=for-the-badge)](https://github.com/guyera/Generalized-ODIN-Implementation)  &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![gram](https://img.shields.io/badge/ICML'20-Gram-f4d5b3?style=for-the-badge)](https://github.com/VectorInstitute/gram-ood-detection)  &nbsp;&nbsp; ![postprocess]
 > - [ ] [![duq](https://img.shields.io/badge/ICML'20-DUQ-f4d5b3?style=for-the-badge)](https://github.com/y0ast/deterministic-uncertainty-quantification)  &nbsp;&nbsp; ![postprocess] (@Zzitang in progress)
@@ -181,6 +182,7 @@ distance: f4d5b3 -->
 > - [x] [![vim](https://img.shields.io/badge/CVPR'22-VIM-fdd7e6?style=for-the-badge)](https://ooddetection.github.io/) &nbsp;&nbsp; ![postprocess]
 > - [x] [![sem](https://img.shields.io/badge/arXiv'22-SEM-d0e9ff?style=for-the-badge)](https://arxiv.org/abs/2204.05306) &nbsp;&nbsp; ![preprocess] &nbsp; ![training] &nbsp; ![postprocess]
 
+
 > With Extra Data (3):
 > - [x] [![](https://img.shields.io/badge/ICLR'19-OE-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata]
 > - [x] [![](https://img.shields.io/badge/ICCV'19-MCD-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata] &nbsp; ![training]
@@ -191,9 +193,9 @@ distance: f4d5b3 -->
 <details open>
 <summary><b>Other Methods on Robustness and Uncertainty (6)</b></summary>
 
-> - [x] [![](https://img.shields.io/badge/ICML'16-MCDropout-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
-> - [x] [![](https://img.shields.io/badge/NeurIPS'17-DeepEnsemble-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training]
-> - [x] [![](https://img.shields.io/badge/ICML'17-TempScale-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
+> - [x] [![](https://img.shields.io/badge/ICML'16-MC&#8211;Dropout-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
+> - [x] [![](https://img.shields.io/badge/NeurIPS'17-Deep&#8211;Ensemble-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training]
+> - [x] [![](https://img.shields.io/badge/ICML'17-Temp&#8211;Scaling-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![](https://img.shields.io/badge/ICLR'18-Mixup-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 > - [x] [![](https://img.shields.io/badge/ICLR'20-AugMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 > - [x] [![](https://img.shields.io/badge/CVPR'21-PixMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
