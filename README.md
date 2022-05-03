@@ -74,21 +74,18 @@ This part lists all the benchmarks we
 <details open>
 <summary><b>Out-of-Distribution Detection (4)</b></summary>
 
-> - [x] [COVID]() <br>
->      > ID: `BIMCV`; (CS-ID: `ActMed`, `Hannover`;)<br>
->      > Near-OOD: `CT-SCAN`, `X-Ray-Bones`; <br>
->      > Far-OOD: `MNIST`, `CIFAR-10`, `Texture`, `Tiny-ImageNet`;
-> - [x] [DIGITS]()
->      > ID: `MNIST`; (CS-ID: `USPS`, `SVHN`;)<br>
+> - [x] [MNIST]()
 >      > Near-OOD: `NotMNIST`, `FashionMNIST`;<br>
 >      > Far-OOD: `Texture`, `CIFAR-10`, `Tiny-ImageNet`, `Places-365`;
-> - [x] [OBJECTS]()
->      > ID: `CIFAR-10`; (CS-ID: `CIFAR-10-C`, `ImageNet-10`;)<br>
+> - [x] [CIFAR-10]()
 >      > Near-OOD: `CIFAR-100`, `Tiny-ImageNet`;<br>
 >      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-100-C`;
+> - [x] [CIFAR-100]()
+>      > Near-OOD: `CIFAR-10`, `CINIC-10`, `Tiny-ImageNet`;<br>
+>      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-10-C`;
 > - [x] [IMAGENET]()
->      > ID: `ImageNet-1K`; (CS-ID: `ImageNet-C`, `ImageNet-v2`)<br>
->      > OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`, `Texture`;
+>      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`;<br>
+>      > Far-OOD:  `Texture`, `MNIST`, `SVHN`, `Places365`
 </details>
 
 
