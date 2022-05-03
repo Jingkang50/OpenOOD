@@ -168,6 +168,7 @@ distance: f4d5b3 -->
 > - [x] [![odin](https://img.shields.io/badge/ICLR'18-ODIN-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![mds](https://img.shields.io/badge/NeurIPS'18-MDS-f4d5b3?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]
+> - [x] [![](https://img.shields.io/badge/arXiv'19-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg)
 > - [x] [![godin](https://img.shields.io/badge/CVPR'20-G&#8211;ODIN-fdd7e6?style=for-the-badge)](https://github.com/guyera/Generalized-ODIN-Implementation)  &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![gram](https://img.shields.io/badge/ICML'20-Gram-f4d5b3?style=for-the-badge)](https://github.com/VectorInstitute/gram-ood-detection)  &nbsp;&nbsp; ![postprocess]
 > - [ ] [![duq](https://img.shields.io/badge/ICML'20-DUQ-f4d5b3?style=for-the-badge)](https://github.com/y0ast/deterministic-uncertainty-quantification)  &nbsp;&nbsp; ![postprocess] (@Zzitang in progress)
@@ -179,7 +180,6 @@ distance: f4d5b3 -->
 > - [ ] [![vos](https://img.shields.io/badge/ICLR'22-VOS-d0e9ff?style=for-the-badge)](https://github.com/deeplearning-wisc/vos) &nbsp;&nbsp; ![training] &nbsp; ![postprocess] (@JediWarriorZou in progress)
 > - [x] [![vim](https://img.shields.io/badge/CVPR'22-VIM-fdd7e6?style=for-the-badge)](https://ooddetection.github.io/) &nbsp;&nbsp; ![postprocess]
 > - [x] [![sem](https://img.shields.io/badge/arXiv'22-SEM-d0e9ff?style=for-the-badge)](https://arxiv.org/abs/2204.05306) &nbsp;&nbsp; ![preprocess] &nbsp; ![training] &nbsp; ![postprocess]
-> - [x] [![](https://img.shields.io/badge/arXiv'22-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg)
 
 > With Extra Data (3):
 > - [x] [![](https://img.shields.io/badge/ICLR'19-OE-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata]
