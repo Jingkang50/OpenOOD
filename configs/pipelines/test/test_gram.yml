@@ -8,7 +8,7 @@ num_workers: 0
 
 network:
   pretrained: True
-  checkpoint: ./resnet_cifar10.pth
+  checkpoint: /home/dev_zitangzhou/OpenOOD/resnet_cifar10.pth
 
 pipeline:
   name: test_ood

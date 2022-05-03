@@ -6,6 +6,7 @@ import os
 import torch
 from PIL import Image, ImageFile
 
+from openood.preprocessors import BasePreprocessor
 from openood.preprocessors.transform import (PatchGTStandard, PatchStandard,
                                              TestStandard, TrainStandard)
 
@@ -45,6 +46,8 @@ class ImglistDataset(BaseDataset):
             self.imglist = imgfile.readlines()
         self.data_dir = data_dir
 
+        if preprocessor is None:
+            preprocessor = BasePreprocessor()
         self.preprocessor = preprocessor
 
         if split == 'train':

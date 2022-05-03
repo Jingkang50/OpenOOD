@@ -1,6 +1,8 @@
 import torchvision.transforms as tvs_trans
 from PIL import Image
 
+from .base_preprocessor import BasePreprocessor
+
 normalization_dict = {
     'cifar10': [[0.4914, 0.4822, 0.4465], [0.2470, 0.2435, 0.2616]],
     'cifar100': [[0.5071, 0.4867, 0.4408], [0.2675, 0.2565, 0.2761]],
@@ -52,7 +54,7 @@ class TrainStandard:
 
         interpolation = interpolation_modes[interpolation]
 
-        if CustomPreprocessor is None:
+        if isinstance(CustomPreprocessor, BasePreprocessor):
             self.transform = tvs_trans.Compose([
                 Convert('RGB'),
                 tvs_trans.Resize(pre_size, interpolation=interpolation),
@@ -87,7 +89,7 @@ class TestStandard:
 
         interpolation = interpolation_modes[interpolation]
 
-        if CustomPreprocessor is None:
+        if isinstance(CustomPreprocessor, BasePreprocessor):
             self.transform = tvs_trans.Compose([
                 Convert('RGB'),
                 tvs_trans.Resize(pre_size, interpolation=interpolation),
