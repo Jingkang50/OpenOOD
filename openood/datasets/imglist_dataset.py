@@ -7,12 +7,21 @@ import torch
 from PIL import Image, ImageFile
 
 from openood.preprocessors import BasePreprocessor
-from openood.preprocessors.transform import TestStandard, TrainStandard
+from openood.preprocessors.transform import (PatchGTStandard, PatchStandard,
+                                             TestStandard, TrainStandard)
 
 from .base_dataset import BaseDataset
 
 # to fix "OSError: image file is truncated"
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+
+class Convert:
+    def __init__(self, mode='RGB'):
+        self.mode = mode
+
+    def __call__(self, image):
+        return image.convert(self.mode)
 
 
 class ImglistDataset(BaseDataset):
@@ -45,7 +54,15 @@ class ImglistDataset(BaseDataset):
             self.transform_image = TrainStandard(name, image_size,
                                                  interpolation,
                                                  self.preprocessor)
-
+        elif split == 'patch' or split == 'patchTest' \
+                or split == 'patchTestGood':
+            self.transform_image = PatchStandard(name, image_size,
+                                                 interpolation,
+                                                 self.preprocessor)
+        elif split == 'patchGT':
+            self.transform_image = PatchGTStandard(name, image_size,
+                                                   interpolation,
+                                                   self.preprocessor)
         else:
             self.transform_image = TestStandard(name, image_size,
                                                 interpolation,
