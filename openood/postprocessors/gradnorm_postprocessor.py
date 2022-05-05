@@ -1,4 +1,3 @@
-import pickle
 from typing import Any
 
 import numpy as np
@@ -51,8 +50,7 @@ class GradNormPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                feature = net(data, return_feature=True)[..., 0,
-                                                         0].cpu().numpy()
+                feature = net(data, return_feature=True).cpu().numpy()
                 feature_id_val.append(feature)
             feature_id_val = np.concatenate(feature_id_val, axis=0)
 
@@ -60,7 +58,7 @@ class GradNormPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        feature_ood = net.forward(data, return_feature = True)[..., 0, 0].cpu()
+        feature_ood = net.forward(data, return_feature=True).cpu()
         with torch.enable_grad():
             score_ood = self.gradnorm(feature_ood.numpy(), self.w, self.b)
         with torch.no_grad():

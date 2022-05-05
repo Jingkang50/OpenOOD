@@ -6,7 +6,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-import torch.nn as nn
 
 class Reshape(nn.Module):
     def __init__(self, *args):
@@ -16,8 +15,8 @@ class Reshape(nn.Module):
     def forward(self, x):
         return x.view(self.shape)
 
-class StdConv2d(nn.Conv2d):
 
+class StdConv2d(nn.Conv2d):
     def forward(self, x):
         w = self.weight
         v, m = torch.var_mean(w, dim=[1, 2, 3], keepdim=True, unbiased=False)
@@ -27,13 +26,22 @@ class StdConv2d(nn.Conv2d):
 
 
 def conv3x3(cin, cout, stride=1, groups=1, bias=False):
-    return StdConv2d(cin, cout, kernel_size=3, stride=stride,
-                     padding=1, bias=bias, groups=groups)
+    return StdConv2d(cin,
+                     cout,
+                     kernel_size=3,
+                     stride=stride,
+                     padding=1,
+                     bias=bias,
+                     groups=groups)
 
 
 def conv1x1(cin, cout, stride=1, bias=False):
-    return StdConv2d(cin, cout, kernel_size=1, stride=stride,
-                     padding=0, bias=bias)
+    return StdConv2d(cin,
+                     cout,
+                     kernel_size=1,
+                     stride=stride,
+                     padding=0,
+                     bias=bias)
 
 
 def tf2th(conv_weights):
@@ -46,12 +54,12 @@ def tf2th(conv_weights):
 class PreActBottleneck(nn.Module):
     """Pre-activation (v2) bottleneck block.
 
-    Follows the implementation of "Identity Mappings in Deep Residual Networks":
+    Follows the implementation of
+    "Identity Mappings in Deep Residual Networks":
     https://github.com/KaimingHe/resnet-1k-layers/blob/master/resnet-pre-act.lua
 
     Except it puts the stride on 3x3 conv when available.
     """
-
     def __init__(self, cin, cout=None, cmid=None, stride=1):
         super().__init__()
         cout = cout or cin
@@ -60,7 +68,8 @@ class PreActBottleneck(nn.Module):
         self.gn1 = nn.GroupNorm(32, cin)
         self.conv1 = conv1x1(cin, cmid)
         self.gn2 = nn.GroupNorm(32, cmid)
-        self.conv2 = conv3x3(cmid, cmid, stride)  # Original code has it on conv1!!
+        self.conv2 = conv3x3(cmid, cmid,
+                             stride)  # Original code has it on conv1!!
         self.gn3 = nn.GroupNorm(32, cmid)
         self.conv3 = conv1x1(cmid, cout)
         self.relu = nn.ReLU(inplace=True)
@@ -87,12 +96,18 @@ class PreActBottleneck(nn.Module):
     def load_from(self, weights, prefix=''):
         convname = 'standardized_conv2d'
         with torch.no_grad():
-            self.conv1.weight.copy_(tf2th(weights[f'{prefix}a/{convname}/kernel']))
-            self.conv2.weight.copy_(tf2th(weights[f'{prefix}b/{convname}/kernel']))
-            self.conv3.weight.copy_(tf2th(weights[f'{prefix}c/{convname}/kernel']))
-            self.gn1.weight.copy_(tf2th(weights[f'{prefix}a/group_norm/gamma']))
-            self.gn2.weight.copy_(tf2th(weights[f'{prefix}b/group_norm/gamma']))
-            self.gn3.weight.copy_(tf2th(weights[f'{prefix}c/group_norm/gamma']))
+            self.conv1.weight.copy_(
+                tf2th(weights[f'{prefix}a/{convname}/kernel']))
+            self.conv2.weight.copy_(
+                tf2th(weights[f'{prefix}b/{convname}/kernel']))
+            self.conv3.weight.copy_(
+                tf2th(weights[f'{prefix}c/{convname}/kernel']))
+            self.gn1.weight.copy_(tf2th(
+                weights[f'{prefix}a/group_norm/gamma']))
+            self.gn2.weight.copy_(tf2th(
+                weights[f'{prefix}b/group_norm/gamma']))
+            self.gn3.weight.copy_(tf2th(
+                weights[f'{prefix}c/group_norm/gamma']))
             self.gn1.bias.copy_(tf2th(weights[f'{prefix}a/group_norm/beta']))
             self.gn2.bias.copy_(tf2th(weights[f'{prefix}b/group_norm/beta']))
             self.gn3.bias.copy_(tf2th(weights[f'{prefix}c/group_norm/beta']))
@@ -103,8 +118,11 @@ class PreActBottleneck(nn.Module):
 
 class ResNetV2(nn.Module):
     """Implementation of Pre-activation (v2) ResNet mode."""
-
-    def __init__(self, block_units, width_factor, head_size=1000, num_block_open=-1):
+    def __init__(self,
+                 block_units,
+                 width_factor,
+                 head_size=1000,
+                 num_block_open=-1):
         super().__init__()
         wf = width_factor  # shortcut 'cause we'll use it a lot.
 
@@ -112,7 +130,9 @@ class ResNetV2(nn.Module):
             self.fix_parts = []
             self.fix_gn1 = None
         elif num_block_open == 0:
-            self.fix_parts = ['root', 'block1', 'block2', 'block3', 'block4', 'before_head']
+            self.fix_parts = [
+                'root', 'block1', 'block2', 'block3', 'block4', 'before_head'
+            ]
             self.fix_gn1 = None
         elif num_block_open == 1:
             self.fix_parts = ['root', 'block1', 'block2', 'block3']
@@ -127,48 +147,86 @@ class ResNetV2(nn.Module):
             self.fix_parts = ['root']
             self.fix_gn1 = 'block1'
         else:
-            raise ValueError('Unexpected block number {}'.format(num_block_open))
+            raise ValueError(
+                'Unexpected block number {}'.format(num_block_open))
 
-        self.root = nn.Sequential(OrderedDict([
-            ('conv', StdConv2d(3, 64 * wf, kernel_size=7, stride=2, padding=3, bias=False)),
-            ('pad', nn.ConstantPad2d(1, 0)),
-            ('pool', nn.MaxPool2d(kernel_size=3, stride=2, padding=0)),
-            # The following is subtly not the same!
-            # ('pool', nn.MaxPool2d(kernel_size=3, stride=2, padding=1)),
-        ]))
+        self.root = nn.Sequential(
+            OrderedDict([
+                ('conv',
+                 StdConv2d(3,
+                           64 * wf,
+                           kernel_size=7,
+                           stride=2,
+                           padding=3,
+                           bias=False)),
+                ('pad', nn.ConstantPad2d(1, 0)),
+                ('pool', nn.MaxPool2d(kernel_size=3, stride=2, padding=0)),
+                # The following is subtly not the same!
+                # ('pool', nn.MaxPool2d(kernel_size=3, stride=2, padding=1)),
+            ]))
 
-        self.body = nn.Sequential(OrderedDict([
-            ('block1', nn.Sequential(OrderedDict(
-                [('unit01', PreActBottleneck(cin=64 * wf, cout=256 * wf, cmid=64 * wf))] +
-                [(f'unit{i:02d}', PreActBottleneck(cin=256 * wf, cout=256 * wf, cmid=64 * wf)) for i in
-                 range(2, block_units[0] + 1)],
-            ))),
-            ('block2', nn.Sequential(OrderedDict(
-                [('unit01', PreActBottleneck(cin=256 * wf, cout=512 * wf, cmid=128 * wf, stride=2))] +
-                [(f'unit{i:02d}', PreActBottleneck(cin=512 * wf, cout=512 * wf, cmid=128 * wf)) for i in
-                 range(2, block_units[1] + 1)],
-            ))),
-            ('block3', nn.Sequential(OrderedDict(
-                [('unit01', PreActBottleneck(cin=512 * wf, cout=1024 * wf, cmid=256 * wf, stride=2))] +
-                [(f'unit{i:02d}', PreActBottleneck(cin=1024 * wf, cout=1024 * wf, cmid=256 * wf)) for i in
-                 range(2, block_units[2] + 1)],
-            ))),
-            ('block4', nn.Sequential(OrderedDict(
-                [('unit01', PreActBottleneck(cin=1024 * wf, cout=2048 * wf, cmid=512 * wf, stride=2))] +
-                [(f'unit{i:02d}', PreActBottleneck(cin=2048 * wf, cout=2048 * wf, cmid=512 * wf)) for i in
-                 range(2, block_units[3] + 1)],
-            ))),
-        ]))
+        self.body = nn.Sequential(
+            OrderedDict([
+                ('block1',
+                 nn.Sequential(
+                     OrderedDict(
+                         [('unit01',
+                           PreActBottleneck(
+                               cin=64 * wf, cout=256 * wf, cmid=64 * wf))] +
+                         [(f'unit{i:02d}',
+                           PreActBottleneck(
+                               cin=256 * wf, cout=256 * wf, cmid=64 * wf))
+                          for i in range(2, block_units[0] + 1)], ))),
+                ('block2',
+                 nn.Sequential(
+                     OrderedDict(
+                         [('unit01',
+                           PreActBottleneck(cin=256 * wf,
+                                            cout=512 * wf,
+                                            cmid=128 * wf,
+                                            stride=2))] +
+                         [(f'unit{i:02d}',
+                           PreActBottleneck(
+                               cin=512 * wf, cout=512 * wf, cmid=128 * wf))
+                          for i in range(2, block_units[1] + 1)], ))),
+                ('block3',
+                 nn.Sequential(
+                     OrderedDict(
+                         [('unit01',
+                           PreActBottleneck(cin=512 * wf,
+                                            cout=1024 * wf,
+                                            cmid=256 * wf,
+                                            stride=2))] +
+                         [(f'unit{i:02d}',
+                           PreActBottleneck(
+                               cin=1024 * wf, cout=1024 * wf, cmid=256 * wf))
+                          for i in range(2, block_units[2] + 1)], ))),
+                ('block4',
+                 nn.Sequential(
+                     OrderedDict(
+                         [('unit01',
+                           PreActBottleneck(cin=1024 * wf,
+                                            cout=2048 * wf,
+                                            cmid=512 * wf,
+                                            stride=2))] +
+                         [(f'unit{i:02d}',
+                           PreActBottleneck(
+                               cin=2048 * wf, cout=2048 * wf, cmid=512 * wf))
+                          for i in range(2, block_units[3] + 1)], ))),
+            ]))
 
-        self.before_head = nn.Sequential(OrderedDict([
-            ('gn', nn.GroupNorm(32, 2048 * wf)),
-            ('relu', nn.ReLU(inplace=True)),
-            ('avg', nn.AdaptiveAvgPool2d(output_size=1)),
-        ]))
+        self.before_head = nn.Sequential(
+            OrderedDict([
+                ('gn', nn.GroupNorm(32, 2048 * wf)),
+                ('relu', nn.ReLU(inplace=True)),
+                ('avg', nn.AdaptiveAvgPool2d(output_size=1)),
+            ]))
 
-        self.head = nn.Sequential(OrderedDict([
-            ('conv', nn.Conv2d(2048 * wf, head_size, kernel_size=1, bias=True)),
-        ]))
+        self.head = nn.Sequential(
+            OrderedDict([
+                ('conv',
+                 nn.Conv2d(2048 * wf, head_size, kernel_size=1, bias=True)),
+            ]))
 
         if 'root' in self.fix_parts:
             for param in self.root.parameters():
@@ -225,8 +283,8 @@ class ResNetV2(nn.Module):
         b = self.head.conv.bias.cpu().detach().squeeze().numpy()
         return w, b
 
-    def forward(self, x, layer_index=None, return_feature = False):
-        if return_feature==True:
+    def forward(self, x, layer_index=None, return_feature=False):
+        if return_feature:
             return self.intermediate_forward(x, 5)[..., 0, 0]
         if layer_index is not None:
             return self.intermediate_forward(x, layer_index)
@@ -256,20 +314,25 @@ class ResNetV2(nn.Module):
     def load_state_dict_custom(self, state_dict):
         state_dict_new = {}
         for k, v in state_dict.items():
-            state_dict_new[k[len("module."):]] = v
+            state_dict_new[k[len('module.'):]] = v
         self.load_state_dict(state_dict_new, strict=True)
 
     def load_from(self, weights, prefix='resnet/'):
         with torch.no_grad():
             self.root.conv.weight.copy_(
-                tf2th(weights[f'{prefix}root_block/standardized_conv2d/kernel']))  # pylint: disable=line-too-long
-            self.before_head.gn.weight.copy_(tf2th(weights[f'{prefix}group_norm/gamma']))
-            self.before_head.gn.bias.copy_(tf2th(weights[f'{prefix}group_norm/beta']))
+                tf2th(
+                    weights[f'{prefix}root_block/standardized_conv2d/kernel']))
+            # pylint: disable=line-too-long
+            self.before_head.gn.weight.copy_(
+                tf2th(weights[f'{prefix}group_norm/gamma']))
+            self.before_head.gn.bias.copy_(
+                tf2th(weights[f'{prefix}group_norm/beta']))
 
             self.head.conv.weight.copy_(
-                tf2th(weights[f'{prefix}head/conv2d/kernel']))  # pylint: disable=line-too-long
-            self.head.conv.bias.copy_(tf2th(weights[f'{prefix}head/conv2d/bias']))
-
+                tf2th(weights[f'{prefix}head/conv2d/kernel']))
+            # pylint: disable=line-too-long
+            self.head.conv.bias.copy_(
+                tf2th(weights[f'{prefix}head/conv2d/bias']))
 
             for bname, block in self.body.named_children():
                 for uname, unit in block.named_children():
