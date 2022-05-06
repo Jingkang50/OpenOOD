@@ -1,5 +1,3 @@
-from openood.postprocessors import residual_postprocessor
-from openood.postprocessors.kl_matching_postprocessor import KLMatchingPostprocessor
 from openood.utils import Config
 
 from .base_postprocessor import BasePostprocessor
@@ -9,15 +7,16 @@ from .gmm_postprocessor import GMMPostprocessor
 from .godin_postprocessor import GodinPostprocessor
 from .gradnorm_postprocessor import GradNormPostprocessor
 from .gram_postprocessor import GRAMPostprocessor
+from .kl_matching_postprocessor import KLMatchingPostprocessor
+from .maxlogit_postprocessor import MaxLogitPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
 from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
 from .react_postprocessor import ReactPostprocessor
-from .vim_postprocessor import VIMPostprocessor
-from .maxlogit_postprocessor import MaxLogitPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
-from .kl_matching_postprocessor import KLMatchingPostprocessor
+from .vim_postprocessor import VIMPostprocessor
+
 
 def get_postprocessor(config: Config):
     postprocessors = {
