@@ -1,4 +1,4 @@
 postprocessor:
-  name: vim
+  name: residual
   postprocessor_args:
     dim: 512

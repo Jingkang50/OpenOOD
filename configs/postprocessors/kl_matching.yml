@@ -1,4 +1,4 @@
 postprocessor:
-  name: vim
+  name: kl_matching
   postprocessor_args:
     dim: 512

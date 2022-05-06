@@ -1,8 +1,9 @@
+from turtle import forward
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
-
+from types import MethodType
 from .bit import KNOWN_MODELS
 from .conf_widernet import Conf_WideResNet
 from .densenet import DenseNet3
@@ -20,6 +21,8 @@ from .resnet18_224x224 import ResNet18_224x224
 from .resnet50 import ResNet50
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
+from mmcls.apis import init_model
+import mmcv
 
 
 def get_network(network_config):
@@ -151,6 +154,11 @@ def get_network(network_config):
 
     elif network_config.name == 'bit':
         net = KNOWN_MODELS[network_config.model]()
+    elif network_config.name == 'vit':
+        cfg = mmcv.Config.fromfile(network_config.model)
+        net = init_model(cfg, network_config.checkpoint, 0)
+        net.get_fc = MethodType(lambda self: (self.head.layers.head.weight.cpu().numpy(), self.head.layers.head.bias.cpu().numpy()), net)
+
     elif network_config.name == 'conf_wideresnet':
         net = Conf_WideResNet(depth=16,
                               num_classes=num_classes,
@@ -177,6 +185,8 @@ def get_network(network_config):
                                                strict=False)
         elif network_config.name == 'bit':
             net.load_from(np.load(network_config.checkpoint))
+        elif network_config.name == 'vit':
+            pass
         else:
             try:
                 net.load_state_dict(torch.load(network_config.checkpoint),
