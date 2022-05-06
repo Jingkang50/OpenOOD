@@ -12,6 +12,8 @@ dependencies:
   - matplotlib=3.3.0
   - scipy=1.5
   - tqdm=4.62.3
+  - mmcv=1.4.2
+  - mmcls=0.17.0
   - pip
   - pip:
     - pyyaml==5.4.1
