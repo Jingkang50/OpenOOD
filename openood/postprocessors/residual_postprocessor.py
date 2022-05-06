@@ -4,7 +4,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 from numpy.linalg import norm, pinv
-from scipy.special import logsumexp
 from sklearn.covariance import EmpiricalCovariance
 from tqdm import tqdm
 
@@ -53,7 +52,8 @@ class ResidualPostprocessor(BasePostprocessor):
         self.NS = np.ascontiguousarray(
             (eigen_vectors.T[np.argsort(eig_vals * -1)[self.dim:]]).T)
 
-        self.score_id = -norm(np.matmul(feature_id_val - self.u, self.NS), axis=-1)
+        self.score_id = -norm(np.matmul(feature_id_val - self.u, self.NS),
+                              axis=-1)
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):

@@ -35,7 +35,7 @@ class MaxLogitPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        feature_ood = net.forward(data, return_feature = True).cpu()
+        feature_ood = net.forward(data, return_feature=True).cpu()
         logit_ood = feature_ood.numpy() @ self.w.T + self.b
         score_ood, pred = torch.max(torch.from_numpy(logit_ood), dim=1)
         return pred, score_ood
