@@ -24,7 +24,7 @@ def get_preprocessor(split, config: Config):
   elif split == 'patchGT':
     return  PatchGTStandardPreProcessor(config)
   else:    # for test and val
-    return TestStandardPreProcessor[split](split, config)
+    return TestStandardPreProcessor(split, config)
 
 
 

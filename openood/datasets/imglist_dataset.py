@@ -43,6 +43,7 @@ class ImglistDataset(BaseDataset):
             self.imglist = imgfile.readlines()
         self.data_dir = data_dir
         self.num_classes = num_classes
+        self.preprocessor = preprocessor
         self.transform_image = preprocessor
         self.maxlen = maxlen
         self.dummy_read = dummy_read

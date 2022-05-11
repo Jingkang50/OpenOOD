@@ -1,4 +1,4 @@
-from .transform_statics import normalization_dict
+from .transform import normalization_dict
 import torchvision.transforms as tvs_trans
 from openood.utils.config import Config
 from PIL import Image

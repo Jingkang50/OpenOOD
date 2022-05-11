@@ -6,7 +6,7 @@ import torchvision.transforms as tfm
 import numpy as np
 import torch
 from PIL import Image, ImageOps, ImageEnhance
-from .transform_statics import center_crop_dict, normalization_dict, interpolation_modes, Convert
+from .transform import center_crop_dict, normalization_dict, interpolation_modes, Convert
 
 resize_list = {'mnist': 32, 'cifar10': 36, 'imagenet': 256}  # set mnist bymyself, imagenet was set to 224 by author, but 256 here
 
@@ -33,11 +33,9 @@ class PixMixPreprocessor:
                 tvs_trans.CenterCrop(image_size),
                 tvs_trans.RandomHorizontalFlip(),
                 tvs_trans.RandomCrop(image_size, padding=4),
-                self.tensorize,
-                self.normalize,
             ])
 
-        self.mixing_set_transform = tfm.Compose([tfm.Resize(resize_list[dataset_name]), tfm.RandomCrop(self.image_size)])
+        self.mixing_set_transform = tfm.Compose([tfm.Resize(resize_list[dataset_name]), tfm.RandomCrop(image_size)])
 
         with open(self.args.mixing_set_dir, 'r') as f:
             self.mixing_list = f.readlines()
