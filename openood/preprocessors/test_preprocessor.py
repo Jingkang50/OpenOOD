@@ -1,4 +1,4 @@
-from .utils import center_crop_dict, normalization_dict, interpolation_modes, Convert
+from .transform_statics import center_crop_dict, normalization_dict, interpolation_modes, Convert
 import torchvision.transforms as tvs_trans
 from openood.utils.config import Config
 
