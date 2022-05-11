@@ -10,7 +10,7 @@ import torchvision
 import numpy as np
 import torchvision.transforms as transforms
 import scipy.spatial.distance as spd
-import libmr
+# import libmr
 
 import os
 import argparse
@@ -76,11 +76,11 @@ def fit_weibull(means, dists, categories, tailsize=20, distance_type='eucos'):
         weibull_model[category_name]['distances_{}'.format(distance_type)] = dist[distance_type]
         weibull_model[category_name]['mean_vec'] = mean
         weibull_model[category_name]['weibull_model'] = []
-        for channel in range(mean.shape[0]):
-            mr = libmr.MR()
-            tailtofit = np.sort(dist[distance_type][channel, :])[-tailsize:]
-            mr.fit_high(tailtofit, len(tailtofit))
-            weibull_model[category_name]['weibull_model'].append(mr)
+        # for channel in range(mean.shape[0]):
+        #     mr = libmr.MR()
+        #     tailtofit = np.sort(dist[distance_type][channel, :])[-tailsize:]
+        #     mr.fit_high(tailtofit, len(tailtofit))
+        #     weibull_model[category_name]['weibull_model'].append(mr)
 
     return weibull_model
 
