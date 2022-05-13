@@ -13,7 +13,7 @@ trainer:
   name: cutmix
   trainer_args:
     beta: 1.0  
-    icutmix_prob: 1.0   # cutmix probability
+    cutmix_prob: 1.0   # cutmix probability
 
 evaluator:
   name: base

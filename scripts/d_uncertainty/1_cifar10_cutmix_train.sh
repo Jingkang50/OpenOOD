@@ -19,5 +19,5 @@ configs/preprocessors/base_preprocessor.yml \
 --dataset.image_size 32 \
 --optimizer.num_epochs 100 \
 --num_workers 4 \
---trainer.trainer_args.icutmix_prob 0.5
+--trainer.trainer_args.cutmix_prob 0.5
 
