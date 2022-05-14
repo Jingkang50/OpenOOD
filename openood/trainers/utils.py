@@ -15,6 +15,7 @@ from .mixup_trainer import MixupTrainer
 from .opengan_trainer import OpenGanTrainer
 from .openmax_trainer import OpenMaxTrainer
 from .sae_trainer import SAETrainer
+from .cutmix_trainer import CutMixTrainer   
 
 
 def get_trainer(
@@ -38,5 +39,6 @@ def get_trainer(
         'arpl': ARPLTrainer,
         'arpl_gan': ARPLGANTrainer,
         'cutpaste': CutPasteTrainer,
+        'cutmix': CutMixTrainer,
     }
     return trainers[config.trainer.name](net, train_loader, config)

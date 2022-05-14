@@ -11,6 +11,6 @@ python main.py \
 configs/networks/openmax.yml \
 configs/pipelines/train/train_openmax.yml \
 configs/postprocessors/openmax.yml \
-configs/preprocessors/None_preprocessor.yml \
+configs/preprocessors/base_preprocessor.yml \
 --preprocessor.name None \
 --num_workers 4

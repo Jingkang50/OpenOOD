@@ -16,13 +16,9 @@ class TrainAdPipeline:
         # generate output directory and save the full config file
         setup_logger(self.config)
 
-        # get preprocessor
-        preprocessor = get_preprocessor(self.config)
-
         # get dataloader
-        id_loader_dict = get_dataloader(self.config.dataset, preprocessor)
-        ood_loader_dict = get_ood_dataloader(self.config.ood_dataset,
-                                             preprocessor)
+        id_loader_dict = get_dataloader(self.config)
+        ood_loader_dict = get_ood_dataloader(self.config)
         train_loader = id_loader_dict['train']
 
         # init network

@@ -14,8 +14,8 @@ class ADTestPipeline:
         setup_logger(self.config)
 
         # attain test dataset
-        id_loader_dict = get_dataloader(self.config.dataset)
-        ood_loader_dict = get_ood_dataloader(self.config.ood_dataset)
+        id_loader_dict = get_dataloader(self.config)
+        ood_loader_dict = get_ood_dataloader(self.config)
         net = get_network(self.config.network)
 
         # attain evaluator

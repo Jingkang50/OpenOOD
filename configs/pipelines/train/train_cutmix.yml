@@ -6,14 +6,14 @@ force_merge: False
 num_gpus: 1
 num_workers: 0
 
-preprocessor:
-  name: base
-
 pipeline:
   name: train
 
 trainer:
-  name: base
+  name: cutmix
+  trainer_args:
+    beta: 1.0  
+    cutmix_prob: 1.0   # cutmix probability
 
 evaluator:
   name: base

@@ -13,9 +13,10 @@ class Convert:
 
 
 class CutPastePreprocessor(object):
-    def __init__(self, area_ratio=[0.02, 0.15], aspect_ratio=0.3, **kwags):
-        self.area_ratio = area_ratio
-        self.aspect_ratio = aspect_ratio
+    def __init__(self, config):    # modify, preprocessors unifiy to only passing in "config"
+        self.args = config.preprocessor.preprocessor_args
+        self.area_ratio = self.args.area_ratio
+        self.aspect_ratio = self.args.aspect_ratio
 
         mean = [0.5, 0.5, 0.5]
         std = [0.5, 0.5, 0.5]
