@@ -13,7 +13,7 @@ class FeatExtractPipeline:
         setup_logger(self.config)
 
         # get dataloader
-        loader_dict = get_dataloader(self.config.dataset)
+        loader_dict = get_dataloader(self.config)
         test_loader = loader_dict[self.config.pipeline.extract_target]
 
         # init network
