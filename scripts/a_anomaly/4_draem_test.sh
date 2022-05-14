@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/a_anomaly/-1_DRAEM_test.sh
+# sh scripts/a_anomaly/4_draem_test.sh
 
 # GPU=1
 # CPU=1

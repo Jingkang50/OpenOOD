@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/0_basics/cifar10_train.sh
+# sh scripts/c_ood/-1_cifar_train_csi_step2.sh
 
 # GPU=1
 # CPU=1
@@ -13,8 +13,11 @@ PYTHONPATH='.':$PYTHONPATH \
 # -w SG-IDC1-10-51-2-${node} \
 python main.py \
 --config configs/datasets/objects/cifar10.yml \
-configs/networks/resnet18_32x32.yml \
-configs/pipelines/train/baseline.yml \
---dataset.image_size 32 \
---optimizer.num_epochs 1 \
---num_workers 4
+configs/networks/csinet.yml \
+configs/pipelines/train/train_csi.yml \
+--optimizer.num_epochs 100 \
+--dataset.train.batch_size 128 \
+--force_merge True \
+--mode csi_step2 \
+--network.pretrained True \
+--network.checkpoint './results/cifar10_csinet_csi_e300_lr0.1/best.ckpt'

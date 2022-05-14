@@ -5,19 +5,20 @@ force_merge: True
 
 dataset:
   # cached features extracted from classifier
-  feat_path: './results/tin_res18_feat_extract/feature.npz'
+  feat_path: './results/tin_resnet18_32x32_feat_extract/feature.npz'
 
 num_gpus: 1
 num_workers: 0
+num_machines: 1
 
 pipeline:
-  name: train_openGan
+  name: train_opengan
 
 trainer:
-  name: openGan
+  name: opengan
 
 evaluator:
-  name: openGan
+  name: opengan
 
 optimizer:
   name: Adam
@@ -26,5 +27,5 @@ optimizer:
   beta1: 0.5
 
 recorder:
-  name: openGan
+  name: opengan
   save_all_models: True

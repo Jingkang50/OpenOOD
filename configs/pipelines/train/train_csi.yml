@@ -1,0 +1,35 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_'@{mode}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
+output_dir: ./results/
+save_output: True
+force_merge: False
+
+num_gpus: 1
+num_workers: 8
+num_machines: 1
+
+pipeline:
+  name: train
+
+trainer:
+  name: csi
+
+evaluator:
+  name: base
+
+optimizer:
+  name: sgd
+  num_epochs: 700       # step 1 700 epochs, step 2 100 epochs
+  lr: 0.1
+  momentum: 0.9
+  weight_decay: 0.000001
+  warmup: 10            # warm-up epochs
+
+recorder:
+  name: base
+  save_all_models: False
+
+mode: csi_step1         # csi_step1, csi_step2
+sim_lambda: 1.0         # Weight for SimCLR loss
+temperature: 0.07       # Temperature for similarity
+resize_factor: 0.08     # resize scale is sampled from [resize_factor, 1.0]
+resize_fix: False       # resize scale is fixed to resize_factor (not [resize_factor, 1.0])

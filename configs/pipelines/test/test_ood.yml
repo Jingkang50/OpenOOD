@@ -6,6 +6,7 @@ mark: default # to mark the version of experiment
 
 num_gpus: 1
 num_workers: 0
+num_machines: 1
 
 network:
   pretrained: True

@@ -3,6 +3,7 @@ from torch.utils.data import DataLoader
 from openood.utils import Config
 
 from .base_trainer import BaseTrainer
+from .csi_trainer import CsiTrainer
 from .draem_trainer import DRAEMTrainer
 from .godin_trainer import GodinTrainer
 from .kdad_trainer import KdadTrainer
@@ -20,9 +21,10 @@ def get_trainer(
         'base': BaseTrainer,
         'mixup': MixupTrainer,
         'sae': SAETrainer,
-        'DRAEM': DRAEMTrainer,
-        'openGan': OpenGanTrainer,
+        'draem': DRAEMTrainer,
+        'opengan': OpenGanTrainer,
         'kdad': KdadTrainer,
         'godin': GodinTrainer,
+        'csi': CsiTrainer,
     }
     return trainers[config.trainer.name](net, train_loader, config)

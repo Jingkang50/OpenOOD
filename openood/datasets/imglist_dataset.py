@@ -77,6 +77,10 @@ class ImglistDataset(BaseDataset):
         path = os.path.join(self.data_dir, image_name)
         sample = dict()
         sample['image_name'] = image_name
+
+        # TODO: comments
+        kwargs = {'name': self.name, 'path': path, 'tokens': tokens}
+        self.preprocessor.setup(**kwargs)
         try:
             if not self.dummy_read:
                 with open(path, 'rb') as f:
@@ -86,9 +90,6 @@ class ImglistDataset(BaseDataset):
             if self.dummy_size is not None:
                 sample['data'] = torch.rand(self.dummy_size)
             else:
-                if type(self.preprocessor).__name__ == 'DRAEMPreprocessor':
-                    self.preprocessor.setup(path, self.name)
-
                 image = Image.open(buff).convert('RGB')
                 sample['data'] = self.transform_image(image)
                 sample['data_aux'] = self.transform_aux_image(image)

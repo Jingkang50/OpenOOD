@@ -6,6 +6,7 @@ from .gmm_postprocessor import GMMPostprocessor
 from .godin_postprocessor import GodinPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
+from .opengan_postprocessor import OpenGanPostprocessor
 from .react_postprocessor import ReactPostprocessor
 
 
@@ -18,6 +19,7 @@ def get_postprocessor(config: Config):
         'gmm': GMMPostprocessor,
         'react': ReactPostprocessor,
         'godin': GodinPostprocessor,
+        'opengan': OpenGanPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)

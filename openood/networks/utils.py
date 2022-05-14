@@ -1,6 +1,9 @@
 import torch
 import torch.backends.cudnn as cudnn
 
+import openood.utils.comm as comm
+
+from .csinet import CsiNet
 from .densenet import DenseNet3
 from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .godinnet import GodinNet
@@ -55,14 +58,22 @@ def get_network(network_config):
         backbone = get_network(network_config.backbone)
         net = ReactNet(backbone)
 
-    elif network_config.name == 'DRAEM':
+    elif network_config.name == 'csinet':
+        backbone = get_network(network_config.backbone)
+        net = CsiNet(backbone,
+                     feature_size=backbone.feature_size,
+                     num_classes=num_classes,
+                     simclr_dim=network_config.simclr_dim,
+                     shift_trans_type=network_config.shift_trans_type)
+
+    elif network_config.name == 'draem':
         model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
         model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
 
         net = {'generative': model, 'discriminative': model_seg}
 
-    elif network_config.name == 'openGan':
-        feature_net = get_network(network_config.feat_extract_network)
+    elif network_config.name == 'opengan':
+        backbone = get_network(network_config.backbone)
 
         netG = Generator(in_channels=network_config.nz,
                          feature_size=network_config.ngf,
@@ -70,7 +81,7 @@ def get_network(network_config):
         netD = Discriminator(in_channels=network_config.nc,
                              feature_size=network_config.ndf)
 
-        net = {'netG': netG, 'netD': netD, 'netF': feature_net}
+        net = {'netG': netG, 'netD': netD, 'backbone': backbone}
 
     elif network_config.name == 'vgg and model':
         vgg = Vgg16(network_config['trainedsource'])
@@ -104,12 +115,15 @@ def get_network(network_config):
     if network_config.num_gpus > 1:
         if type(net) is dict:
             for key, subnet in zip(net.keys(), net.values()):
-                net[key] = torch.nn.DataParallel(
-                    subnet, device_ids=list(range(network_config.num_gpus)))
+                net[key] = torch.nn.parallel.DistributedDataParallel(
+                    subnet,
+                    device_ids=[comm.get_local_rank()],
+                    broadcast_buffers=True)
         else:
-            net = torch.nn.DataParallel(net,
-                                        device_ids=list(
-                                            range(network_config.num_gpus)))
+            net = torch.nn.parallel.DistributedDataParallel(
+                net.cuda(),
+                device_ids=[comm.get_local_rank()],
+                broadcast_buffers=True)
 
     if network_config.num_gpus > 0:
         if type(net) is dict:

@@ -1,7 +1,9 @@
+import openood.utils.comm as comm
 from openood.pipelines import get_pipeline
-from openood.utils import setup_config
+from openood.utils import launch, setup_config
 
-if __name__ == '__main__':
+
+def main(config):
     """Main entrance. Config is all you need to provide to run the code. Config
     should be provided in the format of YAML and can be modified with command
     line.
@@ -19,9 +21,24 @@ if __name__ == '__main__':
         if you don't have anything to modify.
     """
 
-    # read command line to composite configs.
-    config = setup_config()
-
-    # run!
     pipeline = get_pipeline(config)
     pipeline.run()
+
+
+if __name__ == '__main__':
+
+    config = setup_config()
+    # generate output directory and save the full config file
+    setup_logger(config)
+
+    # pipeline = get_pipeline(config)
+    # pipeline.run()
+
+    launch(
+        main,
+        config.num_gpus,
+        num_machines=config.num_machines,
+        machine_rank=config.machine_rank,
+        dist_url='auto',
+        args=(config, ),
+    )

@@ -7,6 +7,7 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+import openood.utils.comm as comm
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
 
@@ -48,10 +49,18 @@ class BaseEvaluator:
                 # test loss average
                 loss_avg += float(loss.data)
 
+        loss = loss_avg / len(data_loader)
+        acc = correct / len(data_loader.dataset)
+
+        # print("data_loader: ")
+        # print(len(data_loader))
+        # print("data_loader.dataset: ")
+        # print(len(data_loader.dataset))
+
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
-        metrics['loss'] = loss_avg / len(data_loader)
-        metrics['acc'] = correct / len(data_loader.dataset)
+        metrics['loss'] = self.save_metrics(loss)
+        metrics['acc'] = self.save_metrics(acc)
         return metrics
 
     def extract(self, net: nn.Module, data_loader: DataLoader):
@@ -78,3 +87,12 @@ class BaseEvaluator:
         np.savez(os.path.join(save_dir, 'feature'),
                  feat_list=feat_list,
                  label_list=label_list)
+
+    def save_metrics(self, value):
+        all_values = comm.gather(value)
+        temp = 0
+        for i in all_values:
+            temp = temp + i
+        # total_value = np.add([x for x in all_values])s
+
+        return temp

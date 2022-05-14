@@ -19,7 +19,7 @@ class OpenGanEvaluator(BaseEvaluator):
                  data_loader: DataLoader,
                  postprocessor: BasePostprocessor = None,
                  epoch_idx: int = -1):
-        return super().eval_acc(net=net['netF'],
+        return super().eval_acc(net=net['backbone'],
                                 data_loader=data_loader,
                                 postprocessor=postprocessor,
                                 epoch_idx=epoch_idx)
@@ -27,19 +27,20 @@ class OpenGanEvaluator(BaseEvaluator):
     def eval_ood(self, net, id_data_loader: DataLoader,
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                  postprocessor: BasePostprocessor):
-        conf = self.run_test_on_closeset(id_data_loader['test'], net['netF'],
-                                         net['netD'])
-        for key, value in zip(ood_data_loaders.keys(),
-                              ood_data_loaders.values()):
-            if key == 'val':
-                continue
-            print(u'\n' + '-' * 25 +
-                  'Start OpenGan evaluation on {} category'.format(key) +
-                  '-' * 25,
-                  flush=True)
-            ood_data_loaders = value
-            self.eval_auroc(net['netF'], net['netD'], id_data_loader['test'],
-                            ood_data_loaders, conf)
+        with torch.no_grad():
+            conf = self.run_test_on_closeset(id_data_loader['test'],
+                                             net['backbone'], net['netD'])
+            for key, value in zip(ood_data_loaders.keys(),
+                                  ood_data_loaders.values()):
+                if key == 'val':
+                    continue
+                print(u'\n' + '-' * 25 +
+                      'Start OpenGan evaluation on {} category'.format(key) +
+                      '-' * 25,
+                      flush=True)
+                ood_data_loaders = value
+                self.eval_auroc(net['backbone'], net['netD'],
+                                id_data_loader['test'], ood_data_loaders, conf)
 
     def eval_auroc(self, extractor, discriminator, closedset_data,
                    openset_data, conf):
@@ -69,12 +70,14 @@ class OpenGanEvaluator(BaseEvaluator):
             image = image.to(device)
             label = label.type(torch.long).view(-1).to(device)
             _, feats = extractor(image, return_feature=True)
+
             feats = feats.unsqueeze_(-1).unsqueeze_(-1)
             predConf = discriminator(feats)
             predConf = predConf.view(-1, 1)
             conf_closedset = torch.cat(
                 (conf_closedset, predConf.reshape(-1).detach().cpu()), 0)
-
+            import pdb
+            pdb.set_trace()
             feats = feats.squeeze()
             feat_closedset = torch.cat((feat_closedset, feats.detach().cpu()))
             label_closedset = torch.cat(

@@ -5,6 +5,7 @@ force_merge: False # disabled if 'save_output' is False
 
 num_gpus: 1
 num_workers: 4
+num_machines: 1
 
 network:
   pretrained: True

@@ -1,5 +1,5 @@
 exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'"
-output_dir: ./results/DRAEM/
+output_dir: ./results/draem/
 save_output: True
 force_merge: True # disabled if 'save_output' is False
 
@@ -7,11 +7,11 @@ num_gpus: 1
 num_workers: 4
 network:
   pretrained: True
-  checkpoint: ["./checkpoints/DRAEM_test_0.0001_700_bs8_bottle_.ckpt",
-               "./checkpoints/DRAEM_test_0.0001_700_bs8_bottle__seg.ckpt"]
+  checkpoint: ["./checkpoints/draem_test_0.0001_700_bs8_bottle_.ckpt",
+               "./checkpoints/draem_test_0.0001_700_bs8_bottle__seg.ckpt"]
 
 pipeline:
   name: test_ad
 
 evaluator:
-  name: DRAEM
+  name: draem

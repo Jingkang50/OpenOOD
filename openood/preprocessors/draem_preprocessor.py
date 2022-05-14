@@ -175,9 +175,9 @@ class DRAEMPreprocessor:
         return sample
 
     # some setup so that the preprocessor can get the gt map
-    def setup(self, path: str, name: str):
-        self.path = path
-        self.name = name
+    def setup(self, path: str, name: str, **kwargs):
+        self.path = kwargs['path']
+        self.name = kwargs['name']
 
     # append transforms that will apply after the preprocessor
     def concat_transform(self, post_preprocessor_transform=None):

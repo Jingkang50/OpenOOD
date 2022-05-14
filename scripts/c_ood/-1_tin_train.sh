@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/0_basics/cifar10_train.sh
+# sh scripts/c_ood/-1_tin_train.sh
 
 # GPU=1
 # CPU=1
@@ -12,9 +12,12 @@ PYTHONPATH='.':$PYTHONPATH \
 # --kill-on-bad-exit=1 --job-name=${jobname} \
 # -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/objects/cifar10.yml \
+--config configs/datasets/objects/tin.yml \
 configs/networks/resnet18_32x32.yml \
 configs/pipelines/train/baseline.yml \
---dataset.image_size 32 \
---optimizer.num_epochs 1 \
---num_workers 4
+--dataset.image_size 64 \
+--optimizer.num_epochs 200 \
+--num_workers 8 \
+--dataset.train.batch_size 256 \
+--optimizer.lr 0.125 \
+--optimizer.weight_decay 0.0005

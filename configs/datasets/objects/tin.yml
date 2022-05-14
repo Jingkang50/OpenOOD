@@ -2,8 +2,10 @@ dataset:
   name: tin
   split_names: [train, val, test]
   num_classes: 200
-  image_size: 32
+  image_size: 64
   num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images/

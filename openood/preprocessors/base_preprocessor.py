@@ -4,3 +4,6 @@ class BasePreprocessor():
 
     def __call__(self, img):
         return img
+
+    def setup(self, **kwargs):
+        pass

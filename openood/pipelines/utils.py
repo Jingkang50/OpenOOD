@@ -1,5 +1,6 @@
 from openood.utils import Config
 
+from ._test_pipeline import TestTrainPipeline
 from .feat_extract_pipeline import FeatExtractPipeline
 from .finetune_pipeline import FinetunePipeline
 from .test_acc_pipeline import TestAccPipeline
@@ -20,6 +21,7 @@ def get_pipeline(config: Config):
         'test_ad': TestAdPipeline,
         'train_ad': TrainAdPipeline,
         'train_opengan': TrainOpenGanPipeline,
+        'test_train': TestTrainPipeline
     }
 
     return pipelines[config.pipeline.name](config)

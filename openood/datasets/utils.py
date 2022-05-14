@@ -23,10 +23,15 @@ def get_dataloader(dataset_config: Config, preprocessor=None):
                                 data_dir=split_config.data_dir,
                                 num_classes=dataset_config.num_classes,
                                 preprocessor=preprocessor)
+        sampler = None
+        if dataset_config.num_gpus * dataset_config.num_machines > 1:
+            sampler = torch.utils.data.distributed.DistributedSampler(dataset)
+            split_config.shuffle = False
         dataloader = DataLoader(dataset,
                                 batch_size=split_config.batch_size,
                                 shuffle=split_config.shuffle,
-                                num_workers=dataset_config.num_workers)
+                                num_workers=dataset_config.num_workers,
+                                sampler=sampler)
 
         dataloader_dict[split] = dataloader
     return dataloader_dict
@@ -85,7 +90,7 @@ def get_feature_dataloader(dataset_config: Config):
     total_feat.unsqueeze_(-1).unsqueeze_(-1)
     # let's see what we got here should be something like:
     # torch.Size([total_num, channel_size, 1, 1])
-    print(total_feat.shape)
+    print('Loaded feature size: {}'.format(total_feat.shape))
 
     split_config = dataset_config['train']
 

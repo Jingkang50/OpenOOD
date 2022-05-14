@@ -9,8 +9,8 @@ from .opengan_recorder import OpenGanRecorder
 def get_recorder(config: Config, ):
     recorders = {
         'base': BaseRecorder,
-        'DRAEM': DRAEMRecorder,
-        'openGan': OpenGanRecorder,
+        'draem': DRAEMRecorder,
+        'opengan': OpenGanRecorder,
         'kdad': KdadRecorder
     }
 
