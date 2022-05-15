@@ -19,7 +19,10 @@ class TestStandardPreProcessor:
             mean = [0.5, 0.5, 0.5]
             std = [0.5, 0.5, 0.5]
 
-        interpolation = interpolation_modes[config.dataset[split].interpolation]
+        if split == 'test' or 'val':
+            interpolation = interpolation_modes[config.dataset[split].interpolation]
+        else: # for ood (split = csid, nearood, farood)
+            interpolation = interpolation_modes[config.ood_dataset.interpolation]
 
         self.transform = tvs_trans.Compose([
                 Convert('RGB'),
