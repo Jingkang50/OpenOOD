@@ -33,7 +33,7 @@ class TemperatureScalingPostprocessor(BasePostprocessor):
 
         optimizer = optim.LBFGS([self.temperature], lr=0.01, max_iter=50)  
 
-        def eval():
+        def eval():  # make sure only temperature parameter will be learned, fix other parameters of the network
             optimizer.zero_grad()
             loss = nll_criterion(self._temperature_scale(logits), labels)
             loss.backward()
