@@ -16,7 +16,7 @@ from .patchcore_postprocessor import PatchcorePostprocessor
 from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .vim_postprocessor import VIMPostprocessor
-
+from .temperature_scaling_postprocessor import TemperatureScalingPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
@@ -35,7 +35,8 @@ def get_postprocessor(config: Config):
         'cutpaste': CutPastePostprocessor,
         'maxlogit': MaxLogitPostprocessor,
         'residual': ResidualPostprocessor,
-        'kl_matching': KLMatchingPostprocessor
+        'kl_matching': KLMatchingPostprocessor,
+        'temperature_scaling': TemperatureScalingPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)
