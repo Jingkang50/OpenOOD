@@ -5,6 +5,7 @@ from torch.utils.data import DataLoader
 
 from openood.utils.config import Config
 from openood.preprocessors.utils import get_preprocessor
+from openood.preprocessors.test_preprocessor import TestStandardPreProcessor
 
 from .feature_dataset import FeatDataset
 from .imglist_dataset import ImglistDataset
@@ -18,6 +19,7 @@ def get_dataloader(config: Config):
         split_config = dataset_config[split]
         # currently we only support ImglistDataset
         preprocessor = get_preprocessor(split, config)    # all script file need to pass in train_preprocessor config file
+        data_aux_preprocessor = TestStandardPreProcessor('test', config)   # for data_aux data augmentation
         CustomDataset = eval(split_config.dataset_class)
         dataset = CustomDataset(name=dataset_config.name + '_' + split,
                                 split=split,
@@ -26,7 +28,8 @@ def get_dataloader(config: Config):
                                 imglist_pth=split_config.imglist_pth,
                                 data_dir=split_config.data_dir,
                                 num_classes=dataset_config.num_classes,
-                                preprocessor=preprocessor)
+                                preprocessor=preprocessor,
+                                data_aux_preprocessor = data_aux_preprocessor)
         dataloader = DataLoader(dataset,
                                 batch_size=split_config.batch_size,
                                 shuffle=split_config.shuffle,
@@ -44,6 +47,7 @@ def get_ood_dataloader(config: Config):
     for split in ood_config.split_names:
         split_config = ood_config[split]
         preprocessor = get_preprocessor(split, config)
+        data_aux_preprocessor = TestStandardPreProcessor('test', config)
         if split == 'val':
             # validation set
             dataset = CustomDataset(name=ood_config.name + '_' + split,
@@ -53,7 +57,8 @@ def get_ood_dataloader(config: Config):
                                     imglist_pth=split_config.imglist_pth,
                                     data_dir=split_config.data_dir,
                                     num_classes=ood_config.num_classes,
-                                    preprocessor=preprocessor)
+                                    preprocessor=preprocessor,
+                                    data_aux_preprocessor = data_aux_preprocessor)
             dataloader = DataLoader(dataset,
                                     batch_size=ood_config.batch_size,
                                     shuffle=ood_config.shuffle,
@@ -71,7 +76,8 @@ def get_ood_dataloader(config: Config):
                                         imglist_pth=dataset_config.imglist_pth,
                                         data_dir=dataset_config.data_dir,
                                         num_classes=ood_config.num_classes,
-                                        preprocessor=preprocessor)
+                                        preprocessor=preprocessor,
+                                        data_aux_preprocessor = data_aux_preprocessor)
                 dataloader = DataLoader(dataset,
                                         batch_size=ood_config.batch_size,
                                         shuffle=ood_config.shuffle,
