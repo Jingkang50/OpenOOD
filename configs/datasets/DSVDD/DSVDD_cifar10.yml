@@ -3,6 +3,8 @@ dataset:
   split_names: [train, val]
   num_classes: 10
   num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
   image_size: 32
   train:
     dataset_class: ImglistDataset

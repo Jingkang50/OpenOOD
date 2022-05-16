@@ -52,7 +52,7 @@ class PatchcorePostprocessor(BasePostprocessor):
         self.img_path_list = []
         self.features = []
 
-    def setup(self, net: nn.Module, id_loader_dict):
+    def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         # step 1:
         self.model = net
         # on train start
@@ -62,7 +62,7 @@ class PatchcorePostprocessor(BasePostprocessor):
         # load index
         if os.path.isfile(os.path.join('./results/patch/', 'index.faiss')):
             self.index = faiss.read_index(
-                os.path.join('./results/', 'index.faiss'))
+                os.path.join('./results/patch/', 'index.faiss'))
             if torch.cuda.is_available():
                 res = faiss.StandardGpuResources()
                 self.index = faiss.index_cpu_to_gpu(res, 0, self.index)

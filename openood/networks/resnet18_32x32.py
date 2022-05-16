@@ -104,7 +104,8 @@ class ResNet18_32x32(nn.Module):
         self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
         self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)
         self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
-        self.avgpool = nn.AvgPool2d(4)
+        # self.avgpool = nn.AvgPool2d(4)
+        self.avgpool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Linear(512 * block.expansion, num_classes)
         self.feature_size = 512 * block.expansion
 

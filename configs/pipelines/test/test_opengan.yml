@@ -1,26 +1,31 @@
 exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'"
 output_dir: ./results/
-save_output: False
+save_output: True
 force_merge: True # disabled if 'save_output' is False
 
 num_gpus: 1
 num_workers: 4
-
+num_machines: 1
+machine_rank: 0
 
 network:
   # checkpoint setting: first load generator then discriminator
   pretrained: True
-  checkpoint: ["./checkpoints/openGan/tin/epoch-74.GNet",
-               "./checkpoints/openGan/tin/epoch-74.DNet",
+  checkpoint: ["./results/tin_opengan_opengan_e100_lr0.0001/best_GNet.ckpt",
+               "./results/tin_opengan_opengan_e100_lr0.0001/best_DNet.ckpt",
                null]
 
   # load checkpoint for feature extraction network
-  feat_extract_network:
+  backbone:
     pretrained: True
-    checkpoint: "./results/tin_res18_base_e200_lr0.125/best.ckpt"
+    checkpoint: "./results/cifar10_resnet18_32x32_base_e100_lr0.1/best.ckpt"
 
 pipeline:
   name: test_ood
 
 evaluator:
-  name: openGan
+  name: ood
+
+recorder:
+  save_scores: True
+  save_csv: True

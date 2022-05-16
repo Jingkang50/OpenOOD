@@ -1,11 +1,16 @@
-from .transform import normalization_dict
 import torchvision.transforms as tvs_trans
-from openood.utils.config import Config
 from PIL import Image
 
-class PatchStandardPreProcessor:
-    def __init__(self,
-                 config: Config):
+from openood.utils.config import Config
+
+from .base_preprocessor import BasePreprocessor
+from .transform import normalization_dict
+
+
+class PatchPreProcessor(BasePreprocessor):
+    def __init__(self, config: Config, split):
+        self.split = split
+
         dataset_name = config.dataset.name.split('_')[0]
         image_size = config.dataset.image_size
         if dataset_name in normalization_dict.keys():
@@ -22,5 +27,14 @@ class PatchStandardPreProcessor:
             tvs_trans.Normalize(mean, std),
         ])
 
+        self.transform_gt = tvs_trans.Compose([
+            tvs_trans.Resize((image_size, image_size)),
+            tvs_trans.CenterCrop(224),
+            tvs_trans.ToTensor()
+        ])
+
     def __call__(self, image):
-        return self.transform(image)
+        if 'GT' in self.split:
+            return self.transform_gt(image)
+        else:
+            return self.transform(image)

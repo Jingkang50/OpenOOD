@@ -7,9 +7,11 @@ import cv2
 import numpy as np
 import torch
 
+from .base_preprocessor import BasePreprocessor
 
-class DRAEMPreprocessor:
-    def __init__(self, config):
+
+class DRAEMPreprocessor(BasePreprocessor):
+    def __init__(self, config, split):
         self.config = config
         self.args = self.config.preprocessor.preprocessor_args
 
@@ -175,9 +177,9 @@ class DRAEMPreprocessor:
         return sample
 
     # some setup so that the preprocessor can get the gt map
-    def setup(self, path: str, name: str):
-        self.path = path
-        self.name = name
+    def setup(self, **kwargs):
+        self.path = kwargs['path']
+        self.name = kwargs['name']
 
     # append transforms that will apply after the preprocessor
     def concat_transform(self, post_preprocessor_transform=None):

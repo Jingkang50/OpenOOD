@@ -13,12 +13,11 @@ from .opengan_recorder import OpenGanRecorder
 def get_recorder(config: Config):
     recorders = {
         'base': BaseRecorder,
-        'DRAEM': DRAEMRecorder,
-        'kdad': KdadRecorder,
+        'draem': DRAEMRecorder,
+        'opengan': OpenGanRecorder,
         'conf_esti': Conf_Esti_Recorder,
         'dcae': DCAERecorder,
         'dsvdd': DSVDDRecorder,
-        'openGan': OpenGanRecorder,
         'kdad': KdadRecorder,
         'arpl': ARPLRecorder,
         'cutpaste': CutpasteRecorder,

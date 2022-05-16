@@ -2,7 +2,6 @@ from openood.datasets import get_dataloader, get_ood_dataloader
 from openood.evaluators.utils import get_evaluator
 from openood.networks.utils import get_network
 from openood.postprocessors import get_postprocessor
-from openood.preprocessors import get_preprocessor
 from openood.utils import setup_logger
 
 
@@ -20,13 +19,6 @@ class TestAdPipeline:
 
         # init network
         net = get_network(self.config.network)
-
-        # init ood postprocessor
-        postprocessor = get_postprocessor(self.config)
-
-        # setup for distance-based methods
-        postprocessor.setup(net, id_loader_dict)
-        print(u'\u2500' * 70, flush=True)
 
         # init evaluator
         evaluator = get_evaluator(self.config)
