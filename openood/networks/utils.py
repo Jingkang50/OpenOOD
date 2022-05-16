@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
@@ -140,6 +141,13 @@ def get_network(network_config):
     elif network_config.name == 'dsvdd':
         net = build_network(network_config.type)
 
+    elif network_config.name == 'vos':
+
+        net = WideResNet(network_config['num_layers'],
+                         num_classes,
+                         network_config['widen_factor'],
+                         dropRate=network_config['droprate'])
+
     else:
         raise Exception('Unexpected Network Architecture!')
 
@@ -180,6 +188,6 @@ def get_network(network_config):
         else:
             net.cuda()
         torch.cuda.manual_seed(1)
-
+        np.random.seed(1)
     cudnn.benchmark = True
     return net

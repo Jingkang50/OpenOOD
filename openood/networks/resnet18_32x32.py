@@ -78,17 +78,21 @@ class Bottleneck(nn.Module):
 
 
 class ResNet18_32x32(nn.Module):
-    def __init__(self, block=BasicBlock, num_blocks=None, num_classes=10, image_size=32):
+    def __init__(self,
+                 block=BasicBlock,
+                 num_blocks=None,
+                 num_classes=10,
+                 image_size=32):
         super(ResNet18_32x32, self).__init__()
         if num_blocks is None:
             num_blocks = [2, 2, 2, 2]
         self.in_planes = 64
-        
+
         if image_size != 32 and image_size**2 % 32**2 == 0:
             logits_expansion = int(image_size**2 / 32**2)
         else:
             logits_expansion = False
-        
+
         self.conv1 = nn.Conv2d(3,
                                64,
                                kernel_size=3,
@@ -112,7 +116,7 @@ class ResNet18_32x32(nn.Module):
             self.in_planes = planes * block.expansion
         return nn.Sequential(*layers)
 
-    def forward(self, x, return_feature=False, return_feature_list=False):
+    def forward(self, x, return_feature_list=False):
         feature1 = F.relu(self.bn1(self.conv1(x)))
         feature2 = self.layer1(feature1)
         feature3 = self.layer2(feature2)
@@ -121,10 +125,10 @@ class ResNet18_32x32(nn.Module):
         feature5 = self.avgpool(feature5)
         feature = feature5.view(feature5.size(0), -1)
         logits_cls = self.fc(feature)
-        feature_list = [feature1, feature2, feature3, feature4, feature5]
-        if return_feature:
-            return logits_cls, feature
-        elif return_feature_list:
+        feature_list = [
+            feature, feature1, feature2, feature3, feature4, feature5
+        ]
+        if return_feature_list:
             return logits_cls, feature_list
         else:
             return logits_cls
