@@ -62,7 +62,7 @@ class PatchcorePostprocessor(BasePostprocessor):
         # load index
         if os.path.isfile(os.path.join('./results/patch/', 'index.faiss')):
             self.index = faiss.read_index(
-                os.path.join('./results/', 'index.faiss'))
+                os.path.join('./results/patch/', 'index.faiss'))
             if torch.cuda.is_available():
                 res = faiss.StandardGpuResources()
                 self.index = faiss.index_cpu_to_gpu(res, 0, self.index)

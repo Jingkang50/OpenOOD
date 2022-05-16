@@ -11,9 +11,10 @@ from .dsvdd_trainer import AETrainer, DSVDDTrainer
 from .godin_trainer import GodinTrainer
 from .kdad_trainer import KdadTrainer
 from .mixup_trainer import MixupTrainer
+from .mos_trainer import MOSTrainer
 from .opengan_trainer import OpenGanTrainer
-from .sae_trainer import SAETrainer
 from .openmax_trainer import OpenMaxTrainer
+from .sae_trainer import SAETrainer
 
 
 def get_trainer(
@@ -36,5 +37,6 @@ def get_trainer(
         'godin': GodinTrainer,
         'arpl': ARPLTrainer,
         'arpl_gan': ARPLGANTrainer,
+        'mos': MOSTrainer,
     }
     return trainers[config.trainer.name](net, train_loader, config)

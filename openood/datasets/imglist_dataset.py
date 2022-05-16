@@ -115,6 +115,8 @@ class ImglistDataset(BaseDataset):
             try:
                 for key, value in extras.items():
                     sample[key] = value
+                # if you use dic the code below will need ['label']
+                sample['label'] = 0
             except AttributeError:
                 sample['label'] = int(extra_str)
             # Generate Soft Label
