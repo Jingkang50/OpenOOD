@@ -1,0 +1,4 @@
+postprocessor:
+  name: residual
+  postprocessor_args:
+    dim: 512

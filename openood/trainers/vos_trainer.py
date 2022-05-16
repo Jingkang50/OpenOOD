@@ -1,8 +1,6 @@
-
 import numpy as np
 import torch
 import torch.nn.functional as F
-
 from tqdm import tqdm
 
 from openood.utils import Config
@@ -23,7 +21,7 @@ class VOSTrainer:
         self.logistic_regression = torch.nn.Linear(1, 2).cuda()
         self.optimizer = torch.optim.SGD(
             list(net.parameters()) + list(weight_energy.parameters()) + \
-            list(self.logistic_regression.parameters()), 
+            list(self.logistic_regression.parameters()),
             config.optimizer['learning_rate'],
              momentum=config.optimizer['momentum'],
             weight_decay=config.optimizer['weight_decay'], nesterov=True)
@@ -95,7 +93,7 @@ class VOSTrainer:
                 temp_precision = torch.mm(X.t(), X) / len(X)
                 temp_precision += 0.0001 * eye_matrix
                 for index in range(num_classes):
-                    new_dis = torch.distributions.multivariate_normal. MultivariateNormal(
+                    new_dis = torch.distributions.multivariate_normal.MultivariateNormal(
                         loc=mean_embed_id[index],
                         covariance_matrix=temp_precision)
                     negative_samples = new_dis.rsample(

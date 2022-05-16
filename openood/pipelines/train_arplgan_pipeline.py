@@ -15,7 +15,7 @@ class TrainARPLGANPipeline:
         setup_logger(self.config)
 
         # get dataloader
-        loader_dict = get_dataloader(self.config.dataset)
+        loader_dict = get_dataloader(self.config)
         train_loader, val_loader = loader_dict['train'], loader_dict['val']
         test_loader = loader_dict['test']
 

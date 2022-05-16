@@ -68,10 +68,14 @@ class OODEvaluator(BaseEvaluator):
             label = np.concatenate([id_gt, ood_gt])
 
             print(f'Computing metrics on {dataset_name} dataset...')
+
+            
             ood_metrics = compute_all_metrics(conf, label, pred)
             if self.config.recorder.save_csv:
                 self._save_csv(ood_metrics, dataset_name=dataset_name)
             metrics_list.append(ood_metrics)
+
+            
 
         print('Computing mean metrics...', flush=True)
         metrics_list = np.array(metrics_list)
@@ -137,8 +141,16 @@ class OODEvaluator(BaseEvaluator):
                  data_loader: DataLoader,
                  postprocessor: BasePostprocessor = None,
                  epoch_idx: int = -1):
+        """
+        Returns the accuracy score of the labels and predictions.
+        :return: float
+        """
         net.eval()
         id_pred, _, id_gt = postprocessor.inference(net, data_loader)
         metrics = {}
         metrics['acc'] = sum(id_pred == id_gt) / len(id_pred)
+        metrics['epoch_idx'] = epoch_idx
         return metrics
+
+    def report(self, test_metrics):
+        print('Completed!', flush=True)

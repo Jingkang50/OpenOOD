@@ -4,7 +4,7 @@ from openood.networks import get_network
 from openood.recorders import get_recorder
 from openood.trainers import get_trainer
 from openood.utils import setup_logger
-
+from openood.preprocessors.utils import get_preprocessor
 
 class TrainPipeline:
     def __init__(self, config) -> None:
@@ -15,7 +15,7 @@ class TrainPipeline:
         setup_logger(self.config)
 
         # get dataloader
-        loader_dict = get_dataloader(self.config.dataset)
+        loader_dict = get_dataloader(self.config)   
         train_loader, val_loader = loader_dict['train'], loader_dict['val']
         test_loader = loader_dict['test']
 
