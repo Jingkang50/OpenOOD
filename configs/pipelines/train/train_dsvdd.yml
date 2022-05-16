@@ -4,7 +4,12 @@ force_merge: False
 normal_class: 3
 output_dir: ./results/
 lr: 0.0001
+
+num_gpus: 1
 num_workers: 0
+num_machines: 1
+machine_rank: 0
+
 lr_milestones: [50]
 weight_decay: 0.5e-6
 warm_up_n_epochs: 10

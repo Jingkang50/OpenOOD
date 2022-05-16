@@ -18,7 +18,6 @@ from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .dsvdd_net import build_network, get_Autoencoder
 from .godinnet import GodinNet
 from .lenet import LeNet
-from .opengan import Discriminator, Generator
 from .openmax_network import OpenMax
 from .patchcore_net import patchcore_net
 from .projectionnet import ProjectionNet
@@ -61,9 +60,10 @@ def get_network(network_config):
                         num_classes=num_classes)
 
     elif network_config.name == 'wide_resnet_50_2':
-        module = torch.hub.load('pytorch/vision:v0.9.0',
-                                'wide_resnet50_2',
-                                pretrained=True)
+        path = '/home/pengyunwang/.cache/torch/hub/vision-0.9.0'
+        module = torch.hub._load_local(path,
+                                       'wide_resnet50_2',
+                                       pretrained=True)
         net = patchcore_net(module)
 
     elif network_config.name == 'godinnet':
@@ -95,8 +95,8 @@ def get_network(network_config):
         net = OpenMax(backbone='ResNet18', num_classes=50)
 
     elif network_config.name == 'opengan':
+        from .opengan import Discriminator, Generator
         backbone = get_network(network_config.backbone)
-
         netG = Generator(in_channels=network_config.nz,
                          feature_size=network_config.ngf,
                          out_channels=network_config.nc)

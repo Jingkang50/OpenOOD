@@ -8,7 +8,7 @@ from .transform import (Convert, center_crop_dict, interpolation_modes,
 
 class BasePreprocessor():
     """For train dataset standard transformation."""
-    def __init__(self, config: Config):
+    def __init__(self, config: Config, split):
         dataset_name = config.dataset.name.split('_')[0]
         image_size = config.dataset.image_size
         pre_size = center_crop_dict[image_size]
@@ -31,6 +31,9 @@ class BasePreprocessor():
             tvs_trans.ToTensor(),
             tvs_trans.Normalize(mean=mean, std=std),
         ])
+
+    def setup(self, **kwargs):
+        pass
 
     def __call__(self, image):
         return self.transform(image)

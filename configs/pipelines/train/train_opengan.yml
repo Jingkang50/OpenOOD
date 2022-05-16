@@ -10,6 +10,7 @@ dataset:
 num_gpus: 1
 num_workers: 0
 num_machines: 1
+machine_rank: 0
 
 pipeline:
   name: train_opengan
@@ -18,7 +19,7 @@ trainer:
   name: opengan
 
 evaluator:
-  name: opengan
+  name: ood
 
 optimizer:
   name: Adam

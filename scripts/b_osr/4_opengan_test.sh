@@ -15,8 +15,8 @@ python main.py \
 configs/datasets/digits/mnist_ood.yml \
 configs/networks/opengan.yml \
 configs/pipelines/test/test_opengan.yml \
+configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/opengan.yml \
 --num_workers 8 \
 --network.backbone.pretrained True \
---network.backbone.checkpoint './results/tin_resnet18_32x32_base_e200_lr0.125/best.ckpt' \
---evaluator.name ood
+--network.backbone.checkpoint './results/tin_resnet18_32x32_base_e200_lr0.125/best.ckpt'

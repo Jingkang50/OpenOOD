@@ -1,4 +1,3 @@
-import openood.utils.comm as comm
 from openood.pipelines import get_pipeline
 from openood.utils import launch, setup_config
 
@@ -29,7 +28,7 @@ if __name__ == '__main__':
 
     config = setup_config()
     # generate output directory and save the full config file
-    setup_logger(config)
+    # setup_logger(config)
 
     # pipeline = get_pipeline(config)
     # pipeline.run()

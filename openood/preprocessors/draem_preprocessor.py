@@ -7,9 +7,11 @@ import imgaug.augmenters as iaa
 import numpy as np
 import torch
 
+from .base_preprocessor import BasePreprocessor
 
-class DRAEMPreprocessor:
-    def __init__(self, config):
+
+class DRAEMPreprocessor(BasePreprocessor):
+    def __init__(self, config, split):
         self.config = config
         self.args = self.config.preprocessor.preprocessor_args
 
@@ -175,7 +177,7 @@ class DRAEMPreprocessor:
         return sample
 
     # some setup so that the preprocessor can get the gt map
-    def setup(self, path: str, name: str, **kwargs):
+    def setup(self, **kwargs):
         self.path = kwargs['path']
         self.name = kwargs['name']
 

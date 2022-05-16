@@ -14,4 +14,5 @@ python main.py \
 --config configs/datasets/draem/bottle.yml \
 configs/networks/draem.yml \
 configs/pipelines/train/train_draem.yml \
-configs/preprocessors/draem_preprocessor.yml
+configs/preprocessors/draem_preprocessor.yml \
+configs/postprocessors/msp.yml

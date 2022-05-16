@@ -15,7 +15,8 @@ python main.py \
 --config configs/datasets/objects/cifar10.yml \
 configs/networks/csinet.yml \
 configs/pipelines/train/train_csi.yml \
---optimizer.num_epochs 700 \
+configs/preprocessors/base_preprocessor.yml \
+--optimizer.num_epochs 2 \
 --dataset.train.batch_size 128 \
 --force_merge True \
 --mode csi_step1

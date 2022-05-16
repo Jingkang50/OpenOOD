@@ -1,10 +1,12 @@
 exp_name: "'@{dataset.name}'_'@{network.name}'_train_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
-output_dir: ./results/draem/
+output_dir: ./results/
 save_output: True
 force_merge: True
 
 num_gpus: 1
 num_workers: 0
+num_machines: 1
+machine_rank: 0
 
 pipeline:
   name: train_ad

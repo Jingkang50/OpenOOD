@@ -24,7 +24,7 @@ pipeline:
   name: test_ood
 
 evaluator:
-  name: opengan
+  name: ood
 
 recorder:
   save_scores: True

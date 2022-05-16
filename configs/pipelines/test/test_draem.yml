@@ -1,10 +1,13 @@
 exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'"
-output_dir: ./results/draem/
+output_dir: ./results/
 save_output: True
 force_merge: True # disabled if 'save_output' is False
 
 num_gpus: 1
 num_workers: 4
+num_machines: 1
+machine_rank: 0
+
 network:
   pretrained: True
   checkpoint: ["./checkpoints/draem_test_0.0001_700_bs8_bottle_.ckpt",

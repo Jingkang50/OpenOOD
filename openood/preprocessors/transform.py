@@ -10,6 +10,7 @@ normalization_dict = {
     'covid': [[0.4907, 0.4907, 0.4907], [0.2697, 0.2697, 0.2697]],
 }
 
+# TODO: put pre_size and image_size in config
 center_crop_dict = {
     28: 28,
     32: 32,
