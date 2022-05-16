@@ -16,6 +16,7 @@ configs/datasets/digits/mnist_fsood.yml \
 configs/networks/lenet.yml \
 configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/gmm.yml \
+configs/preprocessors/base_preprocessor.yml \
 --num_workers 8 \
 --network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch91_acc0.9950.ckpt \
 --mark 0

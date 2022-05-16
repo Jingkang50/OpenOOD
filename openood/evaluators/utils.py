@@ -4,6 +4,7 @@ from openood.utils import Config
 from .arpl_evaluator import ARPLEvaluator
 from .base_evaluator import BaseEvaluator
 from .conf_esti import Conf_Esti_Evaluator
+from .cutpaste_evaluator import CutPasteEvaluator
 from .draem_evaluator import DRAEMEvaluator
 from .dsvdd_evaluator import DCAEEvaluator, DSVDDEvaluator
 from .fsood_evaluator import FSOODEvaluator
@@ -29,5 +30,6 @@ def get_evaluator(config: Config):
         'dsvdd': DSVDDEvaluator,
         'arpl': ARPLEvaluator,
         'mos': MOSEvaluator,
+        'cutpaste': CutPasteEvaluator,
     }
     return evaluators[config.evaluator.name](config)

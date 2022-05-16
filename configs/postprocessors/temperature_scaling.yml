@@ -1,0 +1,2 @@
+postprocessor:
+  name: temperature_scaling

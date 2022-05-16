@@ -14,21 +14,16 @@ class TestAdPipeline:
         # generate output directory and save the full config file
         setup_logger(self.config)
 
-        # get preprocessor
-        preprocessor = get_preprocessor(self.config)
-
-        
         # get dataloader
-        id_loader_dict = get_dataloader(self.config.dataset, preprocessor)
-        ood_loader_dict = get_ood_dataloader(self.config.ood_dataset,
-                                             preprocessor)
+        id_loader_dict = get_dataloader(self.config)
+        ood_loader_dict = get_ood_dataloader(self.config)
 
         # init network
         net = get_network(self.config.network)
 
         # init ood postprocessor
         postprocessor = get_postprocessor(self.config)
-        
+
         # setup for distance-based methods
         postprocessor.setup(net, id_loader_dict)
         print(u'\u2500' * 70, flush=True)
@@ -36,6 +31,11 @@ class TestAdPipeline:
         # init evaluator
         evaluator = get_evaluator(self.config)
 
+        postprocessor = get_postprocessor(self.config)
+        # setup for distance-based methods
+        postprocessor.setup(net, id_loader_dict, ood_loader_dict)
+
         print('Start testing...', flush=True)
-        test_metrics = evaluator.eval_ood(net, id_loader_dict, ood_loader_dict, postprocessor)
+        test_metrics = evaluator.eval_ood(net, id_loader_dict, ood_loader_dict,
+                                          postprocessor)
         evaluator.report(test_metrics)

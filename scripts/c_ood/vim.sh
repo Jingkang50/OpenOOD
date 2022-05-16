@@ -13,9 +13,9 @@ srun -p mediasuper -x SZ-IDC1-10-112-2-17 --gres=gpu:${GPU} \
 python main.py \
 --config configs/datasets/imagenet/imagenet.yml \
 configs/datasets/imagenet/imagenet_ood.yml \
-configs/networks/bit.yml \
+configs/networks/vit.yml \
 configs/pipelines/test/test_ood.yml \
 configs/postprocessors/vim.yml \
 --num_workers 4 \
---network.checkpoint ./bit_pretrained_models/BiT-S-R101x1.npz \
+--network.checkpoint ./checkpoints/vit-base-p16_in21k-pre-3rdparty_ft-64xb64_in1k-384_20210928-98e8652b.pth \
 --mark 0
