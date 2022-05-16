@@ -17,7 +17,7 @@ configs/networks/reactnet.yml \
 configs/pipelines/test/test_ood.yml \
 configs/postprocessors/react.yml \
 --num_workers 8 \
---dataset.val.batch_size 256 \
+--dataset.val.batch_size 32 \
 --network.pretrained False \
 --network.backbone.name resnet18_32x32 \
 --network.backbone.pretrained True \

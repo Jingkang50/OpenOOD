@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/_get_started/1_mnist_test.sh
+# sh scripts/a_anomaly/2_cutpaste_test.sh
 
 GPU=1
 CPU=1
@@ -16,3 +16,4 @@ configs/networks/cutpaste.yml \
 configs/pipelines/test/test_cutpaste.yml \
 configs/postprocessors/cutpaste.yml \
 configs/preprocessors/cutpaste_preprocessor.yml \
+--network.checkpoint "results/bottle_projectionNet_cutpaste_e5_lr0.03/best.ckpt"

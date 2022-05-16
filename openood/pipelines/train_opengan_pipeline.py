@@ -17,7 +17,7 @@ class TrainOpenGanPipeline:
         feat_loader = get_feature_dataloader(self.config.dataset)
 
         # init network
-        net = get_network(self.config.gan_network)
+        net = get_network(self.config.network)
 
         # init trainer
         trainer = get_trainer(net, feat_loader, self.config)
