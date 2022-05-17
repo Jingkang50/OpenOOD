@@ -8,6 +8,8 @@ openset_dataset:
   num_classes: '@{dataset.num_classes}'
   image_size: '@{dataset.image_size}'
   num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
 
   split_names: [openset]
   openset:

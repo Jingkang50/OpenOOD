@@ -1,11 +1,12 @@
 from re import S
+
 import torch
 from numpy import load
 from torch.utils.data import DataLoader
 
-from openood.utils.config import Config
-from openood.preprocessors.utils import get_preprocessor
 from openood.preprocessors.test_preprocessor import TestStandardPreProcessor
+from openood.preprocessors.utils import get_preprocessor
+from openood.utils.config import Config
 
 from .feature_dataset import FeatDataset
 from .imglist_dataset import ImglistDataset
@@ -18,8 +19,11 @@ def get_dataloader(config: Config):
     for split in dataset_config.split_names:
         split_config = dataset_config[split]
         # currently we only support ImglistDataset
-        preprocessor = get_preprocessor(split, config)    # all script file need to pass in train_preprocessor config file
-        data_aux_preprocessor = TestStandardPreProcessor('test', config)   # for data_aux data augmentation
+        preprocessor = get_preprocessor(
+            split, config
+        )  # all script file need to pass in train_preprocessor config file
+        data_aux_preprocessor = TestStandardPreProcessor(
+            'test', config)  # for data_aux data augmentation
         CustomDataset = eval(split_config.dataset_class)
         dataset = CustomDataset(name=dataset_config.name + '_' + split,
                                 split=split,
@@ -29,11 +33,17 @@ def get_dataloader(config: Config):
                                 data_dir=split_config.data_dir,
                                 num_classes=dataset_config.num_classes,
                                 preprocessor=preprocessor,
-                                data_aux_preprocessor = data_aux_preprocessor)
+                                data_aux_preprocessor=data_aux_preprocessor)
+        sampler = None
+        if dataset_config.num_gpus * dataset_config.num_machines > 1:
+            sampler = torch.utils.data.distributed.DistributedSampler(dataset)
+            split_config.shuffle = False
+
         dataloader = DataLoader(dataset,
                                 batch_size=split_config.batch_size,
                                 shuffle=split_config.shuffle,
-                                num_workers=dataset_config.num_workers)
+                                num_workers=dataset_config.num_workers,
+                                sampler=sampler)
 
         dataloader_dict[split] = dataloader
     return dataloader_dict
@@ -50,15 +60,16 @@ def get_ood_dataloader(config: Config):
         data_aux_preprocessor = TestStandardPreProcessor('test', config)
         if split == 'val':
             # validation set
-            dataset = CustomDataset(name=ood_config.name + '_' + split,
-                                    split=split,
-                                    interpolation=ood_config.interpolation,
-                                    image_size=ood_config.image_size,
-                                    imglist_pth=split_config.imglist_pth,
-                                    data_dir=split_config.data_dir,
-                                    num_classes=ood_config.num_classes,
-                                    preprocessor=preprocessor,
-                                    data_aux_preprocessor = data_aux_preprocessor)
+            dataset = CustomDataset(
+                name=ood_config.name + '_' + split,
+                split=split,
+                interpolation=ood_config.interpolation,
+                image_size=ood_config.image_size,
+                imglist_pth=split_config.imglist_pth,
+                data_dir=split_config.data_dir,
+                num_classes=ood_config.num_classes,
+                preprocessor=preprocessor,
+                data_aux_preprocessor=data_aux_preprocessor)
             dataloader = DataLoader(dataset,
                                     batch_size=ood_config.batch_size,
                                     shuffle=ood_config.shuffle,
@@ -69,15 +80,16 @@ def get_ood_dataloader(config: Config):
             sub_dataloader_dict = {}
             for dataset_name in split_config.datasets:
                 dataset_config = split_config[dataset_name]
-                dataset = CustomDataset(name=ood_config.name + '_' + split,
-                                        split=split,
-                                        interpolation=ood_config.interpolation,
-                                        image_size=ood_config.image_size,
-                                        imglist_pth=dataset_config.imglist_pth,
-                                        data_dir=dataset_config.data_dir,
-                                        num_classes=ood_config.num_classes,
-                                        preprocessor=preprocessor,
-                                        data_aux_preprocessor = data_aux_preprocessor)
+                dataset = CustomDataset(
+                    name=ood_config.name + '_' + split,
+                    split=split,
+                    interpolation=ood_config.interpolation,
+                    image_size=ood_config.image_size,
+                    imglist_pth=dataset_config.imglist_pth,
+                    data_dir=dataset_config.data_dir,
+                    num_classes=ood_config.num_classes,
+                    preprocessor=preprocessor,
+                    data_aux_preprocessor=data_aux_preprocessor)
                 dataloader = DataLoader(dataset,
                                         batch_size=ood_config.batch_size,
                                         shuffle=ood_config.shuffle,
@@ -97,7 +109,7 @@ def get_feature_dataloader(dataset_config: Config):
     total_feat.unsqueeze_(-1).unsqueeze_(-1)
     # let's see what we got here should be something like:
     # torch.Size([total_num, channel_size, 1, 1])
-    print(total_feat.shape)
+    print('Loaded feature size: {}'.format(total_feat.shape))
 
     split_config = dataset_config['train']
 

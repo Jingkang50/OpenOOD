@@ -4,6 +4,8 @@ dataset:
   num_classes: 50
   image_size: 32
   num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/
@@ -71,4 +73,3 @@ ood_dataset:
     far_cifar100:
       data_dir: ./data/
       imglist_pth: ./data/cifar100List/test.txt
-

@@ -1,9 +1,11 @@
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+import openood.utils.comm as comm
 from openood.utils import Config
 
 from .lr_scheduler import cosine_annealing
@@ -45,7 +47,8 @@ class BaseTrainer:
                                      len(train_dataiter) + 1),
                                desc='Epoch {:03d}: '.format(epoch_idx),
                                position=0,
-                               leave=True):
+                               leave=True,
+                               disable=comm.is_main_process()):
             batch = next(train_dataiter)
             data = batch['data'].cuda()
             target = batch['label'].cuda()
@@ -64,8 +67,16 @@ class BaseTrainer:
             with torch.no_grad():
                 loss_avg = loss_avg * 0.8 + float(loss) * 0.2
 
+        # comm.synchronize()
+
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
-        metrics['loss'] = loss_avg
+        metrics['loss'] = self.save_metrics(loss_avg)
 
         return self.net, metrics
+
+    def save_metrics(self, loss_avg):
+        all_loss = comm.gather(loss_avg)
+        total_losses_reduced = np.mean([x for x in all_loss])
+
+        return total_losses_reduced

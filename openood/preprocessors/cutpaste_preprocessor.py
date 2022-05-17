@@ -1,7 +1,10 @@
 import math
 import random
+
 import torch
 import torchvision.transforms as tvs_trans
+
+from .base_preprocessor import BasePreprocessor
 
 
 class Convert:
@@ -12,17 +15,22 @@ class Convert:
         return image.convert(self.mode)
 
 
-class CutPastePreprocessor(object):
-    def __init__(self, config):    # modify, preprocessors unifiy to only passing in "config"
+class CutPastePreprocessor(BasePreprocessor):
+    def __init__(
+            self, config,
+            split):  # modify, preprocessors unify to only passing in "config"
         self.args = config.preprocessor.preprocessor_args
         self.area_ratio = self.args.area_ratio
         self.aspect_ratio = self.args.aspect_ratio
 
         mean = [0.5, 0.5, 0.5]
         std = [0.5, 0.5, 0.5]
+
+        # TODO: size not fixed
         self.before_preprocessor_transform = tvs_trans.Compose([
             Convert('RGB'),
-            tvs_trans.Resize(256, interpolation=tvs_trans.InterpolationMode.BILINEAR),
+            tvs_trans.Resize(
+                256, interpolation=tvs_trans.InterpolationMode.BILINEAR),
             tvs_trans.CenterCrop(256),
             tvs_trans.RandomHorizontalFlip(),
             tvs_trans.RandomCrop(256, padding=4),

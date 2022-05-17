@@ -1,5 +1,5 @@
 network:
-  name: DRAEM
+  name: draem
   num_classes: '@{dataset.num_classes}'
   pretrained: False          # set 'True' to load pretrained model
   checkpoint: none           # ignore if pretrained is false
