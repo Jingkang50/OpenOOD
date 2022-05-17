@@ -12,15 +12,14 @@ from .kl_matching_postprocessor import KLMatchingPostprocessor
 from .maxlogit_postprocessor import MaxLogitPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
-from .opengan_postprocessor import OpenGanPostprocessor
 from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
 from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
-from .temperature_scaling_postprocessor import TemperatureScalingPostprocessor
-from .ensemble_postprocessor import EnsemblePostprocessor
 from .vim_postprocessor import VIMPostprocessor
-
+from .temperature_scaling_postprocessor import TemperatureScalingPostprocessor
+from .esemble_postprocessor import EsemblePostprocessor
+from .dropout_postprocessor import DropoutPostProcessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
@@ -35,14 +34,14 @@ def get_postprocessor(config: Config):
         'vim': VIMPostprocessor,
         'gradnorm': GradNormPostprocessor,
         'godin': GodinPostprocessor,
-        'opengan': OpenGanPostprocessor,
         'gram': GRAMPostprocessor,
         'cutpaste': CutPastePostprocessor,
         'maxlogit': MaxLogitPostprocessor,
         'residual': ResidualPostprocessor,
         'kl_matching': KLMatchingPostprocessor,
         'temperature_scaling': TemperatureScalingPostprocessor,
-        'esemble': EnsemblePostprocessor
+        'esemble': EsemblePostprocessor,
+        'dropout': DropoutPostProcessor,
     }
 
     return postprocessors[config.postprocessor.name](config)
