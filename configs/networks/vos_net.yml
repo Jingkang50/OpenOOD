@@ -1,7 +1,7 @@
 network:
   name: vos
   num_classes: '@{dataset.num_classes}'
-  pretrained: True # set 'True' to load pretrained model
+  pretrained: False # In training pipeline:"False"; In testing pipeline:"True"
   num_gpus: '@{num_gpus}'
   num_layers: 40
   widen_factor: 2
