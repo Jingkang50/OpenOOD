@@ -132,7 +132,7 @@ class ResNet18_32x32(nn.Module):
         elif return_feature_list:
             return logits_cls, feature_list
         else:
-            return 
+            return logits_cls
 
     def forward_threshold(self, x, threshold):
         feature1 = F.relu(self.bn1(self.conv1(x)))
