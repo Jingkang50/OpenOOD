@@ -1,7 +1,7 @@
 #!/bin/bash
-# sh scripts/d_uncertainty/2_mnist_esemble_train.sh
+# sh scripts/d_uncertainty/2_mnist_ensemble_train.sh
 
-# for esemble (mnist + lenet)
+# for ensemble (mnist + lenet)
 
 GPU=1
 CPU=1

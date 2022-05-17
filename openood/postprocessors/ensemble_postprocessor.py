@@ -16,7 +16,7 @@ class EnsemblePostprocessor(BasePostprocessor):
         self.postprocessor_args = self.postprocess_config.postprocessor_args
         assert self.postprocessor_args.network_name == self.config.network.name, \
             'checkpoint network type and model type do not align!'
-        # get esemble args
+        # get ensemble args
         self.checkpoint_root = self.postprocessor_args.checkpoint_root
         self.checkpoints = self.postprocessor_args.checkpoints  # list of trained network checkpoints
         self.num_networks = self.postprocessor_args.num_networks  # number of networks to esembel

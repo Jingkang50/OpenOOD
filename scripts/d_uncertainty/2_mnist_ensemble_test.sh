@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/d_uncertainty/2_mnist_esemble_test.sh
+# sh scripts/d_uncertainty/2_mnist_ensemble_test.sh
 
 GPU=1
 CPU=1

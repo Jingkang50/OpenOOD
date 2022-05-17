@@ -6,7 +6,7 @@ from .base_postprocessor import BasePostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
 from .dropout_postprocessor import DropoutPostProcessor
 from .ebo_postprocessor import EBOPostprocessor
-from .esemble_postprocessor import EsemblePostprocessor
+from .ensemble_postprocessor import EnsemblePostprocessor
 from .gmm_postprocessor import GMMPostprocessor
 from .godin_postprocessor import GodinPostprocessor
 from .gradnorm_postprocessor import GradNormPostprocessor
@@ -42,7 +42,7 @@ def get_postprocessor(config: Config):
         'residual': ResidualPostprocessor,
         'kl_matching': KLMatchingPostprocessor,
         'temperature_scaling': TemperatureScalingPostprocessor,
-        'esemble': EsemblePostprocessor,
+        'ensemble': EnsemblePostprocessor,
         'dropout': DropoutPostProcessor,
     }
 
