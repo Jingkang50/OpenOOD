@@ -15,9 +15,9 @@ python main.py \
 configs/datasets/digits/mnist_fsood.yml \
 configs/networks/lenet.yml \
 configs/pipelines/test/test_fsood.yml \
-configs/postprocessors/esemble.yml \
+configs/postprocessors/ensemble.yml \
 configs/preprocessors/base_preprocessor.yml \
 --network.pretrained False \
 --num_workers 4 \
 --mark 0 \
---exp_name mnist_lenet_e50_lr0.1_test_fsood_esemble 
+--exp_name mnist_lenet_e50_lr0.1_test_fsood_ensemble 

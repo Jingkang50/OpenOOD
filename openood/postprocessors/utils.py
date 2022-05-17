@@ -18,7 +18,7 @@ from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .vim_postprocessor import VIMPostprocessor
 from .temperature_scaling_postprocessor import TemperatureScalingPostprocessor
-from .esemble_postprocessor import EsemblePostprocessor
+from .ensemble_postprocessor import EnsemblePostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
@@ -39,7 +39,7 @@ def get_postprocessor(config: Config):
         'residual': ResidualPostprocessor,
         'kl_matching': KLMatchingPostprocessor,
         'temperature_scaling': TemperatureScalingPostprocessor,
-        'esemble': EsemblePostprocessor
+        'esemble': EnsemblePostprocessor
     }
 
     return postprocessors[config.postprocessor.name](config)

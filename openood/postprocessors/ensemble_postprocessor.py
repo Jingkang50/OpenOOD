@@ -5,9 +5,9 @@ from typing import Any
 import os.path as osp
 from copy import deepcopy
 
-class EsemblePostprocessor(BasePostprocessor):
+class EnsemblePostprocessor(BasePostprocessor):
     def __init__(self, config):
-        super(EsemblePostprocessor, self).__init__(config)
+        super(EnsemblePostprocessor, self).__init__(config)
         self.config = config
         self.postprocess_config = config.postprocessor
         self.postprocessor_args = self.postprocess_config.postprocessor_args

@@ -20,5 +20,5 @@ configs/preprocessors/base_preprocessor.yml \
 configs/pipelines/train/baseline.yml \
 --optimizer.num_epochs 50 \
 --num_workers 8 \
---output_dir ./results/lenet_esemble_pretrained \
+--output_dir ./results/lenet_ensemble_pretrained \
 --exp_name network5

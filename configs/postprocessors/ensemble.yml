@@ -1,5 +1,5 @@
 postprocessor:
-  name: esemble
+  name: ensemble
   postprocessor_args:
     network_name: lenet
     checkpoint_root: ./results/lenet_esemble_pretrained
