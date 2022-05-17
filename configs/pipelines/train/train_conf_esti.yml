@@ -3,8 +3,12 @@ output_dir: ./results/
 save_output: True
 force_merge: False # disabled if 'save_output' is False
 num_classes: '@{dataset.num_classes}'
+
 num_gpus: 1
 num_workers: 2
+num_machines: 1
+machine_rank: 0
+
 baseline: False
 
 pipeline:

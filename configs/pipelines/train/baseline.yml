@@ -5,6 +5,8 @@ force_merge: False
 
 num_gpus: 1
 num_workers: 0
+num_machines: 1
+machine_rank: 0
 
 preprocessor:
   name: base

@@ -5,6 +5,8 @@ import sys
 
 import yaml
 
+import openood.utils.comm as comm
+
 
 def mkdir_if_missing(dirname):
     """Create dirname if it is missing."""
@@ -78,7 +80,8 @@ def setup_logger(config):
     output = config.output_dir
 
     if config.save_output:
-        if not config.force_merge and osp.isdir(output):
+        if not config.force_merge and osp.isdir(
+                output) and comm.is_main_process():
             print('Output dir: {}'.format(output), flush=True)
             ans = input('Exp dir already exists, merge it? (y/n)')
             if ans in ['yes', 'Yes', 'YES', 'y', 'Y', 'can']:
@@ -93,6 +96,8 @@ def setup_logger(config):
 
     else:
         print('No output directory.', flush=True)
+
+    comm.synchronize()
 
 
 def save_logger(config, output):
