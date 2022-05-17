@@ -11,6 +11,7 @@ from .kdad_evaluator import KdadDetectionEvaluator
 from .ood_evaluator import OODEvaluator
 from .openmax_evaluator import OpenMaxEvaluator
 from .patchcore_evaluator import PatchCoreEvaluator
+from .vos_evaluator import VOSEvaluator
 
 
 def get_evaluator(config: Config):
@@ -26,6 +27,7 @@ def get_evaluator(config: Config):
         'dcae': DCAEEvaluator,
         'dsvdd': DSVDDEvaluator,
         'arpl': ARPLEvaluator,
-        'cutpaste': CutPasteEvaluator,
+        'vos': VOSEvaluator,
+        'cutpaste': CutPasteEvaluator
     }
     return evaluators[config.evaluator.name](config)

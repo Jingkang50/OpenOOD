@@ -17,6 +17,8 @@ from .mixup_trainer import MixupTrainer
 from .opengan_trainer import OpenGanTrainer
 from .openmax_trainer import OpenMaxTrainer
 from .sae_trainer import SAETrainer
+from .vos_trainer import VOSTrainer
+
 
 
 def get_trainer(
@@ -39,6 +41,7 @@ def get_trainer(
         'godin': GodinTrainer,
         'arpl': ARPLTrainer,
         'arpl_gan': ARPLGANTrainer,
+        'vos': VOSTrainer,
         'cutpaste': CutPasteTrainer,
         'cutmix': CutMixTrainer,
         'dropout': DropoutTrainer,
