@@ -14,6 +14,7 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/objects/cifar10.yml \
 configs/networks/resnet18_32x32.yml \
+configs/preprocessors/base_preprocessor.yml \
 configs/pipelines/train/baseline.yml \
 --dataset.image_size 32 \
 --optimizer.num_epochs 1 \

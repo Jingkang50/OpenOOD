@@ -2,14 +2,14 @@ from .base_postprocessor import BasePostprocessor
 from torch import nn, optim
 import torch
 from typing import Any
-
+from tqdm import tqdm
 
 class TemperatureScalingPostprocessor(BasePostprocessor):
     """ 
-    A decorator which wraps a model with temperature scaling, internalize T as part of a net model.
+    A decorator which wraps a model with temperature scaling, internalize 'temperature' parameter as part of a net model.
     """
     def __init__(self, config):
-        super(TemperatureScalingPostprocessor, self).__init__()
+        super(TemperatureScalingPostprocessor, self).__init__(config)
         self.config = config
         self.temperature = nn.Parameter(torch.ones(1) * 1.5)  # initialize T
 
@@ -22,27 +22,36 @@ class TemperatureScalingPostprocessor(BasePostprocessor):
         logits_list = []   # fit in whole dataset at one time to back prop
         labels_list = []
         with torch.no_grad():   # fix other params of the net, only learn temperature
-            for batch in val_dl:
+            for batch in tqdm(val_dl):
                 data = batch['data'].cuda()
-                labels = batch['target']
+                labels = batch['label']
                 logits = net(data)
                 logits_list.append(logits)
                 labels_list.append(labels)
             logits = torch.cat(logits_list).cuda()   # convert a list of many tensors (each of a batch) to one tensor
             labels = torch.cat(labels_list).cuda()  
+            # calculate NLL before temperature scaling
+            before_temperature_nll = nll_criterion(logits, labels)
+
+        print('Before temperature - NLL: %.3f' % (before_temperature_nll))
 
         optimizer = optim.LBFGS([self.temperature], lr=0.01, max_iter=50)  
 
-        def eval():  # make sure only temperature parameter will be learned, fix other parameters of the network
+        def eval():   # make sure only temperature parameter will be learned, fix other parameters of the network
             optimizer.zero_grad()
             loss = nll_criterion(self._temperature_scale(logits), labels)
             loss.backward()
             return loss
         optimizer.step(eval)
 
+        # print learned parameter temperature, calculate NLL after temperature scaling
+        after_temperature_nll = nll_criterion(self._temperature_scale(logits), labels).item()
+        print('Optimal temperature: %.3f' % self.temperature.item())
+        print('After temperature - NLL: %.3f' % (after_temperature_nll))
+
 
     def _temperature_scale(self, logits):
-        temperature = self.temperature.unsqueeze(1).expand(logits.size()[0], logits.size()[1])
+        temperature = self.temperature.unsqueeze(1).expand(logits.size()[0], logits.size()[1]).cuda()
         return logits / temperature
 
 

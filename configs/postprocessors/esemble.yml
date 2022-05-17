@@ -1,0 +1,7 @@
+postprocessor:
+  name: esemble
+  postprocessor_args:
+    network_name: lenet
+    checkpoint_root: ./results/lenet_esemble_pretrained
+    checkpoints: [network1, network2, network3, network4, network5]
+    num_networks: 5  # number of networks to esembel
