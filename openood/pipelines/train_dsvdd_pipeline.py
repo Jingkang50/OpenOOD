@@ -15,7 +15,6 @@ class TrainDSVDDPipeline:
         # generate output directory and save the full config file
         setup_logger(self.config)
 
-    
         # get dataloader
         id_loader_dict = get_dataloader(self.config)
         ood_loader_dict = get_ood_dataloader(self.config)

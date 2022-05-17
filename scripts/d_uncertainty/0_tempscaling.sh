@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/d_uncertainty/0_tempscaling.sh 
+# sh scripts/d_uncertainty/0_tempscaling.sh
 
 # mnist
 # GPU=1
@@ -21,7 +21,7 @@
 # --num_workers 8 \
 # --network.checkpoint ./results/mnist_lenet_base_e100_lr0.1/best_epoch86_acc0.9920.ckpt \
 # --mark 0 \
-# --exp_name mnist_lenet_base_e100_lr0.1_test_fsood_temperature_scaling 
+# --exp_name mnist_lenet_base_e100_lr0.1_test_fsood_temperature_scaling
 
 
 # cifar10
@@ -44,4 +44,4 @@ configs/preprocessors/base_preprocessor.yml \
 --num_workers 8 \
 --mark 0 \
 --network.checkpoint ./results/cifar10_resnet18_32x32_base_e100_lr0.1/best.ckpt \
---exp_name cifar10_resnet18_32x32_base_e100_lr0.1_test_fsood_temperature_scaling 
+--exp_name cifar10_resnet18_32x32_base_e100_lr0.1_test_fsood_temperature_scaling

@@ -10,6 +10,7 @@ from tqdm import tqdm
 
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
+
 from .ood_evaluator import OODEvaluator
 
 
@@ -54,7 +55,6 @@ class ARPLEvaluator(OODEvaluator):
         metrics['acc'] = correct / len(data_loader.dataset)
         return metrics
 
-
     def eval_ood(self, net: dict, id_data_loader: DataLoader,
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                  postprocessor: BasePostprocessor):
@@ -84,4 +84,3 @@ class ARPLEvaluator(OODEvaluator):
                        ood_data_loaders,
                        postprocessor,
                        ood_split='farood')
-

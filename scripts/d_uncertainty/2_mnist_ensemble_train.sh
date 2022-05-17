@@ -1,7 +1,7 @@
 #!/bin/bash
-# sh scripts/d_uncertainty/2_mnist_esemble_train.sh
+# sh scripts/d_uncertainty/2_mnist_ensemble_train.sh
 
-# for esemble (mnist + lenet)
+# for ensemble (mnist + lenet)
 
 GPU=1
 CPU=1
@@ -20,5 +20,5 @@ configs/preprocessors/base_preprocessor.yml \
 configs/pipelines/train/baseline.yml \
 --optimizer.num_epochs 50 \
 --num_workers 8 \
---output_dir ./results/lenet_esemble_pretrained \
+--output_dir ./results/lenet_ensemble_pretrained \
 --exp_name network5

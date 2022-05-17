@@ -6,10 +6,10 @@ from .arpl_gan_trainer import ARPLGANTrainer
 from .arpl_trainer import ARPLTrainer
 from .base_trainer import BaseTrainer
 from .conf_esti_trainer import Conf_Esti_Trainer
-from .csi_trainer import CsiTrainer
-from .cutmix_trainer import CutMixTrainer
+from .cutmix_trainer import CutMixTrainer  # add
 from .cutpaste_trainer import CutPasteTrainer
 from .draem_trainer import DRAEMTrainer
+from .dropout_trainer import DropoutTrainer
 from .dsvdd_trainer import AETrainer, DSVDDTrainer
 from .godin_trainer import GodinTrainer
 from .kdad_trainer import KdadTrainer
@@ -28,18 +28,19 @@ def get_trainer(
         'base': BaseTrainer,
         'mixup': MixupTrainer,
         'sae': SAETrainer,
-        'draem': DRAEMTrainer,
-        'opengan': OpenGanTrainer,
-        'godin': GodinTrainer,
-        'csi': CsiTrainer,
+        'DRAEM': DRAEMTrainer,
         'OpenMax': OpenMaxTrainer,
+        'kdad': KdadTrainer,
         'conf_esti': Conf_Esti_Trainer,
         'dcae': AETrainer,
         'dsvdd': DSVDDTrainer,
+        'openGan': OpenGanTrainer,
         'kdad': KdadTrainer,
+        'godin': GodinTrainer,
         'arpl': ARPLTrainer,
         'arpl_gan': ARPLGANTrainer,
         'cutpaste': CutPasteTrainer,
         'cutmix': CutMixTrainer,
+        'dropout': DropoutTrainer,
     }
     return trainers[config.trainer.name](net, train_loader, config)

@@ -4,10 +4,11 @@ from typing import Dict, List
 
 import numpy as np
 import torch.nn as nn
-from torch.utils.data import DataLoader
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, f1_score, \
-    classification_report, precision_recall_fscore_support, roc_auc_score
+from sklearn.metrics import (ConfusionMatrixDisplay, classification_report,
+                             confusion_matrix, f1_score,
+                             precision_recall_fscore_support, roc_auc_score)
 from sklearn.preprocessing import OneHotEncoder
+from torch.utils.data import DataLoader
 
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
@@ -59,22 +60,22 @@ class OpenMaxEvaluator(BaseEvaluator):
 
             print(f'Computing metrics on {dataset_name} dataset...')
 
-            print(f"OpenMax F1 is ")
+            print(f'OpenMax F1 is ')
             print(f1_score(ood_gt, ood_pred, average='micro'))
 
-            print(f"OpenMax f1_macro is " )
+            print(f'OpenMax f1_macro is ')
             print(f1_score(ood_gt, ood_pred, average='macro'))
 
-            print(f"OpenMax f1_macro_weighted is" )
+            print(f'OpenMax f1_macro_weighted is')
             print(f1_score(ood_gt, ood_pred, average='weighted'))
 
-            print(f"OpenMax area_under_roc is" )
+            print(f'OpenMax area_under_roc is')
             print(self._area_under_roc(ood_conf))
 
-            
-    def _area_under_roc(self, prediction_scores: np.array = None, multi_class='ovo') -> float:
-        """
-        Area Under Receiver Operating Characteristic Curve
+    def _area_under_roc(self,
+                        prediction_scores: np.array = None,
+                        multi_class='ovo') -> float:
+        """Area Under Receiver Operating Characteristic Curve.
 
         :param prediction_scores: array-like of shape (n_samples, n_classes). The multi-class ROC curve requires
             prediction scores for each class. If not specified, will generate its own prediction scores that assume
@@ -89,10 +90,12 @@ class OpenMaxEvaluator(BaseEvaluator):
         one_hot_encoder.fit(np.array(label).reshape(-1, 1))
         true_scores = one_hot_encoder.transform(np.array(label).reshape(-1, 1))
         if prediction_scores is None:
-            prediction_scores = one_hot_encoder.transform(np.array(predict).reshape(-1, 1))
+            prediction_scores = one_hot_encoder.transform(
+                np.array(predict).reshape(-1, 1))
         # assert prediction_scores.shape == true_scores.shape
-        return roc_auc_score(true_scores, prediction_scores, multi_class=multi_class)
-
+        return roc_auc_score(true_scores,
+                             prediction_scores,
+                             multi_class=multi_class)
 
     def eval_acc(self,
                  net: nn.Module,

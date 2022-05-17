@@ -1,4 +1,5 @@
 from cProfile import label
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -9,12 +10,14 @@ from openood.utils import Config
 
 from .lr_scheduler import cosine_annealing
 
-def adjust_learning_rate(optimizer, epoch,lr ,factor=0.1, step=30):
-    """Sets the learning rate to the initial LR decayed by factor every step epochs"""
-    lr = lr * (factor ** (epoch // step))
+
+def adjust_learning_rate(optimizer, epoch, lr, factor=0.1, step=30):
+    """Sets the learning rate to the initial LR decayed by factor every step
+    epochs."""
+    lr = lr * (factor**(epoch // step))
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
-        
+
 
 class OpenMaxTrainer:
     def __init__(self, net: nn.Module, train_loader: DataLoader,
@@ -33,14 +36,15 @@ class OpenMaxTrainer:
         )
         self.criterion = nn.CrossEntropyLoss()
 
-
     def train_epoch(self, epoch_idx):
         self.net.train()
         train_loss = 0
         correct = 0
         total = 0
 
-        adjust_learning_rate(optimizer= self.optimizer,epoch = epoch_idx,lr = self.lr)
+        adjust_learning_rate(optimizer=self.optimizer,
+                             epoch=epoch_idx,
+                             lr=self.lr)
         train_dataiter = iter(self.train_loader)
         for train_step in tqdm(range(1,
                                      len(train_dataiter) + 1),
@@ -55,7 +59,7 @@ class OpenMaxTrainer:
             outputs = self.net(data)
 
             loss = self.criterion(outputs, target)
-            
+
             loss.backward()
             self.optimizer.step()
             train_loss += loss.item()
@@ -63,16 +67,13 @@ class OpenMaxTrainer:
             total += target.size(0)
             correct += predicted.eq(target).sum().item()
 
-
-        loss_avg = train_loss /len(train_dataiter)
-        
+        loss_avg = train_loss / len(train_dataiter)
 
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
         metrics['loss'] = loss_avg
-        metrics['acc'] = correct/total
-        print("training acc: " + str(metrics['acc']))
+        metrics['acc'] = correct / total
+        print('training acc: ' + str(metrics['acc']))
         print('\nLearning rate: %f' % (self.optimizer.param_groups[0]['lr']))
-        
 
         return self.net, metrics
