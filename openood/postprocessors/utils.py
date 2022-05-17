@@ -1,9 +1,12 @@
 from black import E
+
 from openood.utils import Config
 
 from .base_postprocessor import BasePostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
+from .dropout_postprocessor import DropoutPostProcessor
 from .ebo_postprocessor import EBOPostprocessor
+from .esemble_postprocessor import EsemblePostprocessor
 from .gmm_postprocessor import GMMPostprocessor
 from .godin_postprocessor import GodinPostprocessor
 from .gradnorm_postprocessor import GradNormPostprocessor
@@ -16,10 +19,9 @@ from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
 from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
-from .vim_postprocessor import VIMPostprocessor
 from .temperature_scaling_postprocessor import TemperatureScalingPostprocessor
-from .esemble_postprocessor import EsemblePostprocessor
-from .dropout_postprocessor import DropoutPostProcessor
+from .vim_postprocessor import VIMPostprocessor
+
 
 def get_postprocessor(config: Config):
     postprocessors = {

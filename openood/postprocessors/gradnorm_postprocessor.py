@@ -58,7 +58,7 @@ class GradNormPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        feature_ood = net.forward(data, return_feature = True).cpu()
+        feature_ood = net.forward(data, return_feature=True).cpu()
         with torch.enable_grad():
             score_ood = self.gradnorm(feature_ood.numpy(), self.w, self.b)
         with torch.no_grad():

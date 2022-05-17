@@ -2,8 +2,7 @@ preprocessor:
   name: pixmix
   preprocessor_args:
     mixing_set_dir: data/imglist/objects/aug_fractals_and_fvis.txt
-    aug_severity: 3  # severity of base augmentation operators 
+    aug_severity: 3  # severity of base augmentation operators
     all_ops: true  # turn on all augmentation operations (+brightness,contrast,color,sharpness
     k: 4    # augment the image a random number of times with a maximum of k times (mixing iterations)
     beta: 3 # severity of mixing
-
