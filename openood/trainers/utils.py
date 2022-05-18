@@ -21,7 +21,6 @@ from .sae_trainer import SAETrainer
 from .vos_trainer import VOSTrainer
 
 
-
 def get_trainer(
     net,
     train_loader: DataLoader,

@@ -1,5 +1,4 @@
 from os.path import join as pjoin
-
 from turtle import forward
 from types import MethodType
 
@@ -204,7 +203,7 @@ def get_network(network_config):
         state_dict = torch.load(network_config.checkpoint)
         net.load_state_dict_custom(state_dict)
         net = torch.nn.DataParallel(net)
-        
+
     elif network_config.name == 'vos':
 
         net = WideResNet(network_config['num_layers'],
