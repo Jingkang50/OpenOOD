@@ -37,7 +37,7 @@ class DRAEMRecorder(BaseRecorder):
 
         self.begin_time = time.time()
 
-        self.run_name = ('DRAEM_test_' + str(self.config.optimizer.lr) + '_' +
+        self.run_name = ('draem_test_' + str(self.config.optimizer.lr) + '_' +
                          str(self.config.optimizer.num_epochs) + '_bs' +
                          str(self.config.dataset.train.batch_size) + '_' +
                          self.config.dataset.name)

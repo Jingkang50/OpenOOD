@@ -79,7 +79,7 @@ def sample_estimator(model, train_loader, num_classes, powers):
                     else:
                         feature_class[label][layer_idx][pole_idx].extend(
                             feature)
-    # compute mins/maxs 
+    # compute mins/maxs
     for label in range(num_classes):
         for layer_idx in range(num_layer):
             for poles_idx in range(num_poles):

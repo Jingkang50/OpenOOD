@@ -52,7 +52,7 @@ class PatchcorePostprocessor(BasePostprocessor):
         self.img_path_list = []
         self.features = []
 
-    def setup(self, net: nn.Module, id_loader_dict):
+    def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         # step 1:
         self.model = net
         # on train start

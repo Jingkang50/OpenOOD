@@ -71,7 +71,7 @@ class Config(dict):
         super(Config, self).__init__()
         for arg in args:
             if arg == ' ':
-                continue   # hard code remove white space in config file list
+                continue  # hard code remove white space in config file list
             if isinstance(arg, str):
                 if arg.endswith('.yml'):
                     with open(arg, 'r') as f:

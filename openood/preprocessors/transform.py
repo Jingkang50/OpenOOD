@@ -1,6 +1,5 @@
 import torchvision.transforms as tvs_trans
 
-
 normalization_dict = {
     'cifar10': [[0.4914, 0.4822, 0.4465], [0.2470, 0.2435, 0.2616]],
     'cifar100': [[0.5071, 0.4867, 0.4408], [0.2675, 0.2565, 0.2761]],
@@ -11,15 +10,21 @@ normalization_dict = {
     'covid': [[0.4907, 0.4907, 0.4907], [0.2697, 0.2697, 0.2697]],
 }
 
+# TODO: put pre_size and image_size in config
 center_crop_dict = {
     28: 28,
     32: 32,
+    64: 64,
+    224: 256,
+    256: 256,
+    299: 320,
+    331: 352,
     224: 256,
     256: 256,
     299: 320,
     331: 352,
     384: 384,
-    480: 480
+    480: 480,
 }
 
 interpolation_modes = {
@@ -27,10 +32,10 @@ interpolation_modes = {
     'bilinear': tvs_trans.InterpolationMode.BILINEAR,
 }
 
+
 class Convert:
     def __init__(self, mode='RGB'):
         self.mode = mode
 
     def __call__(self, image):
         return image.convert(self.mode)
-

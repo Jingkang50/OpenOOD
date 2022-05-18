@@ -1,4 +1,5 @@
-from mmcls.models import ImageClassifier, CLASSIFIERS
+from mmcls.models import CLASSIFIERS, ImageClassifier
+
 
 @CLASSIFIERS.register_module()
 class ImageClassifierWithReturnFeature(ImageClassifier):

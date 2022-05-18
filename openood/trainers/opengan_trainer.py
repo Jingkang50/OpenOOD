@@ -30,7 +30,7 @@ class OpenGanTrainer:
         self.netD.apply(weights_init)
         self.feat_loader = feat_loader
 
-        self.nz = self.config.gan_network.nz
+        self.nz = self.config.network.nz
 
         self.real_label = 1
         self.fake_label = 0

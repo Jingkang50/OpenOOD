@@ -5,6 +5,8 @@ force_merge: False
 
 num_gpus: 1
 num_workers: 0
+num_machines: 1
+machine_rank: 0
 
 pipeline:
   name: train
@@ -12,7 +14,7 @@ pipeline:
 trainer:
   name: cutmix
   trainer_args:
-    beta: 1.0  
+    beta: 1.0
     cutmix_prob: 1.0   # cutmix probability
 
 evaluator:

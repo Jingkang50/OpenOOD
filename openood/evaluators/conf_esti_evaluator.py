@@ -64,12 +64,12 @@ class Conf_Esti_Evaluator:
         return metrics
 
     def eval_ood(self, net, id_loader_dict, ood_loader_dict, epoch_idx=-1):
-
+        net.eval()
         id_loader = id_loader_dict['test']
         ood_loader = ood_loader_dict['val']
         ind_scores = []
         ood_scores = []
-        net.eval()
+
         eval_dataiter_id = iter(id_loader)
         eval_dataiter_ood = iter(ood_loader)
 

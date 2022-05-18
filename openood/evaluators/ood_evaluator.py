@@ -25,7 +25,10 @@ class OODEvaluator(BaseEvaluator):
     def eval_ood(self, net: nn.Module, id_data_loader: DataLoader,
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                  postprocessor: BasePostprocessor):
-        net.eval()
+        if type(net) is dict:
+            net['backbone'].eval()
+        else:
+            net.eval()
         # load training in-distribution data
         assert 'test' in id_data_loader, \
             'id_data_loaders should have the key: test!'
@@ -69,13 +72,10 @@ class OODEvaluator(BaseEvaluator):
 
             print(f'Computing metrics on {dataset_name} dataset...')
 
-            
             ood_metrics = compute_all_metrics(conf, label, pred)
             if self.config.recorder.save_csv:
                 self._save_csv(ood_metrics, dataset_name=dataset_name)
             metrics_list.append(ood_metrics)
-
-            
 
         print('Computing mean metrics...', flush=True)
         metrics_list = np.array(metrics_list)
@@ -141,11 +141,14 @@ class OODEvaluator(BaseEvaluator):
                  data_loader: DataLoader,
                  postprocessor: BasePostprocessor = None,
                  epoch_idx: int = -1):
-        """
-        Returns the accuracy score of the labels and predictions.
+        """Returns the accuracy score of the labels and predictions.
+
         :return: float
         """
-        net.eval()
+        if type(net) is dict:
+            net['backbone'].eval()
+        else:
+            net.eval()
         id_pred, _, id_gt = postprocessor.inference(net, data_loader)
         metrics = {}
         metrics['acc'] = sum(id_pred == id_gt) / len(id_pred)

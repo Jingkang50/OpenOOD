@@ -59,7 +59,7 @@ class PatchCoreEvaluator(BaseEvaluator):
             # label = batch['label'].cuda()
             name = batch['image_name']
             for i in name:
-                path = os.path.join('./data', i)
+                path = os.path.join('./data/images/', i)
                 gt_img = Image.open(path)
                 gt_img = self.gt_transform(gt_img)
                 gt_img = torch.unsqueeze(gt_img, 0)
