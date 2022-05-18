@@ -1,3 +1,4 @@
+from openood.evaluators.mos_evaluator import MOSEvaluator
 from openood.utils import Config
 
 from .arpl_evaluator import ARPLEvaluator
@@ -27,7 +28,8 @@ def get_evaluator(config: Config):
         'dcae': DCAEEvaluator,
         'dsvdd': DSVDDEvaluator,
         'arpl': ARPLEvaluator,
+        'mos': MOSEvaluator,
+        'cutpaste': CutPasteEvaluator,
         'vos': VOSEvaluator,
-        'cutpaste': CutPasteEvaluator
     }
     return evaluators[config.evaluator.name](config)

@@ -1,6 +1,5 @@
-import csv
 import os
-from typing import Dict, List
+from typing import Dict
 
 import cv2
 import numpy as np
@@ -8,10 +7,7 @@ import torch
 import torch.nn as nn
 from PIL import Image
 from scipy.ndimage import gaussian_filter
-from sklearn.metrics import (ConfusionMatrixDisplay, classification_report,
-                             confusion_matrix, f1_score,
-                             precision_recall_fscore_support, roc_auc_score)
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.metrics import roc_auc_score
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
@@ -19,7 +15,6 @@ from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
 
 from .base_evaluator import BaseEvaluator
-from .metrics import compute_all_metrics
 
 
 class PatchCoreEvaluator(BaseEvaluator):
@@ -38,7 +33,7 @@ class PatchCoreEvaluator(BaseEvaluator):
         good_pred, good_conf, good_gt = postprocessor.inference(
             net, id_data_loader['patchTestGood'])  # good
 
-        pred = np.concatenate([id_pred, good_pred])
+        # pred = np.concatenate([id_pred, good_pred])
         conf = np.concatenate([id_conf, good_conf])
         gt = np.concatenate([id_gt, good_gt])
 
@@ -59,9 +54,9 @@ class PatchCoreEvaluator(BaseEvaluator):
         self.gt_list_px_lvl = []
 
         for batch in id_data_loader['patchGT']:
-            #data = batch['data'].cuda()
-            data = []
-            label = batch['label'].cuda()
+            # data = batch['data'].cuda()
+            # data = []
+            # label = batch['label'].cuda()
             name = batch['image_name']
             for i in name:
                 path = os.path.join('./data/images/', i)
@@ -72,9 +67,14 @@ class PatchCoreEvaluator(BaseEvaluator):
                 count = count + 1
                 self.gt_list_px_lvl.extend(gt_np.ravel())
 
+        # get a example pic
+        for batch in id_data_loader['patchTestGood']:
+            name = batch['image_name']
+            name = name[0]
+            break
+
         for i in good_gt:
-            img = Image.open('./data/images/mvtec/hazelnut/test/good/000.png'
-                             ).convert('RGB')
+            img = Image.open(os.path.join('./data', name)).convert('RGB')
             img = self.transform(img)
             gt_img = torch.zeros([1, img.size()[-2], img.size()[-2]])
             gt_img = torch.unsqueeze(gt_img, 0)

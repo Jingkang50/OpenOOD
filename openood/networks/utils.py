@@ -1,3 +1,4 @@
+from os.path import join as pjoin
 from turtle import forward
 from types import MethodType
 
@@ -18,6 +19,8 @@ from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .dsvdd_net import build_network, get_Autoencoder
 from .godinnet import GodinNet
 from .lenet import LeNet
+from .mos_network import MOS_MODELS
+from .opengan import Discriminator, Generator
 from .openmax_network import OpenMax
 from .patchcore_net import patchcore_net
 from .projectionnet import ProjectionNet
@@ -181,6 +184,25 @@ def get_network(network_config):
 
     elif network_config.name == 'dsvdd':
         net = build_network(network_config.type)
+
+    elif network_config.name == 'mos':
+        net = MOS_MODELS[network_config.model](
+            head_size=network_config.num_logits,
+            zero_head=True,
+            num_block_open=network_config.num_block_open)
+        model_path = pjoin(network_config.bit_pretrained_dir,
+                           network_config.model + '.npz')
+        net.load_from(np.load(model_path))
+        print('Moving model onto all GPUs')
+        net = torch.nn.DataParallel(net)
+
+    elif network_config.name == 'test_mos':
+        net = MOS_MODELS[network_config.model](
+            head_size=network_config.num_logits)
+        print('Load test mos model from checkpoint')
+        state_dict = torch.load(network_config.checkpoint)
+        net.load_state_dict_custom(state_dict)
+        net = torch.nn.DataParallel(net)
 
     elif network_config.name == 'vos':
 
