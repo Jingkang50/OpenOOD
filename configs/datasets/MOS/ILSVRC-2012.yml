@@ -1,0 +1,64 @@
+dataset:
+  name: ILSVRC-2012
+  split_names: [train, val, test]
+  num_classes: 50
+  image_size: 480
+  num_workers: '@{num_workers}'
+  train:
+    dataset_class: ImglistDataset
+    data_dir: /home/kunyuanding/Desktop/project/large_scale_ood/dataset/id_data/ILSVRC-2012
+    imglist_pth: ./data/MOSlist/train.txt
+    batch_size: 64
+    shuffle: True
+    transform: mnist_train_standard
+    interpolation: bilinear
+
+  test:
+    dataset_class: ImglistDataset
+    data_dir: /home/kunyuanding/Desktop/project/large_scale_ood/dataset/ood_data
+    imglist_pth: ./data/MOSlist/test.txt
+    batch_size: 16
+    shuffle: False
+    transform: mnist_train_standard
+    interpolation: bilinear
+
+  val:
+    dataset_class: ImglistDataset
+    data_dir: /home/kunyuanding/Desktop/project/large_scale_ood/dataset/id_data/ILSVRC-2012
+    imglist_pth: ./data/MOSlist/val.txt
+    batch_size: 64
+    shuffle: False
+    transform: mnist_train_standard
+    interpolation: bilinear
+
+ood_dataset:
+  name: cifar100
+  num_classes: 51
+  image_size: 480
+  num_workers: 4
+  dataset_class: ImglistDataset
+  interpolation: bilinear
+  batch_size: 64
+  shuffle: False
+
+  split_names: [nearood, farood]
+  nearood:
+    dataset_class: ImglistDataset
+    transform: mnist_train_standard
+    interpolation: bilinear
+    batch_size: 256
+    shuffle: True
+    datasets: [near_cifar100]
+    near_cifar100:
+      data_dir: ./data/
+      imglist_pth: ./data/cifar100List/test.txt
+  farood:
+    dataset_class: ImglistDataset
+    transform: mnist_train_standard
+    interpolation: bilinear
+    batch_size: 256
+    shuffle: True
+    datasets: [far_cifar100]
+    far_cifar100:
+      data_dir: ./data/
+      imglist_pth: ./data/cifar100List/test.txt

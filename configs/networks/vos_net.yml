@@ -1,6 +1,9 @@
 network:
-  name: conf_wideresnet
+  name: vos
   num_classes: '@{dataset.num_classes}'
   pretrained: False # In training pipeline:"False"; In testing pipeline:"True"
   num_gpus: '@{num_gpus}'
-  checkpoint: ./results/svhn_conf_wideresnet_conf_esti/best_epoch171_acc0.9660.pth
+  num_layers: 40
+  widen_factor: 2
+  droprate: 0.3
+  checkpoint: ./results/cifar10_vos_vos/best_epoch96_acc0.9455.ckpt

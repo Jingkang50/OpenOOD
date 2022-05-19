@@ -1,0 +1,27 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
+output_dir: ./results/
+save_output: True
+force_merge: False
+
+num_gpus: 1
+num_workers: 0
+
+pipeline:
+  name: train
+
+trainer:
+  name: mos
+  group_config: group_config/taxonomy_level0.npy
+  num_group: 8
+
+evaluator:
+  name: base
+
+optimizer:
+  name: sgd
+  num_epochs: 5
+  lr: 0.003
+
+recorder:
+  name: base
+  save_all_models: True

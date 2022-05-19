@@ -1,3 +1,4 @@
+from openood.pipelines.test_mos_pipeline import TestMOSPipeline
 from openood.utils import Config
 
 from .feat_extract_pipeline import FeatExtractPipeline
@@ -26,6 +27,7 @@ def get_pipeline(config: Config):
         'train_dsvdd': TrainDSVDDPipeline,
         'train_opengan': TrainOpenGanPipeline,
         'train_arplgan': TrainARPLGANPipeline,
+        'test_mos': TestMOSPipeline
     }
 
     return pipelines[config.pipeline.name](config)
