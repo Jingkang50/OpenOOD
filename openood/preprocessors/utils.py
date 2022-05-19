@@ -8,7 +8,7 @@ from .pixmix_preprocessor import PixMixPreprocessor
 from .test_preprocessor import TestStandardPreProcessor
 
 
-def get_preprocessor(split, config: Config):
+def get_preprocessor(config: Config, split):
     train_preprocessors = {
         'base': BasePreprocessor,
         'draem': DRAEMPreprocessor,
