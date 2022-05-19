@@ -57,7 +57,7 @@ def get_ood_dataloader(config: Config):
     for split in ood_config.split_names:
         split_config = ood_config[split]
         preprocessor = get_preprocessor(split, config)
-        data_aux_preprocessor = TestStandardPreProcessor('test', config)
+        data_aux_preprocessor = TestStandardPreProcessor(config, 'test')
         if split == 'val':
             # validation set
             dataset = CustomDataset(
