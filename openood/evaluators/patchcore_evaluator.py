@@ -74,7 +74,7 @@ class PatchCoreEvaluator(BaseEvaluator):
             break
 
         for i in good_gt:
-            img = Image.open(os.path.join('./data', name)).convert('RGB')
+            img = Image.open(os.path.join('./data/images', name)).convert('RGB')
             img = self.transform(img)
             gt_img = torch.zeros([1, img.size()[-2], img.size()[-2]])
             gt_img = torch.unsqueeze(gt_img, 0)

@@ -63,10 +63,7 @@ def get_network(network_config):
                         num_classes=num_classes)
 
     elif network_config.name == 'wide_resnet_50_2':
-        path = '/home/pengyunwang/.cache/torch/hub/vision-0.9.0'
-        module = torch.hub._load_local(path,
-                                       'wide_resnet50_2',
-                                       pretrained=True)
+        module = torch.hub.load('pytorch/vision:v0.9.0', 'wide_resnet50_2', pretrained=True)
         net = patchcore_net(module)
 
     elif network_config.name == 'godinnet':
