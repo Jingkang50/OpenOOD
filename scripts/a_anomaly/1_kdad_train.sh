@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/a_anomaly/0_kdad/kdad_train.sh
+# sh scripts/a_anomaly/1_kdad_train.sh
 
 
 PYTHONPATH='.':$PYTHONPATH \

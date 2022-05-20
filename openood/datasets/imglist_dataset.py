@@ -6,13 +6,18 @@ import os
 import torch
 from PIL import Image, ImageFile
 
-from openood.preprocessors import BasePreprocessor
-from openood.preprocessors.transform import TestStandard, TrainStandard
-
 from .base_dataset import BaseDataset
 
 # to fix "OSError: image file is truncated"
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+
+class Convert:
+    def __init__(self, mode='RGB'):
+        self.mode = mode
+
+    def __call__(self, image):
+        return image.convert(self.mode)
 
 
 class ImglistDataset(BaseDataset):
@@ -24,10 +29,11 @@ class ImglistDataset(BaseDataset):
                  imglist_pth,
                  data_dir,
                  num_classes,
+                 preprocessor,
+                 data_aux_preprocessor,
                  maxlen=None,
                  dummy_read=False,
                  dummy_size=None,
-                 preprocessor=None,
                  **kwargs):
         super(ImglistDataset, self).__init__(**kwargs)
 
@@ -36,25 +42,10 @@ class ImglistDataset(BaseDataset):
         with open(imglist_pth) as imgfile:
             self.imglist = imgfile.readlines()
         self.data_dir = data_dir
-
-        if preprocessor is None:
-            preprocessor = BasePreprocessor()
-        self.preprocessor = preprocessor
-
-        if split == 'train':
-            self.transform_image = TrainStandard(name, image_size,
-                                                 interpolation,
-                                                 self.preprocessor)
-        else:
-            self.transform_image = TestStandard(name, image_size,
-                                                interpolation,
-                                                self.preprocessor)
-
-        # some methods requires an auxiliary image without strong aug
-        self.transform_aux_image = TestStandard(name, image_size,
-                                                interpolation,
-                                                self.preprocessor)
         self.num_classes = num_classes
+        self.preprocessor = preprocessor
+        self.transform_image = preprocessor
+        self.transform_aux_image = data_aux_preprocessor
         self.maxlen = maxlen
         self.dummy_read = dummy_read
         self.dummy_size = dummy_size
@@ -77,6 +68,10 @@ class ImglistDataset(BaseDataset):
         path = os.path.join(self.data_dir, image_name)
         sample = dict()
         sample['image_name'] = image_name
+
+        # TODO: comments
+        kwargs = {'name': self.name, 'path': path, 'tokens': tokens}
+        self.preprocessor.setup(**kwargs)
         try:
             if not self.dummy_read:
                 with open(path, 'rb') as f:
@@ -86,9 +81,6 @@ class ImglistDataset(BaseDataset):
             if self.dummy_size is not None:
                 sample['data'] = torch.rand(self.dummy_size)
             else:
-                if type(self.preprocessor).__name__ == 'DRAEMPreprocessor':
-                    self.preprocessor.setup(path, self.name)
-
                 image = Image.open(buff).convert('RGB')
                 sample['data'] = self.transform_image(image)
                 sample['data_aux'] = self.transform_aux_image(image)
@@ -96,6 +88,8 @@ class ImglistDataset(BaseDataset):
             try:
                 for key, value in extras.items():
                     sample[key] = value
+                # if you use dic the code below will need ['label']
+                sample['label'] = 0
             except AttributeError:
                 sample['label'] = int(extra_str)
             # Generate Soft Label

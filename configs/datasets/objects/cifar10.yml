@@ -4,6 +4,8 @@ dataset:
   num_classes: 10
   image_size: 32
   num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images/

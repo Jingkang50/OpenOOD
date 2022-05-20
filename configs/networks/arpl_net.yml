@@ -1,0 +1,18 @@
+network:
+  name: arpl_net
+  num_classes: '@{dataset.num_classes}'
+  image_size: '@{dataset.image_size}'
+  pretrained: False
+  checkpoint: none           # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'
+
+  weight_pl: 0.1
+  temp: 1.0
+
+  # network used for feature extraction
+  feat_extract_network:
+    name: lenet
+    num_classes: '@{dataset.num_classes}'
+    pretrained: False          # set 'True' to load pretrained model
+    checkpoint: none           # ignore if pretrained is false
+    num_gpus: '@{num_gpus}'

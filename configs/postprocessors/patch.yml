@@ -1,0 +1,11 @@
+postprocessor:
+  name: patchcore
+  postprocessor_args:
+    coreset_sampling_ratio: 0.01
+    n_neighbors: 9
+    phase: test
+    category: hazelnut
+    save_src_code: True
+    save_anomaly_map: True
+    noise:
+    feature_type_list:

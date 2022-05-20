@@ -1,0 +1,5 @@
+preprocessor:
+  name: cutpaste
+  preprocessor_args:
+    area_ratio: [0.02, 0.15]
+    aspect_ratio: 0.3

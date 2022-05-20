@@ -1,0 +1,75 @@
+dataset:
+  name: cifar100_openmax
+  split_names: [train, val, test]
+  num_classes: 50
+  image_size: 32
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+  train:
+    dataset_class: ImglistDataset
+    data_dir: ./data/
+    imglist_pth: ./data/cifar100List/train.txt
+    batch_size: 256
+    shuffle: True
+    transform: mnist_train_standard
+    interpolation: bilinear
+
+  test:
+    dataset_class: ImglistDataset
+    data_dir: ./data/
+    imglist_pth: ./data/cifar100List/train.txt
+    batch_size: 256
+    shuffle: True
+    transform: mnist_train_standard
+    interpolation: bilinear
+
+  val:
+    dataset_class: ImglistDataset
+    data_dir: ./data/
+    imglist_pth: ./data/cifar100List/train.txt
+    batch_size: 256
+    shuffle: True
+    transform: mnist_train_standard
+    interpolation: bilinear
+
+ood_dataset:
+  name: cifar100
+  num_classes: 51
+  image_size: 32
+  crop_size: 32
+  num_workers: 4
+  dataset_class: ImglistDataset
+  interpolation: bilinear
+  batch_size: 256
+  shuffle: False
+
+  split_names: [nearood, farood]
+  val:
+    dataset_class: ImglistDataset
+    transform: mnist_train_standard
+    interpolation: bilinear
+    batch_size: 256
+    shuffle: True
+    data_dir: ./data/
+    imglist_pth: ./data/cifar100List/test.txt
+  nearood:
+    dataset_class: ImglistDataset
+    transform: mnist_train_standard
+    interpolation: bilinear
+    batch_size: 256
+    shuffle: True
+    datasets: [near_cifar100]
+    near_cifar100:
+      data_dir: ./data/
+      imglist_pth: ./data/cifar100List/test.txt
+  farood:
+    dataset_class: ImglistDataset
+    transform: mnist_train_standard
+    interpolation: bilinear
+    batch_size: 256
+    shuffle: True
+    datasets: [far_cifar100]
+    far_cifar100:
+      data_dir: ./data/
+      imglist_pth: ./data/cifar100List/test.txt

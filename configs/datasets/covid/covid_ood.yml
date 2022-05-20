@@ -8,6 +8,8 @@ ood_dataset:
   num_classes: 2
   image_size: 224
   num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
 
   split_names: [val, nearood, farood]
   val:

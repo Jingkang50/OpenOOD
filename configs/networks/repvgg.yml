@@ -1,0 +1,12 @@
+network:
+  name: repvgg_b3
+  model: repvgg_b3
+  num_classes: '@{dataset.num_classes}'
+  image_size: '@{dataset.image_size}'
+  pretrained: True          # set 'True' to load pretrained model
+  checkpoint: timm_load           # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'
+dataset:
+  image_size: 224
+ood_dataset:
+  image_size: 224

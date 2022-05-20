@@ -47,7 +47,6 @@ class DRAEMEvaluator():
         # start evaltuating
         for data_loader in data_loaders:
             for i_batch, sample_batched in enumerate(data_loader):
-
                 # prepare data
                 gray_batch = sample_batched['data']['image'].cuda()
                 anomaly_score_gt.append(

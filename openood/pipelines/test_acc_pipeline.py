@@ -13,7 +13,7 @@ class TestAccPipeline:
         setup_logger(self.config)
 
         # get dataloader
-        loader_dict = get_dataloader(self.config.dataset)
+        loader_dict = get_dataloader(self.config)
         test_loader = loader_dict['test']
 
         # init network
