@@ -20,10 +20,10 @@ def get_dataloader(config: Config):
         split_config = dataset_config[split]
         # currently we only support ImglistDataset
         preprocessor = get_preprocessor(
-            split, config
+            config, split
         )  # all script file need to pass in train_preprocessor config file
         data_aux_preprocessor = TestStandardPreProcessor(
-            'test', config)  # for data_aux data augmentation
+            config, 'test')  # for data_aux data augmentation
         CustomDataset = eval(split_config.dataset_class)
         dataset = CustomDataset(name=dataset_config.name + '_' + split,
                                 split=split,
@@ -56,8 +56,8 @@ def get_ood_dataloader(config: Config):
     dataloader_dict = {}
     for split in ood_config.split_names:
         split_config = ood_config[split]
-        preprocessor = get_preprocessor(split, config)
-        data_aux_preprocessor = TestStandardPreProcessor('test', config)
+        preprocessor = get_preprocessor(config, split)
+        data_aux_preprocessor = TestStandardPreProcessor(config, 'test')
         if split == 'val':
             # validation set
             dataset = CustomDataset(
