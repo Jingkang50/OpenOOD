@@ -27,7 +27,7 @@ class MaxLogitPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                feature = net(data, return_feature=True).cpu().numpy()
+                feature = tuple(t.cpu().numpy for t in net(data, return_feature=True))
                 feature_id_val.append(feature)
             feature_id_val = np.concatenate(feature_id_val, axis=0)
         logit_id_val = feature_id_val @ self.w.T + self.b
