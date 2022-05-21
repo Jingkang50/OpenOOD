@@ -146,3 +146,7 @@ class ResNet18_32x32(nn.Module):
         logits_cls = self.fc(feature)
 
         return logits_cls
+
+    def get_fc(self):
+        fc = self.fc
+        return fc.weight, fc.bias

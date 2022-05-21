@@ -34,6 +34,10 @@ class LeNet(nn.Module):
             nn.Linear(in_features=84, out_features=num_classes),
         )
 
+    def get_fc(self):
+        fc = self.classifier[2]
+        return fc.weight, fc.bias
+
     def forward(self, x, return_feature=False, return_feature_list=False):
         feature1 = self.block1(x)
         feature2 = self.block2(feature1)

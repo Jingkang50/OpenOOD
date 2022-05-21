@@ -17,3 +17,7 @@ class ReactNet(nn.Module):
         logits_cls = self.backbone.fc(feature)
 
         return logits_cls
+    
+    def get_fc(self):
+        fc = self.backbone.fc
+        return fc.weight, fc.bias
