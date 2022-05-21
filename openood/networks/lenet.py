@@ -36,7 +36,7 @@ class LeNet(nn.Module):
 
     def get_fc(self):
         fc = self.classifier[2]
-        return fc.weight, fc.bias
+        return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
 
     def forward(self, x, return_feature=False, return_feature_list=False):
         feature1 = self.block1(x)
