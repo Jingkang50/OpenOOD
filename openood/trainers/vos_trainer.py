@@ -56,8 +56,6 @@ class VOSTrainer:
 
             x, feature_list = self.net.forward(images, True)
 
-            # import pdb
-            # pdb.set_trace()
             output = feature_list
             sum_temp = 0
             for index in range(num_classes):
