@@ -56,7 +56,9 @@ class VOSTrainer:
 
             x, feature_list = self.net.forward(images, True)
 
-            output = feature_list[0]
+            # import pdb
+            # pdb.set_trace()
+            output = feature_list
             sum_temp = 0
             for index in range(num_classes):
                 sum_temp += self.number_dict[index]
@@ -129,6 +131,7 @@ class VOSTrainer:
                 target_numpy = labels.cpu().data.numpy()
                 for index in range(len(labels)):
                     dict_key = target_numpy[index]
+
                     if self.number_dict[dict_key] < sample_number:
                         self.data_dict[dict_key][self.number_dict[
                             dict_key]] = output[index].detach()

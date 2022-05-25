@@ -4,14 +4,14 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .resnet import ResNet18
+
 
 
 class OpenMax(nn.Module):
-    def __init__(self, backbone='ResNet18', num_classes=50, embed_dim=None):
+    def __init__(self, backbone, num_classes=50, embed_dim=None):
         super(OpenMax, self).__init__()
         self.backbone_name = backbone
-        self.backbone = ResNet18(num_classes=num_classes)
+        self.backbone = backbone
 
         self.dim = self.get_backbone_last_layer_out_channel()
         if embed_dim:

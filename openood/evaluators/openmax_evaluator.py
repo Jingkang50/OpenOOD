@@ -37,6 +37,10 @@ class OpenMaxEvaluator(BaseEvaluator):
                        ood_data_loaders,
                        postprocessor,
                        ood_split='nearood')
+        self._eval_ood(net, [id_pred, id_conf, id_gt],
+                       ood_data_loaders,
+                       postprocessor,
+                       ood_split='farood')
 
     def _eval_ood(self,
                   net: nn.Module,
@@ -51,26 +55,28 @@ class OpenMaxEvaluator(BaseEvaluator):
             print(f'Performing inference on {dataset_name} dataset...',
                   flush=True)
             ood_pred, ood_conf, ood_gt = postprocessor.inference(net, ood_dl)
-            self.label = ood_gt
-            self.predict = ood_pred
+            
 
             pred = np.concatenate([id_pred, ood_pred])
             conf = np.concatenate([id_conf, ood_conf])
             label = np.concatenate([id_gt, ood_gt])
+            self.label = label
+            self.predict = pred
 
             print(f'Computing metrics on {dataset_name} dataset...')
 
             print(f'OpenMax F1 is ')
-            print(f1_score(ood_gt, ood_pred, average='micro'))
+            print(f1_score(label, pred, average='micro'))
 
             print(f'OpenMax f1_macro is ')
-            print(f1_score(ood_gt, ood_pred, average='macro'))
+            print(f1_score(label, pred, average='macro'))
 
             print(f'OpenMax f1_macro_weighted is')
-            print(f1_score(ood_gt, ood_pred, average='weighted'))
+            print(f1_score(label, pred, average='weighted'))
 
             print(f'OpenMax area_under_roc is')
-            print(self._area_under_roc(ood_conf))
+            print(self._area_under_roc(conf))
+            print(u'\u2500' * 70, flush=True)
 
     def _area_under_roc(self,
                         prediction_scores: np.array = None,
@@ -92,6 +98,7 @@ class OpenMaxEvaluator(BaseEvaluator):
         if prediction_scores is None:
             prediction_scores = one_hot_encoder.transform(
                 np.array(predict).reshape(-1, 1))
+        
         # assert prediction_scores.shape == true_scores.shape
         return roc_auc_score(true_scores,
                              prediction_scores,

@@ -6,8 +6,8 @@ PYTHONPATH='.':$PYTHONPATH \
 #--cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/VOS/cifar10.yml \
-configs/datasets/VOS/vos_ood.yml \
+--config configs/datasets/digits/mnist.yml \
+configs/datasets/digits/mnist_ood.yml \
 configs/pipelines/test/test_vos.yml \
 configs/networks/vos_net.yml \
 configs/preprocessors/vos_preprocessor.yml
