@@ -26,13 +26,14 @@ class KLMatchingPostprocessor(BasePostprocessor):
             self.w, self.b = net.get_fc()
             print('Extracting id training feature')
             feature_id_train = []
-            for batch in tqdm(id_loader_dict['train_sub'],
+            for batch in tqdm(id_loader_dict['val'],
                               desc='Eval: ',
                               position=0,
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                feature = net(data, return_feature=True).cpu().numpy()
+                _, feature = net.forward_secondary(data, return_feature=True)
+                feature = feature.cpu().numpy()
                 feature_id_train.append(feature)
             feature_id_train = np.concatenate(feature_id_train, axis=0)
             logit_id_train = feature_id_train @ self.w.T + self.b
@@ -51,13 +52,14 @@ class KLMatchingPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                feature = net(data, return_feature=True).cpu().numpy()
+                _, feature = net.forward_secondary(data, return_feature=True)
+                feature = feature.cpu().numpy()
                 feature_id_val.append(feature)
             feature_id_val = np.concatenate(feature_id_val, axis=0)
             logit_id_val = feature_id_val @ self.w.T + self.b
             softmax_id_val = softmax(logit_id_val, axis=-1)
-
-        self.score_id = -pairwise_distances_argmin_min(
+            import pdb; pdb.set_trace()
+            self.score_id = -pairwise_distances_argmin_min(
             softmax_id_val, np.array(
                 self.mean_softmax_train), metric=self.kl)[1]
 

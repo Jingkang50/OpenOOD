@@ -28,14 +28,12 @@ class LeNet(nn.Module):
                       kernel_size=5,
                       stride=1), nn.ReLU())
 
-        self.classifier = nn.Sequential(
-            nn.Linear(in_features=120, out_features=84),
-            nn.ReLU(),
-            nn.Linear(in_features=84, out_features=num_classes),
-        )
+        self.classifier1 = nn.Linear(in_features=120, out_features=84)
+        self.relu = nn.ReLU()
+        self.classifier2 = nn.Linear(in_features=84, out_features=num_classes)
 
     def get_fc(self):
-        fc = self.classifier[2]
+        fc = self.classifier2
         return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
 
     def forward(self, x, return_feature=False, return_feature_list=False):
@@ -43,8 +41,24 @@ class LeNet(nn.Module):
         feature2 = self.block2(feature1)
         feature3 = self.block3(feature2)
         feature = feature3.view(feature3.shape[0], -1)
-        logits_cls = self.classifier(feature)
+        logits_cls = self.classifier2(self.relu(self.classifier1(feature)))
         feature_list = [feature1, feature2, feature3]
+        if return_feature:
+            return logits_cls, feature
+        elif return_feature_list:
+            return logits_cls, feature_list
+        else:
+            return logits_cls
+    
+    def forward_secondary(self, x, return_feature=False, return_feature_list=False):
+        feature1 = self.block1(x)
+        feature2 = self.block2(feature1)
+        feature3 = self.block3(feature2)
+        feature3 = feature3.view(feature3.shape[0], -1)
+        feature4 = self.classifier1(feature3)
+        feature = feature4.view(feature4.shape[0], -1)
+        logits_cls = self.classifier2(self.relu(feature))
+        feature_list = [feature1, feature2, feature3, feature4]
         if return_feature:
             return logits_cls, feature
         elif return_feature_list:
