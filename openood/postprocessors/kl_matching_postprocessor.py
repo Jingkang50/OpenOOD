@@ -15,6 +15,7 @@ class KLMatchingPostprocessor(BasePostprocessor):
         super().__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
         self.dim = self.args.dim
+        self.num_classes = self.config.dataset.num_classes
 
     def kl(self, p, q):
         return np.sum(np.where(p != 0, p * np.log(p / q), 0))
@@ -41,7 +42,7 @@ class KLMatchingPostprocessor(BasePostprocessor):
             pred_labels_train = np.argmax(softmax_id_train, axis=-1)
             self.mean_softmax_train = [
                 softmax_id_train[pred_labels_train == i].mean(axis=0)
-                for i in tqdm(range(1000))
+                for i in tqdm(range(self.num_classes))
             ]
 
             print('Extracting id testing feature')
@@ -58,14 +59,14 @@ class KLMatchingPostprocessor(BasePostprocessor):
             feature_id_val = np.concatenate(feature_id_val, axis=0)
             logit_id_val = feature_id_val @ self.w.T + self.b
             softmax_id_val = softmax(logit_id_val, axis=-1)
-            import pdb; pdb.set_trace()
             self.score_id = -pairwise_distances_argmin_min(
             softmax_id_val, np.array(
                 self.mean_softmax_train), metric=self.kl)[1]
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        feature_ood = net.forward(data, return_feature=True).cpu()
+        _, feature_ood = net.forward_secondary(data, return_feature=True)
+        feature_ood = feature_ood.cpu()
         logit_ood = feature_ood @ self.w.T + self.b
         softmax_ood = softmax(logit_ood.numpy(), axis=-1)
         _, pred = torch.max(logit_ood, dim=1)
