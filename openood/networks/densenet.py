@@ -178,4 +178,4 @@ class DenseNet3(nn.Module):
     
     def get_fc(self):
         fc = self.fc
-        return fc.weight, fc.bias
+        return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()

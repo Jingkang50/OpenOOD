@@ -56,5 +56,5 @@ class OpenMax(nn.Module):
 
     def get_fc(self):
         fc = self.classifier
-        return fc.weight, fc.bias
+        return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
 

@@ -16,6 +16,7 @@ class KLMatchingPostprocessor(BasePostprocessor):
         self.args = self.config.postprocessor.postprocessor_args
         self.dim = self.args.dim
         self.num_classes = self.config.dataset.num_classes
+        self.net_name = config.network.name
 
     def kl(self, p, q):
         return np.sum(np.where(p != 0, p * np.log(p / q), 0))
@@ -33,7 +34,10 @@ class KLMatchingPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                _, feature = net.forward_secondary(data, return_feature=True)
+                if self.net_name == "lenet":
+                    _, feature = net.forward_secondary(data, return_feature=True)
+                else:
+                    _, feature = net(data, return_feature=True)
                 feature = feature.cpu().numpy()
                 feature_id_train.append(feature)
             feature_id_train = np.concatenate(feature_id_train, axis=0)
@@ -53,7 +57,10 @@ class KLMatchingPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                _, feature = net.forward_secondary(data, return_feature=True)
+                if self.net_name == "lenet":
+                    _, feature = net.forward_secondary(data, return_feature=True)
+                else:
+                    _, feature = net(data, return_feature=True)
                 feature = feature.cpu().numpy()
                 feature_id_val.append(feature)
             feature_id_val = np.concatenate(feature_id_val, axis=0)
@@ -65,7 +72,10 @@ class KLMatchingPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        _, feature_ood = net.forward_secondary(data, return_feature=True)
+        if self.net_name == "lenet":
+            _, feature_ood = net.forward_secondary(data, return_feature=True)
+        else:
+            _, feature_ood = net(data, return_feature=True)
         feature_ood = feature_ood.cpu()
         logit_ood = feature_ood @ self.w.T + self.b
         softmax_ood = softmax(logit_ood.numpy(), axis=-1)
