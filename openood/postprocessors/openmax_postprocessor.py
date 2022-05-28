@@ -250,9 +250,10 @@ class OpenMax(BasePostprocessor):
 
         conf = []
         for i in score_openmax:
-            conf.append(i)
+            conf.append(i) 
 
         conf = torch.tensor(conf, dtype=torch.float32)
         conf = conf.cuda()
+        
 
         return pred, conf

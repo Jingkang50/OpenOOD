@@ -43,6 +43,7 @@ class Conf_Esti_Trainer:
             labels_onehot = Variable(
                 encode_onehot(labels, self.config.num_classes))
             self.net.zero_grad()
+
             pred_original, confidence = self.net(images)
             pred_original = F.softmax(pred_original, dim=-1)
             confidence = torch.sigmoid(confidence)

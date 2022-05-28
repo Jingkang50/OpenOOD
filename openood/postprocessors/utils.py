@@ -1,5 +1,3 @@
-from black import E
-
 from openood.utils import Config
 
 from .base_postprocessor import BasePostprocessor

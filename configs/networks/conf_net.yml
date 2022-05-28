@@ -1,16 +1,13 @@
 network:
-  name: vos
+  name: conf_net
   num_classes: '@{dataset.num_classes}'
   pretrained: False # In training pipeline:"False"; In testing pipeline:"True"
   num_gpus: '@{num_gpus}'
-  num_layers: 40
-  widen_factor: 2
-  droprate: 0.3
 
   backbone:
     name: lenet
     num_classes: '@{dataset.num_classes}'
     image_size: '@{dataset.image_size}'
     pretrained: True
-    checkpoint: ./results/mnist_lenet_vos/best.ckpt
+    checkpoint: ./results/mnist_lenet_conf_esti/best.pth
     num_gpus: '@{num_gpus}'

@@ -37,3 +37,6 @@ recorder:
 scheduler:
   milestones: [80, 120] #[60,120,160] for cifar10, [80, 120] for svhn
   gamma: 0.1 #0.2 for cifar10, 0.1 for svhn
+
+preprocessor:
+  name: base
