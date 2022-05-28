@@ -3,18 +3,21 @@ import os
 from typing import Dict, List
 
 import numpy as np
+from sklearn import multiclass
 import torch.nn as nn
 from sklearn.metrics import (ConfusionMatrixDisplay, classification_report,
-                             confusion_matrix, f1_score,
-                             precision_recall_fscore_support, roc_auc_score)
+                             confusion_matrix, f1_score,auc,roc_curve,
+                             precision_recall_fscore_support, roc_auc_score,
+                             precision_recall_curve)
 from sklearn.preprocessing import OneHotEncoder
 from torch.utils.data import DataLoader
 
+from scipy import interpolate
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
 
 from .base_evaluator import BaseEvaluator
-from .metrics import compute_all_metrics
+import torch
 
 
 class OpenMaxEvaluator(BaseEvaluator):
@@ -62,8 +65,29 @@ class OpenMaxEvaluator(BaseEvaluator):
             label = np.concatenate([id_gt, ood_gt])
             self.label = label
             self.predict = pred
+            
+            score = [] # ood score
+            for i in conf:
+                score.append(i[-1])
+            score = torch.tensor(score, dtype=torch.float32)
 
             print(f'Computing metrics on {dataset_name} dataset...')
+            
+            fpr,tpr,thresh = roc_curve(label, score, pos_label=-1)
+            fpr95 = float(interpolate.interp1d(tpr, fpr)(0.95))
+
+            precision_in, recall_in, thresholds_in \
+                = precision_recall_curve(label, score, pos_label=-1)
+
+            
+            print(f'OpenMax FPR95 is ')
+            print(fpr95)
+            print(f'OpenMax AUC is ')
+            print(auc(fpr,tpr))
+            print(f'OpenMax aupr_in is ')
+            print(auc(recall_in, precision_in))
+
+            
 
             print(f'OpenMax F1 is ')
             print(f1_score(label, pred, average='micro'))
@@ -74,7 +98,7 @@ class OpenMaxEvaluator(BaseEvaluator):
             print(f'OpenMax f1_macro_weighted is')
             print(f1_score(label, pred, average='weighted'))
 
-            print(f'OpenMax area_under_roc is')
+            print(f'OpenMax multi class area_under_roc is')
             print(self._area_under_roc(conf))
             print(u'\u2500' * 70, flush=True)
 

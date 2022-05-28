@@ -1,4 +1,3 @@
-from .lenet import LeNet
 import torch.nn as nn
 
 class conf_net(nn.Module):
