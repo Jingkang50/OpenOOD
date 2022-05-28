@@ -53,3 +53,8 @@ class OpenMax(nn.Module):
         logits = self.classifier(feature)
 
         return logits
+
+    def get_fc(self):
+        fc = self.classifier
+        return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
+
