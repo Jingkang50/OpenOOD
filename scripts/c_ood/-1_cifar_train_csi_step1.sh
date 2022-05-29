@@ -11,6 +11,7 @@ PYTHONPATH='.':$PYTHONPATH \
 # --cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
 # --kill-on-bad-exit=1 --job-name=${jobname} \
 # -w SG-IDC1-10-51-2-${node} \
+'''
 python main.py \
 --config configs/datasets/objects/cifar10.yml \
 configs/networks/csinet.yml \
@@ -20,3 +21,16 @@ configs/preprocessors/base_preprocessor.yml \
 --dataset.train.batch_size 128 \
 --force_merge True \
 --mode csi_step1
+'''
+'''
+python main.py \
+--config configs/datasets/digits/mnist.yml \
+configs/networks/csinet.yml \
+configs/pipelines/train/train_csi.yml \
+configs/preprocessors/base_preprocessor.yml \
+'''
+python main.py \
+--config configs/datasets/objects/cifar10.yml \
+configs/networks/csinet.yml \
+configs/pipelines/train/train_csi.yml \
+configs/preprocessors/base_preprocessor.yml \
