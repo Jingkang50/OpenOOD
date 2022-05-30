@@ -17,7 +17,7 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Updates
-- **19 May, 2022**: We release `v0.5` to finalize all implemented methods.
+- **19 May, 2022**: We release `v0.5`.
 - **12 April, 2022**: Primary release to support [Full-Spectrum OOD Detection](https://arxiv.org/abs/2204.05306).
 
 ## Get Started
@@ -93,7 +93,7 @@ This part lists all the benchmarks we
 >      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-10-C`;<br>
 >      > CS-ID: `TinyImageNet-C100`, `CIFAR-100-C`;
 > - [x] [ImageNet-1K]()
->      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`, `ImageNet21K-P`;<br>
+>      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`;<br>
 >      > Far-OOD:  `Texture`, `MNIST`, `SVHN`, `Places365`;<br>
 >      > CS-ID: `ImageNet-v2`, `ImageNet-C`;
 </details>
