@@ -10,7 +10,7 @@ machine_rank: 0
 
 network:
   pretrained: True
-  checkpoint: /home/dev_zitangzhou/OpenOOD/resnet_cifar10.pth
+  checkpoint: ./results/cifar10_resnet18_32x32_base_e200_lr0.1/best.ckpt
 
 pipeline:
   name: test_ood

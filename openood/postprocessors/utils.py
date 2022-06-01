@@ -19,10 +19,11 @@ from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .temperature_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
-
+from .conf_postprocessor import ConfPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
+        'conf': ConfPostprocessor,
         'msp': BasePostprocessor,
         'ebo': EBOPostprocessor,
         'odin': ODINPostprocessor,
