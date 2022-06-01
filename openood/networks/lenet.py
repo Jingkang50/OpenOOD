@@ -10,7 +10,7 @@ class LeNet(nn.Module):
     def __init__(self, num_classes, num_channel=3):
         super(LeNet, self).__init__()
         self.num_classes = num_classes
-
+        self.feature_size=120
         self.block1 = nn.Sequential(
             nn.Conv2d(in_channels=num_channel,
                       out_channels=6,

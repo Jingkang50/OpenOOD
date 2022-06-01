@@ -8,4 +8,4 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/digits/mnist.yml \
 configs/pipelines/train/train_conf_esti.yml \
-configs/networks/lenet.yml
+configs/networks/conf_net.yml

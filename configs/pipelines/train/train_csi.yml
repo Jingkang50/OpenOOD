@@ -19,7 +19,7 @@ evaluator:
 
 optimizer:
   name: sgd
-  num_epochs: 700       # step 1 700 epochs, step 2 100 epochs
+  num_epochs: 100       # step 1 700 epochs, step 2 100 epochs
   lr: 0.1
   momentum: 0.9
   weight_decay: 0.000001
@@ -29,7 +29,7 @@ recorder:
   name: base
   save_all_models: False
 
-mode: csi_step1         # csi_step1, csi_step2
+mode: csi_step2       # csi_step1, csi_step2
 sim_lambda: 1.0         # Weight for SimCLR loss
 temperature: 0.07       # Temperature for similarity
 resize_factor: 0.08     # resize scale is sampled from [resize_factor, 1.0]

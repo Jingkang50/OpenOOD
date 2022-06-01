@@ -1,13 +1,13 @@
 network:
   name: conf_net
   num_classes: '@{dataset.num_classes}'
-  pretrained: False # In training pipeline:"False"; In testing pipeline:"True"
+  pretrained: True # In training pipeline:"False"; In testing pipeline:"True"
   num_gpus: '@{num_gpus}'
-
+  checkpoint: ./results/mnist_conf_net_conf_esti/best.pth
   backbone:
     name: lenet
     num_classes: '@{dataset.num_classes}'
     image_size: '@{dataset.image_size}'
     pretrained: True
-    checkpoint: ./results/mnist_lenet_conf_esti/best.pth
+    checkpoint: ./results/mnist_conf_net_conf_esti/best.pth
     num_gpus: '@{num_gpus}'
