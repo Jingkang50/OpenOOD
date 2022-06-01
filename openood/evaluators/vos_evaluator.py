@@ -42,7 +42,7 @@ class VOSEvaluator:
                 labels = batch['label'].cuda()
 
                 # forward
-                output = net(images)
+                output,_ = net(images)
                 loss = F.cross_entropy(output, labels)
 
                 # accuracy
@@ -77,7 +77,7 @@ class VOSEvaluator:
                 batch = next(eval_dataiter_id)
                 images = batch['data'].cuda()
                 labels = batch['label'].cuda()
-                pred = net(images)
+                pred,_ = net(images)
                 pred = F.softmax(pred, dim=-1)
                 pred = torch.max(pred.data, 1)[0]
                 pred = pred.cpu().numpy()
@@ -91,7 +91,7 @@ class VOSEvaluator:
                 batch = next(eval_dataiter_ood)
                 images = batch['data'].cuda()
                 labels = batch['label'].cuda()
-                pred = net(images)
+                pred,_ = net(images)
                 pred = F.softmax(pred, dim=-1)
                 pred = torch.max(pred.data, 1)[0]
                 pred = pred.cpu().numpy()

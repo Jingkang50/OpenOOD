@@ -13,19 +13,22 @@ class ARPLRecorder(BaseRecorder):
 
     def report(self, train_metrics, val_metrics):
         if 'lossD' in train_metrics.keys():
-            print('\nEpoch {:03d} | Time {:5d}s | D Loss {:.4f} | G Loss {:.4f} | Train Loss {:.4f} | '
+            print(
+                '\nEpoch {:03d} | Time {:5d}s | D Loss {:.4f} | G Loss {:.4f} | Train Loss {:.4f} | '
                 'Val Loss {:.3f} | Val Acc {:.2f}'.format(
                     (train_metrics['epoch_idx']),
-                    int(time.time() - self.begin_time), train_metrics['lossD'], train_metrics['lossG'], train_metrics['loss'],
+                    int(time.time() - self.begin_time), train_metrics['lossD'],
+                    train_metrics['lossG'], train_metrics['loss'],
                     val_metrics['loss'], 100.0 * val_metrics['acc']),
                 flush=True)
         else:
             print('\nEpoch {:03d} | Time {:5d}s | Train Loss {:.4f} | '
-                'Val Loss {:.3f} | Val Acc {:.2f}'.format(
-                    (train_metrics['epoch_idx']),
-                    int(time.time() - self.begin_time), train_metrics['loss'],
-                    val_metrics['loss'], 100.0 * val_metrics['acc']),
-                flush=True)
+                  'Val Loss {:.3f} | Val Acc {:.2f}'.format(
+                      (train_metrics['epoch_idx']),
+                      int(time.time() - self.begin_time),
+                      train_metrics['loss'], val_metrics['loss'],
+                      100.0 * val_metrics['acc']),
+                  flush=True)
 
     def save_model(self, net, val_metrics):
 
@@ -40,8 +43,8 @@ class ARPLRecorder(BaseRecorder):
             save_pth = os.path.join(self.save_dir,
                                     'epoch-{}_NetF.ckpt'.format(epoch_idx))
             torch.save(netF_wts, save_pth)
-            save_pth = os.path.join(self.save_dir,
-                                    'epoch-{}_criterion.ckpt'.format(epoch_idx))
+            save_pth = os.path.join(
+                self.save_dir, 'epoch-{}_criterion.ckpt'.format(epoch_idx))
             torch.save(criterion_wts, save_pth)
 
         # enter only if better accuracy occurs
@@ -53,5 +56,5 @@ class ARPLRecorder(BaseRecorder):
 
             torch.save(netF_wts, os.path.join(self.output_dir,
                                               'best_NetF.ckpt'))
-            torch.save(criterion_wts, os.path.join(self.output_dir,
-                                              'best_criterion.ckpt'))
+            torch.save(criterion_wts,
+                       os.path.join(self.output_dir, 'best_criterion.ckpt'))

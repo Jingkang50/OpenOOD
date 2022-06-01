@@ -3,17 +3,21 @@ import os
 from typing import Dict, List
 
 import numpy as np
+from sklearn import multiclass
 import torch.nn as nn
-from torch.utils.data import DataLoader
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, f1_score, \
-    classification_report, precision_recall_fscore_support, roc_auc_score
+from sklearn.metrics import (ConfusionMatrixDisplay, classification_report,
+                             confusion_matrix, f1_score,auc,roc_curve,
+                             precision_recall_fscore_support, roc_auc_score,
+                             precision_recall_curve)
 from sklearn.preprocessing import OneHotEncoder
+from torch.utils.data import DataLoader
 
+from scipy import interpolate
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
 
 from .base_evaluator import BaseEvaluator
-from .metrics import compute_all_metrics
+import torch
 
 
 class OpenMaxEvaluator(BaseEvaluator):
@@ -36,6 +40,10 @@ class OpenMaxEvaluator(BaseEvaluator):
                        ood_data_loaders,
                        postprocessor,
                        ood_split='nearood')
+        self._eval_ood(net, [id_pred, id_conf, id_gt],
+                       ood_data_loaders,
+                       postprocessor,
+                       ood_split='farood')
 
     def _eval_ood(self,
                   net: nn.Module,
@@ -50,31 +58,54 @@ class OpenMaxEvaluator(BaseEvaluator):
             print(f'Performing inference on {dataset_name} dataset...',
                   flush=True)
             ood_pred, ood_conf, ood_gt = postprocessor.inference(net, ood_dl)
-            self.label = ood_gt
-            self.predict = ood_pred
+            
 
             pred = np.concatenate([id_pred, ood_pred])
             conf = np.concatenate([id_conf, ood_conf])
             label = np.concatenate([id_gt, ood_gt])
+            self.label = label
+            self.predict = pred
+            
+            score = [] # ood score
+            for i in conf:
+                score.append(i[-1])
+            score = torch.tensor(score, dtype=torch.float32)
 
             print(f'Computing metrics on {dataset_name} dataset...')
+            
+            fpr,tpr,thresh = roc_curve(label, score, pos_label=-1)
+            fpr95 = float(interpolate.interp1d(tpr, fpr)(0.95))
 
-            print(f"OpenMax F1 is ")
-            print(f1_score(ood_gt, ood_pred, average='micro'))
-
-            print(f"OpenMax f1_macro is " )
-            print(f1_score(ood_gt, ood_pred, average='macro'))
-
-            print(f"OpenMax f1_macro_weighted is" )
-            print(f1_score(ood_gt, ood_pred, average='weighted'))
-
-            print(f"OpenMax area_under_roc is" )
-            print(self._area_under_roc(ood_conf))
+            precision_in, recall_in, thresholds_in \
+                = precision_recall_curve(label, score, pos_label=-1)
 
             
-    def _area_under_roc(self, prediction_scores: np.array = None, multi_class='ovo') -> float:
-        """
-        Area Under Receiver Operating Characteristic Curve
+            print(f'OpenMax FPR95 is ')
+            print(fpr95)
+            print(f'OpenMax AUC is ')
+            print(auc(fpr,tpr))
+            print(f'OpenMax aupr_in is ')
+            print(auc(recall_in, precision_in))
+
+            
+
+            print(f'OpenMax F1 is ')
+            print(f1_score(label, pred, average='micro'))
+
+            print(f'OpenMax f1_macro is ')
+            print(f1_score(label, pred, average='macro'))
+
+            print(f'OpenMax f1_macro_weighted is')
+            print(f1_score(label, pred, average='weighted'))
+
+            print(f'OpenMax multi class area_under_roc is')
+            print(self._area_under_roc(conf))
+            print(u'\u2500' * 70, flush=True)
+
+    def _area_under_roc(self,
+                        prediction_scores: np.array = None,
+                        multi_class='ovo') -> float:
+        """Area Under Receiver Operating Characteristic Curve.
 
         :param prediction_scores: array-like of shape (n_samples, n_classes). The multi-class ROC curve requires
             prediction scores for each class. If not specified, will generate its own prediction scores that assume
@@ -89,10 +120,13 @@ class OpenMaxEvaluator(BaseEvaluator):
         one_hot_encoder.fit(np.array(label).reshape(-1, 1))
         true_scores = one_hot_encoder.transform(np.array(label).reshape(-1, 1))
         if prediction_scores is None:
-            prediction_scores = one_hot_encoder.transform(np.array(predict).reshape(-1, 1))
+            prediction_scores = one_hot_encoder.transform(
+                np.array(predict).reshape(-1, 1))
+        
         # assert prediction_scores.shape == true_scores.shape
-        return roc_auc_score(true_scores, prediction_scores, multi_class=multi_class)
-
+        return roc_auc_score(true_scores,
+                             prediction_scores,
+                             multi_class=multi_class)
 
     def eval_acc(self,
                  net: nn.Module,

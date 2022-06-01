@@ -18,8 +18,11 @@ class ARPLTrainer:
         self.config = config
         self.criterion = net['criterion']
 
-        params_list = [{'params': self.net.parameters()},
-                    {'params': self.criterion.parameters()}]
+        params_list = [{
+            'params': self.net.parameters()
+        }, {
+            'params': self.criterion.parameters()
+        }]
 
         self.optimizer = torch.optim.SGD(
             params_list,

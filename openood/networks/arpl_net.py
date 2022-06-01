@@ -1,19 +1,19 @@
 ## reference code is https://github.com/pytorch/examples/blob/master/dcgan/main.py
 
+import math
+import operator
+import os
+from collections import OrderedDict
+from itertools import islice
+
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import os
-import numpy as np
-
-import math
 import torch.nn.functional as F
 from torch.nn.modules.conv import _ConvNd
 from torch.nn.modules.utils import _ntuple
 
-from collections import OrderedDict
-import operator
-from itertools import islice
 
 def weights_init(m):
     classname = m.__class__.__name__
@@ -22,6 +22,7 @@ def weights_init(m):
     elif classname.find('BatchNorm') != -1:
         m.weight.data.normal_(1.0, 0.02)
         m.bias.data.fill_(0)
+
 
 class _netD32(nn.Module):
     def __init__(self, ngpu, nc, ndf):
@@ -41,17 +42,14 @@ class _netD32(nn.Module):
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*8) x 4 x 4
             nn.Conv2d(ndf * 8, ndf * 16, 4, 1, 0, bias=False),
-            nn.Sigmoid()
-        )
+            nn.Sigmoid())
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.classifier = nn.Sequential(
-            nn.Linear(ndf * 16, 1),
-            nn.Sigmoid()
-        )
+        self.classifier = nn.Sequential(nn.Linear(ndf * 16, 1), nn.Sigmoid())
 
     def forward(self, input):
         if isinstance(input.data, torch.cuda.FloatTensor) and self.ngpu > 1:
-            output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
+            output = nn.parallel.data_parallel(self.main, input,
+                                               range(self.ngpu))
         else:
             output = self.main(input)
 
@@ -60,6 +58,7 @@ class _netD32(nn.Module):
         output = self.classifier(output).flatten()
 
         return output
+
 
 class _netG32(nn.Module):
     def __init__(self, ngpu, nz, ngf, nc):
@@ -86,16 +85,19 @@ class _netG32(nn.Module):
 
     def forward(self, input):
         if isinstance(input.data, torch.cuda.FloatTensor) and self.ngpu > 1:
-            output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
+            output = nn.parallel.data_parallel(self.main, input,
+                                               range(self.ngpu))
         else:
             output = self.main(input)
-        
+
         return output
+
 
 def Generator32(n_gpu, nz, ngf, nc):
     model = _netG32(n_gpu, nz, ngf, nc)
     model.apply(weights_init)
     return model
+
 
 def Discriminator32(n_gpu, nc, ndf):
     model = _netD32(n_gpu, nc, ndf)
@@ -121,17 +123,14 @@ class _netD(nn.Module):
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*8) x 4 x 4
             nn.Conv2d(ndf * 8, ndf * 16, 4, 1, 0, bias=False),
-            nn.Sigmoid()
-        )
+            nn.Sigmoid())
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.classifier = nn.Sequential(
-            nn.Linear(ndf * 16, 1),
-            nn.Sigmoid()
-        )
+        self.classifier = nn.Sequential(nn.Linear(ndf * 16, 1), nn.Sigmoid())
 
     def forward(self, input):
         if isinstance(input.data, torch.cuda.FloatTensor) and self.ngpu > 1:
-            output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
+            output = nn.parallel.data_parallel(self.main, input,
+                                               range(self.ngpu))
         else:
             output = self.main(input)
 
@@ -140,6 +139,7 @@ class _netD(nn.Module):
         output = self.classifier(output).flatten()
 
         return output
+
 
 class _netG(nn.Module):
     def __init__(self, ngpu, nz, ngf, nc):
@@ -169,16 +169,19 @@ class _netG(nn.Module):
 
     def forward(self, input):
         if isinstance(input.data, torch.cuda.FloatTensor) and self.ngpu > 1:
-            output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
+            output = nn.parallel.data_parallel(self.main, input,
+                                               range(self.ngpu))
         else:
             output = self.main(input)
-        
+
         return output
+
 
 def Generator(n_gpu, nz, ngf, nc):
     model = _netG(n_gpu, nz, ngf, nc)
     model.apply(weights_init)
     return model
+
 
 def Discriminator(n_gpu, nc, ndf):
     model = _netD(n_gpu, nc, ndf)
@@ -189,12 +192,19 @@ def Discriminator(n_gpu, nc, ndf):
 class _MultiBatchNorm(nn.Module):
     _version = 2
 
-    def __init__(self, num_features, num_classes, eps=1e-5, momentum=0.1, affine=True,
+    def __init__(self,
+                 num_features,
+                 num_classes,
+                 eps=1e-5,
+                 momentum=0.1,
+                 affine=True,
                  track_running_stats=True):
         super(_MultiBatchNorm, self).__init__()
         #         self.bns = nn.ModuleList([nn.modules.batchnorm._BatchNorm(num_features, eps, momentum, affine, track_running_stats) for _ in range(num_classes)])
-        self.bns = nn.ModuleList(
-            [nn.BatchNorm2d(num_features, eps, momentum, affine, track_running_stats) for _ in range(num_classes)])
+        self.bns = nn.ModuleList([
+            nn.BatchNorm2d(num_features, eps, momentum, affine,
+                           track_running_stats) for _ in range(num_classes)
+        ])
 
     def reset_running_stats(self):
         for bn in self.bns:
@@ -216,12 +226,15 @@ class _MultiBatchNorm(nn.Module):
 class MultiBatchNorm(_MultiBatchNorm):
     def _check_input_dim(self, input):
         if input.dim() != 4:
-            raise ValueError('expected 4D input (got {}D input)'
-                             .format(input.dim()))
+            raise ValueError('expected 4D input (got {}D input)'.format(
+                input.dim()))
+
 
 _pair = _ntuple(2)
 
-__all__ = ['resnet18ABN', 'resnet34ABN', 'resnet50ABN', 'resnet101ABN', 'resnet152ABN']
+__all__ = [
+    'resnet18ABN', 'resnet34ABN', 'resnet50ABN', 'resnet101ABN', 'resnet152ABN'
+]
 
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
@@ -233,20 +246,40 @@ model_urls = {
 
 
 def conv3x3(in_planes, out_planes, stride=1):
-    """3x3 convolution with padding"""
-    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
-                     padding=1, bias=False)
+    """3x3 convolution with padding."""
+    return nn.Conv2d(in_planes,
+                     out_planes,
+                     kernel_size=3,
+                     stride=stride,
+                     padding=1,
+                     bias=False)
+
 
 class Conv2d(_ConvNd):
-    def __init__(self, in_channels, out_channels, kernel_size, stride=1,
-                 padding=0, dilation=1, groups=1, bias=True):
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 kernel_size,
+                 stride=1,
+                 padding=0,
+                 dilation=1,
+                 groups=1,
+                 bias=True):
         kernel_size = _pair(kernel_size)
         stride = _pair(stride)
         padding = _pair(padding)
         dilation = _pair(dilation)
-        super(Conv2d, self).__init__(
-            in_channels, out_channels, kernel_size, stride, padding, dilation,
-            False, _pair(0), groups, bias, padding_mode='zeros')
+        super(Conv2d, self).__init__(in_channels,
+                                     out_channels,
+                                     kernel_size,
+                                     stride,
+                                     padding,
+                                     dilation,
+                                     False,
+                                     _pair(0),
+                                     groups,
+                                     bias,
+                                     padding_mode='zeros')
 
     def forward(self, input, domain_label):
         return F.conv2d(input, self.weight, self.bias, self.stride,
@@ -256,7 +289,6 @@ class Conv2d(_ConvNd):
 class TwoInputSequential(nn.Module):
     r"""A sequential container forward with two inputs.
     """
-
     def __init__(self, *args):
         super(TwoInputSequential, self).__init__()
         if len(args) == 1 and isinstance(args[0], OrderedDict):
@@ -267,7 +299,7 @@ class TwoInputSequential(nn.Module):
                 self.add_module(str(idx), module)
 
     def _get_item_by_idx(self, iterator, idx):
-        """Get the idx-th item of the iterator"""
+        """Get the idx-th item of the iterator."""
         size = len(self)
         idx = operator.index(idx)
         if not -size <= idx < size:
@@ -277,7 +309,8 @@ class TwoInputSequential(nn.Module):
 
     def __getitem__(self, idx):
         if isinstance(idx, slice):
-            return TwoInputSequential(OrderedDict(list(self._modules.items())[idx]))
+            return TwoInputSequential(
+                OrderedDict(list(self._modules.items())[idx]))
         else:
             return self._get_item_by_idx(self._modules.values(), idx)
 
@@ -306,59 +339,80 @@ class TwoInputSequential(nn.Module):
             input1, input2 = module(input1, input2)
         return input1, input2
 
-    
+
 def resnet18ABN(num_classes=10, num_bns=2):
-    model = ResNetABN(BasicBlock, [2, 2, 2, 2], num_classes=num_classes, num_bns=num_bns)
+    model = ResNetABN(BasicBlock, [2, 2, 2, 2],
+                      num_classes=num_classes,
+                      num_bns=num_bns)
 
     return model
 
 
 def resnet34ABN(num_classes=10, num_bns=2):
-    model = ResNetABN(BasicBlock, [3, 4, 6, 3], num_classes=num_classes, num_bns=num_bns)
+    model = ResNetABN(BasicBlock, [3, 4, 6, 3],
+                      num_classes=num_classes,
+                      num_bns=num_bns)
 
     return model
+
 
 def resnet50ABN(num_classes=10, num_bns=2):
-    model = ResNetABN(Bottleneck, [3, 4, 6, 3], num_classes=num_classes, num_bns=num_bns)
+    model = ResNetABN(Bottleneck, [3, 4, 6, 3],
+                      num_classes=num_classes,
+                      num_bns=num_bns)
 
     return model
 
-def _update_initial_weights_ABN(state_dict, num_classes=1000, num_bns=2, ABN_type='all'):
+
+def _update_initial_weights_ABN(state_dict,
+                                num_classes=1000,
+                                num_bns=2,
+                                ABN_type='all'):
     new_state_dict = state_dict.copy()
 
     for key, val in state_dict.items():
         update_dict = False
-        if ((('bn' in key or 'downsample.1' in key) and ABN_type == 'all') or
-                (('bn1' in key) and ABN_type == 'partial-bn1')):
+        if ((('bn' in key or 'downsample.1' in key) and ABN_type == 'all')
+                or (('bn1' in key) and ABN_type == 'partial-bn1')):
             update_dict = True
 
         if (update_dict):
             if 'weight' in key:
                 for d in range(num_bns):
-                    new_state_dict[key[0:-6] + 'bns.{}.weight'.format(d)] = val.data.clone()
+                    new_state_dict[
+                        key[0:-6] +
+                        'bns.{}.weight'.format(d)] = val.data.clone()
 
             elif 'bias' in key:
                 for d in range(num_bns):
-                    new_state_dict[key[0:-4] + 'bns.{}.bias'.format(d)] = val.data.clone()
+                    new_state_dict[key[0:-4] +
+                                   'bns.{}.bias'.format(d)] = val.data.clone()
 
             if 'running_mean' in key:
                 for d in range(num_bns):
-                    new_state_dict[key[0:-12] + 'bns.{}.running_mean'.format(d)] = val.data.clone()
+                    new_state_dict[
+                        key[0:-12] +
+                        'bns.{}.running_mean'.format(d)] = val.data.clone()
 
             if 'running_var' in key:
                 for d in range(num_bns):
-                    new_state_dict[key[0:-11] + 'bns.{}.running_var'.format(d)] = val.data.clone()
+                    new_state_dict[
+                        key[0:-11] +
+                        'bns.{}.running_var'.format(d)] = val.data.clone()
 
             if 'num_batches_tracked' in key:
                 for d in range(num_bns):
-                    new_state_dict[
-                        key[0:-len('num_batches_tracked')] + 'bns.{}.num_batches_tracked'.format(d)] = val.data.clone()
+                    new_state_dict[key[0:-len('num_batches_tracked')] +
+                                   'bns.{}.num_batches_tracked'.format(
+                                       d)] = val.data.clone()
 
-    if num_classes != 1000 or len([key for key in new_state_dict.keys() if 'fc' in key]) > 1:
+    if num_classes != 1000 or len(
+        [key for key in new_state_dict.keys() if 'fc' in key]) > 1:
         key_list = list(new_state_dict.keys())
         for key in key_list:
             if 'fc' in key:
-                print('pretrained {} are not used as initial params.'.format(key))
+                print('pretrained {} are not used as initial params.'.format(
+                    key))
                 del new_state_dict[key]
 
     return new_state_dict
@@ -370,12 +424,28 @@ class ResNetABN(nn.Module):
         self.num_bns = num_bns
         self.num_classes = num_classes
         super(ResNetABN, self).__init__()
-        self.conv1 = conv3x3(3,64)
+        self.conv1 = conv3x3(3, 64)
         self.bn1 = MultiBatchNorm(64, self.num_bns)
-        self.layer1 = self._make_layer(block, 64, layers[0], stride=1, num_bns=self.num_bns)
-        self.layer2 = self._make_layer(block, 128, layers[1], stride=2, num_bns=self.num_bns)
-        self.layer3 = self._make_layer(block, 256, layers[2], stride=2, num_bns=self.num_bns)
-        self.layer4 = self._make_layer(block, 512, layers[3], stride=2, num_bns=self.num_bns)
+        self.layer1 = self._make_layer(block,
+                                       64,
+                                       layers[0],
+                                       stride=1,
+                                       num_bns=self.num_bns)
+        self.layer2 = self._make_layer(block,
+                                       128,
+                                       layers[1],
+                                       stride=2,
+                                       num_bns=self.num_bns)
+        self.layer3 = self._make_layer(block,
+                                       256,
+                                       layers[2],
+                                       stride=2,
+                                       num_bns=self.num_bns)
+        self.layer4 = self._make_layer(block,
+                                       512,
+                                       layers[3],
+                                       stride=2,
+                                       num_bns=self.num_bns)
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(512 * block.expansion, num_classes)
 
@@ -383,17 +453,20 @@ class ResNetABN(nn.Module):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = TwoInputSequential(
-                Conv2d(self.inplanes, planes * block.expansion,
-                       kernel_size=1, stride=stride, bias=False),
+                Conv2d(self.inplanes,
+                       planes * block.expansion,
+                       kernel_size=1,
+                       stride=stride,
+                       bias=False),
                 MultiBatchNorm(planes * block.expansion, num_bns),
             )
 
         layers = []
-        layers.append(block(self.inplanes, planes, stride, downsample, num_bns=num_bns))
+        layers.append(
+            block(self.inplanes, planes, stride, downsample, num_bns=num_bns))
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
-            layers.append(
-                block(self.inplanes, planes, num_bns=num_bns))
+            layers.append(block(self.inplanes, planes, num_bns=num_bns))
 
         return TwoInputSequential(*layers)
 
@@ -417,7 +490,7 @@ class ResNetABN(nn.Module):
         else:
             return x
 
-        
+
 class BasicBlock(nn.Module):
     expansion = 1
 
@@ -456,8 +529,12 @@ class Bottleneck(nn.Module):
         super(Bottleneck, self).__init__()
         self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
         self.bn1 = MultiBatchNorm(planes, num_bns)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride,
-                               padding=1, bias=False)
+        self.conv2 = nn.Conv2d(planes,
+                               planes,
+                               kernel_size=3,
+                               stride=stride,
+                               padding=1,
+                               bias=False)
         self.bn2 = MultiBatchNorm(planes, num_bns)
         self.conv3 = nn.Conv2d(planes, planes * 4, kernel_size=1, bias=False)
         self.bn3 = MultiBatchNorm(planes * 4, num_bns)

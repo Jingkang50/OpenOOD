@@ -6,6 +6,6 @@ PYTHONPATH='.':$PYTHONPATH \
 #--cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/Conf_Esti/svhn.yml \
+--config configs/datasets/digits/mnist.yml \
 configs/pipelines/train/train_conf_esti.yml \
-configs/networks/conf_esti.yml
+configs/networks/conf_net.yml

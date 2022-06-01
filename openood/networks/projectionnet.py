@@ -29,3 +29,8 @@ class ProjectionNet(nn.Module):
         tmp = self.head(embeds)
         logits = self.out(tmp)
         return embeds, logits
+
+    def get_fc(self):
+        fc = self.out
+        return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
+

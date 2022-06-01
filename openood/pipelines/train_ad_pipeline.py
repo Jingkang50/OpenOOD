@@ -51,6 +51,8 @@ class TrainAdPipeline:
 
         # evaluate on test set
         print('Start testing...', flush=True)
-        test_metrics = evaluator.eval_ood(net, id_loader_dict, ood_loader_dict,
+        test_metrics = evaluator.eval_ood(net,
+                                          id_loader_dict,
+                                          ood_loader_dict,
                                           postprocessor=postprocessor)
         evaluator.report(test_metrics)

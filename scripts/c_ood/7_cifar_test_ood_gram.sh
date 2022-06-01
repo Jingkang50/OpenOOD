@@ -21,6 +21,7 @@ configs/postprocessors/gram.yml \
 --network.name resnet18_32x32 \
 --num_workers 8
 '''
+#Mnist Lenet:
 '''
 python main.py \
 --config configs/datasets/digits/mnist.yml \
@@ -30,6 +31,7 @@ configs/pipelines/test/test_gram.yml \
 configs/postprocessors/gram.yml \
 configs/preprocessors/base_preprocessor.yml
 '''
+#cifar 10 Resnet:
 python main.py \
 --config configs/datasets/objects/cifar10.yml \
 configs/datasets/objects/cifar10_ood.yml \

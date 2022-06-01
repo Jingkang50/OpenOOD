@@ -22,6 +22,7 @@ configs/preprocessors/base_preprocessor.yml \
 --force_merge True \
 --mode csi_step1
 '''
+#Mnist Lenet
 '''
 python main.py \
 --config configs/datasets/digits/mnist.yml \
@@ -29,6 +30,7 @@ configs/networks/csinet.yml \
 configs/pipelines/train/train_csi.yml \
 configs/preprocessors/base_preprocessor.yml \
 '''
+#cifar10 Resnet:
 python main.py \
 --config configs/datasets/objects/cifar10.yml \
 configs/networks/csinet.yml \

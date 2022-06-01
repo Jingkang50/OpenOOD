@@ -20,4 +20,3 @@ configs/preprocessors/base_preprocessor.yml \
 --optimizer.num_epochs 100 \
 --num_workers 4 \
 --trainer.trainer_args.cutmix_prob 0.5
-

@@ -36,7 +36,7 @@ class TrainARPLGANPipeline:
             # train and eval the model
             net, train_metrics = trainer.train_epoch(epoch_idx)
             net, train_aux_metrics = trainer_aux.train_epoch(epoch_idx)
-            train_metrics['loss'] =  train_aux_metrics['loss']
+            train_metrics['loss'] = train_aux_metrics['loss']
             val_metrics = evaluator.eval_acc(net, val_loader, None, epoch_idx)
             trainer.scheduler.step()
             # save model and report the result

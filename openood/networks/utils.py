@@ -1,3 +1,4 @@
+from os.path import join as pjoin
 from turtle import forward
 from types import MethodType
 
@@ -18,6 +19,8 @@ from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .dsvdd_net import build_network, get_Autoencoder
 from .godinnet import GodinNet
 from .lenet import LeNet
+from .mos_network import MOS_MODELS
+from .opengan import Discriminator, Generator
 from .openmax_network import OpenMax
 from .patchcore_net import patchcore_net
 from .projectionnet import ProjectionNet
@@ -27,6 +30,8 @@ from .resnet18_224x224 import ResNet18_224x224
 from .resnet50 import ResNet50
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
+from .vos_net import vos_net
+from .conf_net import conf_net
 
 
 def get_network(network_config):
@@ -60,10 +65,7 @@ def get_network(network_config):
                         num_classes=num_classes)
 
     elif network_config.name == 'wide_resnet_50_2':
-        path = '/home/pengyunwang/.cache/torch/hub/vision-0.9.0'
-        module = torch.hub._load_local(path,
-                                       'wide_resnet50_2',
-                                       pretrained=True)
+        module = torch.hub.load('pytorch/vision:v0.9.0', 'wide_resnet50_2', pretrained=True)
         net = patchcore_net(module)
 
     elif network_config.name == 'godinnet':
@@ -92,7 +94,10 @@ def get_network(network_config):
         net = {'generative': model, 'discriminative': model_seg}
 
     elif network_config.name == 'openmax_network':
-        net = OpenMax(backbone='ResNet18', num_classes=50)
+        # from .resnet import ResNet18
+        # ResNet18(num_classes=num_classes)
+        backbone = get_network(network_config.backbone)
+        net = OpenMax(backbone=backbone, num_classes=num_classes)
 
     elif network_config.name == 'opengan':
         from .opengan import Discriminator, Generator
@@ -176,24 +181,52 @@ def get_network(network_config):
         net = Conf_WideResNet(depth=16,
                               num_classes=num_classes,
                               widen_factor=8)
+
+    elif network_config.name == 'conf_net':
+        
+        backbone = get_network(network_config.backbone)
+        net = conf_net(backbone=backbone,num_classes=num_classes)
+
     elif network_config.name == 'dcae':
         net = get_Autoencoder(network_config.type)
 
     elif network_config.name == 'dsvdd':
         net = build_network(network_config.type)
 
-    elif network_config.name == 'vos':
+    elif network_config.name == 'mos':
+        net = MOS_MODELS[network_config.model](
+            head_size=network_config.num_logits,
+            zero_head=True,
+            num_block_open=network_config.num_block_open)
+        model_path = pjoin(network_config.bit_pretrained_dir,
+                           network_config.model + '.npz')
+        net.load_from(np.load(model_path))
+        print('Moving model onto all GPUs')
+        net = torch.nn.DataParallel(net)
 
-        net = WideResNet(network_config['num_layers'],
-                         num_classes,
-                         network_config['widen_factor'],
-                         dropRate=network_config['droprate'])
+    elif network_config.name == 'test_mos':
+        net = MOS_MODELS[network_config.model](
+            head_size=network_config.num_logits)
+        print('Load test mos model from checkpoint')
+        state_dict = torch.load(network_config.checkpoint)
+        net.load_state_dict_custom(state_dict)
+        net = torch.nn.DataParallel(net)
+
+    elif network_config.name == 'vos':
+        backbone = get_network(network_config.backbone)
+        net = vos_net(backbone=backbone,num_classes=num_classes,num_channel=3)
+        # net = WideResNet(network_config['num_layers'],
+        #                  num_classes,
+        #                  network_config['widen_factor'],
+        #                  dropRate=network_config['droprate'])
+
     elif network_config.name == 'projectionNet':
         net = ProjectionNet(num_classes=2)
 
     else:
         raise Exception('Unexpected Network Architecture!')
 
+    
     if network_config.pretrained:
         if type(net) is dict:
             for subnet, checkpoint in zip(net.values(),
