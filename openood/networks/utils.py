@@ -1,3 +1,4 @@
+from os.path import join as pjoin
 from turtle import forward
 from types import MethodType
 
@@ -11,21 +12,21 @@ from mmcls.apis import init_model
 import openood.utils.comm as comm
 
 from .bit import KNOWN_MODELS
-from .conf_widernet import Conf_WideResNet
-from .csinet import CsiNet
+from .conf_branch_net import ConfBranchNet
+from .csi_net import CSINet
 from .densenet import DenseNet3
-from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
+from .draem_net import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .dsvdd_net import build_network, get_Autoencoder
-from .godinnet import GodinNet
+from .godin_net import GodinNet
 from .lenet import LeNet
-from .openmax_network import OpenMax
-from .patchcorenet import PatchCoreNet
-from .projectionnet import ProjectionNet
-from .reactnet import ReactNet
+from .opengan import Discriminator, Generator
+from .openmax_net import OpenMax
+from .patchcore_net import patchcore_net
+from .projection_net import ProjectionNet
+from .react_net import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
 from .resnet50 import ResNet50
-from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
 
 
@@ -66,6 +67,11 @@ def get_network(network_config):
         #                                pretrained=True)
         backbone = get_network(network_config.backbone)
         net = PatchCoreNet(backbone)
+    elif network_config.name == 'wide_resnet_50_2':
+        module = torch.hub.load('pytorch/vision:v0.9.0',
+                                'wide_resnet50_2',
+                                pretrained=True)
+        net = patchcore_net(module)
 
     elif network_config.name == 'godinnet':
         backbone = get_network(network_config.backbone)
@@ -80,7 +86,7 @@ def get_network(network_config):
 
     elif network_config.name == 'csinet':
         backbone = get_network(network_config.backbone)
-        net = CsiNet(backbone,
+        net = CSINet(backbone,
                      feature_size=backbone.feature_size,
                      num_classes=num_classes,
                      simclr_dim=network_config.simclr_dim,
@@ -99,7 +105,8 @@ def get_network(network_config):
         net = {'generative': model, 'discriminative': model_seg}
 
     elif network_config.name == 'openmax_network':
-        net = OpenMax(backbone='ResNet18', num_classes=50)
+        backbone = get_network(network_config.backbone)
+        net = OpenMax(backbone=backbone, num_classes=num_classes)
 
     elif network_config.name == 'opengan':
         from .opengan import Discriminator, Generator
@@ -114,8 +121,7 @@ def get_network(network_config):
 
     elif network_config.name == 'arpl_gan':
         from .arpl_net import (resnet34ABN, Generator, Discriminator,
-                               Generator32, Discriminator32)
-        from .arpl_layer import ARPLayer
+                               Generator32, Discriminator32, ARPLayer)
         feature_net = resnet34ABN(num_classes=num_classes, num_bns=2)
         dim_centers = feature_net.fc.weight.shape[1]
         feature_net.fc = nn.Identity()
@@ -148,7 +154,7 @@ def get_network(network_config):
         }
 
     elif network_config.name == 'arpl_net':
-        from .arpl_layer import ARPLayer
+        from .arpl_net import ARPLayer
         feature_net = get_network(network_config.feat_extract_network)
         try:
             dim_centers = feature_net.fc.weight.shape[1]
@@ -164,12 +170,6 @@ def get_network(network_config):
 
         net = {'netF': feature_net, 'criterion': criterion}
 
-    elif network_config.name == 'vgg and model':
-        vgg = Vgg16(network_config['trainedsource'])
-        model = make_arch(network_config['equal_network_size'],
-                          network_config['use_bias'], True)
-        net = {'vgg': vgg, 'model': model}
-
     elif network_config.name == 'bit':
         net = KNOWN_MODELS[network_config.model]()
     elif network_config.name == 'vit':
@@ -179,22 +179,14 @@ def get_network(network_config):
             lambda self: (self.head.layers.head.weight.cpu().numpy(),
                           self.head.layers.head.bias.cpu().numpy()), net)
 
-    elif network_config.name == 'conf_wideresnet':
-        net = Conf_WideResNet(depth=16,
-                              num_classes=num_classes,
-                              widen_factor=8)
-    elif network_config.name == 'dcae':
-        net = get_Autoencoder(network_config.type)
+    elif network_config.name == 'conf_branch_net':
+
+        backbone = get_network(network_config.backbone)
+        net = ConfBranchNet(backbone=backbone, num_classes=num_classes)
 
     elif network_config.name == 'dsvdd':
         net = build_network(network_config.type)
 
-    elif network_config.name == 'vos':
-
-        net = WideResNet(network_config['num_layers'],
-                         num_classes,
-                         network_config['widen_factor'],
-                         dropRate=network_config['droprate'])
     elif network_config.name == 'projectionNet':
         backbone = get_network(network_config.backbone)
         net = ProjectionNet(backbone=backbone, num_classes=2)

@@ -3,8 +3,7 @@ import torchvision.transforms as tvs_trans
 from openood.utils.config import Config
 
 from .base_preprocessor import BasePreprocessor
-from .transform import (Convert, center_crop_dict, interpolation_modes,
-                        normalization_dict)
+from .transform import Convert, interpolation_modes, normalization_dict
 
 
 class TestStandardPreProcessor(BasePreprocessor):
@@ -12,7 +11,7 @@ class TestStandardPreProcessor(BasePreprocessor):
     def __init__(self, config: Config, split):
         dataset_name = config.dataset.name.split('_')[0]
         image_size = config.dataset.image_size
-        pre_size = center_crop_dict[image_size]
+        pre_size = config.dataset.pre_size
         if dataset_name in normalization_dict.keys():
             mean = normalization_dict[dataset_name][0]
             std = normalization_dict[dataset_name][1]

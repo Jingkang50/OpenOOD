@@ -52,11 +52,6 @@ class BaseEvaluator:
         loss = loss_avg / len(data_loader)
         acc = correct / len(data_loader.dataset)
 
-        # print("data_loader: ")
-        # print(len(data_loader))
-        # print("data_loader.dataset: ")
-        # print(len(data_loader.dataset))
-
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
         metrics['loss'] = self.save_metrics(loss)

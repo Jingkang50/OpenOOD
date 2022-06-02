@@ -16,6 +16,7 @@ pipeline:
 
 evaluator:
   name: patch
+  test_pix: True
 
 recorder:
   save_scores: True

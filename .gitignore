@@ -157,4 +157,8 @@ dmypy.json
 # ignore custom config and scripts
 config/*/_*/
 scripts/_*/
-scripts/sweep/_*
+tools/mytools/
+
+# ignore pretrained bit model
+bit_pretrained_models/
+group_config/

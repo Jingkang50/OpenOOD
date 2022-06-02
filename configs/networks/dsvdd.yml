@@ -1,6 +1,6 @@
 network:
-  name: 'dsvdd'
-  type: 'cifar10_LeNet'
+  name: dsvdd
+  type: cifar10_LeNet
   num_classes: '@{dataset.num_classes}'
   num_gpus: 1
   pretrained: True

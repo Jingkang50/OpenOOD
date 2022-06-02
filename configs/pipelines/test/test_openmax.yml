@@ -1,6 +1,6 @@
 exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
 output_dir: ./results/
-save_output: True
+save_output: False
 force_merge: False
 
 num_gpus: 1
