@@ -1,7 +1,6 @@
 import logging
 
 import torch.nn as nn
-from torch._C import import_ir_module
 
 logger = logging.getLogger(__name__)
 
@@ -10,7 +9,7 @@ class LeNet(nn.Module):
     def __init__(self, num_classes, num_channel=3):
         super(LeNet, self).__init__()
         self.num_classes = num_classes
-        self.feature_size=120
+        self.feature_size = 120
         self.block1 = nn.Sequential(
             nn.Conv2d(in_channels=num_channel,
                       out_channels=6,
@@ -49,8 +48,11 @@ class LeNet(nn.Module):
             return logits_cls, feature_list
         else:
             return logits_cls
-    
-    def forward_secondary(self, x, return_feature=False, return_feature_list=False):
+
+    def forward_secondary(self,
+                          x,
+                          return_feature=False,
+                          return_feature_list=False):
         feature1 = self.block1(x)
         feature2 = self.block2(feature1)
         feature3 = self.block3(feature2)

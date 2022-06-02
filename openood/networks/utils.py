@@ -12,26 +12,24 @@ from mmcls.apis import init_model
 import openood.utils.comm as comm
 
 from .bit import KNOWN_MODELS
-from .conf_widernet import Conf_WideResNet
-from .csinet import CsiNet
+from .conf_net import conf_net
+from .csi_net import CSINet
 from .densenet import DenseNet3
-from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
+from .draem_net import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .dsvdd_net import build_network, get_Autoencoder
-from .godinnet import GodinNet
+from .godin_net import GodinNet
 from .lenet import LeNet
-from .mos_network import MOS_MODELS
+from .mos_net import MOS_MODELS
 from .opengan import Discriminator, Generator
-from .openmax_network import OpenMax
+from .openmax_net import OpenMax
 from .patchcore_net import patchcore_net
 from .projectionnet import ProjectionNet
-from .reactnet import ReactNet
+from .react_net import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_224x224 import ResNet18_224x224
 from .resnet50 import ResNet50
 from .vggnet import Vgg16, make_arch
 from .wrn import WideResNet
-from .vos_net import vos_net
-from .conf_net import conf_net
 
 
 def get_network(network_config):
@@ -65,7 +63,9 @@ def get_network(network_config):
                         num_classes=num_classes)
 
     elif network_config.name == 'wide_resnet_50_2':
-        module = torch.hub.load('pytorch/vision:v0.9.0', 'wide_resnet50_2', pretrained=True)
+        module = torch.hub.load('pytorch/vision:v0.9.0',
+                                'wide_resnet50_2',
+                                pretrained=True)
         net = patchcore_net(module)
 
     elif network_config.name == 'godinnet':
@@ -183,9 +183,9 @@ def get_network(network_config):
                               widen_factor=8)
 
     elif network_config.name == 'conf_net':
-        
+
         backbone = get_network(network_config.backbone)
-        net = conf_net(backbone=backbone,num_classes=num_classes)
+        net = conf_net(backbone=backbone, num_classes=num_classes)
 
     elif network_config.name == 'dcae':
         net = get_Autoencoder(network_config.type)
@@ -214,7 +214,9 @@ def get_network(network_config):
 
     elif network_config.name == 'vos':
         backbone = get_network(network_config.backbone)
-        net = vos_net(backbone=backbone,num_classes=num_classes,num_channel=3)
+        net = vos_net(backbone=backbone,
+                      num_classes=num_classes,
+                      num_channel=3)
         # net = WideResNet(network_config['num_layers'],
         #                  num_classes,
         #                  network_config['widen_factor'],
@@ -226,7 +228,6 @@ def get_network(network_config):
     else:
         raise Exception('Unexpected Network Architecture!')
 
-    
     if network_config.pretrained:
         if type(net) is dict:
             for subnet, checkpoint in zip(net.values(),

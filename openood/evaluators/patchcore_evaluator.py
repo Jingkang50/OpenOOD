@@ -39,7 +39,7 @@ class PatchCoreEvaluator(BaseEvaluator):
         gt = np.concatenate([id_gt, good_gt])
 
         test_pix = self.config.evaluator.test_pix
-        if(test_pix):
+        if (test_pix):
             self.gt_transform = transforms.Compose([
                 transforms.Resize((256, 256)),
                 transforms.ToTensor(),
@@ -77,7 +77,8 @@ class PatchCoreEvaluator(BaseEvaluator):
                 break
 
             for i in good_gt:
-                img = Image.open(os.path.join('./data/images', name)).convert('RGB')
+                img = Image.open(os.path.join('./data/images',
+                                              name)).convert('RGB')
                 img = self.transform(img)
                 gt_img = torch.zeros([1, img.size()[-2], img.size()[-2]])
                 gt_img = torch.unsqueeze(gt_img, 0)
@@ -85,9 +86,6 @@ class PatchCoreEvaluator(BaseEvaluator):
                 # gt_img = self.gt_transform(gt_img)
                 gt_np = gt_img.cpu().numpy()[0, 0].astype(int)
                 self.gt_list_px_lvl.extend(gt_np.ravel())
-
-
-
 
         self.pred_list_px_lvl = []
         self.pred_list_img_lvl = []
@@ -109,11 +107,11 @@ class PatchCoreEvaluator(BaseEvaluator):
         img_auc = roc_auc_score(gt, self.pred_list_img_lvl)
         print(img_auc)
 
-        if(test_pix):
+        if (test_pix):
             print('Total pixel-level auc-roc score :')
-            pixel_auc = roc_auc_score(self.gt_list_px_lvl, self.pred_list_px_lvl)
+            pixel_auc = roc_auc_score(self.gt_list_px_lvl,
+                                      self.pred_list_px_lvl)
             print(pixel_auc)
-
 
     def eval_acc(self,
                  net: nn.Module,

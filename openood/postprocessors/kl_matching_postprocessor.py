@@ -34,8 +34,9 @@ class KLMatchingPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                if self.net_name == "lenet":
-                    _, feature = net.forward_secondary(data, return_feature=True)
+                if self.net_name == 'lenet':
+                    _, feature = net.forward_secondary(data,
+                                                       return_feature=True)
                 else:
                     _, feature = net(data, return_feature=True)
                 feature = feature.cpu().numpy()
@@ -57,8 +58,9 @@ class KLMatchingPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                if self.net_name == "lenet":
-                    _, feature = net.forward_secondary(data, return_feature=True)
+                if self.net_name == 'lenet':
+                    _, feature = net.forward_secondary(data,
+                                                       return_feature=True)
                 else:
                     _, feature = net(data, return_feature=True)
                 feature = feature.cpu().numpy()
@@ -67,12 +69,13 @@ class KLMatchingPostprocessor(BasePostprocessor):
             logit_id_val = feature_id_val @ self.w.T + self.b
             softmax_id_val = softmax(logit_id_val, axis=-1)
             self.score_id = -pairwise_distances_argmin_min(
-            softmax_id_val, np.array(
-                self.mean_softmax_train), metric=self.kl)[1]
+                softmax_id_val,
+                np.array(self.mean_softmax_train),
+                metric=self.kl)[1]
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        if self.net_name == "lenet":
+        if self.net_name == 'lenet':
             _, feature_ood = net.forward_secondary(data, return_feature=True)
         else:
             _, feature_ood = net(data, return_feature=True)

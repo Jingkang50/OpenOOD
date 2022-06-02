@@ -1,6 +1,7 @@
 from openood.utils import Config
 
 from .base_postprocessor import BasePostprocessor
+from .conf_branch_postprocessor import ConfBranchPostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
 from .dropout_postprocessor import DropoutPostProcessor
 from .ebo_postprocessor import EBOPostprocessor
@@ -17,13 +18,13 @@ from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
 from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
-from .temperature_scaling_postprocessor import TemperatureScalingPostprocessor
+from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
-from .conf_postprocessor import ConfPostprocessor
+
 
 def get_postprocessor(config: Config):
     postprocessors = {
-        'conf': ConfPostprocessor,
+        'conf': ConfBranchPostprocessor,
         'msp': BasePostprocessor,
         'ebo': EBOPostprocessor,
         'odin': ODINPostprocessor,

@@ -3,7 +3,7 @@ from openood.utils import Config
 
 from .arpl_evaluator import ARPLEvaluator
 from .base_evaluator import BaseEvaluator
-from .conf_esti_evaluator import Conf_Esti_Evaluator
+from .conf_branch_evaluator import ConfBranchEvaluator
 from .cutpaste_evaluator import CutPasteEvaluator
 from .draem_evaluator import DRAEMEvaluator
 from .dsvdd_evaluator import DCAEEvaluator, DSVDDEvaluator
@@ -23,7 +23,7 @@ def get_evaluator(config: Config):
         'draem': DRAEMEvaluator,
         'openmax': OpenMaxEvaluator,
         'kdad': KdadDetectionEvaluator,
-        'conf_esti': Conf_Esti_Evaluator,
+        'confbranch': ConfBranchEvaluator,
         'patch': PatchCoreEvaluator,
         'dcae': DCAEEvaluator,
         'dsvdd': DSVDDEvaluator,

@@ -5,7 +5,7 @@ from openood.utils import Config
 from .arpl_gan_trainer import ARPLGANTrainer
 from .arpl_trainer import ARPLTrainer
 from .base_trainer import BaseTrainer
-from .conf_esti_trainer import Conf_Esti_Trainer
+from .conf_esti_trainer import ConfBranchTrainer
 from .cutmix_trainer import CutMixTrainer  # add
 from .cutpaste_trainer import CutPasteTrainer
 from .draem_trainer import DRAEMTrainer
@@ -33,7 +33,7 @@ def get_trainer(
         'DRAEM': DRAEMTrainer,
         'OpenMax': OpenMaxTrainer,
         'kdad': KdadTrainer,
-        'conf_esti': Conf_Esti_Trainer,
+        'conf_branch': ConfBranchTrainer,
         'dcae': AETrainer,
         'dsvdd': DSVDDTrainer,
         'openGan': OpenGanTrainer,

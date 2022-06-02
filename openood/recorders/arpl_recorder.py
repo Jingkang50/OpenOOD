@@ -13,14 +13,15 @@ class ARPLRecorder(BaseRecorder):
 
     def report(self, train_metrics, val_metrics):
         if 'lossD' in train_metrics.keys():
-            print(
-                '\nEpoch {:03d} | Time {:5d}s | D Loss {:.4f} | G Loss {:.4f} | Train Loss {:.4f} | '
-                'Val Loss {:.3f} | Val Acc {:.2f}'.format(
-                    (train_metrics['epoch_idx']),
-                    int(time.time() - self.begin_time), train_metrics['lossD'],
-                    train_metrics['lossG'], train_metrics['loss'],
-                    val_metrics['loss'], 100.0 * val_metrics['acc']),
-                flush=True)
+            print('\nEpoch {:03d} | Time {:5d}s | D Loss {:.4f} | '
+                  'G Loss {:.4f} | Train Loss {:.4f} | '
+                  'Val Loss {:.3f} | Val Acc {:.2f}'.format(
+                      (train_metrics['epoch_idx']),
+                      int(time.time() - self.begin_time),
+                      train_metrics['lossD'], train_metrics['lossG'],
+                      train_metrics['loss'], val_metrics['loss'],
+                      100.0 * val_metrics['acc']),
+                  flush=True)
         else:
             print('\nEpoch {:03d} | Time {:5d}s | Train Loss {:.4f} | '
                   'Val Loss {:.3f} | Val Acc {:.2f}'.format(

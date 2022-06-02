@@ -12,8 +12,10 @@ import torch.distributed as dist
 
 _LOCAL_PROCESS_GROUP = None
 """
-A torch process group which only includes processes that on the same machine as the current process.
-This variable is set when processes are spawned by `launch()` in "engine/launch.py".
+A torch process group which only includes processes
+that on the same machine as the current process.
+This variable is set when processes are spawned
+by `launch()` in "engine/launch.py".
 """
 
 
@@ -36,7 +38,8 @@ def get_rank() -> int:
 def get_local_rank() -> int:
     """
     Returns:
-        The rank of the current process within the local (per-machine) process group.
+        The rank of the current process
+        within the local (per-machine) process group.
     """
     if not dist.is_available():
         return 0
@@ -44,7 +47,8 @@ def get_local_rank() -> int:
         return 0
     assert (
         _LOCAL_PROCESS_GROUP is not None
-    ), 'Local process group is not created! Please use launch() to spawn processes!'
+    ), 'Local process group is not created! '\
+        'Please use launch() to spawn processes!'
     return dist.get_rank(group=_LOCAL_PROCESS_GROUP)
 
 
@@ -168,7 +172,8 @@ def reduce_dict(input_dict, average=True):
     with rank 0 has the reduced results.
 
     Args:
-        input_dict (dict): inputs to be reduced. All the values must be scalar CUDA Tensor.
+        input_dict (dict): inputs to be reduced.
+        All the values must be scalar CUDA Tensor.
         average (bool): whether to do average or sum
 
     Returns:

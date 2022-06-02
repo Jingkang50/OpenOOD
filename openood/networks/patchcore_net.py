@@ -1,9 +1,7 @@
 import logging
-from re import X
 
 import torch
 import torch.nn as nn
-from torch._C import import_ir_module
 
 logger = logging.getLogger(__name__)
 

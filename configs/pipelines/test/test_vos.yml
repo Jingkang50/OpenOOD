@@ -11,7 +11,7 @@ machine_rank: 0
 dataset_name: '@{dataset.name}'
 
 pipeline:
-  name: test_ad
+  name: test_ood
 
 evaluator:
   name: vos

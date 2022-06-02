@@ -285,7 +285,8 @@ def Supervised_NT_xent(sim_matrix,
 
     labels = labels.contiguous().view(-1, 1)
     Mask = torch.eq(labels, labels.t()).float().to(device)
-    # Mask = eye * torch.stack([labels == labels[i] for i in range(labels.size(0))]).float().to(device)
+    # Mask = eye * torch.stack([labels == labels[i]
+    # for i in range(labels.size(0))]).float().to(device)
     Mask = Mask / (Mask.sum(dim=1, keepdim=True) + eps)
 
     loss = torch.sum(Mask * sim_matrix) / (2 * B)
@@ -314,7 +315,8 @@ def get_simclr_augmentation(config, image_size):
     resize_crop = RandomResizedCropLayer(scale=resize_scale, size=image_size)
 
     # Transform define #
-    if config.dataset.name == 'imagenet':  # Using RandomResizedCrop at PIL transform
+    if config.dataset.name == 'imagenet':
+        # Using RandomResizedCrop at PIL transform
         transform = nn.Sequential(
             color_jitter,
             color_gray,
@@ -336,9 +338,12 @@ class GradualWarmupScheduler(_LRScheduler):
 
     Args:
         optimizer (Optimizer): Wrapped optimizer.
-        multiplier: target learning rate = base lr * multiplier if multiplier > 1.0. if multiplier = 1.0, lr starts from 0 and ends up with the base_lr.
+        multiplier: target learning rate = base lr * multiplier
+        if multiplier > 1.0. if multiplier = 1.0,
+        lr starts from 0 and ends up with the base_lr.
         total_epoch: target learning rate is reached at total_epoch, gradually
-        after_scheduler: after target_epoch, use this scheduler(eg. ReduceLROnPlateau)
+        after_scheduler: after target_epoch,
+        use this scheduler (eg. ReduceLROnPlateau)
     """
     def __init__(self,
                  optimizer,
@@ -380,7 +385,9 @@ class GradualWarmupScheduler(_LRScheduler):
     def step_ReduceLROnPlateau(self, metrics, epoch=None):
         if epoch is None:
             epoch = self.last_epoch + 1
-        self.last_epoch = epoch if epoch != 0 else 1  # ReduceLROnPlateau is called at the end of epoch, whereas others are called at beginning
+        self.last_epoch = epoch if epoch != 0 else 1
+        # ReduceLROnPlateau is called at the end of epoch,
+        # whereas others are called at beginning
         if self.last_epoch <= self.total_epoch:
             warmup_lr = [
                 base_lr *
@@ -426,7 +433,8 @@ def rgb2hsv(rgb):
     References
     [1] https://en.wikipedia.org/wiki/Hue
     [2] https://www.rapidtables.com/convert/color/rgb-to-hsv.html
-    [3] https://github.com/scikit-image/scikit-image/blob/master/skimage/color/colorconv.py#L212
+    [3] https://github.com/scikit-image/scikit-image/
+    blob/master/skimage/color/colorconv.py#L212
     """
 
     r, g, b = rgb[:, 0, :, :], rgb[:, 1, :, :], rgb[:, 2, :, :]
@@ -470,9 +478,11 @@ def hsv2rgb(hsv):
 
 class RandomResizedCropLayer(nn.Module):
     def __init__(self, size=None, scale=(0.08, 1.0), ratio=(3. / 4., 4. / 3.)):
-        """Inception Crop size (tuple): size of forwarding image (C, W, H) scale
-        (tuple): range of size of the origin size cropped ratio (tuple): range
-        of aspect ratio of the origin aspect ratio cropped."""
+        """Inception Crop size (tuple): size of forwarding image (C, W, H)
+        scale (tuple): range of size of the origin size cropped ratio (tuple):
+
+        range of aspect ratio of the origin aspect ratio cropped.
+        """
         super(RandomResizedCropLayer, self).__init__()
 
         _eye = torch.eye(2, 3)
@@ -520,7 +530,8 @@ class RandomResizedCropLayer(nn.Module):
         w = self.ratio[0] * h + torch.relu(w - self.ratio[0] * h)
         w = self.ratio[1] * h - torch.relu(self.ratio[1] * h - w)
 
-        # Clamp with bias range: w_bias \in (w - 1, 1 - w), h_bias \in (h - 1, 1 - h)
+        # Clamp with bias range: w_bias \in (w - 1, 1 - w),
+        # h_bias \in (h - 1, 1 - h)
         w_bias = w - 1 + torch.relu(w_bias - w + 1)
         w_bias = 1 - w - torch.relu(1 - w - w_bias)
 

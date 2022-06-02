@@ -59,8 +59,8 @@ sh scripts/c_ood/0_mnist_test_fsood_msp.sh
 
 
 ---
-## Supported Benchmarks (8)
-This part lists all the benchmarks we
+## Supported Benchmarks (10)
+This part lists all the benchmarks we support. Feel free to include more.
 
 
 <details open>
@@ -70,32 +70,37 @@ This part lists all the benchmarks we
 </details>
 
 <details open>
-<summary><b>Open Set Recognition (3)</b></summary>
+<summary><b>Open Set Recognition (4)</b></summary>
 
+> - [x] [MNIST-4/6]()
 > - [x] [CIFAR-4/6]()
 > - [x] [CIFAR-40/60]()
 > - [x] [TinyImageNet-20/180]()
 </details>
 
 <details open>
-<summary><b>Out-of-Distribution Detection (4)</b></summary>
+<summary><b>Out-of-Distribution Detection (5)</b></summary>
 
+> - [x] [BIMCV (A COVID X-Ray Dataset)]()
+>      > Near-OOD: `CT-SCAN`, `X-Ray-Bone`;<br>
+>      > Far-OOD: `MNIST`, `CIFAR-10`, `Texture`, `Tiny-ImageNet`;<br>
+>      > Robust-ID: `ActMed`;
 > - [x] [MNIST]()
 >      > Near-OOD: `NotMNIST`, `FashionMNIST`;<br>
->      > Far-OOD: `Texture`, `CIFAR-10`, `TinyImageNet`, `Places-365`;<br>
->      > CS-ID: `SVHN`, `USPS`;
+>      > Far-OOD: `Texture`, `CIFAR-10`, `TinyImageNet`, `Places365`;<br>
+>      > Robust-ID: `SVHN`;
 > - [x] [CIFAR-10]()
 >      > Near-OOD: `CIFAR-100`, `TinyImageNet`;<br>
->      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-100-C`;<br>
->      > CS-ID: `CINIC-10`, `CIFAR-10-C`;
+>      > Far-OOD: `MNIST`, `SVHN`, `Texture`, `Places365`;<br>
+>      > Robust-ID: `CINIC-10`;
 > - [x] [CIFAR-100]()
 >      > Near-OOD: `CIFAR-10`, `CINIC-10`, `TinyImageNet`;<br>
->      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-10-C`;<br>
->      > CS-ID: `TinyImageNet-C100`, `CIFAR-100-C`;
+>      > Far-OOD: `MNIST`, `SVHN`, `Texture`, `Places365`;<br>
+>      > Robust-ID: `CIFAR-100-C`;
 > - [x] [ImageNet-1K]()
 >      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`;<br>
->      > Far-OOD:  `Texture`, `MNIST`, `SVHN`, `Places365`;<br>
->      > CS-ID: `ImageNet-v2`, `ImageNet-C`;
+>      > Far-OOD:  `Texture`, `Texture-Adv`, `MNIST`, `SVHN`;<br>
+>      > Robust-ID: `ImageNet-v2`;
 </details>
 
 

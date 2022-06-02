@@ -33,4 +33,3 @@ class ProjectionNet(nn.Module):
     def get_fc(self):
         fc = self.out
         return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
-

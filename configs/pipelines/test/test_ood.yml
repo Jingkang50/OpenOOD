@@ -17,7 +17,6 @@ pipeline:
 
 evaluator:
   name: ood
-  use_react: False
 
 recorder:
   save_scores: True
