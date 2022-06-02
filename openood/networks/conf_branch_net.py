@@ -1,9 +1,9 @@
 import torch.nn as nn
 
 
-class conf_net(nn.Module):
-    def __init__(self, backbone, num_classes, num_channel=3):
-        super(conf_net, self).__init__()
+class ConfBranchNet(nn.Module):
+    def __init__(self, backbone, num_classes):
+        super(ConfBranchNet, self).__init__()
 
         self.backbone = backbone
         self.fc = nn.Linear(10, num_classes)

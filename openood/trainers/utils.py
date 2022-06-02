@@ -5,8 +5,8 @@ from openood.utils import Config
 from .arpl_gan_trainer import ARPLGANTrainer
 from .arpl_trainer import ARPLTrainer
 from .base_trainer import BaseTrainer
-from .conf_esti_trainer import ConfBranchTrainer
-from .cutmix_trainer import CutMixTrainer  # add
+from .conf_branch_trainer import ConfBranchTrainer
+from .cutmix_trainer import CutMixTrainer
 from .cutpaste_trainer import CutPasteTrainer
 from .draem_trainer import DRAEMTrainer
 from .dropout_trainer import DropoutTrainer
