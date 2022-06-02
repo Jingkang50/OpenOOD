@@ -3,7 +3,6 @@ from openood.utils import Config
 from .base_preprocessor import BasePreprocessor
 from .cutpaste_preprocessor import CutPastePreprocessor
 from .draem_preprocessor import DRAEMPreprocessor
-from .patch_preprocessor import PatchPreProcessor
 from .pixmix_preprocessor import PixMixPreprocessor
 from .test_preprocessor import TestStandardPreProcessor
 
@@ -20,7 +19,6 @@ def get_preprocessor(split, config: Config):
         'draem': DRAEMPreprocessor,
         'cutpaste': CutPastePreprocessor,
         'pixmix': TestStandardPreProcessor,
-        'patch': PatchPreProcessor,
     }
 
     if split == 'train':

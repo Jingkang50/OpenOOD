@@ -35,30 +35,38 @@ class DRAEMPreprocessor(BasePreprocessor):
 
         self.rot = iaa.Sequential([iaa.Affine(rotate=(-90, 90))])
 
+        # if config.evaluator.name == 'ood':
+        #     assert config.use_gt == False
+        # if config.evaluator.name == 'draem':
+        #     assert config.use_gt == True
+
     def transform_test_image(self, image_path, mask_path):
         image = cv2.imread(image_path, cv2.IMREAD_COLOR)
-        if mask_path is not None:
-            mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
-        else:
-            mask = np.zeros((image.shape[0], image.shape[1]))
         if self.resize_shape is not None:
             image = cv2.resize(image,
                                dsize=(self.resize_shape[1],
                                       self.resize_shape[0]))
-            mask = cv2.resize(mask,
-                              dsize=(self.resize_shape[1],
-                                     self.resize_shape[0]))
 
         image = image / 255.0
-        mask = mask / 255.0
 
         image = np.array(image).reshape(
             (image.shape[0], image.shape[1], 3)).astype(np.float32)
-        mask = np.array(mask).reshape(
-            (mask.shape[0], mask.shape[1], 1)).astype(np.float32)
 
         image = np.transpose(image, (2, 0, 1))
-        mask = np.transpose(mask, (2, 0, 1))
+        mask = image
+        if self.config.use_gt:
+            if mask_path is not None:
+                mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
+            else:
+                mask = np.zeros((image.shape[0], image.shape[1]))
+            if self.resize_shape is not None:
+                mask = cv2.resize(mask,
+                                  dsize=(self.resize_shape[1],
+                                         self.resize_shape[0]))
+            mask = mask / 255.0
+            mask = np.array(mask).reshape(
+                (mask.shape[0], mask.shape[1], 1)).astype(np.float32)
+            mask = np.transpose(mask, (2, 0, 1))
 
         return image, mask
 
@@ -74,9 +82,13 @@ class DRAEMPreprocessor(BasePreprocessor):
             mask_file_name = file_name.split('.')[0] + '_mask.png'
             mask_path = os.path.join(mask_path, mask_file_name)
             image, mask = self.transform_test_image(path, mask_path)
-        sample['image'] = image
-        sample['mask'] = mask
-        return sample
+
+        if self.config.use_gt:
+            sample['image'] = image
+            sample['mask'] = mask
+            return sample
+        else:
+            return image
 
     def randAugmenter(self):
         aug_ind = np.random.choice(np.arange(len(self.augmenters)),

@@ -11,7 +11,7 @@ class CutPasteEvaluator:
         self.config = config
 
     def report(self, test_metrics):
-        print('Complete testing, AUROC:{}'.format(test_metrics['AUROC']))
+        print('Complete testing, AUROC:{}'.format(test_metrics['image_auroc']))
 
     def eval_ood(self,
                  net,
@@ -27,16 +27,17 @@ class CutPasteEvaluator:
         print(f'Performing inference on {dataset_name} dataset...', flush=True)
         id_pred, id_conf, id_gt = postprocessor.inference(
             net, id_data_loader['test'])
-        for idx in range(len(id_gt)):
-            if id_gt[idx] == 1:
-                id_gt[idx] == -1
+        # for idx in range(len(id_gt)):
+        #     if id_gt[idx] == 1:
+        #         id_gt[idx] = -1
 
         # load ood data and compute ood metrics
         metrics = {}
-        metrics['AUROC'] = self._eval_ood(net, [id_pred, id_conf, id_gt],
-                                          ood_data_loaders,
-                                          postprocessor,
-                                          ood_split='val')
+        metrics['image_auroc'] = 100 * self._eval_ood(
+            net, [id_pred, id_conf, id_gt],
+            ood_data_loaders,
+            postprocessor,
+            ood_split='val')
         metrics['epoch_idx'] = epoch_idx
         return metrics
 

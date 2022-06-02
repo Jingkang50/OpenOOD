@@ -10,4 +10,4 @@ python main.py \
 configs/datasets/Conf_Esti/conf_esti_ood.yml \
 configs/pipelines/test/test_conf_esti.yml \
 configs/networks/conf_esti.yml \
-configs/preprocessors/conf_esti_preprocessor.yml
+configs/preprocessors/base_preprocessor.yml

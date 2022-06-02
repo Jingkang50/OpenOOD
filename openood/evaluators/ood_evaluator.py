@@ -26,7 +26,8 @@ class OODEvaluator(BaseEvaluator):
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                  postprocessor: BasePostprocessor):
         if type(net) is dict:
-            net['backbone'].eval()
+            for subnet in net.values():
+                subnet.eval()
         else:
             net.eval()
         # load training in-distribution data

@@ -15,4 +15,6 @@ python main.py \
 configs/networks/draem.yml \
 configs/pipelines/test/test_draem.yml \
 configs/preprocessors/draem_preprocessor.yml \
-configs/postprocessors/msp.yml
+configs/postprocessors/msp.yml \
+--postprocessor.name dream \
+--evaluator.name ood

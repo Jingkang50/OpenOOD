@@ -12,7 +12,7 @@ def change_content_byline(file_pth, old_str, new_str):
     imglist_root = './data/imglist'
     file_pth = os.path.join(imglist_root, file_pth)
     contents = read_content(file_pth)
-    changed_file = open(file_pth, 'w')
+    changed_file = open(os.path.join(imglist_root, file_pth), 'w')
 
     for line in contents:
         changed_file.write(line.replace(old_str, new_str))

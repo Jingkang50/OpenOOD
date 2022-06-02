@@ -3,7 +3,7 @@
 
 PYTHONPATH='.':$PYTHONPATH \
 python tools/modify_imagelist.py \
---file_pth 'test_tin_ood.txt' \
---old_str 'tin/' \
---new_str 'tin/test/' \
+--file_pth 'digits/test_texture.txt' \
+--old_str ' -1' \
+--new_str ' 0' \
 --change_byline

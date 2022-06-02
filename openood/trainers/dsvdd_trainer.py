@@ -8,8 +8,8 @@ from openood.utils import Config
 
 class AETrainer:
     def __init__(self, net, train_loader, config: Config):
-        self.net = net.to(config.device)
         self.config = config
+        self.net = net
         self.train_loader = train_loader
         if config.optimizer.name == 'adam':
             self.optimizer = optim.Adam(
@@ -32,7 +32,7 @@ class AETrainer:
                                position=0,
                                leave=True):
             batch = next(train_dataiter)
-            inputs = batch['data'].to(self.config.device)
+            inputs = batch['data'].cuda()
             self.optimizer.zero_grad()
             outputs = self.net(inputs)
             scores = torch.sum((outputs - inputs)**2,
@@ -44,14 +44,14 @@ class AETrainer:
             epoch_loss += loss.item()
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
-        metrics['epoch_loss'] = epoch_loss
+        metrics['loss'] = epoch_loss
         return self.net, metrics
 
 
 class DSVDDTrainer:
     def __init__(self, net, train_loader, config: Config) -> None:
-        self.net = net.to(config.device)
         self.config = config
+        self.net = net
         self.train_loader = train_loader
         if config.optimizer.name == 'adam':
             self.optimizer = optim.Adam(
@@ -62,11 +62,11 @@ class DSVDDTrainer:
         self.scheduler = optim.lr_scheduler.MultiStepLR(
             self.optimizer, milestones=config.lr_milestones, gamma=0.1)
 
-    def train_epoch(self, epoch_idx):
-        R = self.config.R
-        if self.config.c == 'None':
-            c = init_center_c(self.train_loader, self.net)
+        if self.config.c == 'None' and self.config.network.name != 'dcae':
+            self.config.c = init_center_c(train_loader, net)
+        self.c = self.config.c
 
+    def train_epoch(self, epoch_idx):
         self.net.train()
         epoch_loss = 0
         train_dataiter = iter(self.train_loader)
@@ -76,38 +76,34 @@ class DSVDDTrainer:
                                position=0,
                                leave=True):
             batch = next(train_dataiter)
-            inputs = batch['data'].to(self.config.device)
+            inputs = batch['data'].cuda()
             self.optimizer.zero_grad()
             outputs = self.net(inputs)
-            dist = torch.sum((outputs - c)**2, dim=1)
-            if self.config.objective == 'soft-boundary':
-                scores = dist - R**2
-                loss = R**2 + (1 / self.nu) * torch.mean(
-                    torch.max(torch.zeros_like(scores), scores))
+            if self.config.network.name != 'dcae':
+                scores = torch.sum((outputs - self.c)**2, dim=1)
+
+            # this is for pre-training the dcae network from the original paper
+            elif self.config.network.name == 'dcae':
+                scores = torch.sum((outputs - inputs)**2,
+                                   dim=tuple(range(1, outputs.dim())))
             else:
-                loss = torch.mean(dist)
+                raise NotImplementedError
+            loss = torch.mean(scores)
             loss.backward()
             self.optimizer.step()
             self.scheduler.step()
-            if (self.config.objective == 'soft-boundary') and (
-                    epoch_idx >= self.config.warm_up_n_epochs):
-                R.data = torch.tensor(get_radius(dist, self.config.nu),
-                                      device=self.config.device)
             epoch_loss += loss.item()
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
-        metrics['epoch_loss'] = epoch_loss
-        hyperparas = {}
-        hyperparas['R'] = R
-        hyperparas['c'] = c
-        return self.net, metrics, hyperparas
+        metrics['loss'] = epoch_loss
+        return self.net, metrics
 
 
 def init_center_c(train_loader, net, eps=0.1):
     """Initialize hypersphere center c as the mean from an initial forward pass
     on the data."""
     n_samples = 0
-    c = torch.zeros(net.rep_dim, device=torch.device('cuda'))
+    first_iter = True
     train_dataiter = iter(train_loader)
     net.eval()
     with torch.no_grad():
@@ -119,6 +115,9 @@ def init_center_c(train_loader, net, eps=0.1):
             batch = next(train_dataiter)
             inputs = batch['data'].cuda()
             outputs = net(inputs)
+            if first_iter:
+                c = torch.zeros(outputs.shape[1]).cuda()
+                first_iter = False
             n_samples += outputs.shape[0]
             c += torch.sum(outputs, dim=0)
 

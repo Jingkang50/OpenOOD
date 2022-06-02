@@ -3,6 +3,8 @@ import torch
 from sklearn.metrics import auc, roc_curve
 from tqdm import tqdm
 
+from openood.evaluators.draem_evaluator import get_auroc
+
 
 class DCAEEvaluator:
     def __init__(self, config) -> None:
@@ -11,7 +13,12 @@ class DCAEEvaluator:
     def report(self, test_metrics):
         print('Complete testing, roc_auc:{}'.format(test_metrics['roc_auc']))
 
-    def eval_ood(self, net, id_loader_dict, ood_loader_dict, epoch_idx=-1):
+    def eval_ood(self,
+                 net,
+                 id_loader_dict,
+                 ood_loader_dict,
+                 postprocessor=None,
+                 epoch_idx=-1):
         target_class = self.config['normal_class']
         id_loader = id_loader_dict['val']
         ood_loader = ood_loader_dict['val']
@@ -73,10 +80,22 @@ class DSVDDEvaluator:
 
     def eval_ood(self,
                  net,
-                 hyperpara,
                  id_loader_dict,
                  ood_loader_dict,
+                 postprocessor=None,
                  epoch_idx=-1):
+        auroc = get_auroc(net, id_loader_dict['test'], ood_loader_dict['val'],
+                          postprocessor)
+        metrics = {'epoch_idx': epoch_idx, 'roc_auc': auroc}
+        return metrics
+
+    def _eval_ood(self,
+                  net,
+                  hyperpara,
+                  id_loader_dict,
+                  ood_loader_dict,
+                  postprocessor=None,
+                  epoch_idx=-1):
         target_class = self.config['normal_class']
         id_loader = id_loader_dict['val']
         ood_loader = ood_loader_dict['val']

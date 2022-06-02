@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/c_ood/-1_cifar_test_godin.sh
+# sh scripts/c_ood/-1_cifar_test_ood_godin.sh
 
 # GPU=1
 # CPU=1
@@ -16,6 +16,7 @@ python main.py \
 configs/datasets/objects/cifar10_ood.yml \
 configs/networks/godinnet.yml \
 configs/pipelines/test/test_ood.yml \
+configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/godin.yml \
 --dataset.image_size 32 \
 --num_workers 8 \

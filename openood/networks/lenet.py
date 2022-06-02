@@ -1,7 +1,6 @@
 import logging
 
 import torch.nn as nn
-from torch._C import import_ir_module
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +32,7 @@ class LeNet(nn.Module):
             nn.ReLU(),
             nn.Linear(in_features=84, out_features=num_classes),
         )
+        self.feature_size = 120
 
     def forward(self, x, return_feature=False, return_feature_list=False):
         feature1 = self.block1(x)

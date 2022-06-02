@@ -19,7 +19,7 @@ from .dsvdd_net import build_network, get_Autoencoder
 from .godinnet import GodinNet
 from .lenet import LeNet
 from .openmax_network import OpenMax
-from .patchcore_net import patchcore_net
+from .patchcorenet import PatchCoreNet
 from .projectionnet import ProjectionNet
 from .reactnet import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
@@ -59,12 +59,13 @@ def get_network(network_config):
                         dropRate=0.0,
                         num_classes=num_classes)
 
-    elif network_config.name == 'wide_resnet_50_2':
-        path = '/home/pengyunwang/.cache/torch/hub/vision-0.9.0'
-        module = torch.hub._load_local(path,
-                                       'wide_resnet50_2',
-                                       pretrained=True)
-        net = patchcore_net(module)
+    elif network_config.name == 'patchcorenet':
+        # path = '/home/pengyunwang/.cache/torch/hub/vision-0.9.0'
+        # module = torch.hub._load_local(path,
+        #                                'wide_resnet50_2',
+        #                                pretrained=True)
+        backbone = get_network(network_config.backbone)
+        net = PatchCoreNet(backbone)
 
     elif network_config.name == 'godinnet':
         backbone = get_network(network_config.backbone)
@@ -86,8 +87,14 @@ def get_network(network_config):
                      shift_trans_type=network_config.shift_trans_type)
 
     elif network_config.name == 'draem':
-        model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
-        model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
+        model = ReconstructiveSubNetwork(in_channels=3,
+                                         out_channels=3,
+                                         base_width=int(
+                                             network_config.image_size / 2))
+        model_seg = DiscriminativeSubNetwork(
+            in_channels=6,
+            out_channels=2,
+            base_channels=int(network_config.image_size / 4))
 
         net = {'generative': model, 'discriminative': model_seg}
 
@@ -189,7 +196,8 @@ def get_network(network_config):
                          network_config['widen_factor'],
                          dropRate=network_config['droprate'])
     elif network_config.name == 'projectionNet':
-        net = ProjectionNet(num_classes=2)
+        backbone = get_network(network_config.backbone)
+        net = ProjectionNet(backbone=backbone, num_classes=2)
 
     else:
         raise Exception('Unexpected Network Architecture!')

@@ -1,6 +1,10 @@
 #!/bin/bash
-# sh scripts/a_anomaly/0_dsvdd_train.sh
+# sh scripts/a_anomaly/4_draem_train_cifar.sh
 
+# GPU=1
+# CPU=1
+# node=30
+# jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
 #srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
@@ -9,14 +13,11 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/objects/cifar10.yml \
 configs/datasets/objects/cifar10_ood.yml \
-configs/pipelines/train/train_dsvdd.yml \
-configs/networks/resnet18_32x32.yml \
-configs/preprocessors/base_preprocessor.yml \
+configs/networks/draem.yml \
+configs/pipelines/train/train_draem.yml \
+configs/preprocessors/draem_preprocessor.yml \
 configs/postprocessors/msp.yml \
---pipeline.name train_ad \
---postprocessor.name dsvdd \
 --evaluator.name ad \
---recorder.name ad \
---optimizer.num_epochs 2 \
---network.pretrained True \
---network.checkpoint 'results/cifar10_resnet18_32x32_base_e100_lr0.1/best.ckpt'
+--dataset.train.batch_size 64 \
+--postprocessor.name dream \
+--optimizer.num_epochs 100

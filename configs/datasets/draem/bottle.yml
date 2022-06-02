@@ -30,16 +30,28 @@ dataset:
 
 ood_dataset:
   name: bottle_ood
-  num_classes: 2
-  image_size: 256
-  num_workers: 4
-
   dataset_class: ImglistDataset
   interpolation: bilinear
+
   batch_size: 1
   shuffle: False
+  num_classes: 2
+  image_size: 256
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
 
-  split_names: [val]
+  split_names: [val, nearood, farood]
   val:
     data_dir: ./data/images/
     imglist_pth: ./data/imglist/mvtec/test/ood/test_bottle_ood.txt
+  nearood:
+    datasets: [test_bottle_ood]
+    test_bottle_ood:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/mvtec/test/ood/test_bottle_ood.txt
+  farood:
+    datasets: [test_bottle_ood]
+    test_bottle_ood:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/mvtec/test/ood/test_bottle_ood.txt

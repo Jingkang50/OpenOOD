@@ -10,7 +10,7 @@ dataset:
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/mvtecList/hazelnut_train_good.txt
+    imglist_pth: ./data/imglist/mvtecList/leather_train_good.txt
     batch_size: 32
     shuffle: False
     interpolation: bilinear
@@ -18,7 +18,7 @@ dataset:
   trainGT:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/mvtecList/hazelnut_ground_truth.txt
+    imglist_pth: ./data/imglist/mvtecList/leather_ground_truth.txt
     batch_size: 32
     shuffle: False
     interpolation: bilinear
@@ -26,7 +26,7 @@ dataset:
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/mvtecList/hazelnut_test_good0.txt
+    imglist_pth: ./data/imglist/mvtecList/leather_test_good0.txt
     batch_size: 32
     shuffle: False
     interpolation: bilinear
@@ -34,7 +34,7 @@ dataset:
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/mvtecList/hazelnut_test_good0.txt
+    imglist_pth: ./data/imglist/mvtecList/leather_test_good0.txt
     batch_size: 32
     shuffle: False
     interpolation: bilinear
@@ -57,7 +57,7 @@ ood_dataset:
     batch_size: 32
     shuffle: True
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/mvtecList/hazelnut_test.txt
+    imglist_pth: ./data/imglist/mvtecList/leather_test.txt
   nearood:
     dataset_class: ImglistDataset
     transform: mnist_train_standard
@@ -67,7 +67,7 @@ ood_dataset:
     datasets: [mvtec]
     mvtec:
       data_dir: ./data/images/
-      imglist_pth: ./data/imglist/mvtecList/hazelnut_test.txt
+      imglist_pth: ./data/imglist/mvtecList/leather_test.txt
   farood:
     dataset_class: ImglistDataset
     transform: mnist_train_standard
@@ -77,4 +77,4 @@ ood_dataset:
     datasets: [mvtec]
     mvtec:
       data_dir: ./data/images/
-      imglist_pth: ./data/imglist/mvtecList/hazelnut_test.txt
+      imglist_pth: ./data/imglist/mvtecList/leather_test.txt

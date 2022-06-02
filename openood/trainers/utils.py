@@ -20,7 +20,6 @@ from .sae_trainer import SAETrainer
 from .vos_trainer import VOSTrainer
 
 
-
 def get_trainer(
     net,
     train_loader: DataLoader,
@@ -30,7 +29,7 @@ def get_trainer(
         'base': BaseTrainer,
         'mixup': MixupTrainer,
         'sae': SAETrainer,
-        'DRAEM': DRAEMTrainer,
+        'draem': DRAEMTrainer,
         'OpenMax': OpenMaxTrainer,
         'kdad': KdadTrainer,
         'conf_esti': Conf_Esti_Trainer,

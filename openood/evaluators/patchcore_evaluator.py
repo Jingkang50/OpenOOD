@@ -34,9 +34,9 @@ class PatchCoreEvaluator(BaseEvaluator):
         dataset_name = self.config.dataset.name
         print(f'Performing inference on {dataset_name} dataset...', flush=True)
         id_pred, id_conf, id_gt = postprocessor.inference(
-            net, id_data_loader['patchTest'])  # not good
+            net, ood_data_loaders['val'])  # not good
         good_pred, good_conf, good_gt = postprocessor.inference(
-            net, id_data_loader['patchTestGood'])  # good
+            net, id_data_loader['test'])  # good
 
         pred = np.concatenate([id_pred, good_pred])
         conf = np.concatenate([id_conf, good_conf])
@@ -58,7 +58,7 @@ class PatchCoreEvaluator(BaseEvaluator):
         count = 0
         self.gt_list_px_lvl = []
 
-        for batch in id_data_loader['patchGT']:
+        for batch in id_data_loader['trainGT']:
             #data = batch['data'].cuda()
             data = []
             label = batch['label'].cuda()

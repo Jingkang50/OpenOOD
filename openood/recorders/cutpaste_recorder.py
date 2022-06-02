@@ -20,7 +20,7 @@ class CutpasteRecorder:
               'AUROC {:.3f}'.format((val_metrics['epoch_idx']),
                                     int(time.time() - self.begin_time),
                                     train_metrics['loss'],
-                                    val_metrics['AUROC']),
+                                    val_metrics['image_auroc']),
               flush=True)
 
     def save_model(self, net, val_metrics):
@@ -32,7 +32,7 @@ class CutpasteRecorder:
                     'model_epoch{}.ckpt'.format(val_metrics['epoch_idx'])))
 
         # enter only if best auroc occurs
-        if val_metrics['AUROC'] >= self.best_auroc:
+        if val_metrics['image_auroc'] >= self.best_auroc:
 
             # delete the depreciated best model
             old_fname = 'best_epoch{}_auroc{}.ckpt'.format(
@@ -42,7 +42,7 @@ class CutpasteRecorder:
 
             # update the best model
             self.best_epoch_idx = val_metrics['epoch_idx']
-            self.best_auroc = val_metrics['AUROC']
+            self.best_auroc = val_metrics['image_auroc']
             torch.save(net.state_dict(),
                        os.path.join(self.output_dir, 'best.ckpt'))
 

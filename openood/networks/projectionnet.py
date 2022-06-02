@@ -4,13 +4,17 @@ from torchvision.models import resnet18
 
 class ProjectionNet(nn.Module):
     def __init__(self,
-                 pretrained=True,
+                 backbone,
                  head_layers=[512, 512, 512, 512, 512, 512, 512, 512, 128],
                  num_classes=2):
         super(ProjectionNet, self).__init__()
-        self.resnet18 = resnet18(pretrained=pretrained)
+        self.backbone = backbone
 
-        last_layer = 512
+        # use res18 pretrained model if none is given
+        # self.backbone=resnet18(pretrained=True)
+
+        # penultimate layer feature size
+        last_layer = backbone.feature_size
         sequential_layers = []
         for num_neurons in head_layers:
             sequential_layers.append(nn.Linear(last_layer, num_neurons))
@@ -20,12 +24,12 @@ class ProjectionNet(nn.Module):
 
         # the last layer without activation
         head = nn.Sequential(*sequential_layers)
-        self.resnet18.fc = nn.Identity()
         self.head = head
         self.out = nn.Linear(last_layer, num_classes)
 
     def forward(self, x):
-        embeds = self.resnet18(x)
+        # penultimate layer feature
+        _, embeds = self.backbone(x, return_feature=True)
         tmp = self.head(embeds)
         logits = self.out(tmp)
         return embeds, logits
