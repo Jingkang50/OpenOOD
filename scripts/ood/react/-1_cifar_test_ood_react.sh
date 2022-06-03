@@ -15,6 +15,7 @@ python main.py \
 configs/datasets/objects/cifar10_ood.yml \
 configs/networks/reactnet.yml \
 configs/pipelines/test/test_ood.yml \
+configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/react.yml \
 --num_workers 8 \
 --dataset.val.batch_size 32 \

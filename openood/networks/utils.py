@@ -21,7 +21,7 @@ from .godin_net import GodinNet
 from .lenet import LeNet
 from .opengan import Discriminator, Generator
 from .openmax_net import OpenMax
-from .patchcore_net import patchcore_net
+from .patchcore_net import PatchcoreNet
 from .projection_net import ProjectionNet
 from .react_net import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
@@ -60,24 +60,31 @@ def get_network(network_config):
                         dropRate=0.0,
                         num_classes=num_classes)
 
+    elif network_config.name == 'patchcore_net':
+        # path = '/home/pengyunwang/.cache/torch/hub/vision-0.9.0'
+        # module = torch.hub._load_local(path,
+        #                                'wide_resnet50_2',
+        #                                pretrained=True)
+        backbone = get_network(network_config.backbone)
+        net = PatchcoreNet(backbone)
     elif network_config.name == 'wide_resnet_50_2':
         module = torch.hub.load('pytorch/vision:v0.9.0',
                                 'wide_resnet50_2',
                                 pretrained=True)
-        net = patchcore_net(module)
+        net = PatchcoreNet(module)
 
-    elif network_config.name == 'godinnet':
+    elif network_config.name == 'godin_net':
         backbone = get_network(network_config.backbone)
         net = GodinNet(backbone=backbone,
                        feature_size=backbone.feature_size,
                        num_classes=num_classes,
                        similarity_measure=network_config.similarity_measure)
 
-    elif network_config.name == 'reactnet':
+    elif network_config.name == 'react_net':
         backbone = get_network(network_config.backbone)
         net = ReactNet(backbone)
 
-    elif network_config.name == 'csinet':
+    elif network_config.name == 'csi_net':
         backbone = get_network(network_config.backbone)
         net = CSINet(backbone,
                      feature_size=backbone.feature_size,
@@ -86,8 +93,14 @@ def get_network(network_config):
                      shift_trans_type=network_config.shift_trans_type)
 
     elif network_config.name == 'draem':
-        model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
-        model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
+        model = ReconstructiveSubNetwork(in_channels=3,
+                                         out_channels=3,
+                                         base_width=int(
+                                             network_config.image_size / 2))
+        model_seg = DiscriminativeSubNetwork(
+            in_channels=6,
+            out_channels=2,
+            base_channels=int(network_config.image_size / 4))
 
         net = {'generative': model, 'discriminative': model_seg}
 
@@ -175,7 +188,8 @@ def get_network(network_config):
         net = build_network(network_config.type)
 
     elif network_config.name == 'projectionNet':
-        net = ProjectionNet(num_classes=2)
+        backbone = get_network(network_config.backbone)
+        net = ProjectionNet(backbone=backbone, num_classes=2)
 
     else:
         raise Exception('Unexpected Network Architecture!')

@@ -10,4 +10,4 @@ python main.py \
 configs/datasets/digits/mnist_ood.yml \
 configs/pipelines/test/test_vos.yml \
 configs/networks/vos_net.yml \
-configs/preprocessors/vos_preprocessor.yml
+configs/preprocessors/base_preprocessor.yml

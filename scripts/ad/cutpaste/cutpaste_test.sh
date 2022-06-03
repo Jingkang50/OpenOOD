@@ -11,9 +11,10 @@ PYTHONPATH='.':$PYTHONPATH \
 #--cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/mvtec/bottle.yml \
+--config configs/datasets/draem/bottle.yml \
 configs/networks/cutpaste.yml \
 configs/pipelines/test/test_cutpaste.yml \
 configs/postprocessors/cutpaste.yml \
 configs/preprocessors/cutpaste_preprocessor.yml \
---network.checkpoint "results/bottle_projectionNet_cutpaste_e5_lr0.03/best.ckpt"
+--network.checkpoint "results/bottle_projectionNet_cutpaste_e100_lr0.03/best_epoch35_auroc93.08219178082192.ckpt" \
+--evaluator.name ad

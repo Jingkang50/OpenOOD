@@ -18,3 +18,7 @@ pipeline:
 
 evaluator:
   name: draem
+
+recorder:
+  save_scores: True
+  save_csv: True

@@ -1,4 +1,4 @@
-exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'"
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'"
 save_output: True
 force_merge: False
 normal_class: 3
@@ -12,7 +12,9 @@ machine_rank: 0
 
 lr_milestones: [50]
 weight_decay: 0.5e-6
-device: cuda
+
+R: 0
+c: None
 
 pipeline:
   name: train_ad
@@ -22,6 +24,7 @@ trainer:
   name: dcae
 recorder:
   name: dcae
+  save_all_models: False
 optimizer:
   name: adam
   num_epochs: 150

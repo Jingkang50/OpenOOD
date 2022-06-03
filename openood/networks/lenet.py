@@ -30,6 +30,7 @@ class LeNet(nn.Module):
         self.classifier1 = nn.Linear(in_features=120, out_features=84)
         self.relu = nn.ReLU()
         self.classifier2 = nn.Linear(in_features=84, out_features=num_classes)
+        self.feature_size = 120
 
     def get_fc(self):
         fc = self.classifier2

@@ -1,5 +1,6 @@
 from openood.utils import Config
 
+from .ad_recorder import ADRecorder
 from .arpl_recorder import ARPLRecorder
 from .base_recorder import BaseRecorder
 from .conf_esti_recorder import Conf_Esti_Recorder
@@ -21,6 +22,7 @@ def get_recorder(config: Config):
         'kdad': KdadRecorder,
         'arpl': ARPLRecorder,
         'cutpaste': CutpasteRecorder,
+        'ad': ADRecorder,
     }
 
     return recorders[config.recorder.name](config)

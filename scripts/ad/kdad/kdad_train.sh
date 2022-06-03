@@ -11,4 +11,4 @@ python main.py \
 configs/datasets/KDAD/kdad_cifar10_ood.yml \
 configs/pipelines/train/train_kdad.yml \
 configs/networks/kdad_vgg.yml \
-configs/preprocessors/kdad_preprocessor.yml
+configs/preprocessors/base_preprocessor.yml
