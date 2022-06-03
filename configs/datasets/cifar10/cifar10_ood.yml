@@ -13,27 +13,27 @@ ood_dataset:
 
   split_names: [val, nearood, farood]
   val:
-    data_dir: ./data/images/
-    imglist_pth: ./data/imglist/objects/val_cifar100.txt
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/cifar10/val_cifar100.txt
   nearood:
     datasets: [cifar100, tin]
     cifar100:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/objects/test_cifar100.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_cifar100.txt
     tin:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/objects/test_tin.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_tin.txt
   farood:
-    datasets: [mnist, svhn, texture, cifar100c]
+    datasets: [mnist, svhn, texture, place365]
     mnist:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/objects/test_mnist.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_mnist.txt
     svhn:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/objects/test_svhn.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_svhn.txt
     texture:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/objects/test_texture.txt
-    cifar100c:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/objects/test_cifar100c.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_texture.txt
+    place365:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_places365.txt

@@ -22,6 +22,4 @@ configs/preprocessors/cutpaste_preprocessor.yml \
 --evaluator.name ad \
 --optimizer.num_epochs 5 \
 --recorder.name ad \
---num_workers 4 \
---network.backbone.name lenet \
---network.backbone.pretrained False
+--num_workers 4

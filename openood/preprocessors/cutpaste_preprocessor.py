@@ -5,7 +5,7 @@ import torch
 import torchvision.transforms as tvs_trans
 
 from .base_preprocessor import BasePreprocessor
-from .transform import Convert, center_crop_dict, normalization_dict
+from .transform import Convert, normalization_dict
 
 
 class CutPastePreprocessor(BasePreprocessor):
@@ -18,7 +18,7 @@ class CutPastePreprocessor(BasePreprocessor):
 
         dataset_name = config.dataset.name.split('_')[0]
         image_size = config.dataset.image_size
-        pre_size = center_crop_dict[image_size]
+        pre_size = config.dataset.pre_size
         if dataset_name in normalization_dict.keys():
             mean = normalization_dict[dataset_name][0]
             std = normalization_dict[dataset_name][1]
