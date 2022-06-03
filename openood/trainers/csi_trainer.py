@@ -17,7 +17,7 @@ from tqdm import tqdm
 from openood.utils import Config
 
 
-class CsiTrainer:
+class CSITrainer:
     def __init__(self, net: nn.Module, train_loader: DataLoader,
                  config: Config) -> None:
         self.net = net

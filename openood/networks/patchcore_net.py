@@ -6,9 +6,9 @@ import torch.nn as nn
 logger = logging.getLogger(__name__)
 
 
-class patchcore_net(nn.Module):
+class PatchcoreNet(nn.Module):
     def __init__(self, backbone):
-        super(patchcore_net, self).__init__()
+        super(PatchcoreNet, self).__init__()
 
         def hook_t(module, input, output):
             self.features.append(output)

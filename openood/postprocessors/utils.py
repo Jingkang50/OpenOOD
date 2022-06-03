@@ -3,7 +3,9 @@ from openood.utils import Config
 from .base_postprocessor import BasePostprocessor
 from .conf_branch_postprocessor import ConfBranchPostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
+from .draem_postprocessor import DRAEMPostprocessor
 from .dropout_postprocessor import DropoutPostProcessor
+from .dsvdd_postprocessor import DSVDDPostprocessor
 from .ebo_postprocessor import EBOPostprocessor
 from .ensemble_postprocessor import EnsemblePostprocessor
 from .gmm_postprocessor import GMMPostprocessor
@@ -44,6 +46,8 @@ def get_postprocessor(config: Config):
         'temperature_scaling': TemperatureScalingPostprocessor,
         'ensemble': EnsemblePostprocessor,
         'dropout': DropoutPostProcessor,
+        'dream': DRAEMPostprocessor,
+        'dsvdd': DSVDDPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)

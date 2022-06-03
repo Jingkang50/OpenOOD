@@ -60,18 +60,20 @@ class PatchcorePostprocessor(BasePostprocessor):
         self.model.eval()  # to stop running_var move (maybe not critical)
         self.embedding_list = []
 
-        # load index
-        if os.path.isfile(os.path.join('./results/patch/', 'index.faiss')):
-            self.index = faiss.read_index(
-                os.path.join('./results/patch/', 'index.faiss'))
-            if torch.cuda.is_available():
-                res = faiss.StandardGpuResources()
-                self.index = faiss.index_cpu_to_gpu(res, 0, self.index)
-            self.init_results_list()
-            return
+        if (self.config.network.load_cached_faiss):
+            path = self.config.output_dir
+            # load index
+            if os.path.isfile(os.path.join(path, 'index.faiss')):
+                self.index = faiss.read_index(os.path.join(
+                    path, 'index.faiss'))
+                if torch.cuda.is_available():
+                    res = faiss.StandardGpuResources()
+                    self.index = faiss.index_cpu_to_gpu(res, 0, self.index)
+                self.init_results_list()
+                return
 
         # training step
-        train_dataiter = iter(id_loader_dict['patch'])
+        train_dataiter = iter(id_loader_dict['train'])
 
         for train_step in tqdm(range(1,
                                      len(train_dataiter) + 1),
@@ -160,7 +162,19 @@ class PatchcorePostprocessor(BasePostprocessor):
         conf = torch.tensor(conf, dtype=torch.float32)
         conf = conf.cuda()
 
-        return pred, conf
+        pred_list_img_lvl = []
+
+        for patchscore in np.concatenate([conf.cpu().tolist()]):
+            N_b = patchscore[np.argmax(patchscore[:, 0])]
+            w = (1 - (np.max(np.exp(N_b)) / np.sum(np.exp(N_b))))
+            score = w * max(patchscore[:, 0])  # Image-level score
+
+            pred_list_img_lvl.append(score)
+
+        if self.config.evaluator.name == 'patch':
+            return pred, conf
+        else:
+            return pred, -1 * torch.tensor(pred_list_img_lvl).cuda()
 
 
 # Copyright 2017 Google Inc.
@@ -312,7 +326,7 @@ class kCenterGreedy(SamplingMethod):
 
         new_batch = []
 
-        for _ in range(N):
+        for _ in tqdm(range(N)):
             if self.already_selected is None:
                 # Initialize centers with a randomly selected datapoint
                 ind = np.random.choice(np.arange(self.n_obs))

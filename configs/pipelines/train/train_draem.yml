@@ -26,5 +26,5 @@ optimizer:
 
 recorder:
   name: draem
-  best_model_basis: image_auc
+  best_model_basis: image_auroc
   save_all_models: False

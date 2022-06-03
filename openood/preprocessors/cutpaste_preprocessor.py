@@ -5,14 +5,7 @@ import torch
 import torchvision.transforms as tvs_trans
 
 from .base_preprocessor import BasePreprocessor
-
-
-class Convert:
-    def __init__(self, mode='RGB'):
-        self.mode = mode
-
-    def __call__(self, image):
-        return image.convert(self.mode)
+from .transform import Convert, normalization_dict
 
 
 class CutPastePreprocessor(BasePreprocessor):
@@ -23,17 +16,23 @@ class CutPastePreprocessor(BasePreprocessor):
         self.area_ratio = self.args.area_ratio
         self.aspect_ratio = self.args.aspect_ratio
 
-        mean = [0.5, 0.5, 0.5]
-        std = [0.5, 0.5, 0.5]
+        dataset_name = config.dataset.name.split('_')[0]
+        image_size = config.dataset.image_size
+        pre_size = config.dataset.pre_size
+        if dataset_name in normalization_dict.keys():
+            mean = normalization_dict[dataset_name][0]
+            std = normalization_dict[dataset_name][1]
+        else:
+            mean = [0.485, 0.456, 0.406]
+            std = [0.229, 0.224, 0.225]
 
-        # TODO: size not fixed
         self.before_preprocessor_transform = tvs_trans.Compose([
             Convert('RGB'),
             tvs_trans.Resize(
-                256, interpolation=tvs_trans.InterpolationMode.BILINEAR),
-            tvs_trans.CenterCrop(256),
+                pre_size, interpolation=tvs_trans.InterpolationMode.BILINEAR),
+            tvs_trans.CenterCrop(image_size),
             tvs_trans.RandomHorizontalFlip(),
-            tvs_trans.RandomCrop(256, padding=4),
+            tvs_trans.RandomCrop(image_size, padding=4),
         ])
         self.after_preprocessor_transform = tvs_trans.Compose([
             tvs_trans.ToTensor(),

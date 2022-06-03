@@ -15,4 +15,7 @@ python main.py \
 configs/networks/draem.yml \
 configs/pipelines/train/train_draem.yml \
 configs/preprocessors/draem_preprocessor.yml \
-configs/postprocessors/msp.yml
+configs/postprocessors/msp.yml \
+--evaluator.name ad \
+--postprocessor.name dream \
+--optimizer.num_epochs 2

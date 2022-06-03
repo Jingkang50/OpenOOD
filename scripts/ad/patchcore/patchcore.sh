@@ -9,10 +9,11 @@
 PYTHONPATH='.':$PYTHONPATH \
 
 python main.py \
---config configs/datasets/digits/MV.yml \
-configs/networks/wide_resnet_50_2.yml \
+--config configs/datasets/draem/bottle.yml \
+configs/networks/patchcorenet.yml \
 configs/pipelines/test/test_patchcore.yml \
 configs/postprocessors/patch.yml \
-configs/preprocessors/patch_preprocessor.yml \
+configs/preprocessors/base_preprocessor.yml \
+--evaluator.name ad \
 --num_workers 4 \
 --force_merge True
