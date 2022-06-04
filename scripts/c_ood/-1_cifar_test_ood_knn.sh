@@ -13,14 +13,14 @@
 python main.py \
 --config configs/datasets/objects/cifar10.yml \
 configs/datasets/objects/cifar10_ood.yml \
-configs/networks/reactnet.yml \
+configs/networks/resnet18_32x32.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/pipelines/test/test_ood.yml \
-configs/postprocessors/react.yml \
+configs/postprocessors/knn.yml \
 --num_workers 8 \
 --dataset.val.batch_size 32 \
---network.pretrained False \
---network.backbone.name resnet18_32x32 \
---network.backbone.pretrained True \
---network.backbone.checkpoint 'results/cifar10_resnet18_32x32_base_e100_lr0.1/best.ckpt' \
+--dataset.train.batch_size 32 \
+--dataset.test.batch_size 32 \
+--network.pretrained True \
+--network.checkpoint 'results/cifar10_resnet18_32x32_base_e100_lr0.1/best.ckpt' \
 --save_output True

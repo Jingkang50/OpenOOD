@@ -12,6 +12,7 @@ from .train_arplgan_pipeline import TrainARPLGANPipeline
 from .train_dsvdd_pipeline import TrainDSVDDPipeline
 from .train_opengan_pipeline import TrainOpenGanPipeline
 from .train_pipeline import TrainPipeline
+from .val_react_pipeline import ValReActPipeline
 
 
 def get_pipeline(config: Config):
@@ -27,7 +28,8 @@ def get_pipeline(config: Config):
         'train_dsvdd': TrainDSVDDPipeline,
         'train_opengan': TrainOpenGanPipeline,
         'train_arplgan': TrainARPLGANPipeline,
-        'test_mos': TestMOSPipeline
+        'test_mos': TestMOSPipeline,
+        'val_react_param': ValReActPipeline
     }
 
     return pipelines[config.pipeline.name](config)

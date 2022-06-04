@@ -32,6 +32,7 @@ class TrainPipeline:
             recorder = get_recorder(self.config)
 
             print('Start training...', flush=True)
+
         for epoch_idx in range(1, self.config.optimizer.num_epochs + 1):
             # train and eval the model
             net, train_metrics = trainer.train_epoch(epoch_idx)
