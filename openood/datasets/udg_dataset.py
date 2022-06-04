@@ -83,7 +83,8 @@ class ImagenameDataset(BaseDataset):
         mean, std = [[0.5, 0.5, 0.5], [0.5, 0.5, 0.5]]
         self.transform_image = get_transforms(mean, std, stage, interpolation,
                                               image_size)
-        # basic image transformation for online clustering (without augmentations)
+        # basic image transformation for online clustering
+        # (without augmentations)
         self.transform_aux_image = get_transforms(mean, std, 'test',
                                                   interpolation, image_size)
 
@@ -144,7 +145,8 @@ class ImagenameDataset(BaseDataset):
                 soft_label.fill_(0)
                 soft_label[sample['label']] = 1
             sample['soft_label'] = soft_label
-            # Deep Clustering Aux Label Assignment for both labeled/unlabeled data
+            # Deep Clustering Aux Label Assignment for
+            # both labeled/unlabeled data
             sample['cluster_id'] = self.cluster_id[index]
             sample['cluster_reweight'] = self.cluster_reweight[index]
 

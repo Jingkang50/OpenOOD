@@ -26,6 +26,10 @@ class CutPastePostprocessor:
                                    desc='Train embeds:'):
                 batch = next(train_dataiter)
                 data = torch.cat(batch['data'], 0)
+                if (np.array(data).shape[0] == 4):
+                    data = data.numpy().tolist()
+                    data = data[0:len(data) // 2]
+                    data = torch.Tensor(data)
                 data = data.cuda()
                 embed, logit = net(data)
                 train_embed.append(embed.cuda())
@@ -48,7 +52,7 @@ class CutPastePostprocessor:
         density = GaussianDensityTorch()
         density.fit(self.train_embeds)
         distances = density.predict(embeds)
-
+        distances = 200 - distances
         return pred, distances
 
     def inference(self, net: nn.Module, data_loader: DataLoader):
@@ -56,7 +60,8 @@ class CutPastePostprocessor:
         for batch in data_loader:
             data = torch.cat(batch['data'], 0)
             data = data.cuda()
-            label = torch.arange(2)
+            # label = torch.arange(2)
+            label = torch.tensor([0, -1])
             label = label.repeat_interleave(len(batch['data'][0])).cuda()
             pred, conf = self.postprocess(net, data)
             for idx in range(len(data)):

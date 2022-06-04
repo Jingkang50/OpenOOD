@@ -43,9 +43,9 @@ def launch(
         num_gpus_per_machine (int): number of GPUs per machine
         num_machines (int): the total number of machines
         machine_rank (int): the rank of this machine
-        dist_url (str): url to connect to for distributed jobs, including protocol
-                       e.g. "tcp://127.0.0.1:8686".
-                       Can be set to "auto" to automatically select a free port on localhost
+        dist_url (str): url to connect to for distributed jobs,
+        including protocol e.g. "tcp://127.0.0.1:8686".
+        Can be set to "auto" to automatically select a free port on localhost
         timeout (timedelta): timeout of the distributed workers
         args (tuple): arguments passed to main_func
     """
@@ -55,13 +55,15 @@ def launch(
         # TODO prctl in spawned processes
 
         if dist_url == 'auto':
-            assert num_machines == 1, 'dist_url=auto not supported in multi-machine jobs.'
+            assert num_machines == 1, \
+            'dist_url=auto not supported in multi-machine jobs.'
             port = _find_free_port()
             dist_url = f'tcp://127.0.0.1:{port}'
         if num_machines > 1 and dist_url.startswith('file://'):
             logger = logging.getLogger(__name__)
             logger.warning(
-                'file:// is not a reliable init_method in multi-machine jobs. Prefer tcp://'
+                'file:// is not a reliable init_method in multi-machine jobs.'
+                'Prefer tcp://'
             )
 
         mp.spawn(
@@ -108,7 +110,8 @@ def _distributed_worker(
         logger.error('Process group URL: {}'.format(dist_url))
         raise e
 
-    # Setup the local process group (which contains ranks within the same machine)
+    # Setup the local process group
+    # (which contains ranks within the same machine)
     assert comm._LOCAL_PROCESS_GROUP is None
     num_machines = world_size // num_gpus_per_machine
     for i in range(num_machines):
@@ -121,7 +124,8 @@ def _distributed_worker(
     assert num_gpus_per_machine <= torch.cuda.device_count()
     torch.cuda.set_device(local_rank)
 
-    # synchronize is needed here to prevent a possible timeout after calling init_process_group
+    # synchronize is needed here to prevent a possible timeout
+    # after calling init_process_group
     # See: https://github.com/facebookresearch/maskrcnn-benchmark/issues/172
     comm.synchronize()
 

@@ -2,13 +2,12 @@ from re import I, S
 
 import numpy as np
 import torch
-import torchvision.transforms as tfm
+import torchvision.transforms as tvs_trans
 from PIL import Image as Image
 from PIL import ImageEnhance, ImageOps
 
 from .base_preprocessor import BasePreprocessor
-from .transform import (Convert, center_crop_dict, interpolation_modes,
-                        normalization_dict)
+from .transform import Convert, interpolation_modes, normalization_dict
 
 resize_list = {
     'mnist': 32,
@@ -23,15 +22,15 @@ class PixMixPreprocessor(BasePreprocessor):
         dataset_name = config.dataset.name.split('_')[0]
         image_size = config.dataset.image_size
         self.args = self.config.preprocessor.preprocessor_args
-        self.tensorize = tfm.ToTensor()
+        self.tensorize = tvs_trans.ToTensor()
         if dataset_name in normalization_dict.keys():
             mean = normalization_dict[dataset_name][0]
             std = normalization_dict[dataset_name][1]
         else:
             mean = [0.5, 0.5, 0.5]
             std = [0.5, 0.5, 0.5]
-        self.normalize = tfm.Normalize(mean, std)  # ? use which one ?
-        pre_size = center_crop_dict[image_size]
+        self.normalize = tvs_trans.Normalize(mean, std)  # ? use which one ?
+        pre_size = config.dataset.pre_size
         interpolation = interpolation_modes[
             config.dataset['train'].interpolation]
 
@@ -43,9 +42,9 @@ class PixMixPreprocessor(BasePreprocessor):
             tvs_trans.RandomCrop(image_size, padding=4),
         ])
 
-        self.mixing_set_transform = tfm.Compose([
-            tfm.Resize(resize_list[dataset_name]),
-            tfm.RandomCrop(image_size)
+        self.mixing_set_transform = tvs_trans.Compose([
+            tvs_trans.Resize(resize_list[dataset_name]),
+            tvs_trans.RandomCrop(image_size)
         ])
 
         with open(self.args.mixing_set_dir, 'r') as f:

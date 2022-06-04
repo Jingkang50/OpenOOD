@@ -60,7 +60,8 @@ def mixup_data(x, y, l):
 
 def mixup_criterion_group(criterion, pred, y_a, y_b, l, group_slices):
     return l * calc_group_softmax_loss(criterion, pred, y_a, group_slices) \
-           + (1 - l) * calc_group_softmax_loss(criterion, pred, y_b, group_slices)
+           + (1 - l) * calc_group_softmax_loss(criterion,
+                                               pred, y_b, group_slices)
 
 
 def calc_group_softmax_loss(criterion, logits, labels, group_slices):

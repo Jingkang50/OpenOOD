@@ -1,5 +1,3 @@
-from re import S
-
 import torch
 from numpy import load
 from torch.utils.data import DataLoader
@@ -17,13 +15,12 @@ def get_dataloader(config: Config):
     dataset_config = config.dataset
     dataloader_dict = {}
     for split in dataset_config.split_names:
-        split_config = dataset_config[split]
         # currently we only support ImglistDataset
-        preprocessor = get_preprocessor(
-            config, split
-        )  # all script file need to pass in train_preprocessor config file
-        data_aux_preprocessor = TestStandardPreProcessor(
-         config,'test')  # for data_aux data augmentation
+        split_config = dataset_config[split]
+        # all script file need to pass in train_preprocessor config file
+        preprocessor = get_preprocessor(config, split)
+        # for data_aux data augmentation
+        data_aux_preprocessor = TestStandardPreProcessor(config, 'test')
         CustomDataset = eval(split_config.dataset_class)
         dataset = CustomDataset(name=dataset_config.name + '_' + split,
                                 split=split,
@@ -56,8 +53,8 @@ def get_ood_dataloader(config: Config):
     dataloader_dict = {}
     for split in ood_config.split_names:
         split_config = ood_config[split]
-        preprocessor = get_preprocessor(config,split)
-        data_aux_preprocessor = TestStandardPreProcessor(config,'test')
+        preprocessor = get_preprocessor(config, split)
+        data_aux_preprocessor = TestStandardPreProcessor(config, 'test')
         if split == 'val':
             # validation set
             dataset = CustomDataset(

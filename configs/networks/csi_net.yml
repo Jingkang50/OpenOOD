@@ -1,0 +1,16 @@
+network:
+  name: csi_net
+  num_classes: '@{dataset.num_classes}'
+  image_size: '@{dataset.image_size}'
+  pretrained: True
+  checkpoint: ./results/cifar10_csinet_csi_step2_e100_lr0.1/best.ckpt
+  num_gpus: '@{num_gpus}'
+  simclr_dim: 128               # Dimension of simclr layer
+  shift_trans_type: rotation    # choice ['rotation', 'cutperm', 'none']
+
+  backbone:
+    name: resnet18_32x32
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    pretrained: False
+    num_gpus: '@{num_gpus}'
