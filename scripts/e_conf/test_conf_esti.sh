@@ -21,3 +21,4 @@ configs/pipelines/test/test_ood.yml \
 configs/networks/conf_net.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/conf.yml 
+--evaluator conf_branch
