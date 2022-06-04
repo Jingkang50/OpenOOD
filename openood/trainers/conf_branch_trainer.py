@@ -16,7 +16,7 @@ class ConfBranchTrainer:
         self.prediction_criterion = nn.NLLLoss().cuda()
         self.optimizer = torch.optim.SGD(
             net.parameters(),
-            lr=config.optimizer['learning_rate'],
+            lr=config.optimizer['lr'],
             momentum=config.optimizer['momentum'],
             nesterov=config.optimizer['nesterov'],
             weight_decay=config.optimizer['weight_decay'])
@@ -44,7 +44,8 @@ class ConfBranchTrainer:
                 encode_onehot(labels, self.config.num_classes))
             self.net.zero_grad()
 
-            pred_original, confidence = self.net(images)
+            pred_original, confidence = self.net(images,
+                                                 return_confidence=True)
             pred_original = F.softmax(pred_original, dim=-1)
             confidence = torch.sigmoid(confidence)
             eps = self.config.trainer['eps']

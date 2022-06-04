@@ -1,6 +1,5 @@
 #!/bin/bash
-# sh scripts/ad/dsvdd/dsvdd_train.sh
-
+# sh scripts/ood/conf_branch/cifar10_test_conf_branch.sh
 
 PYTHONPATH='.':$PYTHONPATH \
 #srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
@@ -10,14 +9,11 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/cifar10/cifar10.yml \
 configs/datasets/cifar10/cifar10_ood.yml \
-configs/pipelines/train/train_dsvdd.yml \
-configs/networks/resnet18_32x32.yml \
+configs/pipelines/test/test_ood.yml \
+configs/networks/conf_branch.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/msp.yml \
---pipeline.name train_ad \
---postprocessor.name dsvdd \
---evaluator.name ad \
---recorder.name ad \
---optimizer.num_epochs 2 \
+configs/postprocessors/conf_branch.yml \
+--network.backbone.name resnet18_32x32 \
+--network.backbone.pretrained False \
 --network.pretrained True \
---network.checkpoint 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt'
+--network.checkpoint 'results/cifar10_conf_branch_net_conf_branch_e2_lr0.1/best.pth'
