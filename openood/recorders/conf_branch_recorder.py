@@ -5,7 +5,7 @@ from pathlib import Path
 import torch
 
 
-class Conf_Esti_Recorder:
+class ConfBranchRecorder:
     def __init__(self, config) -> None:
         self.config = config
 

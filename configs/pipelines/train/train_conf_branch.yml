@@ -1,4 +1,4 @@
-exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'"
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
 output_dir: ./results/
 save_output: True
 force_merge: False # disabled if 'save_output' is False
@@ -15,28 +15,25 @@ pipeline:
   name: train
 
 trainer:
-  name: conf_esti
+  name: conf_branch
   budget: 0.3
   lmbda: 0.1
   eps: 1.0e-12
 
 evaluator:
-  name: conf_esti
+  name: base
 
 optimizer:
   num_epochs: 200
-  learning_rate: 0.1
+  lr: 0.1
   momentum: 0.9
   nesterov: True
   weight_decay: 5.0e-4
 
 recorder:
-  name: conf_esti
+  name: conf_branch
   save_all_models: False
 
 scheduler:
   milestones: [80, 120] #[60,120,160] for cifar10, [80, 120] for svhn
   gamma: 0.1 #0.2 for cifar10, 0.1 for svhn
-
-preprocessor:
-  name: base

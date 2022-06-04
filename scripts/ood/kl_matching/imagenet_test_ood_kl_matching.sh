@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/c_ood/0_mnist_test_fsood_msp.sh
+# sh scripts/ood/kl_matching/imagenet_test_ood_kl_matching.sh
 
 GPU=1
 CPU=1
@@ -15,6 +15,6 @@ python main.py \
 configs/datasets/imagenet/imagenet_ood.yml \
 configs/networks/vit.yml \
 configs/pipelines/test/test_ood.yml \
-configs/postprocessors/maxlogit.yml \
+configs/postprocessors/kl_matching.yml \
 --num_workers 4 \
 --mark 0

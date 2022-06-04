@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/c_ood/0_mnist_test_fsood_msp.sh
+# sh scripts/ood/residual/imagenet_test_ood_residual.sh
 
 GPU=1
 CPU=1

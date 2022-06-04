@@ -26,7 +26,7 @@ from .vim_postprocessor import VIMPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
-        'conf': ConfBranchPostprocessor,
+        'conf_branch': ConfBranchPostprocessor,
         'msp': BasePostprocessor,
         'ebo': EBOPostprocessor,
         'odin': ODINPostprocessor,

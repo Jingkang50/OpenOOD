@@ -1,9 +1,9 @@
 network:
-  name: conf_net
+  name: conf_branch_net
   num_classes: '@{dataset.num_classes}'
-  pretrained: True # In training pipeline:"False"; In testing pipeline:"True"
+  pretrained: False # In training pipeline:"False"; In testing pipeline:"True"
   num_gpus: '@{num_gpus}'
-  checkpoint: ./results/mnist_conf_net_conf_esti/best.pth
+  checkpoint: none
   backbone:
     name: lenet
     num_classes: '@{dataset.num_classes}'
