@@ -285,7 +285,7 @@ class ResNetV2(nn.Module):
 
     def forward(self, x, layer_index=None, return_feature=False):
         if return_feature:
-            return self.intermediate_forward(x, 5)[..., 0, 0]
+            return x, self.intermediate_forward(x, 5)[..., 0, 0]
         if layer_index is not None:
             return self.intermediate_forward(x, layer_index)
 

@@ -13,7 +13,7 @@ class ConfBranchPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        output, conf = net(data)
+        output, conf = net(data, return_confidence=True)
         conf = torch.sigmoid(conf)
         _, pred = torch.max(output, dim=1)
         return pred, conf

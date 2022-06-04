@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/c_ood/0_mnist_test_fsood_msp.sh
+# sh scripts/ood/vim/imagenet_test_ood_vim.sh
 
 GPU=1
 CPU=1
@@ -15,6 +15,7 @@ python main.py \
 configs/datasets/imagenet/imagenet_ood.yml \
 configs/networks/vit.yml \
 configs/pipelines/test/test_ood.yml \
-configs/postprocessors/kl_matching.yml \
+configs/postprocessors/vim.yml \
 --num_workers 4 \
+--network.checkpoint ./checkpoints/vit-base-p16_in21k-pre-3rdparty_ft-64xb64_in1k-384_20210928-98e8652b.pth \
 --mark 0

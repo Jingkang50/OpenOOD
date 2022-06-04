@@ -5,13 +5,15 @@ force_merge: False
 
 num_gpus: 1
 num_workers: 0
+num_machines: 1
+machine_rank: 0
 
 pipeline:
   name: train
 
 trainer:
   name: mos
-  group_config: group_config/taxonomy_level0.npy
+  group_config: results/_mos_file/taxonomy_level0.npy
   num_group: 8
 
 evaluator:

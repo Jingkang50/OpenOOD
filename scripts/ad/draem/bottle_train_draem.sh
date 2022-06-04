@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/a_anomaly/4_draem_test.sh
+# sh scripts/ad/draem/bottle_train_draem.sh
 
 # GPU=1
 # CPU=1
@@ -13,8 +13,9 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/draem/bottle.yml \
 configs/networks/draem.yml \
-configs/pipelines/test/test_draem.yml \
+configs/pipelines/train/train_draem.yml \
 configs/preprocessors/draem_preprocessor.yml \
 configs/postprocessors/msp.yml \
 --postprocessor.name dream \
---evaluator.name ood
+--evaluator.name ad \
+--optimizer.num_epochs 2
