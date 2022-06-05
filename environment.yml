@@ -23,3 +23,6 @@ dependencies:
     - torchlars==0.1.2
     - mmcv==1.4.2
     - mmcls==0.17.0
+    - Cython==0.29.30
+    - libmr==0.1.9
+    - faiss-gpu==1.7.2
