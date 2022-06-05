@@ -16,7 +16,7 @@ pipeline:
   name: test_ad
 
 evaluator:
-  name: cutpaste
+  name: ood
 
 recorder:
   save_scores: True

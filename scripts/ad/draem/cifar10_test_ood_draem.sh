@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/ad/draem/cifar10_test_draem.sh
+# sh scripts/ad/draem/cifar10_test_ood_draem.sh
 
 # GPU=1
 # CPU=1
@@ -16,6 +16,5 @@ configs/datasets/cifar10/cifar10_ood.yml \
 configs/networks/draem.yml \
 configs/pipelines/test/test_draem.yml \
 configs/preprocessors/draem_preprocessor.yml \
-configs/postprocessors/msp.yml \
---postprocessor.name dream \
---evaluator.name ood
+configs/postprocessors/draem.yml \
+--network.pretrained True

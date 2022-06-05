@@ -15,7 +15,7 @@ trainer:
   name: cutpaste
 
 evaluator:
-  name: cutpaste
+  name: ad
 
 optimizer:
   name: sgd
@@ -25,6 +25,6 @@ optimizer:
   weight_decay: 0.0005
 
 recorder:
-  name: cutpaste
+  name: ad
   save_all_models: False
   save_csv: False

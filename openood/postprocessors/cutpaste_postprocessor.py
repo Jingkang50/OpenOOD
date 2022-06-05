@@ -13,7 +13,6 @@ from tqdm import tqdm
 class CutPastePostprocessor:
     def __init__(self, config):
         self.config = config
-        self.postprocessor_args = config.postprocessor.postprocessor_args
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         # get train embeds
@@ -23,7 +22,7 @@ class CutPastePostprocessor:
         with torch.no_grad():
             for train_step in tqdm(range(1,
                                          len(train_dataiter) + 1),
-                                   desc='Train embeds:'):
+                                   desc='Train embeds'):
                 batch = next(train_dataiter)
                 data = torch.cat(batch['data'], 0)
                 if (np.array(data).shape[0] == 4):
