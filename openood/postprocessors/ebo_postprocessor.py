@@ -20,4 +20,3 @@ class EBOPostprocessor(BasePostprocessor):
         conf = self.temperature * torch.logsumexp(output / self.temperature,
                                                   dim=1)
         return pred, conf
-    
