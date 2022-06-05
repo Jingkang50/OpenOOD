@@ -11,8 +11,8 @@ machine_rank: 0
 
 network:
   pretrained: True
-  checkpoint: ["./results/mnist_arpl_net_arpl_e100_lr0.1/best_NetF.ckpt",
-                "./results/mnist_arpl_net_arpl_e100_lr0.1/best_criterion.ckpt"]
+  checkpoint: ["results/cifar10_arpl_net_arpl_e5_lr0.1/best_NetF.ckpt",
+                "results/cifar10_arpl_net_arpl_e5_lr0.1/best_criterion.ckpt"]
 
 pipeline:
   name: test_ood
