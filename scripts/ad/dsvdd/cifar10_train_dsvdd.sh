@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/a_anomaly/0_dsvdd_train_dcae.sh
+# sh scripts/ad/dsvdd/cifar10_train_dsvdd.sh
 
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -8,16 +8,12 @@ PYTHONPATH='.':$PYTHONPATH \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 
 python main.py \
---config configs/datasets/objects/cifar10.yml \
-configs/datasets/objects/cifar10_ood.yml \
+--config configs/datasets/cifar10/cifar10.yml \
+configs/datasets/cifar10/cifar10_ood.yml \
 configs/pipelines/train/train_dsvdd.yml \
-configs/networks/dsvdd.yml \
+configs/networks/resnet18_32x32.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/msp.yml \
---pipeline.name train_ad \
---postprocessor.name dsvdd \
---evaluator.name ad \
---recorder.name ad \
+configs/postprocessors/dsvdd.yml \
 --optimizer.num_epochs 2 \
 --network.pretrained True \
---network.checkpoint 'results/cifar10_dcae_dsvdd_e3/best.ckpt'
+--network.checkpoint 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt'

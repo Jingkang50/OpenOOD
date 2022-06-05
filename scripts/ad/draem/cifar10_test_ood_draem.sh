@@ -1,5 +1,10 @@
 #!/bin/bash
-# sh scripts/ood/vos/13_cifar_test_vos.sh
+# sh scripts/ad/draem/cifar10_test_ood_draem.sh
+
+# GPU=1
+# CPU=1
+# node=30
+# jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
 #srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
@@ -8,7 +13,8 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/cifar10/cifar10.yml \
 configs/datasets/cifar10/cifar10_ood.yml \
-configs/pipelines/test/test_ood.yml \
-configs/networks/resnet18_32x32.yml \
-configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/ebo.yml
+configs/networks/draem.yml \
+configs/pipelines/test/test_draem.yml \
+configs/preprocessors/draem_preprocessor.yml \
+configs/postprocessors/draem.yml \
+--network.pretrained True

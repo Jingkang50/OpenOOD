@@ -46,7 +46,7 @@ def get_postprocessor(config: Config):
         'temperature_scaling': TemperatureScalingPostprocessor,
         'ensemble': EnsemblePostprocessor,
         'dropout': DropoutPostProcessor,
-        'dream': DRAEMPostprocessor,
+        'draem': DRAEMPostprocessor,
         'dsvdd': DSVDDPostprocessor,
     }
 

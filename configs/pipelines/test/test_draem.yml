@@ -4,7 +4,7 @@ save_output: True
 force_merge: True # disabled if 'save_output' is False
 
 num_gpus: 1
-num_workers: 4
+num_workers: 0
 num_machines: 1
 machine_rank: 0
 
@@ -17,7 +17,7 @@ pipeline:
   name: test_ad
 
 evaluator:
-  name: draem
+  name: ood
 
 recorder:
   save_scores: True
