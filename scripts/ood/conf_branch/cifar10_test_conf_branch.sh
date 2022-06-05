@@ -9,8 +9,8 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/cifar10/cifar10.yml \
 configs/datasets/cifar10/cifar10_ood.yml \
-configs/pipelines/test/test_ood.yml \
 configs/networks/conf_branch.yml \
+configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/conf_branch.yml \
 --network.backbone.name resnet18_32x32 \

@@ -9,8 +9,8 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/objects/cifar10.yml \
 configs/datasets/objects/cifar10_ood.yml \
-configs/pipelines/test/test_dsvdd.yml \
 configs/networks/resnet18_32x32.yml \
+configs/pipelines/test/test_dsvdd.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/msp.yml \
 --pipeline.name test_ad \
