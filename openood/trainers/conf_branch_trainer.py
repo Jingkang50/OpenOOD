@@ -89,6 +89,7 @@ class ConfBranchTrainer:
         self.scheduler.step()
         metrics = {}
         metrics['train_acc'] = accuracy
+        metrics['loss'] = total_loss
         metrics['epoch_idx'] = epoch_idx
         return self.net, metrics
 

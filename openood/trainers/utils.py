@@ -37,7 +37,7 @@ def get_trainer(
         'conf_branch': ConfBranchTrainer,
         'dcae': AETrainer,
         'dsvdd': DSVDDTrainer,
-        'openGan': OpenGanTrainer,
+        'opengan': OpenGanTrainer,
         'kdad': KdadTrainer,
         'godin': GodinTrainer,
         'arpl': ARPLTrainer,

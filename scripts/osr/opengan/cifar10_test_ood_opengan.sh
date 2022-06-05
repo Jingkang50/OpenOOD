@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/b_osr/4_opengan_test.sh
+# sh scripts/osr/opengan/cifar10_test_ood_opengan.sh
 
 # GPU=1
 # CPU=1
@@ -10,13 +10,16 @@ PYTHONPATH='.':$PYTHONPATH \
 #srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 #--cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
+
+# this method needs to load multiple networks, please set the checkpoints in test_pipeling config file
+
 python main.py \
---config configs/datasets/objects/tin.yml \
-configs/datasets/digits/mnist_ood.yml \
+--config configs/datasets/cifar10/cifar10.yml \
+configs/datasets/cifar10/cifar10_ood.yml \
 configs/networks/opengan.yml \
 configs/pipelines/test/test_opengan.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/opengan.yml \
 --num_workers 8 \
 --network.backbone.pretrained True \
---network.backbone.checkpoint './results/tin_resnet18_32x32_base_e200_lr0.125/best.ckpt'
+--network.backbone.checkpoint 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt'

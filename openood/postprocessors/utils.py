@@ -16,6 +16,7 @@ from .kl_matching_postprocessor import KLMatchingPostprocessor
 from .maxlogit_postprocessor import MaxLogitPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
+from .opengan_postprocessor import OpenGanPostprocessor
 from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
 from .react_postprocessor import ReactPostprocessor
@@ -48,6 +49,7 @@ def get_postprocessor(config: Config):
         'dropout': DropoutPostProcessor,
         'draem': DRAEMPostprocessor,
         'dsvdd': DSVDDPostprocessor,
+        'opengan': OpenGanPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)
