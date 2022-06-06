@@ -48,7 +48,7 @@ class BaseTrainer:
                                desc='Epoch {:03d}: '.format(epoch_idx),
                                position=0,
                                leave=True,
-                               disable=comm.is_main_process()):
+                               disable=not comm.is_main_process()):
             batch = next(train_dataiter)
             data = batch['data'].cuda()
             target = batch['label'].cuda()
