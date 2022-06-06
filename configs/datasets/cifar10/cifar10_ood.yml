@@ -22,7 +22,7 @@ ood_dataset:
       imglist_pth: ./data/benchmark_imglist/cifar10/test_cifar100.txt
     tin:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/benchmark_imglist/osr_tin20/test_tin.txt
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_tin.txt
   farood:
     datasets: [mnist, svhn, texture, place365]
     mnist:
