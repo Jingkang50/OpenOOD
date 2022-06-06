@@ -66,6 +66,25 @@ def setup_config(config_process_order=('merge', 'parse_args', 'parse_refs')):
     return config
 
 
+def parse_config(config):
+    config_process_order = ('merge', 'parse_refs')
+    for process in config_process_order:
+        if process == 'merge':
+            config = merge_configs(*config)
+        elif process == 'parse_refs':
+            if isinstance(config, Config):
+                config.parse_refs()
+            else:
+                for cfg in config:
+                    cfg.parse_refs()
+        else:
+            raise ValueError('unknown config process name: {}'.format(process))
+    # manually modify 'output_dir'
+    config.output_dir = os.path.join(config.output_dir, config.exp_name)
+
+    return config
+
+
 class Config(dict):
     def __init__(self, *args, **kwargs):
         super(Config, self).__init__()
