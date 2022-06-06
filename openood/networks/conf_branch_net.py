@@ -6,8 +6,8 @@ class ConfBranchNet(nn.Module):
         super(ConfBranchNet, self).__init__()
 
         self.backbone = backbone
-        self.fc = nn.Linear(10, num_classes)
-        self.confidence = nn.Linear(10, 1)
+        self.fc = nn.Linear(num_classes, num_classes)
+        self.confidence = nn.Linear(num_classes, 1)
 
     # test conf
     def forward(self, x, return_confidence=False):
