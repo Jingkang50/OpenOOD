@@ -269,10 +269,28 @@ class MOSEvaluator(BaseEvaluator):
         net = net.cuda()
         net.eval()
         dataset_name = self.config.dataset.name
+
         print(f'Performing inference on {dataset_name} dataset...', flush=True)
 
         run_eval(net, id_data_loader['val'], id_data_loader['test'],
                  self.group_slices)
+        
+        # test nearood
+        for dataset_name, ood_dl in ood_data_loaders['nearood'].items():
+            print(u'\u2500' * 70, flush=True)
+            print(f'Performing inference on {dataset_name} dataset...',
+                  flush=True)
+            run_eval(net, id_data_loader['val'], ood_dl,
+                 self.group_slices)
+        
+        # test farood
+        for dataset_name, ood_dl in ood_data_loaders['farood'].items():
+            print(u'\u2500' * 70, flush=True)
+            print(f'Performing inference on {dataset_name} dataset...',
+                  flush=True)
+            run_eval(net, id_data_loader['val'], ood_dl,
+                 self.group_slices)
+
 
     def eval_acc(self,
                  net: nn.Module,
