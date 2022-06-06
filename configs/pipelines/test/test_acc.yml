@@ -10,7 +10,6 @@ machine_rank: 0
 
 network:
   pretrained: True
-  checkpoint: ./results/mnist_lenet_base_e100_lr0.1/best_epoch100_acc0.996.ckpt
 
 pipeline:
   name: test_acc

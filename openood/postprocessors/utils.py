@@ -16,6 +16,7 @@ from .kl_matching_postprocessor import KLMatchingPostprocessor
 from .maxlogit_postprocessor import MaxLogitPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
+from .opengan_postprocessor import OpenGanPostprocessor
 from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
 from .react_postprocessor import ReactPostprocessor
@@ -26,7 +27,7 @@ from .vim_postprocessor import VIMPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
-        'conf': ConfBranchPostprocessor,
+        'conf_branch': ConfBranchPostprocessor,
         'msp': BasePostprocessor,
         'ebo': EBOPostprocessor,
         'odin': ODINPostprocessor,
@@ -46,8 +47,9 @@ def get_postprocessor(config: Config):
         'temperature_scaling': TemperatureScalingPostprocessor,
         'ensemble': EnsemblePostprocessor,
         'dropout': DropoutPostProcessor,
-        'dream': DRAEMPostprocessor,
+        'draem': DRAEMPostprocessor,
         'dsvdd': DSVDDPostprocessor,
+        'opengan': OpenGanPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)

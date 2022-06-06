@@ -54,9 +54,8 @@ class VOSTrainer:
             images = batch['data'].cuda()
             labels = batch['label'].cuda()
 
-            x, feature_list = self.net.forward(images, True)
+            x, output = self.net.forward(images, return_feature=True)
 
-            output = feature_list
             sum_temp = 0
             for index in range(num_classes):
                 sum_temp += self.number_dict[index]

@@ -18,14 +18,17 @@ R: 0
 c: None
 
 pipeline:
-  name: train_dsvdd
+  name: train_ad
 evaluator:
-  name: dsvdd
+  name: ad
+
 trainer:
   name: dsvdd
+
 recorder:
-  name: dsvdd
+  name: ad
   save_all_models: False
+
 optimizer:
   name: adam
   num_epochs: 150

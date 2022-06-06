@@ -7,10 +7,10 @@ network:
   widen_factor: 2
   droprate: 0.3
 
-  backbone:
+  backbone: #for network without feature_list
     name: lenet
     num_classes: '@{dataset.num_classes}'
     image_size: '@{dataset.image_size}'
-    pretrained: True
-    checkpoint: ./results/mnist_lenet_vos/best.ckpt
+    pretrained: False
+    checkpoint: None
     num_gpus: '@{num_gpus}'

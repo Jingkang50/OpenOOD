@@ -4,3 +4,13 @@ network:
   pretrained: False          # set 'True' to load pretrained model
   checkpoint: none           # ignore if pretrained is false
   num_gpus: '@{num_gpus}'
+  load_cached_faiss: True
+
+  # network used for feature extraction
+  backbone:
+    name: resnet18_32x32
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    pretrained: True
+    checkpoint: 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt'
+    num_gpus: '@{num_gpus}'

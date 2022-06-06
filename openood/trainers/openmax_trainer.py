@@ -58,6 +58,8 @@ class OpenMaxTrainer:
             self.optimizer.zero_grad()
             outputs = self.net(data)
 
+            import pdb
+            pdb.set_trace()
             loss = self.criterion(outputs, target)
 
             loss.backward()

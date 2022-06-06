@@ -11,8 +11,8 @@ machine_rank: 0
 network:
   # checkpoint setting: first load generator then discriminator
   pretrained: True
-  checkpoint: ["./results/tin_opengan_opengan_e100_lr0.0001/best_GNet.ckpt",
-               "./results/tin_opengan_opengan_e100_lr0.0001/best_DNet.ckpt",
+  checkpoint: ["results/cifar10_opengan_opengan_e100_lr0.0001/best_GNet.ckpt",
+               "results/cifar10_opengan_opengan_e100_lr0.0001/best_DNet.ckpt",
                null]
 
   # load checkpoint for feature extraction network
