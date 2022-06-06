@@ -84,7 +84,7 @@ class PatchcorePostprocessor(BasePostprocessor):
             features = self.model.forward(x, return_feature=True)
             embeddings = []
             for feature in features:
-                m = torch.nn.AvgPool2d(3, 1, 1)
+                m = torch.nn.AvgPool2d(9, 1, 1)
                 embeddings.append(m(feature))
             embedding = embedding_concat(embeddings[0], embeddings[1])
             self.embedding_list.extend(reshape_embedding(np.array(embedding)))

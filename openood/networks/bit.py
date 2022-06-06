@@ -122,8 +122,10 @@ class ResNetV2(nn.Module):
                  block_units,
                  width_factor,
                  head_size=1000,
+                 zero_head=False,
                  num_block_open=-1):
         super().__init__()
+        self.zero_head = zero_head
         wf = width_factor  # shortcut 'cause we'll use it a lot.
 
         if num_block_open == -1:
@@ -328,11 +330,15 @@ class ResNetV2(nn.Module):
             self.before_head.gn.bias.copy_(
                 tf2th(weights[f'{prefix}group_norm/beta']))
 
-            self.head.conv.weight.copy_(
-                tf2th(weights[f'{prefix}head/conv2d/kernel']))
-            # pylint: disable=line-too-long
-            self.head.conv.bias.copy_(
-                tf2th(weights[f'{prefix}head/conv2d/bias']))
+            if self.zero_head:
+                nn.init.zeros_(self.head.conv.weight)
+                nn.init.zeros_(self.head.conv.bias)
+            else:
+                self.head.conv.weight.copy_(
+                    tf2th(weights[f'{prefix}head/conv2d/kernel']))
+                # pylint: disable=line-too-long
+                self.head.conv.bias.copy_(
+                    tf2th(weights[f'{prefix}head/conv2d/bias']))
 
             for bname, block in self.body.named_children():
                 for uname, unit in block.named_children():

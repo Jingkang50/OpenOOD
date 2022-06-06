@@ -171,7 +171,12 @@ def get_network(network_config):
         net = {'netF': feature_net, 'criterion': criterion}
 
     elif network_config.name == 'bit':
-        net = KNOWN_MODELS[network_config.model]()
+        net = KNOWN_MODELS[network_config.model](
+            head_size=network_config.num_logits,
+            zero_head =True,
+            num_block_open=network_config.num_block_open
+        )
+
     elif network_config.name == 'vit':
         cfg = mmcv.Config.fromfile(network_config.model)
         net = init_model(cfg, network_config.checkpoint, 0)
@@ -202,7 +207,7 @@ def get_network(network_config):
                     if checkpoint != 'none':
                         subnet.load_state_dict(torch.load(checkpoint),
                                                strict=False)
-        elif network_config.name == 'bit':
+        elif network_config.name == 'bit' and not network_config.normal_load:
             net.load_from(np.load(network_config.checkpoint))
         elif network_config.name == 'vit':
             pass

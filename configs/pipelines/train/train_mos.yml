@@ -5,21 +5,23 @@ force_merge: False
 
 num_gpus: 1
 num_workers: 0
+num_machines: 1
+machine_rank: 0
 
 pipeline:
   name: train
 
 trainer:
   name: mos
-  group_config: group_config/taxonomy_level0.npy
-  num_group: 8
+  group_config: group_config/cifar100_group_config.npy
+  num_group: 20
 
 evaluator:
-  name: base
+  name: mos
 
 optimizer:
   name: sgd
-  num_epochs: 5
+  num_epochs: 100
   lr: 0.003
 
 recorder:
