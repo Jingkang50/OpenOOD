@@ -1,5 +1,3 @@
-from os.path import join as pjoin
-from turtle import forward
 from types import MethodType
 
 import mmcv
@@ -16,10 +14,10 @@ from .conf_branch_net import ConfBranchNet
 from .csi_net import CSINet
 from .densenet import DenseNet3
 from .draem_net import DiscriminativeSubNetwork, ReconstructiveSubNetwork
-from .dsvdd_net import build_network, get_Autoencoder
+from .dropout_net import DropoutNet
+from .dsvdd_net import build_network
 from .godin_net import GodinNet
 from .lenet import LeNet
-from .opengan import Discriminator, Generator
 from .openmax_net import OpenMax
 from .patchcore_net import PatchcoreNet
 from .projection_net import ProjectionNet
@@ -195,6 +193,10 @@ def get_network(network_config):
     elif network_config.name == 'projectionNet':
         backbone = get_network(network_config.backbone)
         net = ProjectionNet(backbone=backbone, num_classes=2)
+
+    elif network_config.name == 'dropout_net':
+        backbone = get_network(network_config.backbone)
+        net = DropoutNet(backbone=backbone, dropout_p=network_config.dropout_p)
 
     else:
         raise Exception('Unexpected Network Architecture!')

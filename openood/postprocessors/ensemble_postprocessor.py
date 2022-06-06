@@ -3,7 +3,7 @@ from copy import deepcopy
 from typing import Any
 
 import torch
-from torch import nn, optim
+from torch import nn
 
 from .base_postprocessor import BasePostprocessor
 
@@ -14,12 +14,16 @@ class EnsemblePostprocessor(BasePostprocessor):
         self.config = config
         self.postprocess_config = config.postprocessor
         self.postprocessor_args = self.postprocess_config.postprocessor_args
-        assert self.postprocessor_args.network_name == self.config.network.name, \
+        assert self.postprocessor_args.network_name == \
+            self.config.network.name,\
             'checkpoint network type and model type do not align!'
         # get ensemble args
         self.checkpoint_root = self.postprocessor_args.checkpoint_root
-        self.checkpoints = self.postprocessor_args.checkpoints  # list of trained network checkpoints
-        self.num_networks = self.postprocessor_args.num_networks  # number of networks to esembel
+
+        # list of trained network checkpoints
+        self.checkpoints = self.postprocessor_args.checkpoints
+        # number of networks to esembel
+        self.num_networks = self.postprocessor_args.num_networks
         # get networks
         self.checkpoint_dirs = [
             osp.join(self.checkpoint_root, path, 'best.ckpt')
@@ -32,6 +36,7 @@ class EnsemblePostprocessor(BasePostprocessor):
             self.networks[i].load_state_dict(torch.load(
                 self.checkpoint_dirs[i]),
                                              strict=False)
+            self.networks[i].eval()
 
     def postprocess(self, net: nn.Module, data: Any):
         logits_list = [
@@ -41,6 +46,7 @@ class EnsemblePostprocessor(BasePostprocessor):
         for i in range(self.num_networks):
             logits_mean += logits_list[i]
         logits_mean /= self.num_networks
+
         score = torch.softmax(logits_mean, dim=1)
         conf, pred = torch.max(score, dim=1)
         return pred, conf

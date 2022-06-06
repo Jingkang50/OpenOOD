@@ -1,4 +1,4 @@
-from re import I, S
+import os
 
 import numpy as np
 import torch
@@ -54,7 +54,10 @@ class PixMixPreprocessor(BasePreprocessor):
         # ? need to add random seed ?
         rnd_idx = np.random.choice(len(self.mixing_list))
         mixing_pic_dir = self.mixing_list[rnd_idx].strip('\n')
-        mixing_pic = Image.open(mixing_pic_dir).convert('RGB')
+
+        mixing_pic = Image.open(
+            os.path.join('./data/images_classic/',
+                         mixing_pic_dir)).convert('RGB')
         return self.pixmix(image, mixing_pic)
 
     def augment_input(self, image):

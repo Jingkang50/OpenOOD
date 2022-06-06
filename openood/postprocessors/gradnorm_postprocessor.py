@@ -25,7 +25,7 @@ class GradNormPostprocessor(BasePostprocessor):
         confs = []
 
         for i in x:
-            targets = torch.ones((1, 1000)).cuda()
+            targets = torch.ones((1, self.config.dataset.num_classes)).cuda()
             fc.zero_grad()
             loss = torch.mean(
                 torch.sum(-targets * logsoftmax(fc(i[None])), dim=-1))
@@ -50,18 +50,19 @@ class GradNormPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                feature = net(data, return_feature=True).cpu().numpy()
-                feature_id_val.append(feature)
+                _, feature = net(data, return_feature=True)
+                feature_id_val.append(feature.cpu().numpy())
             feature_id_val = np.concatenate(feature_id_val, axis=0)
 
         self.score_id = self.gradnorm(feature_id_val, self.w, self.b)
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        feature_ood = net.forward(data, return_feature=True).cpu()
+        _, feature_ood = net.forward(data, return_feature=True)
         with torch.enable_grad():
-            score_ood = self.gradnorm(feature_ood.numpy(), self.w, self.b)
+            score_ood = self.gradnorm(feature_ood.cpu().numpy(), self.w,
+                                      self.b)
         with torch.no_grad():
-            logit_ood = feature_ood @ self.w.T + self.b
+            logit_ood = feature_ood.cpu() @ self.w.T + self.b
             _, pred = torch.max(logit_ood, dim=1)
         return pred, torch.from_numpy(score_ood)

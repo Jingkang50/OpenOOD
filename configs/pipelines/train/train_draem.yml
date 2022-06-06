@@ -15,7 +15,7 @@ trainer:
   name: draem
 
 evaluator:
-  name: draem
+  name: ad
 
 optimizer:
   name: MultiStep
@@ -25,6 +25,6 @@ optimizer:
   gamma: 0.2
 
 recorder:
-  name: draem
+  name: ad
   best_model_basis: image_auroc
   save_all_models: False
