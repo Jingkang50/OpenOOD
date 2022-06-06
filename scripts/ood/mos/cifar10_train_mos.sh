@@ -15,6 +15,5 @@ configs/pipelines/train/train_mos.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/mos.yml \
 --num_workers 8 \
---optimizer.num_epochs 5 \
 --network.pretrained False \
 --force_merge True

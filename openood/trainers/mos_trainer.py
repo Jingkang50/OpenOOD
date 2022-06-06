@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from openood.utils import Config
+os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
 
 
 def get_mixup(dataset_size):
@@ -139,7 +140,7 @@ def run_eval(model, data_loader, step, group_slices, num_group):
     train_dataiter = iter(data_loader)
     for train_step in tqdm(range(1,
                                  len(train_dataiter) + 1),
-                           desc='Epoch {:03d}: '.format(0),
+                           desc='Test : ',
                            position=0,
                            leave=True):
         batch = next(train_dataiter)
@@ -169,8 +170,8 @@ def run_eval(model, data_loader, step, group_slices, num_group):
             all_top1.extend(top1.cpu())
 
     model.train()
-    print(f'Validation@{step} loss {np.mean(all_c):.5f}, '
-          f'top1 {np.mean(all_top1):.2%}')
+    # print(f'Validation@{step} loss {np.mean(all_c):.5f}, '
+    #       f'top1 {np.mean(all_top1):.2%}')
 
     # writer.add_scalar('Val/loss', np.mean(all_c), step)
     # writer.add_scalar('Val/top1', np.mean(all_top1), step)
@@ -230,7 +231,7 @@ class MOSTrainer:
             for i in range(len(group_label)):
                 label = torch.zeros(self.num_group, dtype=torch.int64)
                 label[group_label[i]] = class_label[i] + 1
-                labels.append(label.unsqueeze(0))
+                labels.append(label.unsqueeze(0))        
             labels = torch.cat(labels, dim=0).cuda()
 
             # Update learning-rate, including stop training if over.
@@ -244,7 +245,9 @@ class MOSTrainer:
                 x, y_a, y_b = mixup_data(data, labels, self.mixup_l)
 
             logits = self.net(data)
-
+            
+            y_a = y_a.cuda()
+            y_b = y_b.cuda()
             if self.mixup > 0.0:
                 c = mixup_criterion_group(self.cri, logits, y_a, y_b,
                                           self.mixup_l, self.group_slices)
@@ -259,11 +262,11 @@ class MOSTrainer:
 
             accstep = f' ({self.accum_steps}/{self.batch_split})' \
                 if self.batch_split > 1 else ''
-            print(
-                f'[step {self.step}{accstep}]: loss={c_num:.5f} (lr={lr:.1e})')
+            # print(
+            #     f'[step {self.step}{accstep}]: loss={c_num:.5f} (lr={lr:.1e})')
+            
             total_loss += c_num
-            # writer.add_scalar('Train/loss', c_num, step)
-
+            
             # Update params
             if self.accum_steps == self.batch_split:
                 self.optim.step()
@@ -274,10 +277,10 @@ class MOSTrainer:
             self.mixup_l = np.random.beta(self.mixup,
                                           self.mixup) if self.mixup > 0 else 1
 
-            torch.save(self.net.state_dict(),
-                       os.path.join('./results/mos', 'mos_epoch1.ckpt'))
+        # torch.save(self.net.state_dict(),
+        #            os.path.join(self.config.output_dir, 'mos_epoch_latest.ckpt'))
 
-        run_eval(self.net, self.train_loader, self.step, self.group_slices,
+        step, all_top1 = run_eval(self.net, self.train_loader, self.step, self.group_slices,
                  self.num_group)
 
         loss_avg = total_loss / len(train_dataiter)
@@ -285,9 +288,8 @@ class MOSTrainer:
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
         metrics['loss'] = loss_avg
-        metrics['acc'] = 0.11
-        # this acc is a value for meet other part of program(base recorder)
-
+        metrics['acc'] = np.mean(all_top1) # the acc used in there is the top1 acc
+        
         print('one epoch end')
 
         return self.net, metrics

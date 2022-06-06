@@ -25,7 +25,7 @@ from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
-
+from .mos_postprocessor import MOSPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
@@ -51,6 +51,7 @@ def get_postprocessor(config: Config):
         'dropout': DropoutPostProcessor,
         'draem': DRAEMPostprocessor,
         'dsvdd': DSVDDPostprocessor,
+        'mos': MOSPostprocessor,
         'opengan': OpenGanPostprocessor,
         'knn': KNNPostprocessor,
         'dice': DICEPostprocessor,

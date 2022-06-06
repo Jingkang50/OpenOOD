@@ -1,33 +1,30 @@
 dataset:
-  name: mnist
+  name: cifar100_double_label
   split_names: [train, val, test]
-  num_classes: 10
-  image_size: 28
-  pre_size: 28
+  num_classes: 120 # actually it's 100 classes but it has 20 groups
+  image_size: 32
+  pre_size: 32
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/digits/train_mnist.txt
-    batch_size: 128
+    imglist_pth: ./data/imglist/cifar100List/train.txt
+    batch_size: 32
     shuffle: True
-    transform: mnist_train_standard
     interpolation: bilinear
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/digits/val_mnist.txt
+    imglist_pth: ./data/imglist/cifar100List/train.txt
     batch_size: 200
     shuffle: False
-    transform: mnist_test_standard
     interpolation: bilinear
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/digits/test_mnist.txt
+    imglist_pth: ./data/imglist/cifar100List/test.txt
     batch_size: 200
     shuffle: False
-    transform: mnist_test_standard
     interpolation: bilinear

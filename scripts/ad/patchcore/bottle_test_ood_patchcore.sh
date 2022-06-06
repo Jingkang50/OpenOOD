@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/a_anomaly/3_patchcore.sh
+# sh scripts/ad/patchcore/patchcore.sh
 
 # GPU=1
 # CPU=1
@@ -9,7 +9,8 @@
 PYTHONPATH='.':$PYTHONPATH \
 
 python main.py \
---config configs/datasets/draem/bottle.yml \
+--config configs/datasets/mnist/mnist.yml \
+configs/datasets/mnist/mnist_ood.yml \
 configs/networks/patchcorenet.yml \
 configs/pipelines/test/test_patchcore.yml \
 configs/postprocessors/patch.yml \
