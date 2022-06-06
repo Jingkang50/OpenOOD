@@ -1,7 +1,7 @@
 dataset:
   name: cifar100_double_label
   split_names: [train, val, test]
-  num_classes: 100
+  num_classes: 120 # actually it's 100 classes but it has 20 groups
   image_size: 32
   pre_size: 32
   num_workers: '@{num_workers}'

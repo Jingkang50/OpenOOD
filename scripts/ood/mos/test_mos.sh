@@ -10,7 +10,7 @@ PYTHONPATH='.':$PYTHONPATH \
 
 python main.py \
 --config configs/datasets/cifar100/cifar100_double_label.yml \
-configs/datasets/mnist/mnist_ood.yml \
+configs/datasets/cifar100/cifar100_ood.yml \
 configs/networks/mos.yml \
 configs/pipelines/test/test_mos.yml \
 configs/postprocessors/mos.yml \
