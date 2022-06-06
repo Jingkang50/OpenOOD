@@ -1,9 +1,10 @@
 #!/bin/bash
-# sh scripts/ood/sem/cifar10_train_sem.sh
+# sh scripts/uncertainty/mc_dropout/cifar10_test_mc_dropout.sh
+
 
 # GPU=1
 # CPU=1
-# node=79
+# node=73
 # jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -15,8 +16,11 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/cifar10/cifar10.yml \
 configs/datasets/cifar10/cifar10_ood.yml \
-configs/networks/resnet18_32x32.yml \
-configs/pipelines/train/train_sem.yml \
+configs/networks/dropout_net.yml \
+configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
+configs/postprocessors/dropout.yml \
+--evaluator.name base \
 --num_workers 8 \
---network.checkpoint 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt'
+--network.checkpoint 'results/cifar10_dropout_net_base_e10_lr0.1/last_epoch10_acc0.8580.ckpt' \
+--mark 0

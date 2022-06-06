@@ -39,8 +39,8 @@ python main.py \
 configs/datasets/objects/cifar10_fsood.yml \
 configs/networks/resnet18_32x32.yml \
 configs/pipelines/test/test_fsood.yml \
-configs/postprocessors/temperature_scaling.yml \
 configs/preprocessors/base_preprocessor.yml \
+configs/postprocessors/temperature_scaling.yml \
 --num_workers 8 \
 --mark 0 \
 --network.checkpoint ./results/cifar10_resnet18_32x32_base_e100_lr0.1/best.ckpt \
