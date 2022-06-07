@@ -18,5 +18,6 @@ configs/networks/resnet18_32x32.yml \
 configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/gram.yml \
+--num_workers 8 \
 --network.checkpoint 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt' \
 --mark 0

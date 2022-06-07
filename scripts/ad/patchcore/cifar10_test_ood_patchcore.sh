@@ -16,5 +16,4 @@ configs/pipelines/test/test_patchcore.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/patch.yml \
 --num_workers 8 \
---force_merge True \
---dataset.image_size 20
+--force_merge True

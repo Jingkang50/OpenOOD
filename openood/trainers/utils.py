@@ -17,7 +17,6 @@ from .kdad_trainer import KdadTrainer
 from .mixup_trainer import MixupTrainer
 from .mos_trainer import MOSTrainer
 from .opengan_trainer import OpenGanTrainer
-from .openmax_trainer import OpenMaxTrainer
 from .sae_trainer import SAETrainer
 from .vos_trainer import VOSTrainer
 
@@ -32,7 +31,6 @@ def get_trainer(
         'mixup': MixupTrainer,
         'sae': SAETrainer,
         'draem': DRAEMTrainer,
-        'OpenMax': OpenMaxTrainer,
         'kdad': KdadTrainer,
         'conf_branch': ConfBranchTrainer,
         'dcae': AETrainer,
