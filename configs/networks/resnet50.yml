@@ -3,5 +3,7 @@ network:
   num_classes: '@{dataset.num_classes}'
   image_size: '@{dataset.image_size}'
   pretrained: True          # set 'True' to load pretrained model
-  checkpoint: ./checkpoints/resnet50-0676ba61-pytorch.pth           # ignore if pretrained is false
+
+  # default pretrained model: https://download.pytorch.org/models/resnet50-0676ba61.pth
+  checkpoint: ./checkpoints/resnet50-0676ba61.pth           # ignore if pretrained is false
   num_gpus: '@{num_gpus}'

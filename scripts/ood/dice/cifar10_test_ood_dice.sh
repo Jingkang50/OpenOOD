@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/c_ood/-1_cifar_test_ood_react.sh
+# sh scripts/ood/dice/cifar10_test_ood_dice.sh
 
 # GPU=1
 # CPU=1
