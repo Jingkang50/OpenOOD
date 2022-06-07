@@ -94,12 +94,12 @@ This part lists all the benchmarks we support. Feel free to include more.
 >      > Far-OOD: `MNIST`, `SVHN`, `Texture`, `Places365`;<br>
 >      > Robust-ID: `CINIC-10`;
 > - [x] [CIFAR-100]()
->      > Near-OOD: `CIFAR-10`, `CINIC-10`, `TinyImageNet`;<br>
+>      > Near-OOD: `CIFAR-10`, `TinyImageNet`;<br>
 >      > Far-OOD: `MNIST`, `SVHN`, `Texture`, `Places365`;<br>
 >      > Robust-ID: `CIFAR-100-C`;
 > - [x] [ImageNet-1K]()
 >      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`;<br>
->      > Far-OOD:  `Texture`, `Texture-Adv`, `MNIST`, `SVHN`;<br>
+>      > Far-OOD:  `Texture`, `MNIST`;<br>
 >      > Robust-ID: `ImageNet-v2`;
 </details>
 
