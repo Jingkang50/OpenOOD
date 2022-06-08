@@ -37,6 +37,7 @@ def cal_ood_score(logits, group_slices):
 
         all_group_ood_score_MOS.append(-group_others_score)
 
+
     all_group_ood_score_MOS = torch.stack(all_group_ood_score_MOS, dim=1)
     final_max_score_MOS, _ = torch.max(all_group_ood_score_MOS, dim=1)
     return final_max_score_MOS.data.cpu().numpy()
@@ -120,9 +121,6 @@ def fpr_and_fdr_at_recall(y_true, y_score, recall_level, pos_label=1.):
 def get_measures(in_examples, out_examples):
     num_in = in_examples.shape[0]
     num_out = out_examples.shape[0]
-
-    # logger.info("# in example is: {}".format(num_in))
-    # logger.info("# out example is: {}".format(num_out))
 
     labels = np.zeros(num_in + num_out, dtype=np.int32)
     labels[:num_in] += 1
@@ -210,7 +208,7 @@ def calc_group_softmax_acc(logits, labels, group_slices):
 def run_eval_acc(model, data_loader, group_slices, num_group):
     # switch to evaluate mode
     model.eval()
-
+    
     print('Running validation...')
 
     all_c, all_top1 = [], []
@@ -233,16 +231,13 @@ def run_eval_acc(model, data_loader, group_slices, num_group):
         labels = torch.cat(labels, dim=0).cuda()
 
         with torch.no_grad():
-            x = data
-            y = labels
-
             # compute output, measure accuracy and record loss.
-            logits = model(x)
+            logits = model(data)
             if group_slices is not None:
-                c, top1 = calc_group_softmax_acc(logits, y, group_slices)
+                c, top1 = calc_group_softmax_acc(logits, labels, group_slices)
             else:
-                c = torch.nn.CrossEntropyLoss(reduction='none')(logits, y)
-                top1 = topk(logits, y, ks=(1, ))[0]
+                c = torch.nn.CrossEntropyLoss(reduction='none')(logits, labels)
+                top1 = topk(logits, labels, ks=(1, ))[0]
 
             all_c.extend(c.cpu())  # Also ensures a sync point.
             all_top1.extend(top1.cpu())
@@ -253,13 +248,56 @@ def run_eval_acc(model, data_loader, group_slices, num_group):
     return all_c, all_top1 
 
 
+
+
 class MOSEvaluator(BaseEvaluator):
     def __init__(self, config: Config):
         super(MOSEvaluator, self).__init__(config)
-        classes_per_group = np.load(self.config.trainer.group_config)
+        self.config = config
+
+    def cal_group_slices(self, train_loader):
+        config = self.config
+         # if specified group_config
+        if (config.trainer.group_config.endswith('npy')):
+            classes_per_group = np.load(config.trainer.group_config)
+        elif(config.trainer.group_config.endswith('txt')):
+            classes_per_group = np.loadtxt(config.trainer.group_config, dtype=int)
+        else:
+            # cal group config
+            config = self.config
+            group = {}
+            train_dataiter = iter(train_loader)
+            for train_step in tqdm(range(1,
+                                            len(train_dataiter) + 1),
+                                    desc='cal group_config',
+                                    position=0,
+                                    leave=True):
+                batch = next(train_dataiter)
+                data = batch['data'].cuda()
+                group_label = batch['group_label'].cuda()
+                class_label = batch['class_label'].cuda()
+
+                
+                for i in range(len(class_label)):
+                    try:
+                        group[str(group_label[i].cpu().detach().numpy().tolist())]
+                    except:
+                        group[str(group_label[i].cpu().detach().numpy().tolist())] = []
+                    
+                    if class_label[i].cpu().detach().numpy().tolist() \
+                            not in group[str(group_label[i].cpu().detach().numpy().tolist())]:
+                        group[str(group_label[i].cpu().detach().numpy().tolist())].append(class_label[i].cpu().detach().numpy().tolist())
+
+            classes_per_group=[]
+            for i in range(len(group)):
+                classes_per_group.append(max(group[str(i)])+1)
+
         self.num_groups = len(classes_per_group)
         self.group_slices = get_group_slices(classes_per_group)
         self.group_slices = self.group_slices.cuda()
+
+
+
 
     def eval_ood(self,
                  net: nn.Module,
@@ -268,6 +306,7 @@ class MOSEvaluator(BaseEvaluator):
                  postprocessor=None):
         net = net.cuda()
         net.eval()
+        self.cal_group_slices(id_data_loader['train'])
         dataset_name = self.config.dataset.name
 
         print(f'Performing inference on {dataset_name} dataset...', flush=True)
@@ -298,7 +337,9 @@ class MOSEvaluator(BaseEvaluator):
                  postprocessor: BasePostprocessor = None,
                  epoch_idx: int = -1):
         net.eval()
-        loss, top1 = run_eval_acc(net,data_loader, self.group_slices, self.num_groups)
+        self.cal_group_slices(data_loader)
+
+        loss, top1 = run_eval_acc(net, data_loader, self.group_slices, self.num_groups)
         
         metrics = {}
         metrics['acc'] = np.mean(top1)

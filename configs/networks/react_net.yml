@@ -13,5 +13,5 @@ network:
     num_classes: '@{dataset.num_classes}'
     image_size: '@{dataset.image_size}'
     pretrained: True
-    checkpoint: './checkpoints/resnet50-0676ba61-pytorch.pth'
+    checkpoint: 'results/checkpoints/imagenet_res50_acc76.10.pth'
     num_gpus: '@{num_gpus}'

@@ -1,0 +1,6 @@
+pipeline:
+  name: train_oe
+
+trainer:
+  name: oe
+  lambda_oe: 0.5

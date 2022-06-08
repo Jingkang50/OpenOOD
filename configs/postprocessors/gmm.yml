@@ -8,7 +8,7 @@ _'@{mark}'"
 postprocessor:
   name: gmm
   postprocessor_args:
-    num_clusters_list: [3, 1, 10]
+    num_clusters_list: [3, 1, 100]
     feature_type_list: [stat, mean, flat]     # flat/mean/stat
     alpha_list: [-0.00001, 0, 1]
     reduce_dim_list: [none, none, pca_50]   # none/capca_10/pca_50

@@ -1,0 +1,8 @@
+pipeline:
+  name: train_oe
+
+trainer:
+  name: mcd
+  lambda_oe: 1
+  margin: 1.2
+  start_epoch_ft: 90

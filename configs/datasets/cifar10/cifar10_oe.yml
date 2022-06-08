@@ -1,0 +1,12 @@
+name: cifar10_oe
+
+dataset:
+  name: cifar10_oe
+  split_names: [train, oe, val, test]
+  oe:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/cifar10/train_tin.txt
+    batch_size: 200
+    shuffle: True
+    interpolation: bilinear

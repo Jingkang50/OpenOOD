@@ -46,7 +46,45 @@ class MOSPostprocessor(BasePostprocessor):
     def __init__(self, config):
         super(MOSPostprocessor, self).__init__(config)
         self.config = config
-        classes_per_group = np.load(self.config.trainer.group_config)
+
+
+    def cal_group_slices(self, train_loader):
+        config = self.config
+         # if specified group_config
+        if (config.trainer.group_config.endswith('npy')):
+            classes_per_group = np.load(config.trainer.group_config)
+        elif(config.trainer.group_config.endswith('txt')):
+            classes_per_group = np.loadtxt(config.trainer.group_config, dtype=int)
+        else:
+            # cal group config
+            config = self.config
+            group = {}
+            train_dataiter = iter(train_loader)
+            for train_step in tqdm(range(1,
+                                            len(train_dataiter) + 1),
+                                    desc='cal group_config',
+                                    position=0,
+                                    leave=True):
+                batch = next(train_dataiter)
+                data = batch['data'].cuda()
+                group_label = batch['group_label'].cuda()
+                class_label = batch['class_label'].cuda()
+
+                
+                for i in range(len(class_label)):
+                    try:
+                        group[str(group_label[i].cpu().detach().numpy().tolist())]
+                    except:
+                        group[str(group_label[i].cpu().detach().numpy().tolist())] = []
+                    
+                    if class_label[i].cpu().detach().numpy().tolist() \
+                            not in group[str(group_label[i].cpu().detach().numpy().tolist())]:
+                        group[str(group_label[i].cpu().detach().numpy().tolist())].append(class_label[i].cpu().detach().numpy().tolist())
+
+            classes_per_group=[]
+            for i in range(len(group)):
+                classes_per_group.append(max(group[str(i)])+1)
+
         self.num_groups = len(classes_per_group)
         self.group_slices = get_group_slices(classes_per_group)
         self.group_slices = self.group_slices.cuda()
@@ -57,7 +95,7 @@ class MOSPostprocessor(BasePostprocessor):
         self.model = net
         # on train start
         self.model.eval()  # to stop running_var move (maybe not critical)
-        
+        self.cal_group_slices(id_loader_dict['train'])
 
         
 

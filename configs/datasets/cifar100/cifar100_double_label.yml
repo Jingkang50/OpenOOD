@@ -9,22 +9,22 @@ dataset:
   num_machines: '@{num_machines}'
   train:
     dataset_class: ImglistDataset
-    data_dir: ./data/images/
-    imglist_pth: ./data/imglist/cifar100List/train.txt
-    batch_size: 32
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/cifar100/train_cifar100_mos.txt
+    batch_size: 128
     shuffle: True
     interpolation: bilinear
   val:
     dataset_class: ImglistDataset
-    data_dir: ./data/images/
-    imglist_pth: ./data/imglist/cifar100List/train.txt
-    batch_size: 200
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/cifar100/train_cifar100_mos.txt
+    batch_size: 128
     shuffle: False
     interpolation: bilinear
   test:
     dataset_class: ImglistDataset
-    data_dir: ./data/images/
-    imglist_pth: ./data/imglist/cifar100List/test.txt
-    batch_size: 200
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar100_mos.txt
+    batch_size: 128
     shuffle: False
     interpolation: bilinear
