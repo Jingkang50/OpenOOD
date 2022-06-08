@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/ood/oe/cifar10_train_oe.sh
+# sh scripts/ood/udg/cifar10_train_udg.sh
 
 GPU=1
 CPU=1
@@ -14,12 +14,12 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 python -m pdb -c continue main.py \
 --config configs/datasets/cifar10/cifar10.yml \
 configs/datasets/cifar10/cifar10_oe.yml \
-configs/networks/resnet18_32x32.yml \
+configs/networks/udg_net.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/pipelines/train/baseline.yml \
-configs/pipelines/train/train_oe.yml \
+configs/pipelines/train/train_udg.yml \
+--dataset.train.dataset_class UDGDataset \
+--dataset.oe.dataset_class UDGDataset \
+--network.backbone.name resnet18_32x32 \
 --network.pretrained False \
---dataset.image_size 32 \
---optimizer.num_epochs 100 \
---num_workers 4 \
---mark 0
+--num_workers 4

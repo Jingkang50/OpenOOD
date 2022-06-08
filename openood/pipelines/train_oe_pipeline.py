@@ -25,7 +25,8 @@ class TrainOEPipeline:
         net = get_network(self.config.network)
 
         # init trainer and evaluator
-        trainer = get_trainer(net, train_loader, train_oe_loader, self.config)
+        trainer = get_trainer(net, [train_loader, train_oe_loader],
+                              self.config)
         evaluator = get_evaluator(self.config)
 
         if comm.is_main_process():

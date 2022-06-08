@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/basics/imagenet/imagenet_test.sh
+# sh scripts/basics/imagenet/test_imagenet.sh
 
 GPU=1
 CPU=1
@@ -19,6 +19,6 @@ configs/preprocessors/base_preprocessor.yml \
 --dataset.test.batch_size 512 \
 --dataset.val.batch_size 512 \
 --network.pretrained True \
---network.checkpoint "./results/checkpoints/resnet50-0676ba61-pytorch.pth" \
+--network.checkpoint "./results/checkpoints/imagenet_res50_acc76.10.pth" \
 --save_output True \
 --num_gpus 1

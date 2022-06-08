@@ -24,8 +24,10 @@ from .patchcore_net import PatchcoreNet
 from .projection_net import ProjectionNet
 from .react_net import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
+from .resnet18_64x64 import ResNet18_64x64
 from .resnet18_224x224 import ResNet18_224x224
 from .resnet50 import ResNet50
+from .udg_net import UDGNet
 from .wrn import WideResNet
 
 
@@ -35,6 +37,9 @@ def get_network(network_config):
 
     if network_config.name == 'resnet18_32x32':
         net = ResNet18_32x32(num_classes=num_classes)
+
+    elif network_config.name == 'resnet18_64x64':
+        net = ResNet18_64x64(num_classes=num_classes)
 
     elif network_config.name == 'resnet18_224x224':
         net = ResNet18_224x224(num_classes=num_classes)
@@ -110,6 +115,12 @@ def get_network(network_config):
     elif network_config.name == 'mcd':
         backbone = get_network(network_config.backbone)
         net = MCDNet(backbone=backbone, num_classes=num_classes)
+
+    elif network_config.name == 'udg':
+        backbone = get_network(network_config.backbone)
+        net = UDGNet(backbone=backbone,
+                     num_classes=num_classes,
+                     num_clusters=network_config.num_clusters)
 
     elif network_config.name == 'opengan':
         from .opengan import Discriminator, Generator

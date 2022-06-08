@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/basics/mnist/train_mnist.sh
+# sh scripts/basics/osr_mnist6/train_mnist6.sh
 
 GPU=1
 CPU=1
@@ -12,9 +12,11 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 --kill-on-bad-exit=1 --job-name=${jobname} \
 -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/mnist/mnist.yml \
+--config configs/datasets/osr_mnist6/mnist6_seed1.yml \
 configs/networks/lenet.yml \
-configs/pipelines/train/baseline.yml \
 configs/preprocessors/base_preprocessor.yml \
+configs/pipelines/train/baseline.yml \
+--network.pretrained False \
+--dataset.image_size 28 \
 --optimizer.num_epochs 100 \
---num_workers 8
+--num_workers 4
