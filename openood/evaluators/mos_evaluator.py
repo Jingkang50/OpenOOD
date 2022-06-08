@@ -231,16 +231,13 @@ def run_eval_acc(model, data_loader, group_slices, num_group):
         labels = torch.cat(labels, dim=0).cuda()
 
         with torch.no_grad():
-            x = data
-            y = labels
-
             # compute output, measure accuracy and record loss.
-            logits = model(x)
+            logits = model(data)
             if group_slices is not None:
-                c, top1 = calc_group_softmax_acc(logits, y, group_slices)
+                c, top1 = calc_group_softmax_acc(logits, labels, group_slices)
             else:
-                c = torch.nn.CrossEntropyLoss(reduction='none')(logits, y)
-                top1 = topk(logits, y, ks=(1, ))[0]
+                c = torch.nn.CrossEntropyLoss(reduction='none')(logits, labels)
+                top1 = topk(logits, labels, ks=(1, ))[0]
 
             all_c.extend(c.cpu())  # Also ensures a sync point.
             all_top1.extend(top1.cpu())
@@ -309,7 +306,7 @@ class MOSEvaluator(BaseEvaluator):
                  postprocessor=None):
         net = net.cuda()
         net.eval()
-        self.cal_group_slices(data_loader)
+        self.cal_group_slices(id_data_loader['train'])
         dataset_name = self.config.dataset.name
 
         print(f'Performing inference on {dataset_name} dataset...', flush=True)
