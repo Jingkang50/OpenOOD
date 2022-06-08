@@ -20,7 +20,7 @@ configs/postprocessors/cutpaste.yml \
 --network.pretrained False \
 --network.backbone.name resnet18_32x32 \
 --network.backbone.pretrained True \
---network.backbone.checkpoint 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt' \
+--network.backbone.checkpoint 'results/checkpoints/cifar10_res18_acc94.30.ckpt' \
 --num_workers 8 \
 --optimizer.num_epochs 5 \
 --force_merge True

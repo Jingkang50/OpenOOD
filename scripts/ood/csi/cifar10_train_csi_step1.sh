@@ -18,7 +18,7 @@ configs/networks/csi_net.yml \
 configs/pipelines/train/train_csi.yml \
 configs/preprocessors/base_preprocessor.yml \
 --network.pretrained False \
---optimizer.num_epochs 5 \
---dataset.train.batch_size 128 \
+--optimizer.num_epochs 100 \
+--dataset.train.batch_size 64 \
 --force_merge True \
 --mode csi_step1

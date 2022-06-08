@@ -18,4 +18,4 @@ configs/networks/arpl_gan.yml \
 configs/pipelines/train/train_arpl_gan.yml \
 --dataset.image_size 32 \
 --optimizer.num_epochs 100 \
---num_workers 4
+--num_workers 8

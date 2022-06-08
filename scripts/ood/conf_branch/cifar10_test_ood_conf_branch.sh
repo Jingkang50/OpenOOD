@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/ood/conf_branch/cifar10_test_conf_branch.sh
+# sh scripts/ood/conf_branch/cifar10_test_ood_conf_branch.sh
 
 PYTHONPATH='.':$PYTHONPATH \
 #srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \

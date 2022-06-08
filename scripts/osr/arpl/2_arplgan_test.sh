@@ -17,5 +17,5 @@ configs/networks/arpl_gan.yml \
 configs/pipelines/test/test_arplgan.yml \
 configs/postprocessors/msp.yml \
 --dataset.image_size 32 \
---num_workers 4 \
+--num_workers 8 \
 --mark 0

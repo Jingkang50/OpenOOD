@@ -16,5 +16,5 @@ configs/datasets/imagenet/imagenet_ood.yml \
 configs/networks/vit.yml \
 configs/pipelines/test/test_ood.yml \
 configs/postprocessors/maxlogit.yml \
---num_workers 4 \
+--num_workers 8 \
 --mark 0

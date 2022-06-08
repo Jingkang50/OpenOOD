@@ -20,7 +20,7 @@ for benchmark in benchmarks:
         configs/networks/lenet.yml \
         configs/pipelines/test/test_{benchmark}.yml \
         configs/postprocessors/{method}.yml \
-        --num_workers 4 \
+        --num_workers 8 \
         --network.checkpoint {model_path} \
         --output_dir ./results/mnist_{mark} \
         --mark {mark} & ")

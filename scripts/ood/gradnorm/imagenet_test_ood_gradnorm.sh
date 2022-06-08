@@ -18,6 +18,6 @@ configs/networks/bit.yml \
 configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/gradnorm.yml \
---num_workers 4 \
+--num_workers 8 \
 --network.checkpoint ./bit_pretrained_models/BiT-S-R101x1.npz \
 --mark 0

@@ -21,6 +21,9 @@ class OODEvaluator(BaseEvaluator):
             config (Config): Config file from
         """
         super(OODEvaluator, self).__init__(config)
+        self.id_pred = None
+        self.id_conf = None
+        self.id_gt = None
 
     def eval_ood(self, net: nn.Module, id_data_loader: DataLoader,
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
@@ -35,8 +38,10 @@ class OODEvaluator(BaseEvaluator):
             'id_data_loaders should have the key: test!'
         dataset_name = self.config.dataset.name
         print(f'Performing inference on {dataset_name} dataset...', flush=True)
-        # id_pred, id_conf, id_gt = postprocessor.inference(
-        #     net, id_data_loader['test'])
+
+        if self.id_pred is None or self.id_conf is None or self.id_gt is None:
+            self.id_pred, self.id_conf, self.id_gt = postprocessor.inference(
+                net, id_data_loader['test'])
         if self.config.recorder.save_scores:
             self._save_scores(self.id_pred, self.id_conf, self.id_gt,
                               dataset_name)

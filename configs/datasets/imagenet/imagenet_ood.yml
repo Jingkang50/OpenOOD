@@ -15,7 +15,7 @@ ood_dataset:
     data_dir: ./data/images_largescale/
     imglist_pth: ./data/benchmark_imglist/imagenet/val_imagenet.txt
   nearood:
-    datasets: [inaturalist, openimageo, imageneto]
+    datasets: [species_sub]
     inaturalist:
       data_dir: ./data/images_largescale/
       imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
@@ -25,6 +25,9 @@ ood_dataset:
     imageneto:
       data_dir: ./data/images_largescale/
       imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_o.txt
+    species_sub:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_species_sub.txt
   farood:
     datasets: [texture, mnist]
     texture:

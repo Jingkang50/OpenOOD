@@ -9,24 +9,24 @@ dataset:
   num_machines: '@{num_machines}'
   train:
     dataset_class: ImglistDataset
-    data_dir: ./data/images/
-    imglist_pth: ./data/imglist/digits/train_mnist.txt
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/mnist/train_mnist.txt
     batch_size: 128
     shuffle: True
     transform: mnist_train_standard
     interpolation: bilinear
   val:
     dataset_class: ImglistDataset
-    data_dir: ./data/images/
-    imglist_pth: ./data/imglist/digits/val_mnist.txt
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/mnist/val_mnist.txt
     batch_size: 200
     shuffle: False
     transform: mnist_test_standard
     interpolation: bilinear
   test:
     dataset_class: ImglistDataset
-    data_dir: ./data/images/
-    imglist_pth: ./data/imglist/digits/test_mnist.txt
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/mnist/test_mnist.txt
     batch_size: 200
     shuffle: False
     transform: mnist_test_standard

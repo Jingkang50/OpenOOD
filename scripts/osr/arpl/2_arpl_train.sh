@@ -16,4 +16,4 @@ python main.py \
 configs/networks/arpl_net.yml \
 configs/pipelines/train/train_arpl.yml \
 --optimizer.num_epochs 100 \
---num_workers 4
+--num_workers 8
