@@ -24,7 +24,7 @@ class VIMPostprocessor(BasePostprocessor):
             self.w, self.b = net.get_fc()
             print('Extracting id training feature')
             feature_id_train = []
-            for batch in tqdm(id_loader_dict['val'],
+            for batch in tqdm(id_loader_dict['train'],
                               desc='Eval: ',
                               position=0,
                               leave=True):

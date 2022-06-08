@@ -13,9 +13,9 @@ ood_dataset:
   split_names: [val, nearood, farood]
   val:
     data_dir: ./data/images_largescale/
-    imglist_pth: ./data/benchmark_imglist/imagenet/val_imagenet.txt
+    imglist_pth: ./data/benchmark_imglist/imagenet/val_openimage_o.txt
   nearood:
-    datasets: [species_sub]
+    datasets: [species, inaturalist, openimageo, imageneto]
     inaturalist:
       data_dir: ./data/images_largescale/
       imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt

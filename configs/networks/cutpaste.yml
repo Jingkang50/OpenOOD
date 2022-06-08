@@ -11,5 +11,5 @@ network:
     num_classes: '@{dataset.num_classes}'
     image_size: '@{dataset.image_size}'
     pretrained: True
-    checkpoint: 'results/cifar10_resnet18_32x32_base_e100_lr0.1/best.ckpt'
+    checkpoint: 'results/cifar100_resnet18_32x32_base_e100_lr0.1/best.ckpt'
     num_gpus: '@{num_gpus}'

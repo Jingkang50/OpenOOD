@@ -1,0 +1,12 @@
+pipeline:
+  name: train_oe
+
+trainer:
+  name: udg
+  num_clusters: 1000
+  pca_dim: 256
+  purity_ind_thresh: 0.8
+  purity_ood_thresh: 0.8
+  oe_enhance_ratio: 2.0
+  lambda_oe: 0.5
+  lambda_aux: 0.1

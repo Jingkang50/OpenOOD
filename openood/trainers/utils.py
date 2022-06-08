@@ -14,37 +14,46 @@ from .dropout_trainer import DropoutTrainer
 from .dsvdd_trainer import AETrainer, DSVDDTrainer
 from .godin_trainer import GodinTrainer
 from .kdad_trainer import KdadTrainer
+from .mcd_trainer import MCDTrainer
 from .mixup_trainer import MixupTrainer
 from .mos_trainer import MOSTrainer
+from .oe_trainer import OETrainer
 from .opengan_trainer import OpenGanTrainer
 from .sae_trainer import SAETrainer
+from .udg_trainer import UDGTrainer
 from .vos_trainer import VOSTrainer
 
 
-def get_trainer(
-    net,
-    train_loader: DataLoader,
-    config: Config,
-):
-    trainers = {
-        'base': BaseTrainer,
-        'mixup': MixupTrainer,
-        'sae': SAETrainer,
-        'draem': DRAEMTrainer,
-        'kdad': KdadTrainer,
-        'conf_branch': ConfBranchTrainer,
-        'dcae': AETrainer,
-        'dsvdd': DSVDDTrainer,
-        'opengan': OpenGanTrainer,
-        'kdad': KdadTrainer,
-        'godin': GodinTrainer,
-        'arpl': ARPLTrainer,
-        'arpl_gan': ARPLGANTrainer,
-        'mos': MOSTrainer,
-        'vos': VOSTrainer,
-        'cutpaste': CutPasteTrainer,
-        'cutmix': CutMixTrainer,
-        'dropout': DropoutTrainer,
-        'csi': CSITrainer,
-    }
-    return trainers[config.trainer.name](net, train_loader, config)
+def get_trainer(net, train_loader: DataLoader, config: Config):
+    if type(train_loader) is DataLoader:
+        trainers = {
+            'base': BaseTrainer,
+            'mixup': MixupTrainer,
+            'sae': SAETrainer,
+            'draem': DRAEMTrainer,
+            'kdad': KdadTrainer,
+            'conf_branch': ConfBranchTrainer,
+            'dcae': AETrainer,
+            'dsvdd': DSVDDTrainer,
+            'opengan': OpenGanTrainer,
+            'kdad': KdadTrainer,
+            'godin': GodinTrainer,
+            'arpl': ARPLTrainer,
+            'arpl_gan': ARPLGANTrainer,
+            'mos': MOSTrainer,
+            'vos': VOSTrainer,
+            'cutpaste': CutPasteTrainer,
+            'cutmix': CutMixTrainer,
+            'dropout': DropoutTrainer,
+            'csi': CSITrainer,
+        }
+        return trainers[config.trainer.name](net, train_loader, config)
+
+    else:
+        trainers = {
+            'oe': OETrainer,
+            'mcd': MCDTrainer,
+            'udg': UDGTrainer,
+        }
+        return trainers[config.trainer.name](net, train_loader[0],
+                                             train_loader[1], config)

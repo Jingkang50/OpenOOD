@@ -1,11 +1,11 @@
 ood_dataset:
-  name: cifar10_fsood
+  name: cifar100_fsood
   dataset_class: ImglistDataset
   interpolation: bilinear
 
   batch_size: 128
   shuffle: False
-  num_classes: 10
+  num_classes: 100
   image_size: 32
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'

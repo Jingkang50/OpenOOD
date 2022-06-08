@@ -2,8 +2,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
+import openood.utils.comm as comm
 from openood.losses import soft_cross_entropy
+from openood.utils import Config
 
 from .base_trainer import BaseTrainer
 
@@ -12,36 +15,29 @@ class OETrainer(BaseTrainer):
     def __init__(
         self,
         net: nn.Module,
-        labeled_train_loader: DataLoader,
-        unlabeled_train_loader: DataLoader,
-        learning_rate: float = 0.1,
-        momentum: float = 0.9,
-        weight_decay: float = 0.0005,
-        epochs: int = 100,
-        lambda_oe: float = 0.5,
+        train_loader: DataLoader,
+        train_unlabeled_loader: DataLoader,
+        config: Config,
     ) -> None:
-        super().__init__(
-            net,
-            labeled_train_loader,
-            learning_rate=learning_rate,
-            momentum=momentum,
-            weight_decay=weight_decay,
-            epochs=epochs,
-        )
+        super().__init__(net, train_loader, config)
+        self.train_unlabeled_loader = train_unlabeled_loader
+        self.lambda_oe = config.trainer.lambda_oe
 
-        self.unlabeled_train_loader = unlabeled_train_loader
-        self.lambda_oe = lambda_oe
-
-    def train_epoch(self):
+    def train_epoch(self, epoch_idx):
         self.net.train()  # enter train mode
 
         loss_avg = 0.0
-        train_dataiter = iter(self.labeled_train_loader)
+        train_dataiter = iter(self.train_loader)
 
-        if self.unlabeled_train_loader:
-            unlabeled_dataiter = iter(self.unlabeled_train_loader)
+        if self.train_unlabeled_loader:
+            unlabeled_dataiter = iter(self.train_unlabeled_loader)
 
-        for train_step in range(1, len(train_dataiter) + 1):
+        for train_step in tqdm(range(1,
+                                     len(train_dataiter) + 1),
+                               desc='Epoch {:03d}: '.format(epoch_idx),
+                               position=0,
+                               leave=True,
+                               disable=not comm.is_main_process()):
             batch = next(train_dataiter)
 
             data = batch['data'].cuda()
@@ -49,11 +45,11 @@ class OETrainer(BaseTrainer):
             logits_classifier = self.net(data)
             loss = F.cross_entropy(logits_classifier, batch['label'].cuda())
 
-            if self.unlabeled_train_loader:
+            if self.train_unlabeled_loader:
                 try:
                     unlabeled_batch = next(unlabeled_dataiter)
                 except StopIteration:
-                    unlabeled_dataiter = iter(self.unlabeled_train_loader)
+                    unlabeled_dataiter = iter(self.train_unlabeled_loader)
                     unlabeled_batch = next(unlabeled_dataiter)
 
                 unlabeled_data = unlabeled_batch['data'].cuda()
@@ -75,6 +71,7 @@ class OETrainer(BaseTrainer):
                 loss_avg = loss_avg * 0.8 + float(loss) * 0.2
 
         metrics = {}
-        metrics['train_loss'] = loss_avg
+        metrics['epoch_idx'] = epoch_idx
+        metrics['loss'] = self.save_metrics(loss_avg)
 
-        return metrics
+        return self.net, metrics

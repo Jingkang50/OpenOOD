@@ -9,7 +9,7 @@
 PYTHONPATH='.':$PYTHONPATH \
 
 python main.py \
---config configs/datasets/cifar10/cifar10.yml \
+--config configs/datasets/cifar10/cifar10_double_label.yml \
 configs/networks/resnet18_32x32.yml \
 configs/pipelines/train/train_mos.yml \
 configs/preprocessors/base_preprocessor.yml \

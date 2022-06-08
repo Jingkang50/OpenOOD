@@ -13,7 +13,6 @@ dataset:
     imglist_pth: ./data/benchmark_imglist/mnist/train_mnist.txt
     batch_size: 128
     shuffle: True
-    transform: mnist_train_standard
     interpolation: bilinear
   val:
     dataset_class: ImglistDataset
@@ -21,7 +20,6 @@ dataset:
     imglist_pth: ./data/benchmark_imglist/mnist/val_mnist.txt
     batch_size: 200
     shuffle: False
-    transform: mnist_test_standard
     interpolation: bilinear
   test:
     dataset_class: ImglistDataset
@@ -29,5 +27,4 @@ dataset:
     imglist_pth: ./data/benchmark_imglist/mnist/test_mnist.txt
     batch_size: 200
     shuffle: False
-    transform: mnist_test_standard
     interpolation: bilinear

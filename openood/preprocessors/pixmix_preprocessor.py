@@ -12,6 +12,7 @@ from .transform import Convert, interpolation_modes, normalization_dict
 resize_list = {
     'mnist': 32,
     'cifar10': 36,
+    'cifar100': 36,
     'imagenet': 256
 }  # set mnist bymyself, imagenet was set to 224 by author, but 256 here
 
