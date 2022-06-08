@@ -2,7 +2,7 @@ network:
   name: mcd
   num_classes: '@{dataset.num_classes}'
   pretrained: False          # set 'True' to load pretrained model
-  checkpoint:
+  checkpoint: ''
   num_gpus: '@{num_gpus}'
 
   backbone:
