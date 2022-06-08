@@ -49,9 +49,9 @@ Our codebase accesses the datasets from `./data/` by default.
 
 The easiest hands-on script is to train LeNet-5 on MNIST and evaluate its OOD or FS-OOD performance with MSP baseline.
 ```bash
-sh scripts/0_basics/mnist_train.sh
-sh scripts/c_ood/0_mnist_test_ood_msp.sh
-sh scripts/c_ood/0_mnist_test_fsood_msp.sh
+sh scripts/basics/mnist_train.sh
+sh scripts/ood/mnist_test_ood_msp.sh
+sh scripts/ood/mnist_test_fsood_msp.sh
 ```
 
 
@@ -94,12 +94,12 @@ This part lists all the benchmarks we support. Feel free to include more.
 >      > Far-OOD: `MNIST`, `SVHN`, `Texture`, `Places365`;<br>
 >      > Robust-ID: `CINIC-10`;
 > - [x] [CIFAR-100]()
->      > Near-OOD: `CIFAR-10`, `CINIC-10`, `TinyImageNet`;<br>
+>      > Near-OOD: `CIFAR-10`, `TinyImageNet`;<br>
 >      > Far-OOD: `MNIST`, `SVHN`, `Texture`, `Places365`;<br>
 >      > Robust-ID: `CIFAR-100-C`;
 > - [x] [ImageNet-1K]()
 >      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`;<br>
->      > Far-OOD:  `Texture`, `Texture-Adv`, `MNIST`, `SVHN`;<br>
+>      > Far-OOD:  `Texture`, `MNIST`;<br>
 >      > Robust-ID: `ImageNet-v2`;
 </details>
 
@@ -183,8 +183,6 @@ distance: f4d5b3 -->
 > - [x] [![odin](https://img.shields.io/badge/ICLR'18-ODIN-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![mds](https://img.shields.io/badge/NeurIPS'18-MDS-f4d5b3?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]
-> - [x] [![mls](https://img.shields.io/badge/arXiv'19-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
-> - [x] [![kld](https://img.shields.io/badge/arXiv'19-KL&#8211;Matching-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
 > - [x] [![godin](https://img.shields.io/badge/CVPR'20-G&#8211;ODIN-fdd7e6?style=for-the-badge)](https://github.com/guyera/Generalized-ODIN-Implementation)  &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![gram](https://img.shields.io/badge/ICML'20-Gram-f4d5b3?style=for-the-badge)](https://github.com/VectorInstitute/gram-ood-detection)  &nbsp;&nbsp; ![postprocess]
 > - [x] [![duq](https://img.shields.io/badge/ICML'20-DUQ-f4d5b3?style=for-the-badge)](https://github.com/y0ast/deterministic-uncertainty-quantification)  &nbsp;&nbsp; ![postprocess]
@@ -196,6 +194,8 @@ distance: f4d5b3 -->
 > - [x] [![vos](https://img.shields.io/badge/ICLR'22-VOS-d0e9ff?style=for-the-badge)](https://github.com/deeplearning-wisc/vos) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![vim](https://img.shields.io/badge/CVPR'22-VIM-fdd7e6?style=for-the-badge)](https://ooddetection.github.io/) &nbsp;&nbsp; ![postprocess]
 > - [x] [![sem](https://img.shields.io/badge/arXiv'22-SEM-d0e9ff?style=for-the-badge)](https://arxiv.org/abs/2204.05306) &nbsp;&nbsp; ![preprocess] &nbsp; ![training] &nbsp; ![postprocess]
+> - [x] [![mls](https://img.shields.io/badge/ICML'22-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
+> - [x] [![kld](https://img.shields.io/badge/ICML'22-KL&#8211;Matching-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
 
 
 > With Extra Data (3):
@@ -212,7 +212,7 @@ distance: f4d5b3 -->
 > - [x] [![deepensemble](https://img.shields.io/badge/NeurIPS'17-Deep&#8211;Ensemble-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training]
 > - [x] [![tempscale](https://img.shields.io/badge/ICML'17-Temp&#8211;Scaling-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![mixup](https://img.shields.io/badge/ICLR'18-Mixup-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
-> - [x] [![augmix](https://img.shields.io/badge/ICLR'20-AugMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
+> - [x] [![cutmix](https://img.shields.io/badge/ICCV'19-CutMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 > - [x] [![pixmix](https://img.shields.io/badge/CVPR'21-PixMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 </details>
 

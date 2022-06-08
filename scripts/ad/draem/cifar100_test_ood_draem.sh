@@ -18,4 +18,4 @@ configs/pipelines/test/test_draem.yml \
 configs/preprocessors/draem_preprocessor.yml \
 configs/postprocessors/draem.yml \
 --network.pretrained True \
---network.checkpoint 'results/cifar100_draem_train_e100_lr0.0001/draem_test_0.0001_100_bs64_cifar100_best_epoch16_loss0.5180.ckpt' 
+

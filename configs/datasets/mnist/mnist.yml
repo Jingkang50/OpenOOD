@@ -3,6 +3,7 @@ dataset:
   split_names: [train, val, test]
   num_classes: 10
   image_size: 28
+  pre_size: 28
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'

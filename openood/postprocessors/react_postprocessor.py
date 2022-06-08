@@ -57,5 +57,6 @@ class ReactPostprocessor(BasePostprocessor):
     def postprocess(self, net: nn.Module, data: Any):
         output = net.forward_threshold(data, self.threshold)
         score = torch.softmax(output, dim=1)
-        conf, pred = torch.max(score, dim=1)
-        return pred, conf
+        _, pred = torch.max(score, dim=1)
+        energyconf = torch.logsumexp(output.data.cpu(), dim=1)
+        return pred, energyconf

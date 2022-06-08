@@ -1,29 +1,30 @@
 dataset:
-  name: temp
+  name: cifar100_double_label
   split_names: [train, val, test]
-  num_classes: 1000
-  image_size: 256
+  num_classes: 120 # actually it's 100 classes but it has 20 groups
+  image_size: 32
+  pre_size: 32
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/temp.txt
+    imglist_pth: ./data/imglist/cifar100List/train.txt
     batch_size: 32
     shuffle: True
     interpolation: bilinear
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/temp.txt
-    batch_size: 32
+    imglist_pth: ./data/imglist/cifar100List/train.txt
+    batch_size: 200
     shuffle: False
     interpolation: bilinear
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/temp.txt
-    batch_size: 32
+    imglist_pth: ./data/imglist/cifar100List/test.txt
+    batch_size: 200
     shuffle: False
     interpolation: bilinear

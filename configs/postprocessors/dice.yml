@@ -1,0 +1,4 @@
+postprocessor:
+  name: dice
+  postprocessor_args:
+    p: 90

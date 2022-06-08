@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/c_ood/test_mos.sh
+# sh scripts/ood/mos/test_mos.sh
 
 GPU=1
 CPU=1
@@ -9,8 +9,10 @@ jobname=openood
 PYTHONPATH='.':$PYTHONPATH \
 
 python main.py \
---config configs/datasets/MOS/ILSVRC-2012.yml \
-configs/networks/test_mos.yml \
+--config configs/datasets/cifar100/cifar100_double_label.yml \
+configs/datasets/cifar100/cifar100_ood.yml \
+configs/networks/mos.yml \
 configs/pipelines/test/test_mos.yml \
 configs/postprocessors/mos.yml \
+configs/preprocessors/base_preprocessor.yml \
 --num_workers 1

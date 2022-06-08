@@ -1,4 +1,4 @@
-from re import I, S
+import os
 
 import numpy as np
 import torch
@@ -12,6 +12,7 @@ from .transform import Convert, interpolation_modes, normalization_dict
 resize_list = {
     'mnist': 32,
     'cifar10': 36,
+    'cifar100': 36,
     'imagenet': 256
 }  # set mnist bymyself, imagenet was set to 224 by author, but 256 here
 
@@ -54,7 +55,10 @@ class PixMixPreprocessor(BasePreprocessor):
         # ? need to add random seed ?
         rnd_idx = np.random.choice(len(self.mixing_list))
         mixing_pic_dir = self.mixing_list[rnd_idx].strip('\n')
-        mixing_pic = Image.open(mixing_pic_dir).convert('RGB')
+
+        mixing_pic = Image.open(
+            os.path.join('./data/images_classic/',
+                         mixing_pic_dir)).convert('RGB')
         return self.pixmix(image, mixing_pic)
 
     def augment_input(self, image):

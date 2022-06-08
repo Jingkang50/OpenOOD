@@ -3,6 +3,7 @@ from openood.utils import Config
 from .base_postprocessor import BasePostprocessor
 from .conf_branch_postprocessor import ConfBranchPostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
+from .dice_postprocessor import DICEPostprocessor
 from .draem_postprocessor import DRAEMPostprocessor
 from .dropout_postprocessor import DropoutPostProcessor
 from .dsvdd_postprocessor import DSVDDPostprocessor
@@ -13,6 +14,7 @@ from .godin_postprocessor import GodinPostprocessor
 from .gradnorm_postprocessor import GradNormPostprocessor
 from .gram_postprocessor import GRAMPostprocessor
 from .kl_matching_postprocessor import KLMatchingPostprocessor
+from .knn_postprocessor import KNNPostprocessor
 from .maxlogit_postprocessor import MaxLogitPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
@@ -23,7 +25,7 @@ from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
-
+from .mos_postprocessor import MOSPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
@@ -49,7 +51,10 @@ def get_postprocessor(config: Config):
         'dropout': DropoutPostProcessor,
         'draem': DRAEMPostprocessor,
         'dsvdd': DSVDDPostprocessor,
+        'mos': MOSPostprocessor,
         'opengan': OpenGanPostprocessor,
+        'knn': KNNPostprocessor,
+        'dice': DICEPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)

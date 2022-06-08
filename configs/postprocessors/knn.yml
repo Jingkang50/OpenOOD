@@ -1,0 +1,4 @@
+postprocessor:
+  name: knn
+  postprocessor_args:
+    K: 50

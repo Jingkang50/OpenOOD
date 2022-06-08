@@ -1,0 +1,14 @@
+network:
+  name: bit
+  num_classes: '@{dataset.num_classes}'
+  model: BiT-S-R101x1
+  num_block_open: 0
+  bit_pretrained_dir: bit_pretrained_models
+  num_logits: 120  # total classes add num_group
+  pretrained: True          # set 'True' to load pretrained model
+  normal_load: False     # set True if it's load normal False if it load from the bit's own load_from
+  # if you want to load a pre trained model downloaded from bit github you should set normal_load to False
+  # otherwise if you want to load a pretrained model from this frame you should set normal_load to True
+  # checkpoint: ./results/cifar100_double_label_bit_mos_e100_lr0.003/mos_epoch_latest.ckpt
+  checkpoint: ./bit_pretrained_models/BiT-S-R101x1.npz    # download from https://github.com/google-research/big_transfer
+  num_gpus: '@{num_gpus}'
