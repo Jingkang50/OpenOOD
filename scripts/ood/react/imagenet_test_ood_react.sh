@@ -1,9 +1,9 @@
 #!/bin/bash
-# sh scripts/ood/msp/imagenet_test_ood_msp.sh
+# sh scripts/ood/react/imagenet_test_ood_react.sh
 
 GPU=1
 CPU=1
-node=73
+node=63
 jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -13,14 +13,14 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 python main.py \
 --config configs/datasets/imagenet/imagenet.yml \
 configs/datasets/imagenet/imagenet_ood.yml \
-configs/networks/resnet50.yml \
+configs/networks/react_net.yml \
 configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/msp.yml \
---num_workers 10 \
+configs/postprocessors/react.yml \
+--num_workers 4 \
 --ood_dataset.image_size 256 \
 --dataset.test.batch_size 256 \
 --dataset.val.batch_size 256 \
---network.pretrained True \
---network.checkpoint 'results/checkpoints/imagenet_res50_acc76.10.pth' \
+--network.pretrained False \
+--network.backbone.checkpoint 'results/checkpoints/imagenet_res50_acc76.10.pth' \
 --force_merge True

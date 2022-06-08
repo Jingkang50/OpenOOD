@@ -3,7 +3,7 @@
 
 GPU=1
 CPU=1
-node=73
+node=63
 jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -12,11 +12,11 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 --kill-on-bad-exit=1 --job-name=${jobname} \
 -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/osr_mnist6/mnist6_seed1.yml \
+--config configs/datasets/osr_mnist6/mnist6_seed5.yml \
 configs/networks/lenet.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/pipelines/train/baseline.yml \
 --network.pretrained False \
 --dataset.image_size 28 \
 --optimizer.num_epochs 100 \
---num_workers 4
+--num_workers 4 &
