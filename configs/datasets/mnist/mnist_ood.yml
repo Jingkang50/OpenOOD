@@ -14,27 +14,27 @@ ood_dataset:
 
   split_names: [val, nearood, farood]
   val:
-    data_dir: ./data/images/
+    data_dir: ./data/images_classic/
     imglist_pth: ./data/imglist/digits/val_notmnist.txt
   nearood:
     datasets: [notmnist, fashionmnist]
     notmnist:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/digits/test_notmnist.txt
     fashionmnist:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/digits/test_fashionmnist.txt
   farood:
     datasets: [texture, cifar10, tin, places365]
     texture:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/digits/test_texture.txt
     cifar10:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/digits/test_cifar10.txt
     tin:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/objects/test_tin.txt
     places365:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/digits/test_places365.txt
