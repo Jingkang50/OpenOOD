@@ -13,8 +13,11 @@ pipeline:
 
 trainer:
   name: mos
-  # group_config: ./data/group_config/cifar10_group_config.txt
-  group_config: None # if set to none the program will re-compute it
+  # group_config: ./data/group_config/cifar100_group_config.txt
+  group_config: None # if set to none the program will auto re-compute it
+  # group_config is a list that the num of classes in each super classes
+  # It should be noted that the configuration of automatic calculation may be inconsistent with 
+  # the category classification used in training, resulting in errors
 
 evaluator:
   name: mos

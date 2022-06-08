@@ -71,7 +71,7 @@ def calc_group_softmax_loss(criterion, logits, labels, group_slices):
     for i in range(num_groups):
         group_logit = logits[:, group_slices[i][0]:group_slices[i][1]]
         group_label = labels[:, i]
-
+        
         loss += criterion(group_logit, group_label)
 
     return loss
@@ -205,49 +205,58 @@ class MOSTrainer:
         self.mixup_l = np.random.beta(self.mixup,
                                       self.mixup) if self.mixup > 0 else 1
 
+        
+        # if specified group_config
+        if (config.trainer.group_config.endswith('npy')):
+            self.classes_per_group = np.load(config.trainer.group_config)
+        elif(config.trainer.group_config.endswith('txt')):
+            self.classes_per_group = np.loadtxt(config.trainer.group_config, dtype=int)
+        else:
+            self.cal_group_slices(self.train_loader)
+
+        self.num_group = len(self.classes_per_group)
+        self.group_slices = get_group_slices(self.classes_per_group)
+        self.group_slices = self.group_slices.cuda()
+
+        self.step = 0
+        self.batch_split = 1
+
+
+    def cal_group_slices(self, train_loader):
         # cal group config
+        config = self.config
         group = {}
         train_dataiter = iter(self.train_loader)
         for train_step in tqdm(range(1,
-                                     len(train_dataiter) + 1),
-                               desc='cal group_config',
-                               position=0,
-                               leave=True):
+                                        len(train_dataiter) + 1),
+                                desc='cal group_config',
+                                position=0,
+                                leave=True):
             batch = next(train_dataiter)
             data = batch['data'].cuda()
             group_label = batch['group_label'].cuda()
             class_label = batch['class_label'].cuda()
 
-            for i in range(len(class_label)):
-                group[str(group_label[i].cpu().detach().numpy().tolist())] = []
             
             for i in range(len(class_label)):
+                try:
+                    group[str(group_label[i].cpu().detach().numpy().tolist())]
+                except:
+                    group[str(group_label[i].cpu().detach().numpy().tolist())] = []
                 
                 if class_label[i].cpu().detach().numpy().tolist() \
                         not in group[str(group_label[i].cpu().detach().numpy().tolist())]:
                     group[str(group_label[i].cpu().detach().numpy().tolist())].append(class_label[i].cpu().detach().numpy().tolist())
-        classes_per_group=[]
+
+        self.classes_per_group=[]
         for i in range(len(group)):
-            classes_per_group.append(len(group[str(i)]))
+            self.classes_per_group.append(max(group[str(i)])+1)
 
-        # if specified group_config
-        if (config.trainer.group_config.endswith('npy')):
-            classes_per_group = np.load(config.trainer.group_config)
-        elif(config.trainer.group_config.endswith('txt')):
-            classes_per_group = np.loadtxt(config.trainer.group_config, dtype=int)
-        else:
-            pass
-
-        self.num_group = len(classes_per_group)
-        self.group_slices = get_group_slices(classes_per_group)
-        self.group_slices.cuda()
-
-        self.step = 0
-        self.batch_split = 1
+        
 
     def train_epoch(self, epoch_idx):
         total_loss = 0
-
+        
         train_dataiter = iter(self.train_loader)
         for train_step in tqdm(range(1,
                                      len(train_dataiter) + 1),
@@ -265,7 +274,6 @@ class MOSTrainer:
                 label[group_label[i]] = class_label[i] + 1
                 labels.append(label.unsqueeze(0))        
             labels = torch.cat(labels, dim=0).cuda()
-
 
             # Update learning-rate, including stop training if over.
             lr = get_lr(self.step, self.train_set_len, self.lr)
