@@ -14,25 +14,22 @@ from .dropout_trainer import DropoutTrainer
 from .dsvdd_trainer import AETrainer, DSVDDTrainer
 from .godin_trainer import GodinTrainer
 from .kdad_trainer import KdadTrainer
+from .mcd_trainer import MCDTrainer
 from .mixup_trainer import MixupTrainer
 from .mos_trainer import MOSTrainer
+from .oe_trainer import OETrainer
 from .opengan_trainer import OpenGanTrainer
-from .openmax_trainer import OpenMaxTrainer
 from .sae_trainer import SAETrainer
+from .udg_trainer import UDGTrainer
 from .vos_trainer import VOSTrainer
 
 
-def get_trainer(
-    net,
-    train_loader: DataLoader,
-    config: Config,
-):
+def get_trainer(net, train_loader: DataLoader, config: Config):
     trainers = {
         'base': BaseTrainer,
         'mixup': MixupTrainer,
         'sae': SAETrainer,
         'draem': DRAEMTrainer,
-        'OpenMax': OpenMaxTrainer,
         'kdad': KdadTrainer,
         'conf_branch': ConfBranchTrainer,
         'dcae': AETrainer,
@@ -50,3 +47,14 @@ def get_trainer(
         'csi': CSITrainer,
     }
     return trainers[config.trainer.name](net, train_loader, config)
+
+
+def get_trainer(net, train_loader: DataLoader,
+                train_unlabeled_loader: DataLoader, config: Config):
+    trainers = {
+        'oe': OETrainer,
+        'mcd': MCDTrainer,
+        'udg': UDGTrainer,
+    }
+    return trainers[config.trainer.name](net, train_loader,
+                                         train_unlabeled_loader, config)

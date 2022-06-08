@@ -18,6 +18,7 @@ from .dropout_net import DropoutNet
 from .dsvdd_net import build_network
 from .godin_net import GodinNet
 from .lenet import LeNet
+from .mcd_net import MCDNet
 from .openmax_net import OpenMax
 from .patchcore_net import PatchcoreNet
 from .projection_net import ProjectionNet
@@ -106,6 +107,10 @@ def get_network(network_config):
         backbone = get_network(network_config.backbone)
         net = OpenMax(backbone=backbone, num_classes=num_classes)
 
+    elif network_config.name == 'mcd':
+        backbone = get_network(network_config.backbone)
+        net = MCDNet(backbone=backbone, num_classes=num_classes)
+
     elif network_config.name == 'opengan':
         from .opengan import Discriminator, Generator
         backbone = get_network(network_config.backbone)
@@ -171,9 +176,8 @@ def get_network(network_config):
     elif network_config.name == 'bit':
         net = KNOWN_MODELS[network_config.model](
             head_size=network_config.num_logits,
-            zero_head =True,
-            num_block_open=network_config.num_block_open
-        )
+            zero_head=True,
+            num_block_open=network_config.num_block_open)
 
     elif network_config.name == 'vit':
         cfg = mmcv.Config.fromfile(network_config.model)

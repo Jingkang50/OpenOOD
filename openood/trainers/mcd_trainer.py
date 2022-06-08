@@ -5,13 +5,12 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 import openood.utils.comm as comm
-from openood.losses import soft_cross_entropy
 from openood.utils import Config
 
 from .base_trainer import BaseTrainer
 
 
-class OETrainer(BaseTrainer):
+class MCDTrainer(BaseTrainer):
     def __init__(
         self,
         net: nn.Module,
@@ -22,6 +21,8 @@ class OETrainer(BaseTrainer):
         super().__init__(net, train_loader, config)
         self.train_unlabeled_loader = train_unlabeled_loader
         self.lambda_oe = config.trainer.lambda_oe
+        self.margin = config.trainer.margin
+        self.epoch_ft = config.trainer.start_epoch_ft
 
     def train_epoch(self, epoch_idx):
         self.net.train()  # enter train mode
@@ -42,10 +43,11 @@ class OETrainer(BaseTrainer):
 
             data = batch['data'].cuda()
             # forward
-            logits_classifier = self.net(data)
-            loss = F.cross_entropy(logits_classifier, batch['label'].cuda())
+            logits1, logits2 = self.net(data, return_double=True)
+            loss = F.cross_entropy(logits1, batch['label'].cuda()) \
+                + F.cross_entropy(logits2, batch['label'].cuda())
 
-            if self.train_unlabeled_loader:
+            if self.train_unlabeled_loader and epoch_idx >= self.epoch_ft:
                 try:
                     unlabeled_batch = next(unlabeled_dataiter)
                 except StopIteration:
@@ -53,10 +55,10 @@ class OETrainer(BaseTrainer):
                     unlabeled_batch = next(unlabeled_dataiter)
 
                 unlabeled_data = unlabeled_batch['data'].cuda()
-
-                logits_oe = self.net(unlabeled_data)
-                loss_oe = soft_cross_entropy(
-                    logits_oe, unlabeled_batch['soft_label'].cuda())
+                logits1_oe, logits2_oe = self.net(unlabeled_data,
+                                                  return_double=True)
+                ent = torch.mean(entropy(logits1_oe) - entropy(logits2_oe))
+                loss_oe = torch.max(self.margin - ent, 0)[0]
 
                 loss += self.lambda_oe * loss_oe
 
@@ -75,3 +77,10 @@ class OETrainer(BaseTrainer):
         metrics['loss'] = self.save_metrics(loss_avg)
 
         return self.net, metrics
+
+
+def entropy(logits):
+    score = torch.softmax(logits, dim=0)
+    logscore = torch.log(score)
+    entropy = torch.sum(-score * logscore, dim=0)
+    return entropy
