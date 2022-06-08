@@ -16,7 +16,9 @@ from .gram_postprocessor import GRAMPostprocessor
 from .kl_matching_postprocessor import KLMatchingPostprocessor
 from .knn_postprocessor import KNNPostprocessor
 from .maxlogit_postprocessor import MaxLogitPostprocessor
+from .mcd_postprocessor import MCDPostprocessor
 from .mds_postprocessor import MDSPostprocessor
+from .mos_postprocessor import MOSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
 from .opengan_postprocessor import OpenGanPostprocessor
 from .openmax_postprocessor import OpenMax
@@ -25,7 +27,7 @@ from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
-from .mos_postprocessor import MOSPostprocessor
+
 
 def get_postprocessor(config: Config):
     postprocessors = {
@@ -52,6 +54,7 @@ def get_postprocessor(config: Config):
         'draem': DRAEMPostprocessor,
         'dsvdd': DSVDDPostprocessor,
         'mos': MOSPostprocessor,
+        'mcd': MCDPostprocessor,
         'opengan': OpenGanPostprocessor,
         'knn': KNNPostprocessor,
         'dice': DICEPostprocessor,

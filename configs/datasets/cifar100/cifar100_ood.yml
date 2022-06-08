@@ -1,11 +1,11 @@
 ood_dataset:
-  name: cifar10_ood
+  name: cifar100_ood
   dataset_class: ImglistDataset
   interpolation: bilinear
 
   batch_size: 128
   shuffle: False
-  num_classes: 10
+  num_classes: 100
   image_size: 32
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
@@ -14,26 +14,26 @@ ood_dataset:
   split_names: [val, nearood, farood]
   val:
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/imglist/objects/val_cifar100.txt
+    imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar100.txt
   nearood:
-    datasets: [cifar100, tin]
-    cifar100:
+    datasets: [cifar10, tin]
+    cifar10:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/imglist/objects/test_cifar100.txt
+      imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar10.txt
     tin:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/imglist/objects/test_tin.txt
+      imglist_pth: ./data/benchmark_imglist/cifar100/test_tin.txt
   farood:
-    datasets: [mnist, svhn, texture, cifar100c]
+    datasets: [mnist, svhn, texture, places365]
     mnist:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/imglist/objects/test_mnist.txt
+      imglist_pth: ./data/benchmark_imglist/cifar100/test_mnist.txt
     svhn:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/imglist/objects/test_svhn.txt
+      imglist_pth: ./data/benchmark_imglist/cifar100/test_svhn.txt
     texture:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/imglist/objects/test_texture.txt
-    cifar100c:
+      imglist_pth: ./data/benchmark_imglist/cifar100/test_texture.txt
+    places365:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/imglist/objects/test_cifar100c.txt
+      imglist_pth: ./data/benchmark_imglist/cifar100/test_places365.txt

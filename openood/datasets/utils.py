@@ -8,6 +8,7 @@ from openood.utils.config import Config
 
 from .feature_dataset import FeatDataset
 from .imglist_dataset import ImglistDataset
+from .udg_dataset import UDGDataset
 
 
 def get_dataloader(config: Config):

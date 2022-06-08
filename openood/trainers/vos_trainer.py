@@ -107,11 +107,11 @@ class VOSTrainer:
                             (ood_samples, negative_samples[index_prob]), 0)
                 if len(ood_samples) != 0:
 
-                    energy_score_for_fg = log_sum_exp(x, dim=1)
+                    energy_score_for_fg = log_sum_exp(x,num_classes=num_classes, dim=1)
 
                     predictions_ood = self.net.fc(ood_samples)
 
-                    energy_score_for_bg = log_sum_exp(predictions_ood, dim=1)
+                    energy_score_for_bg = log_sum_exp(predictions_ood,num_classes=num_classes, dim=1)
 
                     input_for_lr = torch.cat(
                         (energy_score_for_fg, energy_score_for_bg), -1)

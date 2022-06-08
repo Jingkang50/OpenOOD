@@ -2,8 +2,8 @@ dataset:
   name: cifar100
   split_names: [train, val, test]
   num_classes: 100
-  pre_size: 32
   image_size: 32
+  pre_size: 32
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'
