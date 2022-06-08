@@ -31,7 +31,7 @@ optimizer:
   weight_decay: 5.0e-4
 
 recorder:
-  name: conf_branch
+  name: base
   save_all_models: False
 
 scheduler:

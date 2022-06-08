@@ -1,6 +1,10 @@
 #!/bin/bash
-# sh scripts/ad/dsvdd/cifar100_train_dsvdd.sh
+# sh scripts/ood/csi/cifar100_test_ood_csi.sh
 
+# GPU=1
+# CPU=1
+# node=36
+# jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
 #srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
@@ -10,10 +14,10 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/cifar100/cifar100.yml \
 configs/datasets/cifar100/cifar100_ood.yml \
-configs/pipelines/train/train_dsvdd.yml \
-configs/networks/resnet18_32x32.yml \
+configs/networks/csi_net.yml \
+configs/pipelines/test/test_ood.yml \
+configs/postprocessors/msp.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/dsvdd.yml \
---optimizer.num_epochs 100 \
 --network.pretrained True \
---network.checkpoint 'results/cifar100_resnet18_32x32_base_e100_lr0.1/best.ckpt'
+--network.checkpoint 'results/cifar100_csi_net_csi_step2_e100_lr0.1/best.ckpt' \
+--force_merge True
