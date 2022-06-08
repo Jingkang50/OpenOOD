@@ -35,17 +35,18 @@ class OODEvaluator(BaseEvaluator):
             'id_data_loaders should have the key: test!'
         dataset_name = self.config.dataset.name
         print(f'Performing inference on {dataset_name} dataset...', flush=True)
-        id_pred, id_conf, id_gt = postprocessor.inference(
-            net, id_data_loader['test'])
+        # id_pred, id_conf, id_gt = postprocessor.inference(
+        #     net, id_data_loader['test'])
         if self.config.recorder.save_scores:
-            self._save_scores(id_pred, id_conf, id_gt, dataset_name)
+            self._save_scores(self.id_pred, self.id_conf, self.id_gt,
+                              dataset_name)
         # load nearood data and compute ood metrics
-        self._eval_ood(net, [id_pred, id_conf, id_gt],
+        self._eval_ood(net, [self.id_pred, self.id_conf, self.id_gt],
                        ood_data_loaders,
                        postprocessor,
                        ood_split='nearood')
         # load farood data and compute ood metrics
-        self._eval_ood(net, [id_pred, id_conf, id_gt],
+        self._eval_ood(net, [self.id_pred, self.id_conf, self.id_gt],
                        ood_data_loaders,
                        postprocessor,
                        ood_split='farood')
@@ -150,9 +151,10 @@ class OODEvaluator(BaseEvaluator):
             net['backbone'].eval()
         else:
             net.eval()
-        id_pred, _, id_gt = postprocessor.inference(net, data_loader)
+        self.id_pred, self.id_conf, self.id_gt = postprocessor.inference(
+            net, data_loader)
         metrics = {}
-        metrics['acc'] = sum(id_pred == id_gt) / len(id_pred)
+        metrics['acc'] = sum(self.id_pred == self.id_gt) / len(self.id_pred)
         metrics['epoch_idx'] = epoch_idx
         return metrics
 
