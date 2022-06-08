@@ -6,8 +6,8 @@ class ReactNet(nn.Module):
         super(ReactNet, self).__init__()
         self.backbone = backbone
 
-    def forward(self, x):
-        return self.backbone(x)
+    def forward(self, x, return_feature=False, return_feature_list=False):
+        return self.backbone(x, return_feature, return_feature_list)
 
     def forward_threshold(self, x, threshold):
         _, feature_list = self.backbone(x, return_feature_list=True)
@@ -15,6 +15,8 @@ class ReactNet(nn.Module):
         feature = feature.clip(max=threshold)
         feature = feature.view(feature.size(0), -1)
         logits_cls = self.backbone.fc(feature)
+        # logits_cls = self.backbone.classifier2(
+        # self.backbone.relu(self.backbone.classifier1(feature))) # for lenet
 
         return logits_cls
 

@@ -20,5 +20,5 @@ configs/postprocessors/godin.yml \
 --network.backbone.name resnet18_32x32 \
 --num_workers 8 \
 --trainer.name godin \
---optimizer.num_epochs 5 \
+--optimizer.num_epochs 100 \
 --force_merge True

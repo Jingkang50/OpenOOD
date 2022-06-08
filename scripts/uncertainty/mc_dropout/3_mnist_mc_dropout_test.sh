@@ -17,7 +17,7 @@ configs/networks/lenet.yml \
 configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/dropout.yml \
 configs/preprocessors/base_preprocessor.yml \
---num_workers 4 \
+--num_workers 8 \
 --mark 0 \
 --exp_name mnist_lenet_e50_lr0.1_test_fsood_mc_dropout \
 --network.checkpoint ./results/lenet_dropout_pretrained/mnist_lenet_dropout_e10_lr0.1/best.ckpt

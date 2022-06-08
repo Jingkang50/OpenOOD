@@ -18,6 +18,6 @@ configs/pipelines/test/test_fsood.yml \
 configs/postprocessors/ensemble.yml \
 configs/preprocessors/base_preprocessor.yml \
 --network.pretrained False \
---num_workers 4 \
+--num_workers 8 \
 --mark 0 \
 --exp_name mnist_lenet_e50_lr0.1_test_fsood_ensemble

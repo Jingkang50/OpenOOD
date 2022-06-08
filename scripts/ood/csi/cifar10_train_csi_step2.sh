@@ -19,7 +19,7 @@ configs/pipelines/train/train_csi.yml \
 configs/preprocessors/base_preprocessor.yml \
 --network.pretrained True \
 --network.checkpoint 'results/cifar10_csi_net_csi_step1_e5_lr0.1/best.ckpt' \
---optimizer.num_epochs 5 \
+--optimizer.num_epochs 100 \
 --dataset.train.batch_size 128 \
 --force_merge True \
 --mode csi_step2
