@@ -1,10 +1,10 @@
 #!/bin/bash
 # sh scripts/basics/cifar100/train_cifar100.sh
 
-#GPU=1
-#CPU=1
-#node=73
-#jobname=openood
+GPU=1
+CPU=1
+node=73
+jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
 srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
