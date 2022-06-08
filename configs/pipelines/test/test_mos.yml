@@ -13,17 +13,17 @@ pipeline:
 
 trainer:
   name: mos
-  group_config: group_config/cifar100_group_config.npy
+  group_config: ./data/group_config/cifar10_group_config.npy
   # group config is a numpy saved list 
   # which save the number of fine class in each super classes
-  num_group: 8
+  num_group: 2
 
 evaluator:
   name: mos
 
 optimizer:
   name: sgd
-  num_epochs: 5
+  num_epochs: 100
   lr: 0.003
 
 recorder:

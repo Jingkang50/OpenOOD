@@ -186,7 +186,7 @@ class MOSTrainer:
         self.train_loader = train_loader
         self.config = config
         self.lr = config.optimizer.lr
-        self.num_group = config.trainer.num_group
+        
 
         trainable_params = filter(lambda p: p.requires_grad, net.parameters())
         self.optim = torch.optim.SGD(trainable_params,
@@ -196,7 +196,7 @@ class MOSTrainer:
         self.net.train()
 
         #  train_set len
-        self.train_set_len = 1281167
+        self.train_set_len = config.dataset.train.batch_size * len(train_loader)
         self.mixup = get_mixup(self.train_set_len)
         self.cri = torch.nn.CrossEntropyLoss().cuda()
 
@@ -205,8 +205,40 @@ class MOSTrainer:
         self.mixup_l = np.random.beta(self.mixup,
                                       self.mixup) if self.mixup > 0 else 1
 
-        classes_per_group = np.load(config.trainer.group_config)
-        self.num_groups = len(classes_per_group)
+        # cal group config
+        group = {}
+        train_dataiter = iter(self.train_loader)
+        for train_step in tqdm(range(1,
+                                     len(train_dataiter) + 1),
+                               desc='cal group_config',
+                               position=0,
+                               leave=True):
+            batch = next(train_dataiter)
+            data = batch['data'].cuda()
+            group_label = batch['group_label'].cuda()
+            class_label = batch['class_label'].cuda()
+
+            for i in range(len(class_label)):
+                group[str(group_label[i].cpu().detach().numpy().tolist())] = []
+            
+            for i in range(len(class_label)):
+                
+                if class_label[i].cpu().detach().numpy().tolist() \
+                        not in group[str(group_label[i].cpu().detach().numpy().tolist())]:
+                    group[str(group_label[i].cpu().detach().numpy().tolist())].append(class_label[i].cpu().detach().numpy().tolist())
+        classes_per_group=[]
+        for i in range(len(group)):
+            classes_per_group.append(len(group[str(i)]))
+
+        # if specified group_config
+        if (config.trainer.group_config.endswith('npy')):
+            classes_per_group = np.load(config.trainer.group_config)
+        elif(config.trainer.group_config.endswith('txt')):
+            classes_per_group = np.loadtxt(config.trainer.group_config, dtype=int)
+        else:
+            pass
+
+        self.num_group = len(classes_per_group)
         self.group_slices = get_group_slices(classes_per_group)
         self.group_slices.cuda()
 
@@ -234,6 +266,7 @@ class MOSTrainer:
                 labels.append(label.unsqueeze(0))        
             labels = torch.cat(labels, dim=0).cuda()
 
+
             # Update learning-rate, including stop training if over.
             lr = get_lr(self.step, self.train_set_len, self.lr)
             if lr is None:
@@ -260,17 +293,18 @@ class MOSTrainer:
             (c / self.batch_split).backward()
             self.accum_steps += 1
 
-            accstep = f' ({self.accum_steps}/{self.batch_split})' \
-                if self.batch_split > 1 else ''
+            # accstep = f' ({self.accum_steps}/{self.batch_split})' \
+            #     if self.batch_split > 1 else ''
             # print(
             #     f'[step {self.step}{accstep}]: loss={c_num:.5f} (lr={lr:.1e})')
             
             total_loss += c_num
             
             # Update params
-            if self.accum_steps == self.batch_split:
-                self.optim.step()
-                self.optim.zero_grad()
+            # if self.accum_steps == self.batch_split:
+            self.optim.step()
+            self.optim.zero_grad()
+            
             self.step += 1
             self.accum_steps = 0
             # Sample new mixup ratio for next batch
@@ -280,15 +314,15 @@ class MOSTrainer:
         # torch.save(self.net.state_dict(),
         #            os.path.join(self.config.output_dir, 'mos_epoch_latest.ckpt'))
 
-        step, all_top1 = run_eval(self.net, self.train_loader, self.step, self.group_slices,
-                 self.num_group)
+        # step, all_top1 = run_eval(self.net, self.train_loader, self.step, self.group_slices,
+        #          self.num_group)
 
         loss_avg = total_loss / len(train_dataiter)
 
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
         metrics['loss'] = loss_avg
-        metrics['acc'] = np.mean(all_top1) # the acc used in there is the top1 acc
+        # metrics['acc'] = np.mean(all_top1) # the acc used in there is the top1 acc
         
         print('one epoch end')
 

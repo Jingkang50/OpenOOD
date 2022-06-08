@@ -13,27 +13,27 @@ ood_dataset:
 
   split_names: [val, nearood, farood]
   val:
-    data_dir: ./data/images/
+    data_dir: ./data/images_classic/
     imglist_pth: ./data/imglist/objects/val_cifar100.txt
   nearood:
     datasets: [cifar100, tin]
     cifar100:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/objects/test_cifar100.txt
     tin:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/objects/test_tin.txt
   farood:
     datasets: [mnist, svhn, texture, cifar100c]
     mnist:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/objects/test_mnist.txt
     svhn:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/objects/test_svhn.txt
     texture:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/objects/test_texture.txt
     cifar100c:
-      data_dir: ./data/images/
+      data_dir: ./data/images_classic/
       imglist_pth: ./data/imglist/objects/test_cifar100c.txt

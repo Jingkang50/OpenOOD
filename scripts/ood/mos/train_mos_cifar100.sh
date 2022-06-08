@@ -1,14 +1,16 @@
 #!/bin/bash
 # sh scripts/ood/mos/train_mos_cifar100.sh
 
-GPU=1
-CPU=1
-node=73
-jobname=openood
+# GPU=1
+# CPU=0
 
-PYTHONPATH='.':$PYTHONPATH \
 
-python main.py \
+# node=73
+# jobname=openood
+
+# PYTHONPATH='.':$PYTHONPATH \
+
+CUDA_VISIBLE_DEVICES=1 python main.py \
 --config configs/datasets/cifar100/cifar100_double_label.yml \
 configs/networks/train_mos.yml \
 configs/pipelines/train/train_mos.yml \
