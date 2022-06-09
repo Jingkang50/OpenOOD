@@ -25,9 +25,9 @@ ood_dataset:
     imageneto:
       data_dir: ./data/images_largescale/
       imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_o.txt
-    species_sub:
+    species:
       data_dir: ./data/images_largescale/
-      imglist_pth: ./data/benchmark_imglist/imagenet/test_species_sub.txt
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_species.txt
   farood:
     datasets: [texture, mnist]
     texture:
