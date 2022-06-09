@@ -17,5 +17,5 @@ configs/networks/arpl_net.yml \
 configs/pipelines/train/train_arpl.yml \
 configs/preprocessors/base_preprocessor.yml \
 --network.feat_extract_network.name resnet18_32x32 \
---num_workers 4 \
+--num_workers 8 \
 --optimizer.num_epochs 5

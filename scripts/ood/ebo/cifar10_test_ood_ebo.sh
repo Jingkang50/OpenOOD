@@ -19,6 +19,6 @@ configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/ebo.yml \
 --num_workers 8 \
---network.checkpoint 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt' \
+--network.checkpoint 'results/checkpoints/cifar10_res18_acc94.30.ckpt' \
 --mark 1 \
 --postprocessor.postprocessor_args.temperature 1

@@ -7,15 +7,6 @@ from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
 
-activation = {}
-
-
-def get_activation(name):
-    def hook(model, input, output):
-        activation[name] = output.detach()
-
-    return hook
-
 
 class ReactPostprocessor(BasePostprocessor):
     def __init__(self, config):
@@ -35,14 +26,10 @@ class ReactPostprocessor(BasePostprocessor):
                 data = data.float()
 
                 batch_size = data.shape[0]
-                layer_key = 'avgpool'
-                # net.avgpool.register_forward_hook(get_activation(layer_key))
-                net.backbone.avgpool.register_forward_hook(
-                    get_activation(layer_key))
 
-                net(data)
+                _, features = net(data, return_feature_list=True)
 
-                feature = activation[layer_key]
+                feature = features[-1]
                 dim = feature.shape[1]
                 activation_log.append(feature.data.cpu().numpy().reshape(
                     batch_size, dim, -1).mean(2))

@@ -22,4 +22,4 @@ configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/opengan.yml \
 --num_workers 8 \
 --network.backbone.pretrained True \
---network.backbone.checkpoint 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt'
+--network.backbone.checkpoint 'results/checkpoints/cifar10_res18_acc94.30.ckpt'

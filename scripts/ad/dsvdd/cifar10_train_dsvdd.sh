@@ -16,4 +16,4 @@ configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/dsvdd.yml \
 --optimizer.num_epochs 2 \
 --network.pretrained True \
---network.checkpoint 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt'
+--network.checkpoint 'results/checkpoints/cifar10_res18_acc94.30.ckpt'

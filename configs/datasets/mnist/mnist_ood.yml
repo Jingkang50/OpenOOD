@@ -14,27 +14,27 @@ ood_dataset:
 
   split_names: [val, nearood, farood]
   val:
-    data_dir: ./data/images/
-    imglist_pth: ./data/imglist/digits/val_notmnist.txt
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/mnist/val_mnist.txt
   nearood:
     datasets: [notmnist, fashionmnist]
     notmnist:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/digits/test_notmnist.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/mnist/test_notmnist.txt
     fashionmnist:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/digits/test_fashionmnist.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/mnist/test_fashionmnist.txt
   farood:
     datasets: [texture, cifar10, tin, places365]
     texture:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/digits/test_texture.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/mnist/test_texture.txt
     cifar10:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/digits/test_cifar10.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/mnist/test_cifar10.txt
     tin:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/objects/test_tin.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/mnist/test_tin.txt
     places365:
-      data_dir: ./data/images/
-      imglist_pth: ./data/imglist/digits/test_places365.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/mnist/test_places365.txt

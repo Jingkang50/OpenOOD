@@ -21,6 +21,9 @@ class OODEvaluator(BaseEvaluator):
             config (Config): Config file from
         """
         super(OODEvaluator, self).__init__(config)
+        self.id_pred = None
+        self.id_conf = None
+        self.id_gt = None
 
     def eval_ood(self, net: nn.Module, id_data_loader: DataLoader,
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
@@ -36,10 +39,9 @@ class OODEvaluator(BaseEvaluator):
         dataset_name = self.config.dataset.name
         print(f'Performing inference on {dataset_name} dataset...', flush=True)
         id_pred, id_conf, id_gt = postprocessor.inference(
-             net, id_data_loader['test'])
+            net, id_data_loader['test'])
         if self.config.recorder.save_scores:
-            self._save_scores(id_pred, id_conf, id_gt,
-                              dataset_name)
+            self._save_scores(id_pred, id_conf, id_gt, dataset_name)
         # load nearood data and compute ood metrics
         self._eval_ood(net, [id_pred, id_conf, id_gt],
                        ood_data_loaders,

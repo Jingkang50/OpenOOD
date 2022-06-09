@@ -19,4 +19,4 @@ configs/pipelines/train/baseline.yml \
 --network.pretrained False \
 --dataset.image_size 32 \
 --optimizer.num_epochs 100 \
---num_workers 4
+--num_workers 8

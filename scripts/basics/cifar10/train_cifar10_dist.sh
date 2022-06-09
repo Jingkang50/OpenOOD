@@ -17,7 +17,7 @@ configs/networks/resnet18_32x32.yml \
 configs/pipelines/train/baseline.yml \
 --dataset.image_size 32 \
 --optimizer.num_epochs 100 \
---num_workers 4 \
+--num_workers 8 \
 --num_gpus 2 \
 --num_machines 1 \
 --machine_rank 0

@@ -12,7 +12,7 @@ configs/datasets/cifar10/cifar10_ood.yml \
 configs/networks/conf_branch.yml \
 configs/pipelines/train/train_conf_branch.yml \
 configs/preprocessors/base_preprocessor.yml \
---optimizer.num_epochs 2 \
+--optimizer.num_epochs 100 \
 --network.backbone.name resnet18_32x32 \
---network.backbone.checkpoint 'results/_cifar10_resnet18_32x32_base_e100_lr0.1/best_epoch89_acc0.9430.ckpt' \
+--network.backbone.checkpoint 'results/checkpoints/cifar10_res18_acc94.30.ckpt' \
 --network.pretrained False
