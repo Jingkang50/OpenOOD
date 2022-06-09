@@ -22,4 +22,5 @@ configs/postprocessors/react.yml \
 --network.backbone.pretrained True \
 --network.backbone.checkpoint 'results/checkpoints/mnist_lenet_acc99.30.ckpt' \
 --num_workers 8 \
---mark 0
+--mark 0 \
+--save_output False \
