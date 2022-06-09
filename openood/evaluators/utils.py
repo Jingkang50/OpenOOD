@@ -4,10 +4,11 @@ from openood.utils import Config
 from .ad_evaluator import ADEvaluator
 from .arpl_evaluator import ARPLEvaluator
 from .base_evaluator import BaseEvaluator
+from .ece_evaluator import ECEEvaluator
 from .fsood_evaluator import FSOODEvaluator
 from .ood_evaluator import OODEvaluator
+from .osr_evaluator import OSREvaluator
 from .patchcore_evaluator import PatchCoreEvaluator
-from .ece_evaluator import ECEEvaluator
 
 
 def get_evaluator(config: Config):
@@ -20,5 +21,6 @@ def get_evaluator(config: Config):
         'ad': ADEvaluator,
         'mos': MOSEvaluator,
         'ece': ECEEvaluator,
+        'osr': OSREvaluator
     }
     return evaluators[config.evaluator.name](config)
