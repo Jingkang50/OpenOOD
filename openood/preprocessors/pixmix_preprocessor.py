@@ -10,9 +10,11 @@ from .base_preprocessor import BasePreprocessor
 from .transform import Convert, interpolation_modes, normalization_dict
 
 resize_list = {
+    'osr': 32,
     'mnist': 32,
     'cifar10': 36,
     'cifar100': 36,
+    'tin': 72,
     'imagenet': 256
 }  # set mnist bymyself, imagenet was set to 224 by author, but 256 here
 

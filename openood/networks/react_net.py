@@ -15,9 +15,6 @@ class ReactNet(nn.Module):
         feature = feature.clip(max=threshold)
         feature = feature.view(feature.size(0), -1)
         logits_cls = self.backbone.fc(feature)
-        # logits_cls = self.backbone.classifier2(
-        # self.backbone.relu(self.backbone.classifier1(feature))) # for lenet
-
         return logits_cls
 
     def get_fc(self):

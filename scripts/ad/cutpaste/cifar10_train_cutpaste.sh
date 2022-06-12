@@ -22,5 +22,5 @@ configs/postprocessors/cutpaste.yml \
 --network.backbone.pretrained True \
 --network.backbone.checkpoint 'results/checkpoints/cifar10_res18_acc94.30.ckpt' \
 --num_workers 8 \
---optimizer.num_epochs 5 \
+--optimizer.num_epochs 100 \
 --force_merge True
