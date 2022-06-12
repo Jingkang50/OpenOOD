@@ -20,7 +20,7 @@ configs/networks/dropout_net.yml \
 configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/dropout.yml \
---evaluator.name base \
+--evaluator.name ood \
 --num_workers 8 \
---network.checkpoint 'results/cifar10_dropout_net_base_e10_lr0.1/last_epoch10_acc0.8580.ckpt' \
+--network.checkpoint 'results/cifar10_dropout_net_base_e100_lr0.1_default/best.ckpt' \
 --mark 0

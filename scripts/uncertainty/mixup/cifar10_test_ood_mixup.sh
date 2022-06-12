@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/uncertainty/pixmix/cifar10_test_ood_msp.sh
+# sh scripts/uncertainty/mixup/cifar10_test_ood_mixup.sh
 
 # GPU=1
 # CPU=1
@@ -18,5 +18,5 @@ configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/msp.yml \
 --num_workers 8 \
---network.checkpoint 'results/cifar10_resnet18_32x32_base_e100_lr0.1_pixmix/best.ckpt' \
---mark pixmix
+--network.checkpoint 'results/cifar10_resnet18_32x32_mixup_e100_lr0.1_alpha0.2_default/best.ckpt' \
+--mark mixup

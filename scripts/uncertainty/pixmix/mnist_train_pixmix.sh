@@ -1,6 +1,5 @@
 #!/bin/bash
-# sh scripts/d_uncertainty/3_mnist_dropout_train.sh
-
+# sh scripts/uncertainty/pixmix/mnist_train_pixmix.sh
 
 # GPU=1
 # CPU=1
@@ -13,11 +12,12 @@ PYTHONPATH='.':$PYTHONPATH \
 # --kill-on-bad-exit=1 --job-name=${jobname} \
 # -w SG-IDC1-10-51-2-${node} \
 
+#python main.py \
 python main.py \
---config configs/datasets/digits/mnist.yml \
+--config configs/datasets/mnist/mnist.yml \
 configs/networks/lenet.yml \
-configs/preprocessors/base_preprocessor.yml \
-configs/pipelines/train/train_dropout.yml \
---optimizer.num_epochs 10 \
---num_workers 8 \
---output_dir ./results/lenet_dropout_pretrained \
+configs/pipelines/train/baseline.yml \
+configs/preprocessors/pixmix_preprocessor.yml \
+--num_workers 0 \
+--optimizer.num_epochs 100 \
+--mark pixmix

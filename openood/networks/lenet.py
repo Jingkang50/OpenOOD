@@ -29,26 +29,34 @@ class LeNet(nn.Module):
 
         self.classifier1 = nn.Linear(in_features=120, out_features=84)
         self.relu = nn.ReLU()
-        self.classifier2 = nn.Linear(in_features=84, out_features=num_classes)
-        self.feature_size = 120
+        self.fc = nn.Linear(in_features=84, out_features=num_classes)
+        self.feature_size = 84
 
     def get_fc(self):
-        fc = self.classifier2
+        fc = self.fc
         return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
 
-    def forward(self, x, return_feature=False, return_feature_list=False):
-        feature1 = self.block1(x)
-        feature2 = self.block2(feature1)
-        feature3 = self.block3(feature2)
-        feature = feature3.view(feature3.shape[0], -1)
-        logits_cls = self.classifier2(self.relu(self.classifier1(feature)))
-        feature_list = [feature1, feature2, feature3]
-        if return_feature:
-            return logits_cls, feature
-        elif return_feature_list:
-            return logits_cls, feature_list
+    def forward(self,
+                x,
+                return_feature=False,
+                return_feature_list=False,
+                forward_secondary=True):
+        if forward_secondary:
+            return self.forward_secondary(x, return_feature,
+                                          return_feature_list)
         else:
-            return logits_cls
+            feature1 = self.block1(x)
+            feature2 = self.block2(feature1)
+            feature3 = self.block3(feature2)
+            feature = feature3.view(feature3.shape[0], -1)
+            logits_cls = self.fc(self.relu(self.classifier1(feature)))
+            feature_list = [feature1, feature2, feature3]
+            if return_feature:
+                return logits_cls, feature
+            elif return_feature_list:
+                return logits_cls, feature_list
+            else:
+                return logits_cls
 
     def forward_secondary(self,
                           x,
@@ -60,7 +68,7 @@ class LeNet(nn.Module):
         feature3 = feature3.view(feature3.shape[0], -1)
         feature4 = self.classifier1(feature3)
         feature = feature4.view(feature4.shape[0], -1)
-        logits_cls = self.classifier2(self.relu(feature))
+        logits_cls = self.fc(self.relu(feature))
         feature_list = [feature1, feature2, feature3, feature4]
         if return_feature:
             return logits_cls, feature
