@@ -16,4 +16,5 @@ configs/postprocessors/conf_branch.yml \
 --network.backbone.name resnet18_32x32 \
 --network.backbone.pretrained False \
 --network.pretrained True \
---network.checkpoint 'results/cifar10_conf_branch_net_conf_branch_e2_lr0.1/best.pth'
+--network.checkpoint 'results/cifar10_conf_branch_net_conf_branch_e100_lr0.1/best.ckpt' \
+--mark epoch_100

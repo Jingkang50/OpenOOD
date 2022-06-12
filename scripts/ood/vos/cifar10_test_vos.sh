@@ -14,5 +14,5 @@ configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/ebo.yml \
 --num_workers 8 \
 --network.pretrained True \
---network.checkpoint 'results/cifar10_resnet18_32x32_vos/last_epoch5_acc0.6950.ckpt' \
---mark 0
+--network.checkpoint 'results/cifar10_resnet18_32x32_vos/best_epoch92_acc0.9550.ckpt' \
+--mark vos
