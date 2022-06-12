@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/uncertainty/mc_dropout/cifar10_test_mc_dropout.sh
+# sh scripts/uncertainty/mc_dropout/osr_mnist6_test_mc_dropout.sh
 
 
 # GPU=1
@@ -14,13 +14,13 @@ PYTHONPATH='.':$PYTHONPATH \
 # -w SG-IDC1-10-51-2-${node} \
 
 python main.py \
---config configs/datasets/cifar10/cifar10.yml \
-configs/datasets/cifar10/cifar10_ood.yml \
+--config configs/datasets/osr_mnist6/mnist6_seed1.yml \
+configs/datasets/osr_mnist6/mnist6_seed1_ood.yml \
 configs/networks/dropout_net.yml \
-configs/pipelines/test/test_ood.yml \
+configs/pipelines/test/test_osr.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/dropout.yml \
---network.backbone.name resnet18_32x32 \
+--network.backbone.name lenet \
 --num_workers 8 \
---network.checkpoint 'results/cifar10_dropout_net_base_e10_lr0.1/last_epoch10_acc0.8580.ckpt' \
+--network.checkpoint 'results/osr_mnist6_seed1_dropout_net_base_e100_lr0.1_default/best.ckpt' \
 --mark 0

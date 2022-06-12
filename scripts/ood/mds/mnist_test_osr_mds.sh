@@ -1,9 +1,9 @@
 #!/bin/bash
-# sh scripts/osr/openmax/mnist_test_osr_openmax.sh
+# sh scripts/ood/mds/mnist_test_osr_mds.sh
 
 # GPU=1
 # CPU=1
-# node=30
+# node=73
 # jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
@@ -17,7 +17,7 @@ configs/datasets/osr_mnist6/mnist6_seed1_ood.yml \
 configs/networks/lenet.yml \
 configs/pipelines/test/test_osr.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/openmax.yml \
+configs/postprocessors/mds.yml \
 --num_workers 8 \
 --network.checkpoint 'results/checkpoints/osr/mnist6_seed1.ckpt' \
 --mark 0

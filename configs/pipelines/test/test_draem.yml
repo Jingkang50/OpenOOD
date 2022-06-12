@@ -10,8 +10,8 @@ machine_rank: 0
 
 network:
   pretrained: True
-  checkpoint: ["./results/cifar100_draem_train_e100_lr0.0001/draem_test_0.0001_100_bs64_cifar100_best_epoch16_loss0.5180.ckpt", 
-  "./results/cifar100_draem_train_e100_lr0.0001/draem_test_0.0001_100_bs64_cifar100_best_epoch16_loss0.5180_seg.ckpt"]          
+  checkpoint: ["results/osr_mnist6_seed1_draem_train_e100_lr0.0001/draem_test_0.0001_100_bs32_osr_mnist6_seed1_best_epoch1_loss0.5001.ckpt",
+               "results/osr_mnist6_seed1_draem_train_e100_lr0.0001/draem_test_0.0001_100_bs32_osr_mnist6_seed1_best_epoch1_loss0.5001_seg.ckpt"]
          # ignore if pretrained is false
 
 pipeline:

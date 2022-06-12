@@ -12,7 +12,7 @@ PYTHONPATH='.':$PYTHONPATH \
 # --kill-on-bad-exit=1 --job-name=${jobname} \
 # -w SG-IDC1-10-51-2-${node} \
 
-CUDA_VISIBLE_DEVICES=1 python main.py \
+python main.py \
 --config configs/datasets/cifar10/cifar10.yml \
 configs/networks/csi_net.yml \
 configs/pipelines/train/train_csi.yml \

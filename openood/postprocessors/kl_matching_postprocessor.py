@@ -68,8 +68,6 @@ class KLMatchingPostprocessor(BasePostprocessor):
             feature_id_val = np.concatenate(feature_id_val, axis=0)
             logit_id_val = feature_id_val @ self.w.T + self.b
             softmax_id_val = softmax(logit_id_val, axis=-1)
-            import pdb
-            pdb.set_trace()
             self.score_id = -pairwise_distances_argmin_min(
                 softmax_id_val,
                 np.array(self.mean_softmax_train),

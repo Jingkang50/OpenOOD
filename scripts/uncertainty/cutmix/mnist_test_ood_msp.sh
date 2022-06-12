@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/ood/react/mnist_test_ood_react.sh
+# sh scripts/uncertainty/cutmix/mnist_test_ood_msp.sh
 
 # GPU=1
 # CPU=1
@@ -13,13 +13,10 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/mnist/mnist.yml \
 configs/datasets/mnist/mnist_ood.yml \
-configs/networks/react_net.yml \
+configs/networks/lenet.yml \
 configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/react.yml \
---network.pretrained False \
---network.backbone.name lenet \
---network.backbone.pretrained True \
---network.backbone.checkpoint 'results/checkpoints/mnist_lenet_acc99.30.ckpt' \
+configs/postprocessors/msp.yml \
 --num_workers 8 \
---mark 0
+--network.checkpoint 'results/mnist_lenet_cutmix_e100_lr0.1_cutmix_mnist/best.ckpt' \
+--mark cutmix

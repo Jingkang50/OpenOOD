@@ -10,6 +10,7 @@ from .base_preprocessor import BasePreprocessor
 from .transform import Convert, interpolation_modes, normalization_dict
 
 resize_list = {
+    'osr': 32,
     'mnist': 32,
     'cifar10': 36,
     'cifar100': 36,
@@ -93,7 +94,7 @@ class PixMixPreprocessor(BasePreprocessor):
 """Base augmentations operators."""
 
 # ImageNet code should change this value
-IMAGE_SIZE = 32
+IMAGE_SIZE = 28
 
 #########################################################
 #################### AUGMENTATIONS ######################
