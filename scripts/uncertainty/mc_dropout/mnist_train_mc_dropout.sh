@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/d_uncertainty/3_mnist_dropout_train.sh
+# sh scripts/uncertainty/mc_dropout/mnist_train_mc_dropout.sh
 
 
 # GPU=1
@@ -14,10 +14,11 @@ PYTHONPATH='.':$PYTHONPATH \
 # -w SG-IDC1-10-51-2-${node} \
 
 python main.py \
---config configs/datasets/digits/mnist.yml \
-configs/networks/lenet.yml \
+--config configs/datasets/mnist/mnist.yml \
+configs/networks/dropout_net.yml \
+configs/pipelines/train/baseline.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/pipelines/train/train_dropout.yml \
---optimizer.num_epochs 10 \
---num_workers 8 \
---output_dir ./results/lenet_dropout_pretrained \
+--network.backbone.name lenet \
+--network.backbone.pretrained False \
+--optimizer.num_epochs 100 \
+--num_workers 8

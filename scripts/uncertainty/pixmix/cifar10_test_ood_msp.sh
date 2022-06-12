@@ -18,5 +18,5 @@ configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/msp.yml \
 --num_workers 8 \
---network.checkpoint 'results/cifar10_resnet18_32x32_base_e5_lr0.1/best.ckpt' \
+--network.checkpoint 'results/cifar10_resnet18_32x32_base_e100_lr0.1_pixmix/best.ckpt' \
 --mark pixmix

@@ -1,10 +1,10 @@
 #!/bin/bash
-# sh scripts/uncertainty/cutmix/mnist_test_ood_msp.sh
+# sh scripts/uncertainty/mc_dropout/mnist_test_mc_dropout.sh
 
-# GPU=1
-# CPU=1
-# node=36
-# jobname=openood
+#GPU=1
+#CPU=1
+#node=73
+#jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
 #srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
@@ -13,10 +13,11 @@ PYTHONPATH='.':$PYTHONPATH \
 python main.py \
 --config configs/datasets/mnist/mnist.yml \
 configs/datasets/mnist/mnist_ood.yml \
-configs/networks/lenet.yml \
+configs/networks/dropout_net.yml \
 configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/msp.yml \
+configs/postprocessors/dropout.yml \
+--network.backbone.name lenet \
 --num_workers 8 \
---network.checkpoint 'results/mnist_lenet_cutmix_e100_lr0.1_cutmix/best.ckpt' \
---mark cutmix
+--network.checkpoint 'results/mnist_dropout_net_base_e100_lr0.1_default/best.ckpt' \
+--mark 0

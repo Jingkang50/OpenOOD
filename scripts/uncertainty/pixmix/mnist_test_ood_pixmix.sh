@@ -1,5 +1,5 @@
-#!/bin/bash
-# sh scripts/uncertainty/cutmix/mnist_test_ood_msp.sh
+!/bin/bash
+# sh scripts/uncertainty/pixmix/mnist_test_ood_pixmix.sh
 
 # GPU=1
 # CPU=1
@@ -18,5 +18,5 @@ configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/msp.yml \
 --num_workers 8 \
---network.checkpoint 'results/mnist_lenet_cutmix_e100_lr0.1_cutmix/best.ckpt' \
---mark cutmix
+--network.checkpoint 'results/mnist_lenet_base_e100_lr0.1_pixmix/best.ckpt' \
+--mark pixmix

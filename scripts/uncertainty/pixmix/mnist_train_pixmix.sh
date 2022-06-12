@@ -12,12 +12,12 @@ PYTHONPATH='.':$PYTHONPATH \
 # --kill-on-bad-exit=1 --job-name=${jobname} \
 # -w SG-IDC1-10-51-2-${node} \
 
+#python main.py \
 python main.py \
 --config configs/datasets/mnist/mnist.yml \
 configs/networks/lenet.yml \
 configs/pipelines/train/baseline.yml \
 configs/preprocessors/pixmix_preprocessor.yml \
 --num_workers 0 \
---optimizer.num_epochs 5 \
---mark pixmix \
---force_merge True
+--optimizer.num_epochs 100 \
+--mark pixmix

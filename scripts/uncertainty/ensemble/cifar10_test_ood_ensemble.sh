@@ -22,7 +22,7 @@ configs/postprocessors/ensemble.yml \
 --num_workers 8 \
 --mark 0 \
 --postprocessor.postprocessor_args.network_name resnet18_32x32 \
---postprocessor.postprocessor_args.checkpoint_root 'results/_cifar10_resnet18_test_ensemble' \
+--postprocessor.postprocessor_args.checkpoint_root 'results/cifar10_resnet18_test_ensemble' \
 --postprocessor.postprocessor_args.num_networks 5 \
 --dataset.test.batch_size 64 \
 --dataset.val.batch_size 64 \
