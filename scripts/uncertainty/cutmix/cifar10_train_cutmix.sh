@@ -18,6 +18,6 @@ configs/networks/resnet18_32x32.yml \
 configs/pipelines/train/train_cutmix.yml \
 configs/preprocessors/base_preprocessor.yml \
 --num_workers 8 \
---optimizer.num_epochs 5 \
+--optimizer.num_epochs 100 \
 --trainer.trainer_args.cutmix_prob 0.5 \
 --mark cutmix

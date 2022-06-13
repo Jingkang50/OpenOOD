@@ -1,5 +1,10 @@
 #!/bin/bash
-# sh scripts/ood/vos/cifar10_test_vos.sh
+# sh scripts/uncertainty/mixup/cifar10_test_ood_mixup.sh
+
+# GPU=1
+# CPU=1
+# node=36
+# jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
 #srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
@@ -11,8 +16,7 @@ configs/datasets/cifar10/cifar10_ood.yml \
 configs/networks/resnet18_32x32.yml \
 configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/ebo.yml \
+configs/postprocessors/msp.yml \
 --num_workers 8 \
---network.pretrained True \
---network.checkpoint 'results/cifar10_resnet18_32x32_vos/best_epoch92_acc0.9550.ckpt' \
---mark vos
+--network.checkpoint 'results/cifar10_resnet18_32x32_mixup_e100_lr0.1_alpha0.2_default/best.ckpt' \
+--mark mixup

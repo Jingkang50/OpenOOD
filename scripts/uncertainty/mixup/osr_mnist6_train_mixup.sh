@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/uncertainty/mixup/cifar10_train_mixup.sh
+# sh scripts/uncertainty/mixup/osr_mnist6_train_mixup.sh
 
 GPU=1
 CPU=1
@@ -12,8 +12,8 @@ PYTHONPATH='.':$PYTHONPATH \
 # --kill-on-bad-exit=1 --job-name=${jobname} \
 # -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/cifar10/cifar10.yml \
-configs/networks/resnet18_32x32.yml \
+--config configs/datasets/osr_mnist6/mnist6_seed1.yml \
+configs/networks/lenet.yml \
 configs/pipelines/train/train_mixup.yml \
 configs/preprocessors/base_preprocessor.yml \
 --network.pretrained False \

@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/uncertainty/ensemble/cifar10_test_ood_ensemble.sh
+# sh scripts/uncertainty/ensemble/osr_mnist_test_ood_ensemble.sh
 
 # GPU=1
 # CPU=1
@@ -12,17 +12,17 @@ PYTHONPATH='.':$PYTHONPATH \
 # --kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 
 python main.py \
---config configs/datasets/cifar10/cifar10.yml \
-configs/datasets/cifar10/cifar10_ood.yml \
-configs/networks/resnet18_32x32.yml \
-configs/pipelines/test/test_ood.yml \
+--config configs/datasets/osr_mnist6/mnist6_seed1.yml \
+configs/datasets/osr_mnist6/mnist6_seed1_ood.yml \
+configs/networks/lenet.yml \
+configs/pipelines/test/test_osr.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/ensemble.yml \
 --network.pretrained False \
 --num_workers 8 \
 --mark 0 \
---postprocessor.postprocessor_args.network_name resnet18_32x32 \
---postprocessor.postprocessor_args.checkpoint_root 'results/cifar10_resnet18_test_ensemble' \
+--postprocessor.postprocessor_args.network_name lenet \
+--postprocessor.postprocessor_args.checkpoint_root 'results/_osr_mnist6_test_ensemble' \
 --postprocessor.postprocessor_args.num_networks 5 \
 --dataset.test.batch_size 64 \
 --dataset.val.batch_size 64 \
