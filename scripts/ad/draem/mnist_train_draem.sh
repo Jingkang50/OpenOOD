@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/ad/dsvdd/osr_cifar6_train_dsvdd.sh
+# sh scripts/ad/draem/mnist_train_draem.sh
 
 GPU=1
 CPU=1
@@ -13,10 +13,11 @@ srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
 python main.py \
 --config configs/datasets/osr_cifar6/cifar6_seed1.yml \
 configs/datasets/osr_cifar6/cifar6_seed1_ood.yml \
-configs/pipelines/train/train_dsvdd.yml \
-configs/networks/resnet18_32x32.yml \
-configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/dsvdd.yml \
---optimizer.num_epochs 100 \
---network.pretrained True \
---network.checkpoint 'results/checkpoints/osr/cifar6_seed1_acc97.57.ckpt' &
+configs/networks/draem.yml \
+configs/pipelines/train/train_draem.yml \
+configs/preprocessors/draem_preprocessor.yml \
+configs/postprocessors/draem.yml \
+--evaluator.name ad \
+--dataset.train.batch_size 64 \
+--num_workers 8 \
+--optimizer.num_epochs 100

@@ -17,6 +17,6 @@ configs/pipelines/train/train_dsvdd.yml \
 configs/networks/resnet18_32x32.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/dsvdd.yml \
---optimizer.num_epochs 2 \
+--optimizer.num_epochs 100 \
 --network.pretrained True \
 --network.checkpoint 'results/checkpoints/osr/cifar50_seed1_acc80.24.ckpt' &

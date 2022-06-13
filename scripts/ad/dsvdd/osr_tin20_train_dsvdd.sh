@@ -17,7 +17,7 @@ configs/pipelines/train/train_dsvdd.yml \
 configs/networks/resnet18_32x32.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/dsvdd.yml \
---optimizer.num_epochs 2 \
+--optimizer.num_epochs 100 \
 --network.pretrained True \
 --network.checkpoint 'results/checkpoints/osr/tin20_seed1_acc77.23.ckpt' \
 --force_merge True &

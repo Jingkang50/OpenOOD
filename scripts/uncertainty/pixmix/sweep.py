@@ -5,8 +5,6 @@ config = [
     ['osr_cifar6/cifar6_seed1.yml', 'resnet18_32x32', 'cifar10'],
     ['osr_cifar50/cifar50_seed1.yml', 'resnet18_32x32', 'cifar100'],
     ['osr_tin20/tin20_seed1.yml', 'resnet18_64x64', 'tin'],
-    ['osr_mnist4/mnist4_seed1.yml', 'lenet', 'mnist'],
-    ['mnist/mnist.yml', 'lenet', 'mnist'],
 ]
 
 for [dataset, network, od] in config:
