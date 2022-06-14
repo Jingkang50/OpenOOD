@@ -1,4 +1,4 @@
-from black import E
+# from black import E
 
 from openood.utils import Config
 
@@ -18,6 +18,8 @@ from .odin_postprocessor import ODINPostprocessor
 from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
 from .react_postprocessor import ReactPostprocessor
+from .knn_postprocessor import KNNPostprocessor
+from .dice_postprocessor import DICEPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .temperature_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
@@ -44,6 +46,8 @@ def get_postprocessor(config: Config):
         'temperature_scaling': TemperatureScalingPostprocessor,
         'ensemble': EnsemblePostprocessor,
         'dropout': DropoutPostProcessor,
+        'knn': KNNPostprocessor,
+        'dice': DICEPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)

@@ -6,7 +6,7 @@ dependencies:
   - python=3.8
   - pytorch=1.8.1
   - torchvision=0.9.1
-  - cudatoolkit=10.1
+  - cudatoolkit=11.1
   - scikit-learn=0.24.2
   - json5=0.9.6
   - matplotlib=3.3.0
