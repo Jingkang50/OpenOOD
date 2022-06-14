@@ -6,18 +6,21 @@
 [![paper](https://img.shields.io/badge/Support-Dist%20Training-797ef6?style=for-the-badge)]()
 
 
+<img src="https://live.staticflickr.com/65535/52145428300_78fd595193_k.jpg" width="400">
+
+
 This repository reproduces representative methods within the [`Generalized Out-of-Distribution Detection Framework`](https://arxiv.org/abs/2110.11334),
 aiming to make a fair comparison across methods that initially developed for anomaly detection, novelty detection, open set recognition, and out-of-distribution detection.
 This codebase is still under construction.
 Comments, issues, contributions, and collaborations are all welcomed!
 
-| ![timeline.jpg](https://live.staticflickr.com/65535/52082720911_be354e4478_k.jpg) |
+| ![timeline.jpg](https://live.staticflickr.com/65535/52144751937_95282e7de3_k.jpg) |
 |:--:|
-| <b>Image from [Fig.3 in our survey](https://arxiv.org/abs/2110.11334) - Timeline for representative methodologies.</b>|
+| <b>Timeline of the methods that OpenOOD supports.</b>|
 
 
 ## Updates
-- **19 May, 2022**: We release `v0.5`.
+- **14 June, 2022**: We release `v0.5`.
 - **12 April, 2022**: Primary release to support [Full-Spectrum OOD Detection](https://arxiv.org/abs/2204.05306).
 
 ## Get Started
@@ -33,15 +36,21 @@ conda env create -f environment.yml
 conda activate openood
 ```
 
-Datasets are provided [here](https://entuedu-my.sharepoint.com/:f:/g/personal/jingkang001_e_ntu_edu_sg/Eso7IDKUKQ9AoY7hm9IU2gIBMWNnWGCYPwClpH0TASRLmg?e=iEYhXO).
-Our codebase accesses the datasets from `./data/` by default.
+Datasets and pretrained models are provided [here](https://entuedu-my.sharepoint.com/:f:/g/personal/jingkang001_e_ntu_edu_sg/Eso7IDKUKQ9AoY7hm9IU2gIBMWNnWGCYPwClpH0TASRLmg?e=kMrkVQ).
+Please unzip the files if necessary.
+
+Our codebase accesses the datasets from `./data/` and pretrained models from `./results/checkpoints/` by default.
 ```
 ├── ...
 ├── data
-│   ├── images
-│   ├── covid_images
-│   └── imglist
+│   ├── benchmark_imglist
+│   ├── images_classic
+│   ├── images_medical
+│   └── images_largescale
 ├── openood
+├── results
+│   ├── checkpoints
+│   └── ...
 ├── scripts
 ├── main.py
 ├── ...
@@ -49,14 +58,9 @@ Our codebase accesses the datasets from `./data/` by default.
 
 The easiest hands-on script is to train LeNet-5 on MNIST and evaluate its OOD or FS-OOD performance with MSP baseline.
 ```bash
-sh scripts/basics/mnist_train.sh
-sh scripts/ood/mnist_test_ood_msp.sh
-sh scripts/ood/mnist_test_fsood_msp.sh
+sh scripts/basics/mnist/train_mnist.sh
+sh scripts/ood/msp/mnist_test_ood_msp.sh
 ```
-
-
-[More tutorials](https://github.com/Jingkang50/OpenOOD/wiki/Get-Started) are provided in our [wiki](https://github.com/Jingkang50/OpenOOD/wiki) pages.
-
 
 ---
 ## Supported Benchmarks (10)
