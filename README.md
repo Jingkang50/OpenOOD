@@ -66,6 +66,7 @@ sh scripts/ood/msp/mnist_test_ood_msp.sh
 ## Supported Benchmarks (10)
 This part lists all the benchmarks we support. Feel free to include more.
 
+<img src="https://live.staticflickr.com/65535/52146310895_7458dd8cbc_k.jpg" width="800">
 
 <details open>
 <summary><b>Anomaly Detection (1)</b></summary>
