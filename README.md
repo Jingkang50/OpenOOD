@@ -6,7 +6,7 @@
 [![paper](https://img.shields.io/badge/Support-Dist%20Training-797ef6?style=for-the-badge)]()
 
 
-<img src="https://live.staticflickr.com/65535/52145428300_78fd595193_k.jpg" width="400">
+<img src="https://live.staticflickr.com/65535/52145428300_78fd595193_k.jpg" width="800">
 
 
 This repository reproduces representative methods within the [`Generalized Out-of-Distribution Detection Framework`](https://arxiv.org/abs/2110.11334),
