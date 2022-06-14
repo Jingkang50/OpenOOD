@@ -5,21 +5,26 @@ force_merge: False
 
 num_gpus: 1
 num_workers: 0
+num_machines: 1
+machine_rank: 0
 
 pipeline:
   name: train
 
 trainer:
   name: mos
-  group_config: group_config/taxonomy_level0.npy
-  num_group: 8
+  # group_config: ./data/group_config/cifar100_group_config.txt
+  group_config: Auto # if set to none the program will auto re-compute it
+  # group_config is a list that the num of classes in each super classes
+  # It should be noted that the configuration of automatic calculation may be inconsistent with 
+  # the category classification used in training, resulting in errors
 
 evaluator:
-  name: base
+  name: mos
 
 optimizer:
   name: sgd
-  num_epochs: 5
+  num_epochs: 100
   lr: 0.003
 
 recorder:

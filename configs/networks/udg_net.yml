@@ -1,0 +1,15 @@
+network:
+  name: udg
+  num_classes: '@{dataset.num_classes}'
+  num_clusters: 1000
+  pretrained: False          # set 'True' to load pretrained model
+  checkpoint: ''
+  num_gpus: '@{num_gpus}'
+
+  backbone:
+    name: resnet18_32x32
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    pretrained: False
+    checkpoint: ''
+    num_gpus: '@{num_gpus}'

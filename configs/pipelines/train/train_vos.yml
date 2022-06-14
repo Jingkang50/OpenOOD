@@ -1,15 +1,21 @@
-exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'"
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'_'@{mark}'"
 output_dir: ./results/
 save_output: True
 force_merge: False # disabled if 'save_output' is False
 num_classes: '@{dataset.num_classes}'
+mark: default
+
 num_gpus: 1
-start_epoch: 40
-num_workers: 4
+num_workers: 0
+num_machines: 1
+machine_rank: 0
+
+
 sample_number: 1000
 sample_from: 10000
 select: 1
-feature_dim: 128
+feature_dim: 512  #resnet 512, lenet 120
+
 pipeline:
   name: train
 
@@ -18,7 +24,7 @@ trainer:
   loss_weight: 0.1
 
 evaluator:
-  name: vos
+  name: base
 
 optimizer:
   num_epochs: 100
@@ -29,3 +35,8 @@ optimizer:
 recorder:
   name: base
   save_all_models: False
+
+preprocessor:
+  name: base
+
+start_epoch: 0

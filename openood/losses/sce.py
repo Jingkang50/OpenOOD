@@ -19,7 +19,8 @@ class SoftCrossEntropyFunction(torch.autograd.Function):
         else:
             if weight.size() != (logit.size(-1), ):
                 raise ValueError(
-                    'since logit.size() = {}, weight.size() should be ({},), but got {}'
+                    'since logit.size() = {}, '\
+                    'weight.size() should be ({},), but got {}'
                     .format(
                         logit.size(),
                         logit.size(-1),

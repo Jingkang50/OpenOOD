@@ -6,18 +6,21 @@
 [![paper](https://img.shields.io/badge/Support-Dist%20Training-797ef6?style=for-the-badge)]()
 
 
+<img src="https://live.staticflickr.com/65535/52145428300_78fd595193_k.jpg" width="800">
+
+
 This repository reproduces representative methods within the [`Generalized Out-of-Distribution Detection Framework`](https://arxiv.org/abs/2110.11334),
 aiming to make a fair comparison across methods that initially developed for anomaly detection, novelty detection, open set recognition, and out-of-distribution detection.
 This codebase is still under construction.
 Comments, issues, contributions, and collaborations are all welcomed!
 
-| ![timeline.jpg](https://live.staticflickr.com/65535/52082720911_be354e4478_k.jpg) |
+| ![timeline.jpg](https://live.staticflickr.com/65535/52144751937_95282e7de3_k.jpg) |
 |:--:|
-| <b>Image from [Fig.3 in our survey](https://arxiv.org/abs/2110.11334) - Timeline for representative methodologies.</b>|
+| <b>Timeline of the methods that OpenOOD supports.</b>|
 
 
 ## Updates
-- **19 May, 2022**: We release `v0.5` to finalize all implemented methods.
+- **14 June, 2022**: We release `v0.5`.
 - **12 April, 2022**: Primary release to support [Full-Spectrum OOD Detection](https://arxiv.org/abs/2204.05306).
 
 ## Get Started
@@ -33,15 +36,21 @@ conda env create -f environment.yml
 conda activate openood
 ```
 
-Datasets are provided [here](https://entuedu-my.sharepoint.com/:f:/g/personal/jingkang001_e_ntu_edu_sg/Eso7IDKUKQ9AoY7hm9IU2gIBMWNnWGCYPwClpH0TASRLmg?e=iEYhXO).
-Our codebase accesses the datasets from `./data/` by default.
+Datasets and pretrained models are provided [here](https://entuedu-my.sharepoint.com/:f:/g/personal/jingkang001_e_ntu_edu_sg/Eso7IDKUKQ9AoY7hm9IU2gIBMWNnWGCYPwClpH0TASRLmg?e=kMrkVQ).
+Please unzip the files if necessary.
+
+Our codebase accesses the datasets from `./data/` and pretrained models from `./results/checkpoints/` by default.
 ```
 ├── ...
 ├── data
-│   ├── images
-│   ├── covid_images
-│   └── imglist
+│   ├── benchmark_imglist
+│   ├── images_classic
+│   ├── images_medical
+│   └── images_largescale
 ├── openood
+├── results
+│   ├── checkpoints
+│   └── ...
 ├── scripts
 ├── main.py
 ├── ...
@@ -49,19 +58,15 @@ Our codebase accesses the datasets from `./data/` by default.
 
 The easiest hands-on script is to train LeNet-5 on MNIST and evaluate its OOD or FS-OOD performance with MSP baseline.
 ```bash
-sh scripts/0_basics/mnist_train.sh
-sh scripts/c_ood/0_mnist_test_ood_msp.sh
-sh scripts/c_ood/0_mnist_test_fsood_msp.sh
+sh scripts/basics/mnist/train_mnist.sh
+sh scripts/ood/msp/mnist_test_ood_msp.sh
 ```
 
-
-[More tutorials](https://github.com/Jingkang50/OpenOOD/wiki/Get-Started) are provided in our [wiki](https://github.com/Jingkang50/OpenOOD/wiki) pages.
-
-
 ---
-## Supported Benchmarks (8)
-This part lists all the benchmarks we
+## Supported Benchmarks (10)
+This part lists all the benchmarks we support. Feel free to include more.
 
+<img src="https://live.staticflickr.com/65535/52146310895_7458dd8cbc_k.jpg" width="800">
 
 <details open>
 <summary><b>Anomaly Detection (1)</b></summary>
@@ -70,32 +75,37 @@ This part lists all the benchmarks we
 </details>
 
 <details open>
-<summary><b>Open Set Recognition (3)</b></summary>
+<summary><b>Open Set Recognition (4)</b></summary>
 
+> - [x] [MNIST-4/6]()
 > - [x] [CIFAR-4/6]()
 > - [x] [CIFAR-40/60]()
 > - [x] [TinyImageNet-20/180]()
 </details>
 
 <details open>
-<summary><b>Out-of-Distribution Detection (4)</b></summary>
+<summary><b>Out-of-Distribution Detection (5)</b></summary>
 
+> - [x] [BIMCV (A COVID X-Ray Dataset)]()
+>      > Near-OOD: `CT-SCAN`, `X-Ray-Bone`;<br>
+>      > Far-OOD: `MNIST`, `CIFAR-10`, `Texture`, `Tiny-ImageNet`;<br>
+>      > Robust-ID: `ActMed`;
 > - [x] [MNIST]()
 >      > Near-OOD: `NotMNIST`, `FashionMNIST`;<br>
->      > Far-OOD: `Texture`, `CIFAR-10`, `TinyImageNet`, `Places-365`;<br>
->      > CS-ID: `SVHN`, `USPS`;
+>      > Far-OOD: `Texture`, `CIFAR-10`, `TinyImageNet`, `Places365`;<br>
+>      > Robust-ID: `SVHN`;
 > - [x] [CIFAR-10]()
 >      > Near-OOD: `CIFAR-100`, `TinyImageNet`;<br>
->      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-100-C`;<br>
->      > CS-ID: `CINIC-10`, `CIFAR-10-C`;
+>      > Far-OOD: `MNIST`, `SVHN`, `Texture`, `Places365`;<br>
+>      > Robust-ID: `CINIC-10`;
 > - [x] [CIFAR-100]()
->      > Near-OOD: `CIFAR-10`, `CINIC-10`, `TinyImageNet`;<br>
->      > Far-OOD: `MNIST`, `FashionMNIST`, `Texture`, `CIFAR-10-C`;<br>
->      > CS-ID: `TinyImageNet-C100`, `CIFAR-100-C`;
+>      > Near-OOD: `CIFAR-10`, `TinyImageNet`;<br>
+>      > Far-OOD: `MNIST`, `SVHN`, `Texture`, `Places365`;<br>
+>      > Robust-ID: `CIFAR-100-C`;
 > - [x] [ImageNet-1K]()
->      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`, `ImageNet21K-P`;<br>
->      > Far-OOD:  `Texture`, `MNIST`, `SVHN`, `Places365`;<br>
->      > CS-ID: `ImageNet-v2`, `ImageNet-C`;
+>      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`;<br>
+>      > Far-OOD:  `Texture`, `MNIST`;<br>
+>      > Robust-ID: `ImageNet-v2`;
 </details>
 
 
@@ -178,8 +188,6 @@ distance: f4d5b3 -->
 > - [x] [![odin](https://img.shields.io/badge/ICLR'18-ODIN-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![mds](https://img.shields.io/badge/NeurIPS'18-MDS-f4d5b3?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]
-> - [x] [![mls](https://img.shields.io/badge/arXiv'19-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
-> - [x] [![kld](https://img.shields.io/badge/arXiv'19-KL&#8211;Matching-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
 > - [x] [![godin](https://img.shields.io/badge/CVPR'20-G&#8211;ODIN-fdd7e6?style=for-the-badge)](https://github.com/guyera/Generalized-ODIN-Implementation)  &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![gram](https://img.shields.io/badge/ICML'20-Gram-f4d5b3?style=for-the-badge)](https://github.com/VectorInstitute/gram-ood-detection)  &nbsp;&nbsp; ![postprocess]
 > - [x] [![duq](https://img.shields.io/badge/ICML'20-DUQ-f4d5b3?style=for-the-badge)](https://github.com/y0ast/deterministic-uncertainty-quantification)  &nbsp;&nbsp; ![postprocess]
@@ -191,6 +199,8 @@ distance: f4d5b3 -->
 > - [x] [![vos](https://img.shields.io/badge/ICLR'22-VOS-d0e9ff?style=for-the-badge)](https://github.com/deeplearning-wisc/vos) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![vim](https://img.shields.io/badge/CVPR'22-VIM-fdd7e6?style=for-the-badge)](https://ooddetection.github.io/) &nbsp;&nbsp; ![postprocess]
 > - [x] [![sem](https://img.shields.io/badge/arXiv'22-SEM-d0e9ff?style=for-the-badge)](https://arxiv.org/abs/2204.05306) &nbsp;&nbsp; ![preprocess] &nbsp; ![training] &nbsp; ![postprocess]
+> - [x] [![mls](https://img.shields.io/badge/ICML'22-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
+> - [x] [![kld](https://img.shields.io/badge/ICML'22-KL&#8211;Matching-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
 
 
 > With Extra Data (3):
@@ -207,7 +217,7 @@ distance: f4d5b3 -->
 > - [x] [![deepensemble](https://img.shields.io/badge/NeurIPS'17-Deep&#8211;Ensemble-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training]
 > - [x] [![tempscale](https://img.shields.io/badge/ICML'17-Temp&#8211;Scaling-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![mixup](https://img.shields.io/badge/ICLR'18-Mixup-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
-> - [x] [![augmix](https://img.shields.io/badge/ICLR'20-AugMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
+> - [x] [![cutmix](https://img.shields.io/badge/ICCV'19-CutMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 > - [x] [![pixmix](https://img.shields.io/badge/CVPR'21-PixMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 </details>
 

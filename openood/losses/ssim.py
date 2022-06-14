@@ -82,6 +82,7 @@ def ssim(img1,
 
 
 class SSIM(torch.nn.Module):
+    # For DRAEM
     def __init__(self, window_size=11, size_average=True, val_range=None):
         super(SSIM, self).__init__()
         self.window_size = window_size

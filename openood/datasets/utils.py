@@ -1,5 +1,3 @@
-from re import S
-
 import torch
 from numpy import load
 from torch.utils.data import DataLoader
@@ -10,6 +8,7 @@ from openood.utils.config import Config
 
 from .feature_dataset import FeatDataset
 from .imglist_dataset import ImglistDataset
+from .udg_dataset import UDGDataset
 
 
 def get_dataloader(config: Config):
@@ -17,13 +16,12 @@ def get_dataloader(config: Config):
     dataset_config = config.dataset
     dataloader_dict = {}
     for split in dataset_config.split_names:
-        split_config = dataset_config[split]
         # currently we only support ImglistDataset
-        preprocessor = get_preprocessor(
-            config, split
-        )  # all script file need to pass in train_preprocessor config file
-        data_aux_preprocessor = TestStandardPreProcessor(
-            config, 'test')  # for data_aux data augmentation
+        split_config = dataset_config[split]
+        # all script file need to pass in train_preprocessor config file
+        preprocessor = get_preprocessor(config, split)
+        # for data_aux data augmentation
+        data_aux_preprocessor = TestStandardPreProcessor(config, 'test')
         CustomDataset = eval(split_config.dataset_class)
         dataset = CustomDataset(name=dataset_config.name + '_' + split,
                                 split=split,

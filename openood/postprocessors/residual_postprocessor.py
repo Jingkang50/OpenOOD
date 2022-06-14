@@ -23,14 +23,14 @@ class ResidualPostprocessor(BasePostprocessor):
             self.w, self.b = net.get_fc()
             print('Extracting id training feature')
             feature_id_train = []
-            for batch in tqdm(id_loader_dict['train_sub'],
+            for batch in tqdm(id_loader_dict['val'],
                               desc='Eval: ',
                               position=0,
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                feature = net(data, return_feature=True).cpu().numpy()
-                feature_id_train.append(feature)
+                _, feature = net(data, return_feature=True)
+                feature_id_train.append(feature.cpu().numpy())
             feature_id_train = np.concatenate(feature_id_train, axis=0)
 
             print('Extracting id testing feature')
@@ -41,8 +41,8 @@ class ResidualPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                feature = net(data, return_feature=True).cpu().numpy()
-                feature_id_val.append(feature)
+                _, feature = net(data, return_feature=True)
+                feature_id_val.append(feature.cpu().numpy())
             feature_id_val = np.concatenate(feature_id_val, axis=0)
 
         self.u = -np.matmul(pinv(self.w), self.b)
@@ -57,8 +57,9 @@ class ResidualPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        feature_ood = net.forward(data, return_feature=True).cpu()
-        logit_ood = feature_ood @ self.w.T + self.b
+        _, feature_ood = net(data, return_feature=True)
+        logit_ood = feature_ood.cpu() @ self.w.T + self.b
         _, pred = torch.max(logit_ood, dim=1)
-        score_ood = -norm(np.matmul(feature_ood - self.u, self.NS), axis=-1)
+        score_ood = -norm(np.matmul(feature_ood.cpu() - self.u, self.NS),
+                          axis=-1)
         return pred, torch.from_numpy(score_ood)

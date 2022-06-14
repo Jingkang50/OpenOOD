@@ -5,31 +5,34 @@ ood_dataset:
   batch_size: 32
   shuffle: False
   num_classes: 1000
+  pre_size: 256
   image_size: 224
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'
   split_names: [val, nearood, farood]
   val:
-    data_dir: ./data/images/
-    imglist_pth: ./data_lists/imagenet2012_val_list.txt
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/imagenet/val_openimage_o.txt
   nearood:
-    datasets: [inaturalist, openimageo, imageneto]
+    datasets: [species, inaturalist, openimageo, imageneto]
     inaturalist:
-      dataset_class: ImglistDataset
-      data_dir: ./data/iNaturalist/images/
-      imglist_pth: ./data/iNaturalist/imglist.txt
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
     openimageo:
-      dataset_class: ImglistDataset
-      data_dir: ./data/openimage_clean/images/
-      imglist_pth: ./data/openimage_clean/openimage_clean.txt
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
     imageneto:
-      dataset_class: ImglistDataset
-      data_dir: ./data/imagenet-o/
-      imglist_pth: ./data/imagenet-o/imageneto.txt
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_o.txt
+    species:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_species.txt
   farood:
-    datasets: [texture]
+    datasets: [texture, mnist]
     texture:
-      dataset_class: ImglistDataset
-      data_dir: ./data/Texture_clean/images/
-      imglist_pth: ./data/Texture_clean/texture.txt
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_texture.txt
+    mnist:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_mnist.txt

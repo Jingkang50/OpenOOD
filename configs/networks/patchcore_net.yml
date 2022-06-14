@@ -1,0 +1,16 @@
+network:
+  name: patchcore_net
+  num_classes: '@{dataset.num_classes}'
+  pretrained: False          # set 'True' to load pretrained model
+  checkpoint: none           # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'
+  load_cached_faiss: True
+
+  # network used for feature extraction
+  backbone:
+    name: resnet18_32x32
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    pretrained: True
+    checkpoint: 'results/checkpoints/cifar10_res18_acc94.30.ckpt'
+    num_gpus: '@{num_gpus}'

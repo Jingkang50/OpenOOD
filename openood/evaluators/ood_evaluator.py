@@ -21,12 +21,16 @@ class OODEvaluator(BaseEvaluator):
             config (Config): Config file from
         """
         super(OODEvaluator, self).__init__(config)
+        self.id_pred = None
+        self.id_conf = None
+        self.id_gt = None
 
     def eval_ood(self, net: nn.Module, id_data_loader: DataLoader,
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                  postprocessor: BasePostprocessor):
         if type(net) is dict:
-            net['backbone'].eval()
+            for subnet in net.values():
+                subnet.eval()
         else:
             net.eval()
         # load training in-distribution data
@@ -149,9 +153,10 @@ class OODEvaluator(BaseEvaluator):
             net['backbone'].eval()
         else:
             net.eval()
-        id_pred, _, id_gt = postprocessor.inference(net, data_loader)
+        self.id_pred, self.id_conf, self.id_gt = postprocessor.inference(
+            net, data_loader)
         metrics = {}
-        metrics['acc'] = sum(id_pred == id_gt) / len(id_pred)
+        metrics['acc'] = sum(self.id_pred == self.id_gt) / len(self.id_pred)
         metrics['epoch_idx'] = epoch_idx
         return metrics
 

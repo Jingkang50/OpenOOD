@@ -119,3 +119,7 @@ class ResNet18_224x224(nn.Module):
             return logits_cls, feature_list
         else:
             return logits_cls
+
+    def get_fc(self):
+        fc = self.fc
+        return fc.weight, fc.bias

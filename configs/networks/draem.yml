@@ -1,6 +1,10 @@
 network:
   name: draem
   num_classes: '@{dataset.num_classes}'
+  image_size: '@{dataset.image_size}'
   pretrained: False          # set 'True' to load pretrained model
   checkpoint: none           # ignore if pretrained is false
   num_gpus: '@{num_gpus}'
+
+use_gt: False
+image_auroc_only: True

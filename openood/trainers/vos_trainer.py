@@ -54,9 +54,8 @@ class VOSTrainer:
             images = batch['data'].cuda()
             labels = batch['label'].cuda()
 
-            x, feature_list = self.net.forward(images, True)
+            x, output = self.net.forward(images, return_feature=True)
 
-            output = feature_list[0]
             sum_temp = 0
             for index in range(num_classes):
                 sum_temp += self.number_dict[index]
@@ -108,11 +107,11 @@ class VOSTrainer:
                             (ood_samples, negative_samples[index_prob]), 0)
                 if len(ood_samples) != 0:
 
-                    energy_score_for_fg = log_sum_exp(x, dim=1)
+                    energy_score_for_fg = log_sum_exp(x,num_classes=num_classes, dim=1)
 
                     predictions_ood = self.net.fc(ood_samples)
 
-                    energy_score_for_bg = log_sum_exp(predictions_ood, dim=1)
+                    energy_score_for_bg = log_sum_exp(predictions_ood,num_classes=num_classes, dim=1)
 
                     input_for_lr = torch.cat(
                         (energy_score_for_fg, energy_score_for_bg), -1)
@@ -129,6 +128,7 @@ class VOSTrainer:
                 target_numpy = labels.cpu().data.numpy()
                 for index in range(len(labels)):
                     dict_key = target_numpy[index]
+
                     if self.number_dict[dict_key] < sample_number:
                         self.data_dict[dict_key][self.number_dict[
                             dict_key]] = output[index].detach()

@@ -42,3 +42,7 @@ class ResNet50(ResNet):
         logits_cls = self.fc(feature)
 
         return logits_cls
+
+    def get_fc(self):
+        fc = self.fc
+        return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()

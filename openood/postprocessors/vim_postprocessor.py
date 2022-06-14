@@ -24,14 +24,14 @@ class VIMPostprocessor(BasePostprocessor):
             self.w, self.b = net.get_fc()
             print('Extracting id training feature')
             feature_id_train = []
-            for batch in tqdm(id_loader_dict['train_sub'],
+            for batch in tqdm(id_loader_dict['train'],
                               desc='Eval: ',
                               position=0,
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                feature = net(data, return_feature=True).cpu().numpy()
-                feature_id_train.append(feature)
+                _, feature = net(data, return_feature=True)
+                feature_id_train.append(feature.cpu().numpy())
             feature_id_train = np.concatenate(feature_id_train, axis=0)
             logit_id_train = feature_id_train @ self.w.T + self.b
 
@@ -43,8 +43,8 @@ class VIMPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                feature = net(data, return_feature=True).cpu().numpy()
-                feature_id_val.append(feature)
+                _, feature = net(data, return_feature=True)
+                feature_id_val.append(feature.cpu().numpy())
             feature_id_val = np.concatenate(feature_id_val, axis=0)
             logit_id_val = feature_id_val @ self.w.T + self.b
 
@@ -54,6 +54,9 @@ class VIMPostprocessor(BasePostprocessor):
         eig_vals, eigen_vectors = np.linalg.eig(ec.covariance_)
         self.NS = np.ascontiguousarray(
             (eigen_vectors.T[np.argsort(eig_vals * -1)[self.dim:]]).T)
+
+        # import pdb
+        # pdb.set_trace()
 
         vlogit_id_train = norm(np.matmul(feature_id_train - self.u, self.NS),
                                axis=-1)
@@ -68,7 +71,8 @@ class VIMPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        feature_ood = net.forward(data, return_feature=True).cpu()
+        _, feature_ood = net.forward(data, return_feature=True)
+        feature_ood = feature_ood.cpu()
         logit_ood = feature_ood @ self.w.T + self.b
         _, pred = torch.max(logit_ood, dim=1)
         energy_ood = logsumexp(logit_ood.numpy(), axis=-1)

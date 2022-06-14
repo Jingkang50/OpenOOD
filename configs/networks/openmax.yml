@@ -4,3 +4,11 @@ network:
   pretrained: False          # set 'True' to load pretrained model
   checkpoint: ./results/mvtec_openmax_network_OpenMax_e100_lr0.1/best.ckpt           # ignore if pretrained is false
   num_gpus: '@{num_gpus}'
+
+  backbone:
+    name: lenet
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    pretrained: False
+    checkpoint: ''
+    num_gpus: '@{num_gpus}'

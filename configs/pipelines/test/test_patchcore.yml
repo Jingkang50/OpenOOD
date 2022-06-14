@@ -15,7 +15,8 @@ pipeline:
   name: test_ad
 
 evaluator:
-  name: patch
+  name: ad
+  test_pix: True
 
 recorder:
   save_scores: True

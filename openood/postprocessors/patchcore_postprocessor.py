@@ -1,15 +1,16 @@
+from __future__ import absolute_import, division, print_function
+
+import abc
 import os
 
 import faiss
 import numpy as np
 import torch
+from sklearn.metrics import pairwise_distances
 from sklearn.random_projection import SparseRandomProjection
 from torch import nn
 from torch.nn import functional as F
 from tqdm import tqdm
-
-from openood.postprocessors.sampling_methods.kcenter_greedy import \
-    kCenterGreedy
 
 from .base_postprocessor import BasePostprocessor
 
@@ -59,18 +60,20 @@ class PatchcorePostprocessor(BasePostprocessor):
         self.model.eval()  # to stop running_var move (maybe not critical)
         self.embedding_list = []
 
-        # load index
-        if os.path.isfile(os.path.join('./results/patch/', 'index.faiss')):
-            self.index = faiss.read_index(
-                os.path.join('./results/patch/', 'index.faiss'))
-            if torch.cuda.is_available():
-                res = faiss.StandardGpuResources()
-                self.index = faiss.index_cpu_to_gpu(res, 0, self.index)
-            self.init_results_list()
-            return
+        if (self.config.network.load_cached_faiss):
+            path = self.config.output_dir
+            # load index
+            if os.path.isfile(os.path.join(path, 'index.faiss')):
+                self.index = faiss.read_index(os.path.join(
+                    path, 'index.faiss'))
+                if torch.cuda.is_available():
+                    res = faiss.StandardGpuResources()
+                    self.index = faiss.index_cpu_to_gpu(res, 0, self.index)
+                self.init_results_list()
+                return
 
         # training step
-        train_dataiter = iter(id_loader_dict['patch'])
+        train_dataiter = iter(id_loader_dict['train'])
 
         for train_step in tqdm(range(1,
                                      len(train_dataiter) + 1),
@@ -81,7 +84,7 @@ class PatchcorePostprocessor(BasePostprocessor):
             features = self.model.forward(x, return_feature=True)
             embeddings = []
             for feature in features:
-                m = torch.nn.AvgPool2d(3, 1, 1)
+                m = torch.nn.AvgPool2d(9, 1, 1)
                 embeddings.append(m(feature))
             embedding = embedding_concat(embeddings[0], embeddings[1])
             self.embedding_list.extend(reshape_embedding(np.array(embedding)))
@@ -159,4 +162,185 @@ class PatchcorePostprocessor(BasePostprocessor):
         conf = torch.tensor(conf, dtype=torch.float32)
         conf = conf.cuda()
 
-        return pred, conf
+        pred_list_img_lvl = []
+
+        for patchscore in np.concatenate([conf.cpu().tolist()]):
+            N_b = patchscore[np.argmax(patchscore[:, 0])]
+            w = (1 - (np.max(np.exp(N_b)) / np.sum(np.exp(N_b))))
+            score = w * max(patchscore[:, 0])  # Image-level score
+
+            pred_list_img_lvl.append(score)
+
+        if self.config.evaluator.name == 'patch':
+            return pred, conf
+        else:
+            return pred, -1 * torch.tensor(pred_list_img_lvl).cuda()
+
+
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""Abstract class for sampling methods.
+
+Provides interface to sampling methods that allow same signature for
+select_batch.  Each subclass implements select_batch_ with the desired
+signature for readability.
+"""
+
+
+class SamplingMethod(object):
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def __init__(self, X, y, seed, **kwargs):
+        self.X = X
+        self.y = y
+        self.seed = seed
+
+    def flatten_X(self):
+        shape = self.X.shape
+        flat_X = self.X
+        if len(shape) > 2:
+            flat_X = np.reshape(self.X, (shape[0], np.product(shape[1:])))
+        return flat_X
+
+    @abc.abstractmethod
+    def select_batch_(self):
+        return
+
+    def select_batch(self, **kwargs):
+        return self.select_batch_(**kwargs)
+
+    def to_dict(self):
+        return None
+
+
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""Returns points that minimizes the maximum distance of any point to a center.
+
+Implements the k-Center-Greedy method in
+Ozan Sener and Silvio Savarese.  A Geometric Approach to Active Learning for
+Convolutional Neural Networks. https://arxiv.org/abs/1708.00489 2017
+
+Distance metric defaults to l2 distance.  Features used to calculate distance
+are either raw features or if a model has transform method then uses the output
+of model.transform(X).
+
+Can be extended to a robust k centers algorithm that ignores a certain number
+of outlier datapoints.
+Resulting centers are solution to multiple integer program.
+"""
+
+
+class kCenterGreedy(SamplingMethod):
+    def __init__(self, X, y, seed, metric='euclidean'):
+        self.X = X
+        self.y = y
+        self.flat_X = self.flatten_X()
+        self.name = 'kcenter'
+        self.features = self.flat_X
+        self.metric = metric
+        self.min_distances = None
+        self.n_obs = self.X.shape[0]
+        self.already_selected = []
+
+    def update_distances(self,
+                         cluster_centers,
+                         only_new=True,
+                         reset_dist=False):
+        """Update min distances given cluster centers.
+
+        Args:
+          cluster_centers: indices of cluster centers
+          only_new: only calculate distance for newly selected points and
+          update min_distances.
+          rest_dist: whether to reset min_distances.
+        """
+
+        if reset_dist:
+            self.min_distances = None
+        if only_new:
+            cluster_centers = [
+                d for d in cluster_centers if d not in self.already_selected
+            ]
+        if cluster_centers:
+            # Update min_distances for all examples given new cluster center.
+            x = self.features[cluster_centers]
+            dist = pairwise_distances(self.features, x, metric=self.metric)
+
+            if self.min_distances is None:
+                self.min_distances = np.min(dist, axis=1).reshape(-1, 1)
+            else:
+                self.min_distances = np.minimum(self.min_distances, dist)
+
+    def select_batch_(self, model, already_selected, N, **kwargs):
+        """Diversity promoting active learning method that greedily forms a
+        batch to minimize the maximum distance to a cluster center among all
+        unlabeled datapoints.
+
+        Args:
+          model: model with scikit-like API with decision_function implemented
+          already_selected: index of datapoints already selected
+          N: batch size
+
+        Returns:
+          indices of points selected to minimize distance to cluster centers
+        """
+
+        try:
+            # Assumes that the transform function takes in original data and
+            # not flattened data.
+            print('Getting transformed features...')
+            self.features = model.transform(self.X)
+            print('Calculating distances...')
+            self.update_distances(already_selected,
+                                  only_new=False,
+                                  reset_dist=True)
+        except:
+            print('Using flat_X as features.')
+            self.update_distances(already_selected,
+                                  only_new=True,
+                                  reset_dist=False)
+
+        new_batch = []
+
+        for _ in tqdm(range(N)):
+            if self.already_selected is None:
+                # Initialize centers with a randomly selected datapoint
+                ind = np.random.choice(np.arange(self.n_obs))
+            else:
+                ind = np.argmax(self.min_distances)
+            # New examples should not be in already selected since those points
+            # should have min_distance of zero to a cluster center.
+            assert ind not in already_selected
+
+            self.update_distances([ind], only_new=True, reset_dist=False)
+            new_batch.append(ind)
+        print('Maximum distance from cluster centers is %0.2f' %
+              max(self.min_distances))
+
+        self.already_selected = already_selected
+
+        return new_batch

@@ -3,19 +3,9 @@ from typing import Any
 import numpy as np
 import torch
 import torch.nn as nn
-from .base_postprocessor import BasePostprocessor
-import faiss
-
 from tqdm import tqdm
 
-
-activation = {}
-
-
-def get_activation(name):
-    def hook(model, input, output):
-        activation[name] = output.detach()
-    return hook
+from .base_postprocessor import BasePostprocessor
 
 normalizer = lambda x: x / np.linalg.norm(x, axis=-1, keepdims=True) + 1e-10
 
@@ -39,14 +29,10 @@ class DICEPostprocessor(BasePostprocessor):
                 data = data.float()
 
                 batch_size = data.shape[0]
-                layer_key = 'avgpool'
-                # net.avgpool.register_forward_hook(get_activation(layer_key))
-                net.avgpool.register_forward_hook(
-                    get_activation(layer_key))
 
-                net(data)
+                _, features = net(data, return_feature_list=True)
 
-                feature = activation[layer_key]
+                feature = features[-1]
                 dim = feature.shape[1]
                 activation_log.append(feature.data.cpu().numpy().reshape(
                     batch_size, dim, -1).mean(2))

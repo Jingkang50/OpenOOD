@@ -4,17 +4,22 @@ save_output: True
 force_merge: True # disabled if 'save_output' is False
 
 num_gpus: 1
-num_workers: 4
+num_workers: 0
 num_machines: 1
 machine_rank: 0
 
 network:
   pretrained: True
-  checkpoint: ["./checkpoints/draem_test_0.0001_700_bs8_bottle_.ckpt",
-               "./checkpoints/draem_test_0.0001_700_bs8_bottle__seg.ckpt"]
+  checkpoint: ["results/osr_mnist6_seed1_draem_train_e100_lr0.0001/draem_test_0.0001_100_bs32_osr_mnist6_seed1_best_epoch1_loss0.5001.ckpt",
+               "results/osr_mnist6_seed1_draem_train_e100_lr0.0001/draem_test_0.0001_100_bs32_osr_mnist6_seed1_best_epoch1_loss0.5001_seg.ckpt"]
+         # ignore if pretrained is false
 
 pipeline:
   name: test_ad
 
 evaluator:
-  name: draem
+  name: ood
+
+recorder:
+  save_scores: True
+  save_csv: True

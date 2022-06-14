@@ -1,0 +1,17 @@
+network:
+  name: react_net
+  num_classes: '@{dataset.num_classes}'
+  image_size: '@{dataset.image_size}'
+  pretrained: False
+  checkpoint: none           # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'
+  similarity_measure: 'cosine' # value in ['cosine', 'inner', 'euclid']
+
+  # network used for feature extraction
+  backbone:
+    name: resnet50
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    pretrained: True
+    checkpoint: 'results/checkpoints/imagenet_res50_acc76.10.pth'
+    num_gpus: '@{num_gpus}'

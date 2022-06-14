@@ -1,6 +1,0 @@
-network:
-  name: conf_wideresnet
-  num_classes: '@{dataset.num_classes}'
-  pretrained: False # In training pipeline:"False"; In testing pipeline:"True"
-  num_gpus: '@{num_gpus}'
-  checkpoint: ./results/svhn_conf_wideresnet_conf_esti/best_epoch171_acc0.9660.pth

@@ -1,5 +1,3 @@
-from os.path import join as pjoin
-from turtle import forward
 from types import MethodType
 
 import mmcv
@@ -12,23 +10,24 @@ from mmcls.apis import init_model
 import openood.utils.comm as comm
 
 from .bit import KNOWN_MODELS
-from .conf_widernet import Conf_WideResNet
-from .csinet import CsiNet
+from .conf_branch_net import ConfBranchNet
+from .csi_net import CSINet
 from .densenet import DenseNet3
-from .draem_networks import DiscriminativeSubNetwork, ReconstructiveSubNetwork
-from .dsvdd_net import build_network, get_Autoencoder
-from .godinnet import GodinNet
+from .draem_net import DiscriminativeSubNetwork, ReconstructiveSubNetwork
+from .dropout_net import DropoutNet
+from .dsvdd_net import build_network
+from .godin_net import GodinNet
 from .lenet import LeNet
-from .mos_network import MOS_MODELS
-from .opengan import Discriminator, Generator
-from .openmax_network import OpenMax
-from .patchcore_net import patchcore_net
-from .projectionnet import ProjectionNet
-from .reactnet import ReactNet
+from .mcd_net import MCDNet
+from .openmax_net import OpenMax
+from .patchcore_net import PatchcoreNet
+from .projection_net import ProjectionNet
+from .react_net import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
+from .resnet18_64x64 import ResNet18_64x64
 from .resnet18_224x224 import ResNet18_224x224
 from .resnet50 import ResNet50
-from .vggnet import Vgg16, make_arch
+from .udg_net import UDGNet
 from .wrn import WideResNet
 
 
@@ -38,6 +37,9 @@ def get_network(network_config):
 
     if network_config.name == 'resnet18_32x32':
         net = ResNet18_32x32(num_classes=num_classes)
+
+    elif network_config.name == 'resnet18_64x64':
+        net = ResNet18_64x64(num_classes=num_classes)
 
     elif network_config.name == 'resnet18_224x224':
         net = ResNet18_224x224(num_classes=num_classes)
@@ -62,40 +64,63 @@ def get_network(network_config):
                         dropRate=0.0,
                         num_classes=num_classes)
 
+    elif network_config.name == 'patchcore_net':
+        # path = '/home/pengyunwang/.cache/torch/hub/vision-0.9.0'
+        # module = torch.hub._load_local(path,
+        #                                'wide_resnet50_2',
+        #                                pretrained=True)
+        backbone = get_network(network_config.backbone)
+        net = PatchcoreNet(backbone)
     elif network_config.name == 'wide_resnet_50_2':
-        path = '/home/pengyunwang/.cache/torch/hub/vision-0.9.0'
-        module = torch.hub._load_local(path,
-                                       'wide_resnet50_2',
-                                       pretrained=True)
-        net = patchcore_net(module)
+        module = torch.hub.load('pytorch/vision:v0.9.0',
+                                'wide_resnet50_2',
+                                pretrained=True)
+        net = PatchcoreNet(module)
 
-    elif network_config.name == 'godinnet':
+    elif network_config.name == 'godin_net':
         backbone = get_network(network_config.backbone)
         net = GodinNet(backbone=backbone,
                        feature_size=backbone.feature_size,
                        num_classes=num_classes,
                        similarity_measure=network_config.similarity_measure)
 
-    elif network_config.name == 'reactnet':
+    elif network_config.name == 'react_net':
         backbone = get_network(network_config.backbone)
         net = ReactNet(backbone)
 
-    elif network_config.name == 'csinet':
+    elif network_config.name == 'csi_net':
         backbone = get_network(network_config.backbone)
-        net = CsiNet(backbone,
+        net = CSINet(backbone,
                      feature_size=backbone.feature_size,
                      num_classes=num_classes,
                      simclr_dim=network_config.simclr_dim,
                      shift_trans_type=network_config.shift_trans_type)
 
     elif network_config.name == 'draem':
-        model = ReconstructiveSubNetwork(in_channels=3, out_channels=3)
-        model_seg = DiscriminativeSubNetwork(in_channels=6, out_channels=2)
+        model = ReconstructiveSubNetwork(in_channels=3,
+                                         out_channels=3,
+                                         base_width=int(
+                                             network_config.image_size / 2))
+        model_seg = DiscriminativeSubNetwork(
+            in_channels=6,
+            out_channels=2,
+            base_channels=int(network_config.image_size / 4))
 
         net = {'generative': model, 'discriminative': model_seg}
 
     elif network_config.name == 'openmax_network':
-        net = OpenMax(backbone='ResNet18', num_classes=50)
+        backbone = get_network(network_config.backbone)
+        net = OpenMax(backbone=backbone, num_classes=num_classes)
+
+    elif network_config.name == 'mcd':
+        backbone = get_network(network_config.backbone)
+        net = MCDNet(backbone=backbone, num_classes=num_classes)
+
+    elif network_config.name == 'udg':
+        backbone = get_network(network_config.backbone)
+        net = UDGNet(backbone=backbone,
+                     num_classes=num_classes,
+                     num_clusters=network_config.num_clusters)
 
     elif network_config.name == 'opengan':
         from .opengan import Discriminator, Generator
@@ -110,8 +135,7 @@ def get_network(network_config):
 
     elif network_config.name == 'arpl_gan':
         from .arpl_net import (resnet34ABN, Generator, Discriminator,
-                               Generator32, Discriminator32)
-        from .arpl_layer import ARPLayer
+                               Generator32, Discriminator32, ARPLayer)
         feature_net = resnet34ABN(num_classes=num_classes, num_bns=2)
         dim_centers = feature_net.fc.weight.shape[1]
         feature_net.fc = nn.Identity()
@@ -144,7 +168,7 @@ def get_network(network_config):
         }
 
     elif network_config.name == 'arpl_net':
-        from .arpl_layer import ARPLayer
+        from .arpl_net import ARPLayer
         feature_net = get_network(network_config.feat_extract_network)
         try:
             dim_centers = feature_net.fc.weight.shape[1]
@@ -160,14 +184,12 @@ def get_network(network_config):
 
         net = {'netF': feature_net, 'criterion': criterion}
 
-    elif network_config.name == 'vgg and model':
-        vgg = Vgg16(network_config['trainedsource'])
-        model = make_arch(network_config['equal_network_size'],
-                          network_config['use_bias'], True)
-        net = {'vgg': vgg, 'model': model}
-
     elif network_config.name == 'bit':
-        net = KNOWN_MODELS[network_config.model]()
+        net = KNOWN_MODELS[network_config.model](
+            head_size=network_config.num_logits,
+            zero_head=True,
+            num_block_open=network_config.num_block_open)
+
     elif network_config.name == 'vit':
         cfg = mmcv.Config.fromfile(network_config.model)
         net = init_model(cfg, network_config.checkpoint, 0)
@@ -175,43 +197,21 @@ def get_network(network_config):
             lambda self: (self.head.layers.head.weight.cpu().numpy(),
                           self.head.layers.head.bias.cpu().numpy()), net)
 
-    elif network_config.name == 'conf_wideresnet':
-        net = Conf_WideResNet(depth=16,
-                              num_classes=num_classes,
-                              widen_factor=8)
-    elif network_config.name == 'dcae':
-        net = get_Autoencoder(network_config.type)
+    elif network_config.name == 'conf_branch_net':
+
+        backbone = get_network(network_config.backbone)
+        net = ConfBranchNet(backbone=backbone, num_classes=num_classes)
 
     elif network_config.name == 'dsvdd':
         net = build_network(network_config.type)
 
-    elif network_config.name == 'mos':
-        net = MOS_MODELS[network_config.model](
-            head_size=network_config.num_logits,
-            zero_head=True,
-            num_block_open=network_config.num_block_open)
-        model_path = pjoin(network_config.bit_pretrained_dir,
-                           network_config.model + '.npz')
-        net.load_from(np.load(model_path))
-        print('Moving model onto all GPUs')
-        net = torch.nn.DataParallel(net)
-
-    elif network_config.name == 'test_mos':
-        net = MOS_MODELS[network_config.model](
-            head_size=network_config.num_logits)
-        print('Load test mos model from checkpoint')
-        state_dict = torch.load(network_config.checkpoint)
-        net.load_state_dict_custom(state_dict)
-        net = torch.nn.DataParallel(net)
-
-    elif network_config.name == 'vos':
-
-        net = WideResNet(network_config['num_layers'],
-                         num_classes,
-                         network_config['widen_factor'],
-                         dropRate=network_config['droprate'])
     elif network_config.name == 'projectionNet':
-        net = ProjectionNet(num_classes=2)
+        backbone = get_network(network_config.backbone)
+        net = ProjectionNet(backbone=backbone, num_classes=2)
+
+    elif network_config.name == 'dropout_net':
+        backbone = get_network(network_config.backbone)
+        net = DropoutNet(backbone=backbone, dropout_p=network_config.dropout_p)
 
     else:
         raise Exception('Unexpected Network Architecture!')
@@ -224,7 +224,7 @@ def get_network(network_config):
                     if checkpoint != 'none':
                         subnet.load_state_dict(torch.load(checkpoint),
                                                strict=False)
-        elif network_config.name == 'bit':
+        elif network_config.name == 'bit' and not network_config.normal_load:
             net.load_from(np.load(network_config.checkpoint))
         elif network_config.name == 'vit':
             pass

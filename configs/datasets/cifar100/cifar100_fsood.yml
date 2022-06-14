@@ -1,0 +1,47 @@
+ood_dataset:
+  name: cifar100_fsood
+  dataset_class: ImglistDataset
+  interpolation: bilinear
+
+  batch_size: 128
+  shuffle: False
+  num_classes: 100
+  image_size: 32
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+
+  split_names: [val, csid, nearood, farood]
+  val:
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/objects/val_cifar100.txt
+  csid:
+    datasets: [cifar10c, imagenet10]
+    cifar10c:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_cifar10c.txt
+    imagenet10:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_imagenet10.txt
+  nearood:
+    datasets: [cifar100, tin]
+    cifar100:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_cifar100.txt
+    tin:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_tin.txt
+  farood:
+    datasets: [mnist, fashionmnist, texture, cifar100c]
+    mnist:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_mnist.txt
+    fashionmnist:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_fashionmnist.txt
+    texture:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_texture.txt
+    cifar100c:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/objects/test_cifar100c.txt
