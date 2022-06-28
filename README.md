@@ -9,7 +9,7 @@
 <img src="https://live.staticflickr.com/65535/52145428300_78fd595193_k.jpg" width="800">
 
 
-This repository reproduces representative methods within the [`Generalized Out-of-Distribution Detection Framework`](https://arxiv.org/abs/2110.11334),
+This "repository" reproduces representative methods within the [`Generalized Out-of-Distribution Detection Framework`](https://arxiv.org/abs/2110.11334),
 aiming to make a fair comparison across methods that initially developed for anomaly detection, novelty detection, open set recognition, and out-of-distribution detection.
 This codebase is still under construction.
 Comments, issues, contributions, and collaborations are all welcomed!
