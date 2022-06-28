@@ -56,6 +56,17 @@ Our codebase accesses the datasets from `./data/` and pretrained models from `./
 ├── ...
 ```
 
+| OOD Benchmark |    MNIST    |    CIFAR-10    |   CIFAR-100  | ImageNet-1K |
+| ------------- | ----------- | -------------- | ------------ | ----------- |
+| Accuracy      |    98.50    |      95.24     |     77.10    |    76.17    |
+| Checkpoint    |   [link]()  |    [link]()    |   [link]()   |   [link]()  |
+
+| OSR Benchmark |   MNIST-6   |     CIFAR-6    |   CIFAR-50   |    TIN-20   |
+| ------------- | ----------- | -------------- | ------------ | ----------- |
+| Accuracy (avg 5 seeds) |        |              |     |     |
+| Checkpoint    |    [links]()    |    [links]()    |   [links]()  | [links]() |
+
+
 The easiest hands-on script is to train LeNet-5 on MNIST and evaluate its OOD or FS-OOD performance with MSP baseline.
 ```bash
 sh scripts/basics/mnist/train_mnist.sh
@@ -132,7 +143,7 @@ This part lists all the backbones we will support in our codebase, including CNN
 </details>
 
 ---
-## Supported Methods (34)
+## Supported Methods (36)
 This part lists all the methods we include in this codebase. In `v0.5`, we totally support **more than 32 popular methods** for generalized OOD detection.
 
 All the supported methodolgies can be placed in the following four categories.
@@ -165,17 +176,19 @@ distance: f4d5b3 -->
 <details open>
 <summary><b>Open Set Recognition (3)</b></summary>
 
-> No Extra Data (2):
+> Post-Hoc Methods (1):
 > - [x] [![](https://img.shields.io/badge/CVPR'16-OpenMax-d0e9ff?style=for-the-badge)](https://github.com/13952522076/Open-Set-Recognition) ![training] ![postprocess]
+
+> Training Methods (1):
 > - [x] [![](https://img.shields.io/badge/TPAMI'21-ARPL-f4d5b3?style=for-the-badge)](https://github.com/iCGY96/ARPL) ![training] ![postprocess]
 
-> With Extra Data (1):
+> Training With Extra Data (1):
 > - [x] [![](https://img.shields.io/badge/ICCV'21-OpenGAN-fdd7e6?style=for-the-badge)](https://github.com/aimerykong/OpenGAN/tree/main/utils) ![training] ![postprocess]
 </details>
 
 
 <details open>
-<summary><b>Out-of-Distribution Detection (20)</b></summary>
+<summary><b>Out-of-Distribution Detection (22)</b></summary>
 
 <!--
 density: d0e9ff,
@@ -183,27 +196,31 @@ reconstruction: c2e2de,
 classification: fdd7e6,
 distance: f4d5b3 -->
 
-> No Extra Data (17):
+> Post-Hoc Methods (13):
 > - [x] [![msp](https://img.shields.io/badge/ICLR'17-MSP-fdd7e6?style=for-the-badge)]()
 > - [x] [![odin](https://img.shields.io/badge/ICLR'18-ODIN-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
 > - [x] [![mds](https://img.shields.io/badge/NeurIPS'18-MDS-f4d5b3?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
-> - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]
-> - [x] [![godin](https://img.shields.io/badge/CVPR'20-G&#8211;ODIN-fdd7e6?style=for-the-badge)](https://github.com/guyera/Generalized-ODIN-Implementation)  &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![gram](https://img.shields.io/badge/ICML'20-Gram-f4d5b3?style=for-the-badge)](https://github.com/VectorInstitute/gram-ood-detection)  &nbsp;&nbsp; ![postprocess]
-> - [x] [![duq](https://img.shields.io/badge/ICML'20-DUQ-f4d5b3?style=for-the-badge)](https://github.com/y0ast/deterministic-uncertainty-quantification)  &nbsp;&nbsp; ![postprocess]
-> - [x] [![csi](https://img.shields.io/badge/NeurIPS'20-CSI-fdd7e6?style=for-the-badge)](https://github.com/alinlab/CSI)  &nbsp;&nbsp; ![preprocess] &nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![ebo](https://img.shields.io/badge/NeurIPS'20-EBO-d0e9ff?style=for-the-badge)](https://github.com/wetliu/energy_ood) &nbsp;&nbsp; ![postprocess]
-> - [x] [![mos](https://img.shields.io/badge/CVPR'21-MOS-fdd7e6?style=for-the-badge)](https://github.com/deeplearning-wisc/large_scale_ood)  &nbsp;&nbsp; ![training]
+> - [x] [![dice](https://img.shields.io/badge/arXiv'21-DICE-d0e9ff?style=for-the-badge)](https://github.com/deeplearning-wisc/dice) &nbsp;&nbsp; ![postprocess]
 > - [x] [![gradnorm](https://img.shields.io/badge/NeurIPS'21-GradNorm-fdd7e6?style=for-the-badge)](https://github.com/deeplearning-wisc/gradnorm_ood) &nbsp;&nbsp; ![postprocess]
 > - [x] [![react](https://img.shields.io/badge/NeurIPS'21-ReAct-fdd7e6?style=for-the-badge)](https://github.com/deeplearning-wisc/react) &nbsp;&nbsp; ![postprocess]
-> - [x] [![vos](https://img.shields.io/badge/ICLR'22-VOS-d0e9ff?style=for-the-badge)](https://github.com/deeplearning-wisc/vos) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
-> - [x] [![vim](https://img.shields.io/badge/CVPR'22-VIM-fdd7e6?style=for-the-badge)](https://ooddetection.github.io/) &nbsp;&nbsp; ![postprocess]
-> - [x] [![sem](https://img.shields.io/badge/arXiv'22-SEM-d0e9ff?style=for-the-badge)](https://arxiv.org/abs/2204.05306) &nbsp;&nbsp; ![preprocess] &nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![mls](https://img.shields.io/badge/ICML'22-MLS-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
-> - [x] [![kld](https://img.shields.io/badge/ICML'22-KL&#8211;Matching-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
+> - [x] [![klm](https://img.shields.io/badge/ICML'22-KL&#8211;Matching-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/anomaly-seg) &nbsp;&nbsp; ![postprocess]
+> - [x] [![sem](https://img.shields.io/badge/arXiv'22-SEM-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
+> - [x] [![vim](https://img.shields.io/badge/CVPR'22-VIM-fdd7e6?style=for-the-badge)](https://ooddetection.github.io/) &nbsp;&nbsp; ![postprocess]
+> - [x] [![knn](https://img.shields.io/badge/ICML'22-KNN-fdd7e6?style=for-the-badge)](https://github.com/deeplearning-wisc/knn-ood) &nbsp;&nbsp; ![postprocess]
+
+> Training Methods (6):
+> - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]
+> - [x] [![godin](https://img.shields.io/badge/CVPR'20-G&#8211;ODIN-fdd7e6?style=for-the-badge)](https://github.com/guyera/Generalized-ODIN-Implementation)  &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
+> - [x] [![csi](https://img.shields.io/badge/NeurIPS'20-CSI-fdd7e6?style=for-the-badge)](https://github.com/alinlab/CSI)  &nbsp;&nbsp; ![preprocess] &nbsp; ![training] &nbsp; ![postprocess]
+> - [x] [![ssd](https://img.shields.io/badge/ICLR'21-SSD-fdd7e6?style=for-the-badge)](https://github.com/inspire-group/SSD)  &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
+> - [x] [![mos](https://img.shields.io/badge/CVPR'21-MOS-fdd7e6?style=for-the-badge)](https://github.com/deeplearning-wisc/large_scale_ood)  &nbsp;&nbsp; ![training]
+> - [x] [![vos](https://img.shields.io/badge/ICLR'22-VOS-d0e9ff?style=for-the-badge)](https://github.com/deeplearning-wisc/vos) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 
 
-> With Extra Data (3):
+> Training With Extra Data (3):
 > - [x] [![oe](https://img.shields.io/badge/ICLR'19-OE-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata]
 > - [x] [![mcd](https://img.shields.io/badge/ICCV'19-MCD-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata] &nbsp; ![training]
 > - [x] [![udg](https://img.shields.io/badge/ICCV'21-UDG-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![extradata] &nbsp; ![training]
@@ -211,16 +228,21 @@ distance: f4d5b3 -->
 
 
 <details open>
-<summary><b>Other Methods on Robustness and Uncertainty (6)</b></summary>
+<summary><b>Method Uncertainty (3)</b></summary>
 
 > - [x] [![mcdropout](https://img.shields.io/badge/ICML'16-MC&#8211;Dropout-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![deepensemble](https://img.shields.io/badge/NeurIPS'17-Deep&#8211;Ensemble-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training]
 > - [x] [![tempscale](https://img.shields.io/badge/ICML'17-Temp&#8211;Scaling-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
+</details>
+
+
+<details open>
+<summary><b>Data Augmentation (3)</b></summary>
+
 > - [x] [![mixup](https://img.shields.io/badge/ICLR'18-Mixup-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 > - [x] [![cutmix](https://img.shields.io/badge/ICCV'19-CutMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 > - [x] [![pixmix](https://img.shields.io/badge/CVPR'21-PixMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 </details>
-
 
 ---
 ## Contributing
@@ -237,7 +259,7 @@ We sincerely welcome community users to participate in these projects. Please re
 If you find our repository useful for your research, please consider citing our paper:
 ```bibtex
 @article{yang2022openood,
-    author = {Yang, Jingkang and {\textit{et al.}}},
+    author = {Yang, Jingkang and Wang, Pengyun and Zou, Dejian and Zhou, Zitang and Ding, Kunyuan and Peng, Wenxuan and Wang, Haoqi and Chen, Guangyao and Li, Bo and Sun, Yiyou and Du, Xuefeng and Zhou, Kaiyang and Zhang, Wayne and Hendrycks, Dan and Li, Yixuan and Liu, Ziwei},
     title = {OpenOOD: Benchmarking Generalized Out-of-Distribution Detection},
     year = {2022}
 }

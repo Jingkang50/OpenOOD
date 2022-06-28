@@ -5,12 +5,15 @@ force_merge: False
 mark: default
 
 num_gpus: 1
-num_workers: 0
+num_workers: 4
 num_machines: 1
 machine_rank: 0
 
 preprocessor:
   name: base
+
+network:
+  pretrained: False
 
 pipeline:
   name: train

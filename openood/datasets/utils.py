@@ -16,17 +16,12 @@ def get_dataloader(config: Config):
     dataset_config = config.dataset
     dataloader_dict = {}
     for split in dataset_config.split_names:
-        # currently we only support ImglistDataset
         split_config = dataset_config[split]
-        # all script file need to pass in train_preprocessor config file
         preprocessor = get_preprocessor(config, split)
-        # for data_aux data augmentation
-        data_aux_preprocessor = TestStandardPreProcessor(config, 'test')
+        # weak augmentation for data_aux
+        data_aux_preprocessor = TestStandardPreProcessor(config)
         CustomDataset = eval(split_config.dataset_class)
         dataset = CustomDataset(name=dataset_config.name + '_' + split,
-                                split=split,
-                                interpolation=split_config.interpolation,
-                                image_size=dataset_config.image_size,
                                 imglist_pth=split_config.imglist_pth,
                                 data_dir=split_config.data_dir,
                                 num_classes=dataset_config.num_classes,
@@ -55,14 +50,11 @@ def get_ood_dataloader(config: Config):
     for split in ood_config.split_names:
         split_config = ood_config[split]
         preprocessor = get_preprocessor(config, split)
-        data_aux_preprocessor = TestStandardPreProcessor(config, 'test')
+        data_aux_preprocessor = TestStandardPreProcessor(config)
         if split == 'val':
             # validation set
             dataset = CustomDataset(
                 name=ood_config.name + '_' + split,
-                split=split,
-                interpolation=ood_config.interpolation,
-                image_size=ood_config.image_size,
                 imglist_pth=split_config.imglist_pth,
                 data_dir=split_config.data_dir,
                 num_classes=ood_config.num_classes,
@@ -80,9 +72,6 @@ def get_ood_dataloader(config: Config):
                 dataset_config = split_config[dataset_name]
                 dataset = CustomDataset(
                     name=ood_config.name + '_' + split,
-                    split=split,
-                    interpolation=ood_config.interpolation,
-                    image_size=ood_config.image_size,
                     imglist_pth=dataset_config.imglist_pth,
                     data_dir=dataset_config.data_dir,
                     num_classes=ood_config.num_classes,

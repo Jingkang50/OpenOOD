@@ -16,9 +16,6 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 class UDGDataset(ImglistDataset):
     def __init__(self,
                  name,
-                 split,
-                 interpolation,
-                 image_size,
                  imglist_pth,
                  data_dir,
                  num_classes,
@@ -29,10 +26,9 @@ class UDGDataset(ImglistDataset):
                  dummy_size=None,
                  **kwargs):
         super(UDGDataset,
-              self).__init__(name, split, interpolation, image_size,
-                             imglist_pth, data_dir, num_classes, preprocessor,
-                             data_aux_preprocessor, maxlen, dummy_read,
-                             dummy_size, **kwargs)
+              self).__init__(name, imglist_pth, data_dir, num_classes,
+                             preprocessor, data_aux_preprocessor, maxlen,
+                             dummy_read, dummy_size, **kwargs)
 
         self.cluster_id = np.zeros(len(self.imglist), dtype=int)
         self.cluster_reweight = np.ones(len(self.imglist), dtype=float)

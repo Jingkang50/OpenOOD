@@ -7,28 +7,26 @@ from .transform import Convert, interpolation_modes, normalization_dict
 
 class BasePreprocessor():
     """For train dataset standard transformation."""
-    def __init__(self, config: Config, split):
-        dataset_name = config.dataset.name.split('_')[0]
-        image_size = config.dataset.image_size
-        pre_size = config.dataset.pre_size
-        if dataset_name in normalization_dict.keys():
-            mean = normalization_dict[dataset_name][0]
-            std = normalization_dict[dataset_name][1]
+    def __init__(self, config: Config):
+        self.pre_size = config.dataset.pre_size
+        self.image_size = config.dataset.image_size
+        self.interpolation = interpolation_modes[config.dataset.interpolation]
+        normalization_type = config.dataset.normalization_type
+        if normalization_type in normalization_dict.keys():
+            self.mean = normalization_dict[normalization_type][0]
+            self.std = normalization_dict[normalization_type][1]
         else:
-            mean = [0.5, 0.5, 0.5]
-            std = [0.5, 0.5, 0.5]
-
-        interpolation = interpolation_modes[
-            config.dataset['train'].interpolation]
+            self.mean = [0.5, 0.5, 0.5]
+            self.std = [0.5, 0.5, 0.5]
 
         self.transform = tvs_trans.Compose([
             Convert('RGB'),
-            tvs_trans.Resize(pre_size, interpolation=interpolation),
-            tvs_trans.CenterCrop(image_size),
+            tvs_trans.Resize(self.pre_size, interpolation=self.interpolation),
+            tvs_trans.CenterCrop(self.image_size),
             tvs_trans.RandomHorizontalFlip(),
-            tvs_trans.RandomCrop(image_size, padding=4),
+            tvs_trans.RandomCrop(self.image_size, padding=4),
             tvs_trans.ToTensor(),
-            tvs_trans.Normalize(mean=mean, std=std),
+            tvs_trans.Normalize(mean=self.mean, std=self.std),
         ])
 
     def setup(self, **kwargs):

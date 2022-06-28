@@ -8,7 +8,7 @@ from torch.utils.data import Dataset
 class BaseDataset(Dataset):
     def __init__(self, pseudo_index=-1, skip_broken=False, new_index='next'):
         super(BaseDataset, self).__init__()
-        self.pseudo_index = -1
+        self.pseudo_index = pseudo_index
         self.skip_broken = skip_broken
         self.new_index = new_index
         if new_index not in ('next', 'rand'):

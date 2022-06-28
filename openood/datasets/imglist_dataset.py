@@ -23,9 +23,6 @@ class Convert:
 class ImglistDataset(BaseDataset):
     def __init__(self,
                  name,
-                 split,
-                 interpolation,
-                 image_size,
                  imglist_pth,
                  data_dir,
                  num_classes,
@@ -38,7 +35,6 @@ class ImglistDataset(BaseDataset):
         super(ImglistDataset, self).__init__(**kwargs)
 
         self.name = name
-        self.image_size = image_size
         with open(imglist_pth) as imgfile:
             self.imglist = imgfile.readlines()
         self.data_dir = data_dir
@@ -68,9 +64,8 @@ class ImglistDataset(BaseDataset):
         path = os.path.join(self.data_dir, image_name)
         sample = dict()
         sample['image_name'] = image_name
-
-        # TODO: comments
         kwargs = {'name': self.name, 'path': path, 'tokens': tokens}
+        # some preprocessor methods require setup
         self.preprocessor.setup(**kwargs)
         try:
             if not self.dummy_read:
