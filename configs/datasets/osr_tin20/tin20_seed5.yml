@@ -1,11 +1,11 @@
 dataset:
-  name: mnist
-  num_classes: 10
-  image_size: 28
-  pre_size: 28
+  name: tin20_seed5
+  num_classes: 20
+  pre_size: 64
+  image_size: 64
 
   interpolation: bilinear
-  normalization_type: mnist
+  normalization_type: imagenet
 
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
@@ -16,18 +16,18 @@ dataset:
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/mnist/train_mnist.txt
+    imglist_pth: ./data/benchmark_imglist/osr_tin20/train/train_tin_20_seed5.txt
     batch_size: 128
     shuffle: True
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/mnist/val_mnist.txt
+    imglist_pth: ./data/benchmark_imglist/osr_tin20/val/val_tin_20_seed5.txt
     batch_size: 200
     shuffle: False
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/mnist/test_mnist.txt
+    imglist_pth: ./data/benchmark_imglist/osr_tin20/test/test_tin_20_id_seed5.txt
     batch_size: 200
     shuffle: False

@@ -1,11 +1,11 @@
 dataset:
-  name: mnist
-  num_classes: 10
-  image_size: 28
-  pre_size: 28
+  name: cifar50_seed2
+  num_classes: 50
+  pre_size: 32
+  image_size: 32
 
   interpolation: bilinear
-  normalization_type: mnist
+  normalization_type: cifar100
 
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
@@ -16,18 +16,18 @@ dataset:
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/mnist/train_mnist.txt
+    imglist_pth: ./data/benchmark_imglist/osr_cifar50/train/train_cifar50_seed2.txt
     batch_size: 128
     shuffle: True
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/mnist/val_mnist.txt
+    imglist_pth: ./data/benchmark_imglist/osr_cifar50/val/val_cifar50_seed2.txt
     batch_size: 200
     shuffle: False
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/mnist/test_mnist.txt
+    imglist_pth: ./data/benchmark_imglist/osr_cifar50/test/test_cifar50_id_seed2.txt
     batch_size: 200
     shuffle: False
