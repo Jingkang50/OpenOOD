@@ -1,0 +1,23 @@
+ood_dataset:
+  name: cifar50_seed4_osr
+  num_classes: 50
+  pre_size: 32
+  image_size: 32
+
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+
+  dataset_class: ImglistDataset
+  batch_size: 128
+  shuffle: False
+
+  split_names: [val, osr]
+  val:
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/osr_cifar50/test/test_cifar50_ood_seed4.txt
+  osr:
+    datasets: [cifar50]
+    cifar50:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/osr_cifar50/test/test_cifar50_ood_seed4.txt
