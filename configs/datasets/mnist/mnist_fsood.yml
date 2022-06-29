@@ -1,15 +1,14 @@
 ood_dataset:
   name: mnist_fsood
-  dataset_class: ImglistDataset
-  interpolation: bilinear
-
-  batch_size: 128
-  shuffle: False
   num_classes: 10
-  image_size: 28
+
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'
+
+  dataset_class: ImglistDataset
+  batch_size: 128
+  shuffle: False
 
   split_names: [val, csid, nearood, farood]
   val:
