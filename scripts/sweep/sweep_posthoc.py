@@ -71,6 +71,7 @@ if __name__ == '__main__':
             configs/postprocessors/{method}.yml \
             --network.checkpoint {checkpoint_dict[benchmark]} \
             --output_dir {args.output_dir}')
+            os.system(command_prefix + command)
         elif metric == 'osr':
             for sid in range(1, 6):
                 print(f'5 OSR Exp, {sid} out of 5', flush=True)
