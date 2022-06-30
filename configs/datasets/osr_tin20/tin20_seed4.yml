@@ -16,18 +16,18 @@ dataset:
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_tin20/train/train_tin_20_seed4.txt
+    imglist_pth: ./data/benchmark_imglist/osr_tin20/train/train_tin20_seed4.txt
     batch_size: 128
     shuffle: True
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_tin20/val/val_tin_20_seed4.txt
+    imglist_pth: ./data/benchmark_imglist/osr_tin20/val/val_tin20_seed4.txt
     batch_size: 200
     shuffle: False
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_tin20/test/test_tin_20_id_seed4.txt
+    imglist_pth: ./data/benchmark_imglist/osr_tin20/test/test_tin20_id_seed4.txt
     batch_size: 200
     shuffle: False

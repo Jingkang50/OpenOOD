@@ -15,9 +15,9 @@ ood_dataset:
   split_names: [val, osr]
   val:
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_tin20/test/test_tin_180_ood_seed4.txt
+    imglist_pth: ./data/benchmark_imglist/osr_tin20/test/test_tin20_ood_seed4.txt
   osr:
-    datasets: [tin_180]
-    tin_180:
+    datasets: [tin180]
+    tin180:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/benchmark_imglist/osr_tin20/test/test_tin_180_ood_seed4.txt
+      imglist_pth: ./data/benchmark_imglist/osr_tin20/test/test_tin20_ood_seed4.txt
