@@ -1,7 +1,7 @@
 # sh ./scripts/sweep/sweep_posthoc.sh
 python ./scripts/sweep/sweep_posthoc.py \
---benchmarks 'mnist' \
+--benchmarks 'tin20' \
 --methods 'msp' \
---metrics 'ood' \
+--metrics 'osr' \
 --output-dir './results/ood' \
---launcher 'local' \
+--launcher 'local'

@@ -1,10 +1,12 @@
 ood_dataset:
   name: imagenet_ood
+  num_classes: 1000
+
   dataset_class: ImglistDataset
   interpolation: bilinear
   batch_size: 32
   shuffle: False
-  num_classes: 1000
+
   pre_size: 256
   image_size: 224
   num_workers: '@{num_workers}'
