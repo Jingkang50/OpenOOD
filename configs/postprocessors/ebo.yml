@@ -2,3 +2,5 @@ postprocessor:
   name: ebo
   postprocessor_args:
     temperature: 1
+  postprocessor_sweep:
+    temperature: [1, 10, 100, 1000]
