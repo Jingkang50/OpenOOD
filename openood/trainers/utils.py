@@ -46,7 +46,7 @@ def get_trainer(net, train_loader: DataLoader, config: Config):
             'cutmix': CutMixTrainer,
             'dropout': DropoutTrainer,
             'csi': CSITrainer,
-            'logit_norm': LogitNormTrainer
+            'logitnorm': LogitNormTrainer
         }
         return trainers[config.trainer.name](net, train_loader, config)
 
