@@ -11,7 +11,7 @@ from openood.utils import Config
 from .lr_scheduler import cosine_annealing
 
 
-class BaseTrainer:
+class LogitNormTrainer:
     def __init__(self, net: nn.Module, train_loader: DataLoader,
                  config: Config) -> None:
 

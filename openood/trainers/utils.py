@@ -22,7 +22,7 @@ from .opengan_trainer import OpenGanTrainer
 from .sae_trainer import SAETrainer
 from .udg_trainer import UDGTrainer
 from .vos_trainer import VOSTrainer
-
+from .logitnorm_trainer import LogitNormTrainer
 
 def get_trainer(net, train_loader: DataLoader, config: Config):
     if type(train_loader) is DataLoader:
@@ -46,6 +46,7 @@ def get_trainer(net, train_loader: DataLoader, config: Config):
             'cutmix': CutMixTrainer,
             'dropout': DropoutTrainer,
             'csi': CSITrainer,
+            'logit_norm': LogitNormTrainer
         }
         return trainers[config.trainer.name](net, train_loader, config)
 
