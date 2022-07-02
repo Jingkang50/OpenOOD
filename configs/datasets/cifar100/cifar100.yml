@@ -1,5 +1,5 @@
 dataset:
-  name: cifar100\
+  name: cifar100
   num_classes: 100
   image_size: 32
   pre_size: 32

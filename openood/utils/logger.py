@@ -79,21 +79,29 @@ def setup_logger(config):
 
     output = config.output_dir
 
-    if config.save_output:
-        if not config.force_merge and osp.isdir(
-                output) and comm.is_main_process():
-            print('Output dir: {}'.format(output), flush=True)
-            ans = input('Exp dir already exists, merge it? (y/n)')
-            if ans in ['yes', 'Yes', 'YES', 'y', 'Y', 'can']:
+    if config.save_output and comm.is_main_process():
+        print('Output dir: {}'.format(output), flush=True)
+        if osp.isdir(output):
+            if config.merge_option == 'default':
+                ans = input('Exp dir already exists, merge it? (y/n)')
+                if ans in ['yes', 'Yes', 'YES', 'y', 'Y', 'can']:
+                    save_logger(config, output)
+                elif ans in ['no', 'No', 'NO', 'n', 'N']:
+                    print('Quitting the process...', flush=True)
+                    quit()
+                else:
+                    raise ValueError('Unexpected Input.')
+            elif config.merge_option == 'merge':
                 save_logger(config, output)
-            elif ans in ['no', 'No', 'NO', 'n', 'N']:
-                print('Quitting the process...', flush=True)
-                quit()
-            else:
-                raise ValueError('Unexpected Input.')
+            elif config.merge_option == 'pass':
+                if os.path.exists(os.path.join(config.save_output, 'ood.csv')):
+                    print('Exp dir already exists, quitting the process...',
+                          flush=True)
+                    quit()
+                else:
+                    save_logger(config, output)
         else:
             save_logger(config, output)
-
     else:
         print('No output directory.', flush=True)
 

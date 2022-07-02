@@ -16,4 +16,4 @@ configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/mos.yml \
 --num_workers 8 \
 --network.pretrained False \
---force_merge True
+--merge_option merge

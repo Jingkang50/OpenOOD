@@ -24,4 +24,4 @@ configs/postprocessors/vim.yml \
 --network.pretrained True \
 --network.checkpoint 'results/checkpoints/imagenet_res50_acc76.10.pth' \
 --postprocessor.postprocessor_args.dim 1000 \
---force_merge True
+--merge_option merge

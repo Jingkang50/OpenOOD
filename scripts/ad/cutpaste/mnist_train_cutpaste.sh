@@ -22,4 +22,4 @@ configs/postprocessors/cutpaste.yml \
 --network.backbone.checkpoint 'results/checkpoints/mnist_lenet_acc99.30.ckpt' \
 --num_workers 8 \
 --optimizer.num_epochs 100 \
---force_merge True
+--merge_option merge

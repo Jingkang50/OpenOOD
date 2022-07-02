@@ -1,3 +1,4 @@
 postprocessor:
-  name: maxlogit
+  name: klm
   postprocessor_args:
+    dim: 512

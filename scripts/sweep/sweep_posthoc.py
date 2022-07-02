@@ -1,5 +1,9 @@
 import argparse
+import csv
 import os
+
+import numpy as np
+from write_metrics import make_args_list, write_metric, write_total
 
 # dictionary with keywords from benchmarks
 network_dict = {
@@ -24,16 +28,6 @@ checkpoint_dict = {
     'tin20': './results/checkpoints/osr/tin20',
 }
 
-
-def make_args_list(benchmarks, methods, metrics):
-    args_list = []
-    for benchmark in benchmarks:
-        for method in methods:
-            for metric in metrics:
-                args_list.append([benchmark, method, metric])
-    return args_list
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run a sweep')
     parser.add_argument('--benchmarks',
@@ -41,11 +35,17 @@ if __name__ == '__main__':
                         default=['mnist', 'cifar10', 'cifar100', 'imagenet'])
     parser.add_argument('--methods', nargs='+', default=['msp'])
     parser.add_argument('--metrics', nargs='+', default=['acc'])
+    parser.add_argument('--metric2save', nargs='+', default=['auroc'])
+    parser.add_argument('--update_form_only', action='store_true')
     parser.add_argument('--output-dir', type=str, default='./results/')
     parser.add_argument('--launcher',
                         default='local',
                         choices=['local', 'slurm'])
+    parser.add_argument('--merge-option', default='default')
     args = parser.parse_args()
+
+    if not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
 
     # different command with different job schedulers
     if args.launcher == 'slurm':
@@ -58,42 +58,56 @@ if __name__ == '__main__':
 
     args_list = make_args_list(args.benchmarks, args.methods, args.metrics)
     print(f'{len(args_list)} experiments have been setup...', flush=True)
-    for exp_id, [benchmark, method, metric] in enumerate(args_list):
-        print(f'Experiment #{exp_id} Starts...', flush=True)
-        print(f'Config: {benchmark}, {method}, {metric}', flush=True)
-        if metric in ['ood', 'fsood']:
-            command = (f'python main.py --config \
-            configs/datasets/{benchmark}/{benchmark}.yml \
-            configs/datasets/{benchmark}/{benchmark}_{metric}.yml \
-            configs/preprocessors/base_preprocessor.yml \
-            configs/networks/{network_dict[benchmark]}.yml \
-            configs/pipelines/test/test_{metric}.yml \
-            configs/postprocessors/{method}.yml \
-            --network.checkpoint {checkpoint_dict[benchmark]} \
-            --output_dir {args.output_dir}')
-            os.system(command_prefix + command)
-        elif metric == 'osr':
-            for sid in range(1, 6):
-                print(f'5 OSR Exp, {sid} out of 5', flush=True)
+
+    if not args.update_form_only:
+        for exp_id, [benchmark, method, metric] in enumerate(args_list):
+            print(f'Experiment #{exp_id+1} Starts...', flush=True)
+            print(f'Config: {benchmark}, {method}, {metric}', flush=True)
+            if metric in ['ood', 'fsood']:
                 command = (f'python main.py --config \
-                configs/datasets/osr_{benchmark}/{benchmark}_seed{sid}.yml \
-                configs/datasets/osr_{benchmark}/{benchmark}_seed{sid}_osr.yml \
+                configs/datasets/{benchmark}/{benchmark}.yml \
+                configs/datasets/{benchmark}/{benchmark}_{metric}.yml \
                 configs/preprocessors/base_preprocessor.yml \
                 configs/networks/{network_dict[benchmark]}.yml \
-                configs/pipelines/test/test_osr.yml \
+                configs/pipelines/test/test_{metric}.yml \
                 configs/postprocessors/{method}.yml \
-                --network.checkpoint {checkpoint_dict[benchmark]}_seed{sid}.ckpt \
+                --network.checkpoint {checkpoint_dict[benchmark]} \
+                --merge_option {args.merge_option} \
                 --output_dir {args.output_dir}')
                 os.system(command_prefix + command)
-        elif metric in ['acc', 'ece']:
-            command = (f'python main.py --config \
-            configs/datasets/{benchmark}/{benchmark}.yml \
-            configs/preprocessors/base_preprocessor.yml \
-            configs/networks/{network_dict[benchmark]}.yml \
-            configs/pipelines/test/test_{metric}.yml \
-            configs/postprocessors/{method}.yml \
-            --network.checkpoint {checkpoint_dict[benchmark]} \
-            --output_dir {args.output_dir}')
-            os.system(command_prefix + command)
-        else:
-            raise ValueError('Unexpected Metric...')
+            elif metric == 'osr':
+                for sid in range(1, 6):
+                    print(f'5 OSR Exp, {sid} out of 5', flush=True)
+                    command = (f'python main.py --config \
+                    configs/datasets/osr_{benchmark}/{benchmark}_seed{sid}.yml \
+                    configs/datasets/osr_{benchmark}/{benchmark}_seed{sid}_osr.yml \
+                    configs/preprocessors/base_preprocessor.yml \
+                    configs/networks/{network_dict[benchmark]}.yml \
+                    configs/pipelines/test/test_osr.yml \
+                    configs/postprocessors/{method}.yml \
+                    --network.checkpoint {checkpoint_dict[benchmark]}_seed{sid}.ckpt \
+                    --output_dir {args.output_dir} \
+                    --merge_option {args.merge_option}')
+                    os.system(command_prefix + command)
+            elif metric in ['acc', 'ece']:
+                command = (f'python main.py --config \
+                configs/datasets/{benchmark}/{benchmark}.yml \
+                configs/preprocessors/base_preprocessor.yml \
+                configs/networks/{network_dict[benchmark]}.yml \
+                configs/pipelines/test/test_{metric}.yml \
+                configs/postprocessors/{method}.yml \
+                --network.checkpoint {checkpoint_dict[benchmark]} \
+                --output_dir {args.output_dir} \
+                --merge_option {args.merge_option}')
+                os.system(command_prefix + command)
+            else:
+                raise ValueError('Unexpected Metric...')
+
+    folder_list = os.listdir(args.output_dir)
+    save_line_dict = {'ood': -8, 'osr': -1, 'acc': -1}
+    args.benchmarks.extend([
+        'tin', 'nearood', 'mnist', 'svhn', 'texture', 'place365', 'places365',
+        'farood'
+    ])
+    write_metric(args, folder_list, save_line_dict)
+    write_total(args, folder_list, save_line_dict)

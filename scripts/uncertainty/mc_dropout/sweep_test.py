@@ -37,5 +37,5 @@ for [dataset, ood_data, network, pth] in config:
     --num_workers 8 \
     --network.checkpoint 'results/{pth}/best.ckpt' \
     --mark 0 \
-    --force_merge True &")
+    --merge_option merge &")
     os.system(command)

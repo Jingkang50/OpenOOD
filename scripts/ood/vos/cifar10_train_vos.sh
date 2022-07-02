@@ -13,4 +13,4 @@ configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/ebo.yml \
 --num_workers 8 \
 --optimizer.num_epochs 100 \
---force_merge True
+--merge_option merge

@@ -17,4 +17,4 @@ configs/postprocessors/patch.yml \
 configs/preprocessors/base_preprocessor.yml \
 --evaluator.name ad \
 --num_workers 8 \
---force_merge True
+--merge_option merge

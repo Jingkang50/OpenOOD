@@ -20,4 +20,4 @@ configs/postprocessors/msp.yml \
 configs/preprocessors/base_preprocessor.yml \
 --network.pretrained True \
 --network.checkpoint 'results/cifar100_csi_net_csi_step2_e100_lr0.1/best.ckpt' \
---force_merge True
+--merge_option merge
