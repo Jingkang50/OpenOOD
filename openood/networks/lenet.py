@@ -42,10 +42,21 @@ class LeNet(nn.Module):
         feature3 = feature3.view(feature3.shape[0], -1)
         feature = self.relu(self.classifier1(feature3))
         logits_cls = self.fc(feature)
-        feature_list = [feature1, feature2, feature3]
+        feature_list = [feature1, feature2, feature3, feature]
         if return_feature:
             return logits_cls, feature
         elif return_feature_list:
             return logits_cls, feature_list
         else:
             return logits_cls
+
+    def forward_threshold(self, x, threshold):
+        feature1 = self.block1(x)
+        feature2 = self.block2(feature1)
+        feature3 = self.block3(feature2)
+        feature3 = feature3.view(feature3.shape[0], -1)
+        feature = self.relu(self.classifier1(feature3))
+        feature = feature.clip(max=threshold)
+        logits_cls = self.fc(feature)
+
+        return logits_cls

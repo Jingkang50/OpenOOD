@@ -22,5 +22,5 @@ configs/postprocessors/msp.yml \
 --dataset.test.batch_size 256 \
 --dataset.val.batch_size 256 \
 --network.pretrained True \
---network.checkpoint 'results/checkpoints/imagenet_res50_acc76.17.pth' \
---force_merge True
+--network.checkpoint 'results/checkpoints/imagenet_res50_acc76.10.pth' \
+--merge_option merge

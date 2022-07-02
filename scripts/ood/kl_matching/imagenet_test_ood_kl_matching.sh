@@ -16,11 +16,11 @@ configs/datasets/imagenet/imagenet_ood.yml \
 configs/networks/resnet50.yml \
 configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/kl_matching.yml \
+configs/postprocessors/klm.yml \
 --num_workers 4 \
 --ood_dataset.image_size 256 \
 --dataset.test.batch_size 256 \
 --dataset.val.batch_size 256 \
 --network.pretrained True \
 --network.checkpoint 'results/checkpoints/imagenet_res50_acc76.10.pth' \
---force_merge True
+--merge_option merge

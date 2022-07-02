@@ -17,7 +17,7 @@ configs/datasets/osr_mnist6/mnist6_seed1_ood.yml \
 configs/networks/lenet.yml \
 configs/pipelines/test/test_osr.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/kl_matching.yml \
+configs/postprocessors/klm.yml \
 --num_workers 8 \
 --network.checkpoint 'results/checkpoints/osr/mnist6_seed1.ckpt' \
 --mark 0

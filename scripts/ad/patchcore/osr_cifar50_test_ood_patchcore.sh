@@ -20,4 +20,4 @@ configs/postprocessors/patch.yml \
 --network.backbone.name resnet18_32x32 \
 --network.backbone.checkpoint 'results/checkpoints/osr/cifar50_seed1_acc80.24.ckpt' \
 --num_workers 8 \
---force_merge True &
+--merge_option merge &

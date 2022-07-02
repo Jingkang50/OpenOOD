@@ -41,7 +41,7 @@ def sample_estimator(model, train_loader, num_classes, powers):
 
     model.eval()
 
-    num_layer = 5
+    num_layer = 5  # 4 for lenet
     num_poles_list = powers
     num_poles = len(num_poles_list)
     feature_class = [[[None for x in range(num_poles)]
@@ -103,7 +103,7 @@ def sample_estimator(model, train_loader, num_classes, powers):
 def get_deviations(model, data, mins, maxs, num_classes, powers):
     model.eval()
 
-    num_layer = 5
+    num_layer = 5  # 4 for lenet
     num_poles_list = powers
     exist = 1
     pred_list = []
