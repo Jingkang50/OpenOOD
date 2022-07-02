@@ -3,7 +3,7 @@ _e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'\
 _alpha'@{trainer.trainer_args.alpha}'_'@{mark}'"
 output_dir: ./results/
 save_output: True
-force_merge: False
+merge_option: default
 mark: default
 
 

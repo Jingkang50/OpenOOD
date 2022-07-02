@@ -1,7 +1,7 @@
 exp_name: "'@{dataset.name}'_'@{network.name}'_train_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
 output_dir: ./results/
 save_output: True
-force_merge: True
+merge_option: merge
 
 num_gpus: 1
 num_workers: 0

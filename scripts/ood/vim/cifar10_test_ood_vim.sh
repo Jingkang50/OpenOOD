@@ -19,6 +19,6 @@ configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/vim.yml \
 --num_workers 8 \
---network.checkpoint 'results/checkpoints/cifar10_res18_acc94.30.ckpt' \
+--network.checkpoint 'results/checkpoints/cifar10_res18_acc95.24.ckpt' \
 --mark 0 \
 --postprocessor.postprocessor_args.dim 256

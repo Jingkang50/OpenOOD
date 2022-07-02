@@ -20,4 +20,4 @@ configs/postprocessors/patch.yml \
 --network.backbone.name resnet18_64x64 \
 --network.backbone.checkpoint 'results/checkpoints/osr/tin20_seed1_acc77.23.ckpt' \
 --num_workers 8 \
---force_merge True &
+--merge_option merge &

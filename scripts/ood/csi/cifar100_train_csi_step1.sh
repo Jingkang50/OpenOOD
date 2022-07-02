@@ -20,5 +20,5 @@ configs/preprocessors/base_preprocessor.yml \
 --network.pretrained False \
 --optimizer.num_epochs 100 \
 --dataset.train.batch_size 128 \
---force_merge True \
+--merge_option merge \
 --mode csi_step1

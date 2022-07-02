@@ -34,5 +34,5 @@ for [dataset, ood_dataset, network, pth] in config:
     configs/postprocessors/temp_scaling.yml \
     --network.checkpoint {pth} \
     --num_workers 8 \
-    --force_merge True &")
+    --merge_option merge &")
     os.system(command)

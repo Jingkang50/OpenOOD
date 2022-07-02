@@ -31,9 +31,9 @@ for [dataset, ood_dataset, network, pth] in config:
     configs/networks/{network}.yml \
     configs/pipelines/test/test_osr.yml \
     configs/preprocessors/base_preprocessor.yml \
-    configs/postprocessors/maxlogit.yml \
+    configs/postprocessors/mls.yml \
     --network.pretrained True \
     --network.checkpoint {pth} \
     --num_workers 8 \
-    --force_merge True &")
+    --merge_option merge &")
     os.system(command)

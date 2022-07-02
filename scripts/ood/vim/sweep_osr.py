@@ -36,5 +36,5 @@ for [dataset, ood_dataset, network, pth] in config:
     --network.checkpoint {pth} \
     --postprocessor.postprocessor_args.dim 128 \
     --num_workers 8 \
-    --force_merge True &")
+    --merge_option merge &")
     os.system(command)

@@ -1,4 +1,4 @@
 postprocessor:
   name: vim
   postprocessor_args:
-    dim: 512
+    dim: 42

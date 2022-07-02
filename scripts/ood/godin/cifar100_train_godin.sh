@@ -21,4 +21,4 @@ configs/postprocessors/godin.yml \
 --num_workers 8 \
 --trainer.name godin \
 --optimizer.num_epochs 100 \
---force_merge True
+--merge_option merge

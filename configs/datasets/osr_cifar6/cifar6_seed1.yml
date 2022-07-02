@@ -1,6 +1,8 @@
 dataset:
   name: cifar6_seed1
   num_classes: 6
+  pre_size: 32
+  image_size: 32
 
   interpolation: bilinear
   normalization_type: cifar10

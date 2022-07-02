@@ -1,7 +1,7 @@
 exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer_name}'"
 output_dir: ./results/
 save_output: False
-force_merge: True # disabled if 'save_output' is False
+merge_option: merge # disabled if 'save_output' is False choices: [default, pass, merge]
 normal_class: 3 #use @ may let int -->str
 lamda: 0.01
 

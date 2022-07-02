@@ -36,5 +36,5 @@ for [dataset, ood_dataset, network, pth] in config:
     --network.backbone.name {network} \
     --network.backbone.checkpoint {pth} \
     --num_workers 8 \
-    --force_merge True &")
+    --merge_option merge &")
     os.system(command)

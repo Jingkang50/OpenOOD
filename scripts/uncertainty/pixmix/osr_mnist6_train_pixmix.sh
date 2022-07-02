@@ -21,4 +21,4 @@ configs/preprocessors/pixmix_preprocessor.yml \
 --num_workers 0 \
 --optimizer.num_epochs 100 \
 --mark pixmix \
---force_merge True
+--merge_option merge

@@ -23,4 +23,4 @@ configs/postprocessors/cutpaste.yml \
 --network.backbone.checkpoint 'results/checkpoints/osr/cifar50_seed1_acc80.24.ckpt' \
 --num_workers 8 \
 --optimizer.num_epochs 100 \
---force_merge True
+--merge_option merge
