@@ -94,9 +94,12 @@ def setup_logger(config):
             elif config.merge_option == 'merge':
                 save_logger(config, output)
             elif config.merge_option == 'pass':
-                print('Exp dir already exists, quitting the process...',
-                      flush=True)
-                quit()
+                if os.path.exists(os.path.join(config.save_output, 'ood.csv')):
+                    print('Exp dir already exists, quitting the process...',
+                          flush=True)
+                    quit()
+                else:
+                    save_logger(config, output)
         else:
             save_logger(config, output)
     else:
