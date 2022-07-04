@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/ood/msp/imagenet_test_ood_msp.sh
+# sh scripts/ood/msp/imagenet_test_fsood_msp.sh
 
 GPU=1
 CPU=1
@@ -12,9 +12,9 @@ PYTHONPATH='.':$PYTHONPATH \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
 --config configs/datasets/imagenet/imagenet.yml \
-configs/datasets/imagenet/imagenet_ood.yml \
+configs/datasets/imagenet/imagenet_fsood.yml \
 configs/networks/resnet50.yml \
-configs/pipelines/test/test_ood.yml \
+configs/pipelines/test/test_fsood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/msp.yml \
 --num_workers 10 \
@@ -22,5 +22,5 @@ configs/postprocessors/msp.yml \
 --dataset.test.batch_size 256 \
 --dataset.val.batch_size 256 \
 --network.pretrained True \
---network.checkpoint 'results/checkpoints/imagenet_res50_acc76.10.pth' \
---merge_option merge
+--network.checkpoint 'results/checkpoints/imagenet_res50_acc76.17.pth' \
+--force_merge True

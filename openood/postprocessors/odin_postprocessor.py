@@ -14,6 +14,7 @@ class ODINPostprocessor(BasePostprocessor):
 
         self.temperature = self.args.temperature
         self.noise = self.args.noise
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def postprocess(self, net: nn.Module, data: Any):
         data.requires_grad = True
@@ -53,3 +54,9 @@ class ODINPostprocessor(BasePostprocessor):
         conf, pred = nnOutput.max(dim=1)
 
         return pred, conf
+
+    def set_hyperparam(self,  hyperparam:list):
+        self.temperature = hyperparam[0] 
+        self.noise = hyperparam[1] 
+    def get_hyperparam(self):
+        return [self.temperature,self.noise]
