@@ -15,7 +15,9 @@ class KNNPostprocessor(BasePostprocessor):
     def __init__(self, config):
         super(KNNPostprocessor, self).__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
+        self.K = self.args.K
         self.activation_log = None
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         activation_log = []
@@ -48,8 +50,14 @@ class KNNPostprocessor(BasePostprocessor):
         feature_normed = normalizer(feature.data.cpu().numpy())
         D, _ = self.index.search(
             feature_normed,
-            self.args.K,
+            self.K,
         )
         kth_dist = -D[:, -1]
         _, pred = torch.max(torch.softmax(output, dim=1), dim=1)
         return pred, torch.from_numpy(kth_dist)
+
+    def set_hyperparam(self, hyperparam: list):
+        self.K = hyperparam[0]
+
+    def get_hyperparam(self):
+        return self.K

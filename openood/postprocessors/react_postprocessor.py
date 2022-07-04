@@ -13,6 +13,7 @@ class ReactPostprocessor(BasePostprocessor):
         super(ReactPostprocessor, self).__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
         self.percentile = self.args.percentile
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         activation_log = []
@@ -47,3 +48,9 @@ class ReactPostprocessor(BasePostprocessor):
         _, pred = torch.max(score, dim=1)
         energyconf = torch.logsumexp(output.data.cpu(), dim=1)
         return pred, energyconf
+
+    def set_hyperparam(self, hyperparam: list):
+        self.percentile = hyperparam[0]
+
+    def get_hyperparam(self):
+        return self.percentile

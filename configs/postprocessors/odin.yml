@@ -1,5 +1,6 @@
 postprocessor:
   name: odin
+  APS_mode: True
   postprocessor_args:
     temperature: 1000
     noise: 0.0014

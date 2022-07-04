@@ -1,5 +1,6 @@
 postprocessor:
   name: ebo
+  APS_mode: True
   postprocessor_args:
     temperature: 1
   postprocessor_sweep:

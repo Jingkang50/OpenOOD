@@ -17,6 +17,7 @@ class KLMatchingPostprocessor(BasePostprocessor):
         self.dim = self.args.dim
         self.num_classes = self.config.dataset.num_classes
         self.net_name = config.network.name
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def kl(self, p, q):
         return np.sum(np.where(p != 0, p * np.log(p / q), 0))
@@ -75,3 +76,9 @@ class KLMatchingPostprocessor(BasePostprocessor):
         score_ood = -pairwise_distances_argmin_min(
             softmax_ood, np.array(self.mean_softmax_train), metric=self.kl)[1]
         return pred, torch.from_numpy(score_ood)
+
+    def set_hyperparam(self, hyperparam: list):
+        self.dim = hyperparam[0]
+
+    def get_hyperparam(self):
+        return self.dim
