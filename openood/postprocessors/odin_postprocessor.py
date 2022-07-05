@@ -55,8 +55,9 @@ class ODINPostprocessor(BasePostprocessor):
 
         return pred, conf
 
-    def set_hyperparam(self,  hyperparam:list):
-        self.temperature = hyperparam[0] 
-        self.noise = hyperparam[1] 
+    def set_hyperparam(self, hyperparam: list):
+        self.temperature = hyperparam[0]
+        self.noise = hyperparam[1]
+
     def get_hyperparam(self):
-        return [self.temperature,self.noise]
+        return [self.temperature, self.noise]

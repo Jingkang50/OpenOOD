@@ -42,10 +42,11 @@ class OODEvaluator(BaseEvaluator):
             net, id_data_loader['test'])
         if self.config.recorder.save_scores:
             self._save_scores(id_pred, id_conf, id_gt, dataset_name)
-        self.hyperparam_search(net, [id_pred, id_conf, id_gt],
-                       ood_data_loaders['val'],
-                       postprocessor)
-                       
+
+        if self.config.postprocessor.APS_mode:
+            self.hyperparam_search(net, [id_pred, id_conf, id_gt],
+                                   ood_data_loaders['val'], postprocessor)
+
         # load nearood data and compute ood metrics
         self._eval_ood(net, [id_pred, id_conf, id_gt],
                        ood_data_loaders,
@@ -167,13 +168,14 @@ class OODEvaluator(BaseEvaluator):
     def report(self, test_metrics):
         print('Completed!', flush=True)
 
-    def hyperparam_search(self,
-            net: nn.Module,
-            id_list: List[np.ndarray],
-            val_data_loader,
-            postprocessor: BasePostprocessor,
-            ):
-        print("Starting automatic parameter serach...")
+    def hyperparam_search(
+        self,
+        net: nn.Module,
+        id_list: List[np.ndarray],
+        val_data_loader,
+        postprocessor: BasePostprocessor,
+    ):
+        print('Starting automatic parameter search...')
         aps_dict = {}
         max_auroc = 0
         hyperparam_names = []
@@ -181,44 +183,47 @@ class OODEvaluator(BaseEvaluator):
         count = 0
         for name in postprocessor.args_dict.keys():
             hyperparam_names.append(name)
-            count+=1
+            count += 1
         for name in hyperparam_names:
             hyperparam_list.append(postprocessor.args_dict[name])
-        hyperparam_combination = self.recursive_generator(hyperparam_list, count)
+        hyperparam_combination = self.recursive_generator(
+            hyperparam_list, count)
         for hyperparam in hyperparam_combination:
             postprocessor.set_hyperparam(hyperparam)
             [id_pred, id_conf, id_gt] = id_list
-         
-            ood_pred, ood_conf, ood_gt = postprocessor.inference(net, val_data_loader)
+
+            ood_pred, ood_conf, ood_gt = postprocessor.inference(
+                net, val_data_loader)
             ood_gt = -1 * np.ones_like(ood_gt)  # hard set to -1 as ood
             pred = np.concatenate([id_pred, ood_pred])
             conf = np.concatenate([id_conf, ood_conf])
             label = np.concatenate([id_gt, ood_gt])
             ood_metrics = compute_all_metrics(conf, label, pred)
-            index=hyperparam_combination.index(hyperparam)
+            index = hyperparam_combination.index(hyperparam)
             aps_dict[index] = ood_metrics[1]
-            print("Hyperparam:{}, auroc:{}".format(hyperparam,aps_dict[index]))
-            if ood_metrics[1]>max_auroc:
+            print('Hyperparam:{}, auroc:{}'.format(hyperparam,
+                                                   aps_dict[index]))
+            if ood_metrics[1] > max_auroc:
                 max_auroc = ood_metrics[1]
         for key in aps_dict.keys():
             if aps_dict[key] == max_auroc:
                 postprocessor.set_hyperparam(hyperparam_combination[key])
-        print("Final hyperparam: {}".format(postprocessor.get_hyperparam()))
+        print('Final hyperparam: {}'.format(postprocessor.get_hyperparam()))
 
     def recursive_generator(self, list, n):
-            if n==1:
-                results=[]   
-                for x in list[0]:
-                    k = []
+        if n == 1:
+            results = []
+            for x in list[0]:
+                k = []
+                k.append(x)
+                results.append(k)
+            return results
+        else:
+            results = []
+            temp = self.recursive_generator(list, n - 1)
+            for x in list[n - 1]:
+                for y in temp:
+                    k = y.copy()
                     k.append(x)
                     results.append(k)
-                return results
-            else:
-                results = []
-                temp = self.recursive_generator(list,n-1)
-                for x in list[n-1]:
-                    for y in temp:
-                        k = y.copy()
-                        k.append(x)
-                        results.append(k)
-                return results
+            return results

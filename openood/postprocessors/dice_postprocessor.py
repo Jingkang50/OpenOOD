@@ -14,8 +14,10 @@ class DICEPostprocessor(BasePostprocessor):
     def __init__(self, config):
         super(DICEPostprocessor, self).__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
+        self.p = self.args.p
         self.mean_act = None
         self.masked_w = None
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         activation_log = []
@@ -42,7 +44,7 @@ class DICEPostprocessor(BasePostprocessor):
 
     def calculate_mask(self, w):
         contrib = self.mean_act[None, :] * w.data.squeeze().cpu().numpy()
-        self.thresh = np.percentile(contrib, self.args.p)
+        self.thresh = np.percentile(contrib, self.p)
         mask = torch.Tensor((contrib > self.thresh)).cuda()
         self.masked_w = w * mask
 
@@ -56,3 +58,9 @@ class DICEPostprocessor(BasePostprocessor):
         _, pred = torch.max(torch.softmax(output, dim=1), dim=1)
         energyconf = torch.logsumexp(output.data.cpu(), dim=1)
         return pred, energyconf
+
+    def set_hyperparam(self, hyperparam: list):
+        self.p = hyperparam[0]
+
+    def get_hyperparam(self):
+        return self.p

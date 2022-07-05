@@ -19,6 +19,7 @@ class GRAMPostprocessor(BasePostprocessor):
         self.powers = self.postprocessor_args.powers
 
         self.feature_min, self.feature_max = None, None
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
 
@@ -30,6 +31,12 @@ class GRAMPostprocessor(BasePostprocessor):
                                            self.feature_max, self.num_classes,
                                            self.powers)
         return preds, deviations
+
+    def set_hyperparam(self, hyperparam: list):
+        self.powers = hyperparam[0]
+
+    def get_hyperparam(self):
+        return self.powers
 
 
 def tensor2list(x):
