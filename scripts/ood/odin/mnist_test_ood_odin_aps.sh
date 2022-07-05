@@ -1,10 +1,10 @@
 #!/bin/bash
-# sh scripts/ood/ebo/mnist_test_ood_ebo.sh
+# sh scripts/ood/odin/mnist_test_ood_odin_aps.sh
 
-GPU=1
-CPU=1
-node=73
-jobname=openood
+# GPU=1
+# CPU=1
+# node=73
+# jobname=openood
 
 PYTHONPATH='.':$PYTHONPATH \
 # srun -p dsta --mpi=pmi2 --gres=gpu:${GPU} -n1 \
@@ -17,7 +17,7 @@ configs/datasets/mnist/mnist_ood.yml \
 configs/networks/lenet.yml \
 configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/ebo.yml \
+configs/postprocessors/odin.yml \
 --num_workers 8 \
 --network.checkpoint 'results/checkpoints/mnist_lenet_acc98.50.ckpt' \
 --mark 0

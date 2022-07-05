@@ -5,7 +5,7 @@ from openood.postprocessors import get_postprocessor
 from openood.utils import setup_logger
 
 
-class TestOODPipeline:
+class TestOODPipelineAPS:
     def __init__(self, config) -> None:
         self.config = config
 

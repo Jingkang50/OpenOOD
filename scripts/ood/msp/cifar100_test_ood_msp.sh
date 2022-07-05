@@ -18,5 +18,5 @@ configs/pipelines/test/test_ood.yml \
 configs/preprocessors/base_preprocessor.yml \
 configs/postprocessors/msp.yml \
 --num_workers 8 \
---network.checkpoint 'results/cifar100_resnet18_32x32_base_e100_lr0.1/best.ckpt' \
+--network.checkpoint 'results/checkpoints/cifar100_res18_acc77.10.ckpt' \
 --mark 0

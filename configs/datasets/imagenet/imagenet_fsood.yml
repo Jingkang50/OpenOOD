@@ -31,12 +31,12 @@ ood_dataset:
       data_dir: ./data/images_largescale/
       imglist_pth: ./data/benchmark_imglist/imagenet/test_species.txt
   farood:
-    datasets: [mnist]
+    datasets: [texture]
     texture:
       data_dir: ./data/images_classic/
       imglist_pth: ./data/benchmark_imglist/imagenet/test_texture.txt
   csid:
     datasets: [imagenetv2]
     imagenetv2:
-      data_dir: ./data/images_classic/
+      data_dir: ./data/images_largescale/
       imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenetv2.txt

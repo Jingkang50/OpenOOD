@@ -13,7 +13,7 @@ ood_dataset:
   split_names: [val, nearood, farood]
   val:
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/mnist/val_mnist.txt
+    imglist_pth: ./data/benchmark_imglist/mnist/val_notmnist.txt
   nearood:
     datasets: [notmnist, fashionmnist]
     notmnist:

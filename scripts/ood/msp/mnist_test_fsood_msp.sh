@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/ood/ebo/mnist_test_ood_ebo.sh
+# sh scripts/ood/msp/mnist_test_fsood_msp.sh
 
 GPU=1
 CPU=1
@@ -13,11 +13,11 @@ PYTHONPATH='.':$PYTHONPATH \
 
 python main.py \
 --config configs/datasets/mnist/mnist.yml \
-configs/datasets/mnist/mnist_ood.yml \
+configs/datasets/mnist/mnist_fsood.yml \
 configs/networks/lenet.yml \
-configs/pipelines/test/test_ood.yml \
+configs/pipelines/test/test_fsood.yml \
 configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/ebo.yml \
+configs/postprocessors/msp.yml \
 --num_workers 8 \
 --network.checkpoint 'results/checkpoints/mnist_lenet_acc98.50.ckpt' \
 --mark 0
