@@ -77,7 +77,7 @@ class OpenMax(BasePostprocessor):
         conf = torch.tensor(conf, dtype=torch.float32)
         conf = conf.cuda()
 
-        return torch.tensor(pred), conf[:, -1]
+        return torch.tensor(pred), torch.max(conf, dim=1)[0] # conf[:, -1]
 
 
 def compute_channel_distances(mavs, features, eu_weight=0.5):
