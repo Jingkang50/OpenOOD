@@ -1,0 +1,35 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'_alpha'@{trainer.trainer_args.tau}'_'@{mark}'"
+output_dir: ./results/
+save_output: True
+force_merge: False
+mark: default
+
+num_gpus: 1
+num_workers: 0
+num_machines: 1
+machine_rank: 0
+
+preprocessor:
+  name: base
+
+pipeline:
+  name: train
+
+trainer:
+  name: logitnorm
+  trainer_args:
+    tau: 0.04
+
+evaluator:
+  name: base
+
+optimizer:
+  name: sgd
+  num_epochs: 100
+  lr: 0.1
+  momentum: 0.9
+  weight_decay: 0.0005
+
+recorder:
+  name: base
+  save_all_models: False

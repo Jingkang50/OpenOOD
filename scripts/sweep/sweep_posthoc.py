@@ -56,7 +56,15 @@ if __name__ == '__main__':
     else:
         command_prefix = "PYTHONPATH='.':$PYTHONPATH "
 
-    args_list = make_args_list(args.benchmarks, args.methods, args.metrics)
+    # TODO: dynamic benchmark dict
+    benchmark_dict = {
+        'ood': ['cifar10', 'cifar100'],
+        'osr': ['cifar6', 'cifar50', 'mnist6', 'tin20'],
+        'acc': args.benchmarks
+    }
+
+    args_list = make_args_list(args.benchmarks, args.methods, args.metrics,
+                               benchmark_dict)
     print(f'{len(args_list)} experiments have been setup...', flush=True)
 
     if not args.update_form_only:
@@ -104,10 +112,16 @@ if __name__ == '__main__':
                 raise ValueError('Unexpected Metric...')
 
     folder_list = os.listdir(args.output_dir)
+    # TODO: do not hard code -8
     save_line_dict = {'ood': -8, 'osr': -1, 'acc': -1}
+    # TODO: extend according to config
     args.benchmarks.extend([
         'tin', 'nearood', 'mnist', 'svhn', 'texture', 'place365', 'places365',
         'farood'
     ])
-    write_metric(args, folder_list, save_line_dict)
-    write_total(args, folder_list, save_line_dict)
+
+    # TODO: try to find farood and near ood in another way, user can se t what to save by changing ood's list
+    main_content_extract_dict = {'ood': ['nearood', 'farood'], 'osr': [-1]}
+    write_metric(args, folder_list, save_line_dict, benchmark_dict)
+    write_total(args, folder_list, save_line_dict, benchmark_dict,
+                main_content_extract_dict)

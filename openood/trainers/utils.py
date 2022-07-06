@@ -14,6 +14,7 @@ from .dropout_trainer import DropoutTrainer
 from .dsvdd_trainer import AETrainer, DSVDDTrainer
 from .godin_trainer import GodinTrainer
 from .kdad_trainer import KdadTrainer
+from .logitnorm_trainer import LogitNormTrainer
 from .mcd_trainer import MCDTrainer
 from .mixup_trainer import MixupTrainer
 from .mos_trainer import MOSTrainer
@@ -46,6 +47,7 @@ def get_trainer(net, train_loader: DataLoader, config: Config):
             'cutmix': CutMixTrainer,
             'dropout': DropoutTrainer,
             'csi': CSITrainer,
+            'logitnorm': LogitNormTrainer
         }
         return trainers[config.trainer.name](net, train_loader, config)
 

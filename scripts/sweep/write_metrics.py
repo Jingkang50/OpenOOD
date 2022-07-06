@@ -4,12 +4,7 @@ import os
 import numpy as np
 
 
-def make_args_list(benchmarks, methods, metrics):
-    benchmark_dict = {
-        'ood': ['cifar10', 'cifar100'],
-        'osr': ['cifar6', 'cifar50', 'mnist6', 'tin20'],
-        'acc': benchmarks
-    }
+def make_args_list(benchmarks, methods, metrics, benchmark_dict):
     args_list = []
     for metric in metrics:
         for benchmark in set(benchmarks) & set(benchmark_dict[metric]):
@@ -18,7 +13,7 @@ def make_args_list(benchmarks, methods, metrics):
     return args_list
 
 
-def write_metric(args, folder_list, save_line_dict):
+def write_metric(args, folder_list, save_line_dict, benchmark_dict):
 
     metric_list = [
         'fpr95', 'auroc', 'aupr_in', 'aupr_out', 'ccr_4', 'ccr_3', 'ccr_2',
@@ -27,17 +22,13 @@ def write_metric(args, folder_list, save_line_dict):
     save_list = []
     for metric in args.metric2save:
         save_list.append(metric_list.index(metric) + 1)
-    benchmark_dict = {
-        'ood': ['cifar10', 'cifar100'],
-        'osr': ['cifar6', 'cifar50', 'mnist6', 'tin20'],
-        'acc': args.benchmarks
-    }
 
     for metric in args.metrics:
         if metric == 'ood':
             for benchmark in set(args.benchmarks) & set(
                     benchmark_dict[metric]):
-                args_list = make_args_list([benchmark], args.methods, ['ood'])
+                args_list = make_args_list([benchmark], args.methods, ['ood'],
+                                           benchmark_dict)
                 sub_form_content = []
                 for key_param in args_list:
                     for folder in folder_list:
@@ -81,7 +72,8 @@ def write_metric(args, folder_list, save_line_dict):
         elif metric == 'osr':
             sub_form_content = []
             for method in args.methods:
-                args_list = make_args_list(args.benchmarks, [method], ['osr'])
+                args_list = make_args_list(args.benchmarks, [method], ['osr'],
+                                           benchmark_dict)
                 sub_line_content = {}
 
                 for key_param in args_list:
@@ -134,13 +126,14 @@ def write_metric(args, folder_list, save_line_dict):
                     writer.writerow(sub_line_content)
 
 
-def write_total(args, folder_list, save_line_dict):
-    main_content_extract_dict = {'ood': [-6, -1], 'osr': [-1]}
+def write_total(args, folder_list, save_line_dict, benchmark_dict,
+                main_content_extract_dict):
     main_form_content = []
     for method in args.methods:
         main_line_content = {}
         for metric in args.metrics:
-            args_list = make_args_list(args.benchmarks, [method], [metric])
+            args_list = make_args_list(args.benchmarks, [method], [metric],
+                                       benchmark_dict)
             for key_param in args_list:
                 main_line_content['method --> auroc'] = key_param[1]
 
@@ -160,10 +153,13 @@ def write_total(args, folder_list, save_line_dict):
                         lines = f.readlines()[save_line_dict[key_param[-1]]:]
 
                     content = ''
-                    for line in main_content_extract_dict[key_param[-1]]:
-                        # take auroc only
-                        content = content + '{:.2f}'.format(
-                            float(lines[line].split(',')[2])) + ' / '
+                    for line in lines:
+                        if line.split(',')[0] in main_content_extract_dict[
+                                key_param[-1]]:
+
+                            # take auroc only
+                            content = content + '{:.2f}'.format(
+                                float(line.split(',')[2])) + ' / '
                     else:
                         content = content[:-3]
                     # use benchmark name as key
@@ -196,7 +192,7 @@ def write_total(args, folder_list, save_line_dict):
                         for line in lines:
                             split = line.split(',')
                             temp[i] = split[2]
-                    content = str(np.around(np.mean(temp, axis=0), 2).item())
+                    content = '{:.2f}'.format(np.mean(temp, axis=0).item())
                     main_line_content[key_param[0]] = content
 
         main_form_content.append(main_line_content)
