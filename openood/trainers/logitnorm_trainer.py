@@ -85,7 +85,6 @@ class LogitNormTrainer:
 
 
 class LogitNormLoss(nn.Module):
-
     def __init__(self, tau=0.04):
         super(LogitNormLoss, self).__init__()
         self.tau = tau
