@@ -27,6 +27,7 @@ from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
+from .ssd_postprocessor import SSDPostprocessor
 
 
 def get_postprocessor(config: Config):
@@ -58,6 +59,7 @@ def get_postprocessor(config: Config):
         'opengan': OpenGanPostprocessor,
         'knn': KNNPostprocessor,
         'dice': DICEPostprocessor,
+                'ssd': SSDPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)

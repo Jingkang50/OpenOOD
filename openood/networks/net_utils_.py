@@ -12,6 +12,7 @@ import openood.utils.comm as comm
 from .bit import KNOWN_MODELS
 from .conf_branch_net import ConfBranchNet
 from .csi_net import CSINet
+from .de_resnet18_32x32 import AttnBasicBlock, BN_layer, De_ResNet18_32x32
 from .densenet import DenseNet3
 from .draem_net import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .dropout_net import DropoutNet
@@ -24,14 +25,13 @@ from .patchcore_net import PatchcoreNet
 from .projection_net import ProjectionNet
 from .react_net import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
+from .resnet18_32x32_changed import ResNet18_32x32_changed
 from .resnet18_64x64 import ResNet18_64x64
 from .resnet18_224x224 import ResNet18_224x224
 from .resnet50 import ResNet50
 from .udg_net import UDGNet
 from .wrn import WideResNet
-from .simclr_net import SimClrNet
-from .resnet18_32x32_changed import ResNet18_32x32_changed
-from .de_resnet18_32x32 import AttnBasicBlock, BN_layer, De_ResNet18_32x32
+
 
 def get_network(network_config):
 
@@ -217,13 +217,6 @@ def get_network(network_config):
     elif network_config.name == 'dropout_net':
         backbone = get_network(network_config.backbone)
         net = DropoutNet(backbone=backbone, dropout_p=network_config.dropout_p)
-
-    elif network_config.name == 'simclr_net':
-        # backbone = get_network(network_config.backbone)
-        # net = SimClrNet(backbone, out_dim=128)
-        from .temp import SSLResNet
-        net = SSLResNet()
-        net.encoder = nn.DataParallel(net.encoder).cuda()
 
     elif network_config.name == 'rd4ad_net':
         encoder = get_network(network_config.backbone)
