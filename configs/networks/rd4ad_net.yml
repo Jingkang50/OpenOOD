@@ -7,7 +7,7 @@ network:
   num_gpus: '@{num_gpus}'
 
   backbone:
-    name: resnet18_32x32_changed
+    name: resnet18_256x256
     num_classes: '@{dataset.num_classes}'
     image_size: '@{dataset.image_size}'
     pretrained: True        # set 'True' to load pretrained model

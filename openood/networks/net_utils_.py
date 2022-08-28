@@ -12,7 +12,7 @@ import openood.utils.comm as comm
 from .bit import KNOWN_MODELS
 from .conf_branch_net import ConfBranchNet
 from .csi_net import CSINet
-from .de_resnet18_32x32 import AttnBasicBlock, BN_layer, De_ResNet18_32x32
+from .de_resnet18_256x256 import AttnBasicBlock, BN_layer, De_ResNet18_256x256
 from .densenet import DenseNet3
 from .draem_net import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .dropout_net import DropoutNet
@@ -25,9 +25,9 @@ from .patchcore_net import PatchcoreNet
 from .projection_net import ProjectionNet
 from .react_net import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
-from .resnet18_32x32_changed import ResNet18_32x32_changed
 from .resnet18_64x64 import ResNet18_64x64
 from .resnet18_224x224 import ResNet18_224x224
+from .resnet18_256x256 import ResNet18_256x256
 from .resnet50 import ResNet50
 from .udg_net import UDGNet
 from .wrn import WideResNet
@@ -41,7 +41,7 @@ def get_network(network_config):
         net = ResNet18_32x32(num_classes=num_classes)
 
     if network_config.name == 'resnet18_32x32_changed':
-        net = ResNet18_32x32_changed(num_classes=num_classes)
+        net = ResNet18_256x256(num_classes=num_classes)
 
     elif network_config.name == 'resnet18_64x64':
         net = ResNet18_64x64(num_classes=num_classes)
@@ -178,7 +178,7 @@ def get_network(network_config):
         try:
             dim_centers = feature_net.fc.weight.shape[1]
             feature_net.fc = nn.Identity()
-        except:
+        except Exception:
             dim_centers = feature_net.classifier[0].weight.shape[1]
             feature_net.classifier = nn.Identity()
 
@@ -221,7 +221,7 @@ def get_network(network_config):
     elif network_config.name == 'rd4ad_net':
         encoder = get_network(network_config.backbone)
         bn = BN_layer(AttnBasicBlock, 2)
-        decoder = De_ResNet18_32x32()
+        decoder = De_ResNet18_256x256()
         net = {'encoder': encoder, 'bn': bn, 'decoder': decoder}
     else:
         raise Exception('Unexpected Network Architecture!')

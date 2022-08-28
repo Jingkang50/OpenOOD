@@ -8,6 +8,7 @@ from .draem_recorder import DRAEMRecorder
 from .dsvdd_recorder import DCAERecorder, DSVDDRecorder
 from .kdad_recorder import KdadRecorder
 from .opengan_recorder import OpenGanRecorder
+from .rd4ad_recorder import Rd4adRecorder
 
 
 def get_recorder(config: Config):
@@ -21,6 +22,7 @@ def get_recorder(config: Config):
         'arpl': ARPLRecorder,
         'cutpaste': CutpasteRecorder,
         'ad': ADRecorder,
+        'rd4ad': Rd4adRecorder,
     }
 
     return recorders[config.recorder.name](config)

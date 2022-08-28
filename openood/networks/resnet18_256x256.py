@@ -124,9 +124,9 @@ class Bottleneck(nn.Module):
         return out
 
 
-class ResNet18_32x32_changed(nn.Module):
+class ResNet18_256x256(nn.Module):
     def __init__(self, block=BasicBlock2, num_blocks=None, num_classes=10):
-        super(ResNet18_32x32_changed, self).__init__()
+        super(ResNet18_256x256, self).__init__()
         if num_blocks is None:
             num_blocks = [2, 2, 2, 2]
         self.in_planes = 64
@@ -150,7 +150,7 @@ class ResNet18_32x32_changed(nn.Module):
         self.fc = nn.Linear(512 * block.expansion, num_classes)
         self.feature_size = 512 * block.expansion
 
-        #origin no
+        # origin no
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 nn.init.kaiming_normal_(m.weight,
@@ -190,7 +190,7 @@ class ResNet18_32x32_changed(nn.Module):
 
     def forward(self, x, return_feature=False, return_feature_list=False):
         feature1 = self.maxpool(F.relu(self.bn1(
-            self.conv1(x))))  #origin no maxpool
+            self.conv1(x))))  # origin no maxpool
         feature2 = self.layer1(feature1)
         feature3 = self.layer2(feature2)
         feature4 = self.layer3(feature3)
