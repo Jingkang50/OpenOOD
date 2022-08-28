@@ -1,0 +1,33 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'_'@{mark}'"
+output_dir: ./results/
+save_output: True
+force_merge: False
+merge_option: merge
+mark: default
+
+num_gpus: 1
+num_workers: 0
+num_machines: 1
+machine_rank: 0
+
+preprocessor:
+  name: base
+
+pipeline:
+  name: train_ad
+
+trainer:
+  name: rd4ad
+
+evaluator:
+  name: ad
+
+optimizer:
+  name: adam
+  num_epochs: 200
+  lr: 0.005
+  betas: [0.5,0.999]
+
+recorder:
+  name: rd4ad
+  save_all_models: False

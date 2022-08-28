@@ -40,7 +40,7 @@ def get_network(network_config):
     if network_config.name == 'resnet18_32x32':
         net = ResNet18_32x32(num_classes=num_classes)
 
-    if network_config.name == 'resnet18_256x256':
+    if network_config.name == 'resnet18_32x32_changed':
         net = ResNet18_256x256(num_classes=num_classes)
 
     elif network_config.name == 'resnet18_64x64':
@@ -217,13 +217,6 @@ def get_network(network_config):
     elif network_config.name == 'dropout_net':
         backbone = get_network(network_config.backbone)
         net = DropoutNet(backbone=backbone, dropout_p=network_config.dropout_p)
-
-    elif network_config.name == 'simclr_net':
-        # backbone = get_network(network_config.backbone)
-        # net = SimClrNet(backbone, out_dim=128)
-        from .temp import SSLResNet
-        net = SSLResNet()
-        net.encoder = nn.DataParallel(net.encoder).cuda()
 
     elif network_config.name == 'rd4ad_net':
         encoder = get_network(network_config.backbone)

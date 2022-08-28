@@ -11,7 +11,7 @@ from .base_preprocessor import BasePreprocessor
 
 
 class DRAEMPreprocessor(BasePreprocessor):
-    def __init__(self, config, split):
+    def __init__(self, config):
         self.config = config
         self.args = self.config.preprocessor.preprocessor_args
 
