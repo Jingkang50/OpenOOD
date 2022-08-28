@@ -218,6 +218,7 @@ distance: f4d5b3 -->
 > - [x] [![ssd](https://img.shields.io/badge/ICLR'21-SSD-fdd7e6?style=for-the-badge)](https://github.com/inspire-group/SSD)  &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![mos](https://img.shields.io/badge/CVPR'21-MOS-fdd7e6?style=for-the-badge)](https://github.com/deeplearning-wisc/large_scale_ood)  &nbsp;&nbsp; ![training]
 > - [x] [![vos](https://img.shields.io/badge/ICLR'22-VOS-d0e9ff?style=for-the-badge)](https://github.com/deeplearning-wisc/vos) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
+> - [x] [![logitnorm](https://img.shields.io/badge/ICML'22-LogitNorm-fdd7e6?style=for-the-badge)](https://github.com/hongxin001/logitnorm_ood) &nbsp;&nbsp; ![training] &nbsp; ![preprocess]
 
 
 > Training With Extra Data (3):
