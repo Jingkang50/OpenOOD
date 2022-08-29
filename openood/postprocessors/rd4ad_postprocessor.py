@@ -23,17 +23,32 @@ class Rd4adPostprocessor(BasePostprocessor):
         decoder = net['decoder']
         feature_list = encoder.forward(data, return_feature_list=True)[1]
         input = feature_list[1:4]
+        en_feature1 = input[0].cpu().numpy().tolist()
+        en_feature2 = input[1].cpu().numpy().tolist()
+        en_feature3 = input[2].cpu().numpy().tolist()
         output = decoder(bn(input))
-        anomaly_map, _ = cal_anomaly_map(input,
-                                         output,
-                                         data.shape[-1],
-                                         amap_mode='a')
-        anomaly_map = gaussian_filter(anomaly_map, sigma=4)
-
-        conf = np.max(anomaly_map)
-
-        return -1 * torch.ones(data.shape[0]), torch.tensor([-conf]).reshape(
-            (data.shape[0]))
+        de_feature1 = output[0].cpu().numpy().tolist()
+        de_feature2 = output[1].cpu().numpy().tolist()
+        de_feature3 = output[2].cpu().numpy().tolist()
+        conf_list = []
+        for i in range(data.shape[0]):
+            feature_list_en = []
+            feature_list_de = []
+            feature_list_en.append(en_feature1[i])
+            feature_list_en.append(en_feature2[i])
+            feature_list_en.append(en_feature3[i])
+            feature_list_de.append(de_feature1[i])
+            feature_list_de.append(de_feature2[i])
+            feature_list_de.append(de_feature3[i])
+            anomaly_map, _ = cal_anomaly_map(feature_list_en,
+                                             feature_list_de,
+                                             data.shape[-1],
+                                             amap_mode='a')
+            anomaly_map = gaussian_filter(anomaly_map, sigma=4)
+            conf = np.max(anomaly_map)
+            conf_list.append(-conf)
+        return -1 * torch.ones(data.shape[0]), torch.tensor(
+            [conf_list]).reshape((data.shape[0]))
 
     # def inference(self, net: nn.Module, data_loader: DataLoader):
     #     pred_list, conf_list, label_list = [], [], []
@@ -56,14 +71,15 @@ class Rd4adPostprocessor(BasePostprocessor):
 
 
 def cal_anomaly_map(fs_list, ft_list, out_size=224, amap_mode='mul'):
+
     if amap_mode == 'mul':
         anomaly_map = np.ones([out_size, out_size])
     else:
         anomaly_map = np.zeros([out_size, out_size])
     a_map_list = []
     for i in range(len(ft_list)):
-        fs = fs_list[i]
-        ft = ft_list[i]
+        fs = torch.Tensor([fs_list[i]])
+        ft = torch.Tensor([ft_list[i]])
 
         a_map = 1 - F.cosine_similarity(fs, ft)
         a_map = torch.unsqueeze(a_map, dim=1)

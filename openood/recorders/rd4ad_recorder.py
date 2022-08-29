@@ -26,8 +26,11 @@ class Rd4adRecorder(BaseRecorder):
 
     def save_model(self, net, test_metrics):
         if self.config.recorder.save_all_models:
-            torch.save({'bn': net['bn'].state_dict(),
-                        'decoder': net['decoder'].state_dict()},
+            torch.save(
+                {
+                    'bn': net['bn'].state_dict(),
+                    'decoder': net['decoder'].state_dict()
+                },
                 os.path.join(
                     self.output_dir,
                     'model_epoch{}.ckpt'.format(test_metrics['epoch_idx'])))
@@ -36,23 +39,30 @@ class Rd4adRecorder(BaseRecorder):
         if test_metrics['image_auroc'] >= self.best_result:
 
             # delete the depreciated best model
-            old_fname = 'best_epoch{}_auroc{:.4f}.ckpt'.format(
+            old_fname1 = 'bn_best_epoch{}_auroc{:.4f}.ckpt'.format(
                 self.best_epoch_idx, self.best_result)
-            old_pth = os.path.join(self.output_dir, old_fname)
-            Path(old_pth).unlink(missing_ok=True)
+            old_fname2 = 'decoder_best_epoch{}_auroc{:.4f}.ckpt'.format(
+                self.best_epoch_idx, self.best_result)
 
+            old_pth1 = os.path.join(self.output_dir, old_fname1)
+            old_pth2 = os.path.join(self.output_dir, old_fname2)
+            Path(old_pth1).unlink(missing_ok=True)
+            Path(old_pth2).unlink(missing_ok=True)
             # update the best model
             self.best_epoch_idx = test_metrics['epoch_idx']
             self.best_result = test_metrics['image_auroc']
-            torch.save({'bn': net['bn'].state_dict(),
-                        'decoder': net['decoder'].state_dict()},
-                       os.path.join(self.output_dir, 'best.ckpt'))
-
-            save_fname = 'best_epoch{}_auroc{:.4f}.ckpt'.format(
+            torch.save({'bn': net['bn'].state_dict()},
+                       os.path.join(self.output_dir, 'bn_best.ckpt'))
+            torch.save({'decoder': net['decoder'].state_dict()},
+                       os.path.join(self.output_dir, 'decoder_best.ckpt'))
+            save_fname1 = 'bn_best_epoch{}_auroc{:.4f}.ckpt'.format(
                 self.best_epoch_idx, self.best_result)
-            save_pth = os.path.join(self.output_dir, save_fname)
-            torch.save({'bn': net['bn'].state_dict(),
-                        'decoder': net['decoder'].state_dict()}, save_pth)
+            save_pth1 = os.path.join(self.output_dir, save_fname1)
+            save_fname2 = 'decoder_best_epoch{}_auroc{:.4f}.ckpt'.format(
+                self.best_epoch_idx, self.best_result)
+            save_pth2 = os.path.join(self.output_dir, save_fname2)
+            torch.save({'bn': net['bn'].state_dict()}, save_pth1)
+            torch.save({'decoder': net['decoder'].state_dict()}, save_pth2)
 
     def summary(self):
         print('Training Completed!\n '
