@@ -1,12 +1,11 @@
+import time
+
 from openood.datasets import get_dataloader, get_ood_dataloader
 from openood.evaluators import get_evaluator
 from openood.networks import get_network
 from openood.postprocessors import get_postprocessor
 from openood.utils import setup_logger
-from openood.networks.test_net import SSLResNet
-import torch
-import torch.nn as nn
-path = "results/checkpoints/ssd/last.pth"
+
 
 class TestOODPipeline:
     def __init__(self, config) -> None:
@@ -21,16 +20,7 @@ class TestOODPipeline:
         ood_loader_dict = get_ood_dataloader(self.config)
 
         # init network
-        # net = get_network(self.config.network)
-
-        net = SSLResNet().eval().cuda()
-        net.encoder = nn.DataParallel(net.encoder).cuda()
-        ckpt_dict = torch.load(path, map_location="cpu")
-        if "model" in ckpt_dict.keys():
-            ckpt_dict = ckpt_dict["model"]
-        if "state_dict" in ckpt_dict.keys():
-            ckpt_dict = ckpt_dict["state_dict"]
-        net.load_state_dict(ckpt_dict, strict=True)
+        net = get_network(self.config.network)
 
         # init ood evaluator
         evaluator = get_evaluator(self.config)
@@ -51,5 +41,7 @@ class TestOODPipeline:
         print(u'\u2500' * 70, flush=True)
 
         # start evaluating ood detection methods
+        timer = time.time()
         evaluator.eval_ood(net, id_loader_dict, ood_loader_dict, postprocessor)
+        print('Time used for eval_ood: {:.0f}s'.format(time.time() - timer))
         print('Completed!', flush=True)
