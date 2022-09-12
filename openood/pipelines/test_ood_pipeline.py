@@ -1,3 +1,5 @@
+import time
+
 from openood.datasets import get_dataloader, get_ood_dataloader
 from openood.evaluators import get_evaluator
 from openood.networks import get_network
@@ -39,5 +41,7 @@ class TestOODPipeline:
         print(u'\u2500' * 70, flush=True)
 
         # start evaluating ood detection methods
+        timer = time.time()
         evaluator.eval_ood(net, id_loader_dict, ood_loader_dict, postprocessor)
+        print('Time used for eval_ood: {:.0f}s'.format(time.time() - timer))
         print('Completed!', flush=True)

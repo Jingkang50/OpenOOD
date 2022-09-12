@@ -11,11 +11,10 @@ PYTHONPATH='.':$PYTHONPATH \
 #--cpus-per-task=${CPU} --ntasks-per-node=${GPU} \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 python main.py \
---config configs/datasets/draem/bottle.yml \
+--config configs/datasets/mvtec/bottle.yml \
 configs/networks/draem.yml \
 configs/pipelines/train/train_draem.yml \
 configs/preprocessors/draem_preprocessor.yml \
 configs/postprocessors/msp.yml \
---postprocessor.name dream \
 --evaluator.name ad \
 --optimizer.num_epochs 2

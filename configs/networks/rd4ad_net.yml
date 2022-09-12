@@ -1,0 +1,15 @@
+network:
+  name: rd4ad_net
+  num_classes: '@{dataset.num_classes}'
+  image_size: '@{dataset.image_size}'
+  pretrained: False
+  checkpoint:  none    # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'
+
+  backbone:
+    name: resnet18_256x256
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    pretrained: True        # set 'True' to load pretrained model
+    checkpoint: 'results/resnet18_rd4ad_teacher/resnet18-f37072fd.pth'          # ignore if pretrained is false
+    num_gpus: '@{num_gpus}'

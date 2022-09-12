@@ -20,6 +20,7 @@ from .mixup_trainer import MixupTrainer
 from .mos_trainer import MOSTrainer
 from .oe_trainer import OETrainer
 from .opengan_trainer import OpenGanTrainer
+from .rd4ad_trainer import Rd4adTrainer
 from .sae_trainer import SAETrainer
 from .udg_trainer import UDGTrainer
 from .vos_trainer import VOSTrainer
@@ -47,7 +48,8 @@ def get_trainer(net, train_loader: DataLoader, config: Config):
             'cutmix': CutMixTrainer,
             'dropout': DropoutTrainer,
             'csi': CSITrainer,
-            'logitnorm': LogitNormTrainer
+            'logitnorm': LogitNormTrainer,
+            'rd4ad': Rd4adTrainer,
         }
         return trainers[config.trainer.name](net, train_loader, config)
 

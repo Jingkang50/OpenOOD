@@ -1,0 +1,25 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'"
+output_dir: ./results/
+save_output: True
+merge_option: merge # disabled if 'save_output' is False choices: [default, pass, merge]
+
+num_gpus: 1
+num_workers: 0
+num_machines: 1
+machine_rank: 0
+
+network:
+  pretrained: True
+  checkpoint: ["results/cifar10_rd4ad_net_rd4ad_e200_lr0.005_default/bn_best.ckpt",
+               "results/cifar10_rd4ad_net_rd4ad_e200_lr0.005_default/decoder_best.ckpt"]
+         # ignore if pretrained is false
+
+pipeline:
+  name: test_ad
+
+evaluator:
+  name: ood
+
+recorder:
+  save_scores: True
+  save_csv: True

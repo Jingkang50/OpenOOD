@@ -1,5 +1,5 @@
 dataset:
-  name: bottle
+  name: cable
   num_classes: 2
   pre_size: 256
   image_size: 256
@@ -17,26 +17,26 @@ dataset:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
     interpolation: bilinear
-    imglist_pth: ./data/benchmark_imglist/mvtecList/bottle_train_good.txt
+    imglist_pth: ./data/benchmark_imglist/mvtecList/cable_train_good.txt
     batch_size: 2
     shuffle: True
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
     interpolation: bilinear
-    imglist_pth: ./data/benchmark_imglist/mvtecList/bottle_test_id.txt
+    imglist_pth: ./data/benchmark_imglist/mvtecList/cable_test_id.txt
     batch_size: 1
     shuffle: False
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
     interpolation: bilinear
-    imglist_pth: ./data/benchmark_imglist/mvtecList/bottle_test_id.txt
+    imglist_pth: ./data/benchmark_imglist/mvtecList/cable_test_id.txt
     batch_size: 1
     shuffle: False
 
 ood_dataset:
-  name: bottle_ood
+  name: cable_ood
   num_classes: 2
   image_size: 256
   num_workers: 4
@@ -49,4 +49,4 @@ ood_dataset:
   split_names: [val]
   val:
     data_dir: ./data/images/
-    imglist_pth: ./data/benchmark_imglist/mvtecList/bottle_test.txt
+    imglist_pth: ./data/benchmark_imglist/mvtecList/cable_test.txt

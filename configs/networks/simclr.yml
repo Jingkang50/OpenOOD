@@ -1,0 +1,16 @@
+network:
+  name: simclr_net
+  num_classes: '@{dataset.num_classes}'
+  image_size: '@{dataset.image_size}'
+  pretrained: True
+  checkpoint: 'results/checkpoints/SSD/last_new.pth'           # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'
+
+  # network used for feature extraction
+  backbone:
+    name: resnet50
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    pretrained: False
+    checkpoint: none
+    num_gpus: '@{num_gpus}'
