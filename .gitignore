@@ -82,6 +82,7 @@ instance/
 
 # Sphinx documentation
 docs/
+OpenOOD.wiki/
 
 # PyBuilder
 target/
