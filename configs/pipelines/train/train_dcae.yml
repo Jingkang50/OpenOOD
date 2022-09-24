@@ -1,6 +1,6 @@
 exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'"
 save_output: True
-force_merge: False
+merge_option: default
 normal_class: 3
 output_dir: ./results/
 lr: 0.0001

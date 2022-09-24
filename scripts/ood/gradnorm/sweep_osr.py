@@ -35,5 +35,5 @@ for [dataset, ood_dataset, network, pth] in config:
     --network.pretrained True \
     --network.checkpoint {pth} \
     --num_workers 8 \
-    --force_merge True &")
+    --merge_option merge &")
     os.system(command)

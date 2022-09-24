@@ -17,6 +17,7 @@ class KLMatchingPostprocessor(BasePostprocessor):
         self.dim = self.args.dim
         self.num_classes = self.config.dataset.num_classes
         self.net_name = config.network.name
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def kl(self, p, q):
         return np.sum(np.where(p != 0, p * np.log(p / q), 0))
@@ -34,11 +35,7 @@ class KLMatchingPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                if self.net_name == 'lenet':
-                    _, feature = net.forward_secondary(data,
-                                                       return_feature=True)
-                else:
-                    _, feature = net(data, return_feature=True)
+                _, feature = net(data, return_feature=True)
                 feature = feature.cpu().numpy()
                 feature_id_train.append(feature)
             feature_id_train = np.concatenate(feature_id_train, axis=0)
@@ -58,11 +55,7 @@ class KLMatchingPostprocessor(BasePostprocessor):
                               leave=True):
                 data = batch['data'].cuda()
                 data = data.float()
-                if self.net_name == 'lenet':
-                    _, feature = net.forward_secondary(data,
-                                                       return_feature=True)
-                else:
-                    _, feature = net(data, return_feature=True)
+                _, feature = net(data, return_feature=True)
                 feature = feature.cpu().numpy()
                 feature_id_val.append(feature)
             feature_id_val = np.concatenate(feature_id_val, axis=0)
@@ -75,10 +68,7 @@ class KLMatchingPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        if self.net_name == 'lenet':
-            _, feature_ood = net.forward_secondary(data, return_feature=True)
-        else:
-            _, feature_ood = net(data, return_feature=True)
+        _, feature_ood = net(data, return_feature=True)
         feature_ood = feature_ood.cpu()
         logit_ood = feature_ood @ self.w.T + self.b
         softmax_ood = softmax(logit_ood.numpy(), axis=-1)
@@ -86,3 +76,9 @@ class KLMatchingPostprocessor(BasePostprocessor):
         score_ood = -pairwise_distances_argmin_min(
             softmax_ood, np.array(self.mean_softmax_train), metric=self.kl)[1]
         return pred, torch.from_numpy(score_ood)
+
+    def set_hyperparam(self, hyperparam: list):
+        self.dim = hyperparam[0]
+
+    def get_hyperparam(self):
+        return self.dim

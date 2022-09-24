@@ -23,4 +23,4 @@ configs/postprocessors/dice.yml \
 --dataset.val.batch_size 256 \
 --network.pretrained True \
 --network.checkpoint 'results/checkpoints/imagenet_res50_acc76.10.pth' \
---force_merge True
+--merge_option merge

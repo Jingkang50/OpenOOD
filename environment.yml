@@ -26,3 +26,4 @@ dependencies:
     - Cython==0.29.30
     - libmr==0.1.9
     - faiss-gpu==1.7.2
+    - gdown==4.5.1

@@ -1,15 +1,14 @@
 ood_dataset:
   name: cifar100_ood
-  dataset_class: ImglistDataset
-  interpolation: bilinear
-
-  batch_size: 128
-  shuffle: False
   num_classes: 100
-  image_size: 32
+  
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'
+
+  dataset_class: ImglistDataset
+  batch_size: 128
+  shuffle: False
 
   split_names: [val, nearood, farood]
   val:

@@ -14,15 +14,17 @@ from .dropout_trainer import DropoutTrainer
 from .dsvdd_trainer import AETrainer, DSVDDTrainer
 from .godin_trainer import GodinTrainer
 from .kdad_trainer import KdadTrainer
+from .logitnorm_trainer import LogitNormTrainer
 from .mcd_trainer import MCDTrainer
 from .mixup_trainer import MixupTrainer
 from .mos_trainer import MOSTrainer
 from .oe_trainer import OETrainer
 from .opengan_trainer import OpenGanTrainer
+from .rd4ad_trainer import Rd4adTrainer
 from .sae_trainer import SAETrainer
 from .udg_trainer import UDGTrainer
 from .vos_trainer import VOSTrainer
-from .logitnorm_trainer import LogitNormTrainer
+
 
 def get_trainer(net, train_loader: DataLoader, config: Config):
     if type(train_loader) is DataLoader:
@@ -46,7 +48,8 @@ def get_trainer(net, train_loader: DataLoader, config: Config):
             'cutmix': CutMixTrainer,
             'dropout': DropoutTrainer,
             'csi': CSITrainer,
-            'logitnorm': LogitNormTrainer
+            'logitnorm': LogitNormTrainer,
+            'rd4ad': Rd4adTrainer,
         }
         return trainers[config.trainer.name](net, train_loader, config)
 

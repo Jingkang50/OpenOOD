@@ -1,0 +1,23 @@
+ood_dataset:
+  name: tin20_seed3_osr
+  num_classes: 20
+  pre_size: 64
+  image_size: 64
+
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+
+  dataset_class: ImglistDataset
+  batch_size: 128
+  shuffle: False
+
+  split_names: [val, osr]
+  val:
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/osr_tin20/test/test_tin20_ood_seed3.txt
+  osr:
+    datasets: [tin180]
+    tin180:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/osr_tin20/test/test_tin20_ood_seed3.txt

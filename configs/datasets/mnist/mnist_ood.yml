@@ -1,21 +1,19 @@
 ood_dataset:
   name: mnist_ood
-  dataset_class: ImglistDataset
-  transform: mnist_test_standard
-  interpolation: bilinear
-
-  batch_size: 128
-  shuffle: False
   num_classes: 10
-  image_size: 28
+
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'
 
+  dataset_class: ImglistDataset
+  batch_size: 128
+  shuffle: False
+
   split_names: [val, nearood, farood]
   val:
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/mnist/val_mnist.txt
+    imglist_pth: ./data/benchmark_imglist/mnist/val_notmnist.txt
   nearood:
     datasets: [notmnist, fashionmnist]
     notmnist:

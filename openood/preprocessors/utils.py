@@ -18,10 +18,9 @@ def get_preprocessor(config: Config, split):
         'base': TestStandardPreProcessor,
         'draem': DRAEMPreprocessor,
         'cutpaste': CutPastePreprocessor,
-        'pixmix': TestStandardPreProcessor,
     }
 
     if split == 'train':
-        return train_preprocessors[config.preprocessor.name](config, split)
+        return train_preprocessors[config.preprocessor.name](config)
     else:
-        return test_preprocessors[config.preprocessor.name](config, split)
+        return test_preprocessors[config.preprocessor.name](config)

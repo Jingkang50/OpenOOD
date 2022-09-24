@@ -19,6 +19,7 @@ class GRAMPostprocessor(BasePostprocessor):
         self.powers = self.postprocessor_args.powers
 
         self.feature_min, self.feature_max = None, None
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
 
@@ -31,6 +32,12 @@ class GRAMPostprocessor(BasePostprocessor):
                                            self.powers)
         return preds, deviations
 
+    def set_hyperparam(self, hyperparam: list):
+        self.powers = hyperparam[0]
+
+    def get_hyperparam(self):
+        return self.powers
+
 
 def tensor2list(x):
     return x.data.cuda().tolist()
@@ -41,7 +48,7 @@ def sample_estimator(model, train_loader, num_classes, powers):
 
     model.eval()
 
-    num_layer = 5
+    num_layer = 5  # 4 for lenet
     num_poles_list = powers
     num_poles = len(num_poles_list)
     feature_class = [[[None for x in range(num_poles)]
@@ -103,7 +110,7 @@ def sample_estimator(model, train_loader, num_classes, powers):
 def get_deviations(model, data, mins, maxs, num_classes, powers):
     model.eval()
 
-    num_layer = 5
+    num_layer = 5  # 4 for lenet
     num_poles_list = powers
     exist = 1
     pred_list = []

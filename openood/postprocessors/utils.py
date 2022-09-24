@@ -23,8 +23,10 @@ from .odin_postprocessor import ODINPostprocessor
 from .opengan_postprocessor import OpenGanPostprocessor
 from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
+from .rd4ad_postprocessor import Rd4adPostprocessor
 from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
+from .ssd_postprocessor import SSDPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
 
@@ -45,9 +47,9 @@ def get_postprocessor(config: Config):
         'godin': GodinPostprocessor,
         'gram': GRAMPostprocessor,
         'cutpaste': CutPastePostprocessor,
-        'maxlogit': MaxLogitPostprocessor,
+        'mls': MaxLogitPostprocessor,
         'residual': ResidualPostprocessor,
-        'kl_matching': KLMatchingPostprocessor,
+        'klm': KLMatchingPostprocessor,
         'temperature_scaling': TemperatureScalingPostprocessor,
         'ensemble': EnsemblePostprocessor,
         'dropout': DropoutPostProcessor,
@@ -58,6 +60,8 @@ def get_postprocessor(config: Config):
         'opengan': OpenGanPostprocessor,
         'knn': KNNPostprocessor,
         'dice': DICEPostprocessor,
+        'ssd': SSDPostprocessor,
+        'rd4ad': Rd4adPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)

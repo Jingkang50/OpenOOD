@@ -19,3 +19,6 @@ class Convert:
 
     def __call__(self, image):
         return image.convert(self.mode)
+
+
+# More transform classes shall be written here

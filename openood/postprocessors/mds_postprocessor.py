@@ -29,6 +29,7 @@ class MDSPostprocessor(BasePostprocessor):
 
         self.feature_mean, self.feature_prec = None, None
         self.alpha_list = None
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         # step 1: estimate initial mean and variance from training set
@@ -98,6 +99,12 @@ class MDSPostprocessor(BasePostprocessor):
         alpha = torch.cuda.FloatTensor(self.alpha_list)
         conf = torch.matmul(score_list, alpha)
         return pred, conf
+
+    def set_hyperparam(self, hyperparam: list):
+        self.magnitude = hyperparam[0]
+
+    def get_hyperparam(self):
+        return self.magnitude
 
 
 def tensor2list(x):

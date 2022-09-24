@@ -1,0 +1,7 @@
+postprocessor:
+  name: klm
+  APS_mode: True
+  postprocessor_args:
+    dim: 512
+  postprocessor_sweep:
+    dim_list: [512]

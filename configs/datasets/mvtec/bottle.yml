@@ -1,30 +1,37 @@
 dataset:
   name: bottle
   num_classes: 2
+  pre_size: 256
   image_size: 256
+
+  interpolation: bilinear
+  normalization_type: cifar10
+
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'
+
   split_names: [train, test, val]
+
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
     interpolation: bilinear
-    imglist_pth: ./data/imglist/mvtec/train/train_bottle.txt
+    imglist_pth: ./data/benchmark_imglist/mvtecList/bottle_train_good.txt
     batch_size: 2
     shuffle: True
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
     interpolation: bilinear
-    imglist_pth: ./data/imglist/mvtec/test/id/test_bottle_id.txt
+    imglist_pth: ./data/benchmark_imglist/mvtecList/bottle_test_id.txt
     batch_size: 1
     shuffle: False
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images/
     interpolation: bilinear
-    imglist_pth: ./data/imglist/mvtec/test/id/test_bottle_id.txt
+    imglist_pth: ./data/benchmark_imglist/mvtecList/bottle_test_id.txt
     batch_size: 1
     shuffle: False
 
@@ -42,4 +49,4 @@ ood_dataset:
   split_names: [val]
   val:
     data_dir: ./data/images/
-    imglist_pth: ./data/imglist/mvtec/test/ood/test_bottle_ood.txt
+    imglist_pth: ./data/benchmark_imglist/mvtecList/bottle_test.txt

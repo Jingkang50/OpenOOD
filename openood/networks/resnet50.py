@@ -6,9 +6,11 @@ class ResNet50(ResNet):
                  block=Bottleneck,
                  layers=[3, 4, 6, 3],
                  num_classes=1000):
-        super(ResNet50, self).__init__(block=Bottleneck,
-                                       layers=[3, 4, 6, 3],
-                                       num_classes=1000)
+        super(ResNet50, self).__init__(block=block,
+                                       layers=layers,
+                                       num_classes=num_classes)
+        self.feature_size = 2048
+
 
     def forward(self, x, return_feature=False, return_feature_list=False):
         feature1 = self.relu(self.bn1(self.conv1(x)))
