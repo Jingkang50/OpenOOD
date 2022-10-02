@@ -21,6 +21,6 @@ def get_evaluator(config: Config):
         'ad': ADEvaluator,
         'mos': MOSEvaluator,
         'ece': ECEEvaluator,
-        'osr': OSREvaluator
+        'osr': OSREvaluator,
     }
     return evaluators[config.evaluator.name](config)

@@ -161,13 +161,13 @@ if __name__ == '__main__':
                 with zipfile.ZipFile(file_path, 'r') as zip_file:
                     zip_file.extractall(store_path)
                 os.remove(file_path)
-
-            if args.dataset_mode == 'default' or args.dataset_mode == 'benchmark':
+            dataset_mode = args.dataset_mode
+            if dataset_mode == 'default' or dataset_mode == 'benchmark':
                 for benchmark in args.datasets:
                     for dataset in benchmarks_dict[benchmark]:
                         download_dataset(dataset, args)
 
-            if args.dataset_mode == 'dataset':
+            if dataset_mode == 'dataset':
                 for dataset in args.datasets:
                     download_dataset(dataset, args)
 

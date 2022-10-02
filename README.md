@@ -38,6 +38,7 @@ conda activate openood
 
 Datasets and pretrained models are provided [here](https://entuedu-my.sharepoint.com/:f:/g/personal/jingkang001_e_ntu_edu_sg/Eso7IDKUKQ9AoY7hm9IU2gIBMWNnWGCYPwClpH0TASRLmg?e=kMrkVQ).
 Please unzip the files if necessary.
+We also provide an automatic data download script [here](https://github.com/Jingkang50/OpenOOD/blob/main/scripts/download/).
 
 Our codebase accesses the datasets from `./data/` and pretrained models from `./results/checkpoints/` by default.
 ```

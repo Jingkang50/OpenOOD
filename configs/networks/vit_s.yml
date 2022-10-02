@@ -1,0 +1,7 @@
+network:
+  name: vit_s
+  num_classes: '@{dataset.num_classes}'
+  use_pretrained_model: True # if use the imagenet pretrained model
+  pretrained: False          # set 'True' to load pretrained model, this is mainly for loading checkpoint
+  checkpoint: pass            # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'
