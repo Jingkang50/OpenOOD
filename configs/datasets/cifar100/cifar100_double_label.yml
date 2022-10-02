@@ -1,12 +1,19 @@
 dataset:
   name: cifar100_double_label
-  split_names: [train, val, test]
+
   num_classes: 120 # actually it's 100 classes but it has 20 groups
   image_size: 32
   pre_size: 32
+
+  interpolation: bilinear
+  normalization_type: cifar100
+
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'
+
+  split_names: [train, val, test]
+
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/

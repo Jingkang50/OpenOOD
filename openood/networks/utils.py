@@ -17,6 +17,7 @@ from .densenet import DenseNet3
 from .draem_net import DiscriminativeSubNetwork, ReconstructiveSubNetwork
 from .dropout_net import DropoutNet
 from .dsvdd_net import build_network
+from .gmoe import deit_small_patch16_224
 from .godin_net import GodinNet
 from .lenet import LeNet
 from .mcd_net import MCDNet
@@ -218,18 +219,32 @@ def get_network(network_config):
         backbone = get_network(network_config.backbone)
         net = DropoutNet(backbone=backbone, dropout_p=network_config.dropout_p)
 
-    elif network_config.name == 'simclr_net':
-        # backbone = get_network(network_config.backbone)
-        # net = SimClrNet(backbone, out_dim=128)
-        from .temp import SSLResNet
-        net = SSLResNet()
-        net.encoder = nn.DataParallel(net.encoder).cuda()
-
     elif network_config.name == 'rd4ad_net':
         encoder = get_network(network_config.backbone)
         bn = BN_layer(AttnBasicBlock, 2)
         decoder = De_ResNet18_256x256()
         net = {'encoder': encoder, 'bn': bn, 'decoder': decoder}
+
+    elif network_config.name == 'gmoe':
+        net = deit_small_patch16_224(
+            pretrained=network_config.use_pretrained_model,
+            num_classes=num_classes,
+            moe_layers=['F'] * 8 + ['S', 'F'] * 2,
+            mlp_ratio=4.,
+            num_experts=6,
+            drop_path_rate=0.1,
+            router='cosine_top')
+
+    elif network_config.name == 'vit_s':
+        net = deit_small_patch16_224(
+            pretrained=network_config.use_pretrained_model,
+            num_classes=num_classes,
+            moe_layers=None,
+            mlp_ratio=4.,
+            num_experts=6,
+            drop_path_rate=0.1,
+            router='cosine_top')
+
     else:
         raise Exception('Unexpected Network Architecture!')
 
@@ -240,7 +255,7 @@ def get_network(network_config):
                 if checkpoint is not None:
                     if checkpoint != 'none':
                         subnet.load_state_dict(torch.load(checkpoint),
-                                               strict=False)
+                                               strict=True)
         elif network_config.name == 'bit' and not network_config.normal_load:
             net.load_from(np.load(network_config.checkpoint))
         elif network_config.name == 'vit':
@@ -248,13 +263,13 @@ def get_network(network_config):
         else:
             try:
                 net.load_state_dict(torch.load(network_config.checkpoint),
-                                    strict=False)
+                                    strict=True)
             except RuntimeError:
                 # sometimes fc should not be loaded
                 loaded_pth = torch.load(network_config.checkpoint)
                 loaded_pth.pop('fc.weight')
                 loaded_pth.pop('fc.bias')
-                net.load_state_dict(loaded_pth, strict=False)
+                net.load_state_dict(loaded_pth, strict=True)
         print('Model Loading {} Completed!'.format(network_config.name))
     if network_config.num_gpus > 1:
         if type(net) is dict:
@@ -278,4 +293,8 @@ def get_network(network_config):
         torch.cuda.manual_seed(1)
         np.random.seed(1)
     cudnn.benchmark = True
+
+    pytorch_total_params = sum(p.numel() for p in net.parameters())
+    print('Parameter num:', ' ', pytorch_total_params)
+
     return net

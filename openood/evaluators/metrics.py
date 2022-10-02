@@ -15,9 +15,6 @@ def compute_all_metrics(conf, label, pred):
 
     accuracy = acc(pred, label)
 
-    results1 = np.array(
-        [fpr, auroc, aupr_in, aupr_out, ccr_4, ccr_3, ccr_2, ccr_1, accuracy])
-
     results = [
         fpr, auroc, aupr_in, aupr_out, ccr_4, ccr_3, ccr_2, ccr_1, accuracy
     ]

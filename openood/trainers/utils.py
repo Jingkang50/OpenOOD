@@ -12,6 +12,7 @@ from .cutpaste_trainer import CutPasteTrainer
 from .draem_trainer import DRAEMTrainer
 from .dropout_trainer import DropoutTrainer
 from .dsvdd_trainer import AETrainer, DSVDDTrainer
+from .gmoe_trainer import GMOETrainer
 from .godin_trainer import GodinTrainer
 from .kdad_trainer import KdadTrainer
 from .logitnorm_trainer import LogitNormTrainer
@@ -50,6 +51,7 @@ def get_trainer(net, train_loader: DataLoader, config: Config):
             'csi': CSITrainer,
             'logitnorm': LogitNormTrainer,
             'rd4ad': Rd4adTrainer,
+            'gmoe': GMOETrainer,
         }
         return trainers[config.trainer.name](net, train_loader, config)
 

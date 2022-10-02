@@ -159,6 +159,8 @@ dmypy.json
 config/*/_*/
 scripts/_*/
 tools/mytools/
+*gmoe*
+_gmoe/
 
 # ignore pretrained bit model
 bit_pretrained_models/
