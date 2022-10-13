@@ -1,5 +1,5 @@
 # OpenOOD: Benchmarking Generalized OOD Detection
-[![paper](https://img.shields.io/badge/Paper-In%20Process-b31b1b?style=for-the-badge)]()
+[![paper](https://img.shields.io/badge/Paper-OpenReview-b31b1b?style=for-the-badge)](https://openreview.net/pdf?id=gT6j4_tskUt)
 &nbsp;&nbsp;&nbsp;
 [![paper](https://img.shields.io/badge/Integrate-30+%20Methods-228c22?style=for-the-badge)]()
 &nbsp;&nbsp;&nbsp;
