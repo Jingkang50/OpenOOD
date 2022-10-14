@@ -35,6 +35,7 @@ You can specify the appropriate `cudatoolkit` version to install on your machine
 ```bash
 conda env create -f environment.yml
 conda activate openood
+pip install libmr==0.1.9 # if necessary
 ```
 
 Datasets and pretrained models are provided [here](https://entuedu-my.sharepoint.com/:f:/g/personal/jingkang001_e_ntu_edu_sg/Eso7IDKUKQ9AoY7hm9IU2gIBMWNnWGCYPwClpH0TASRLmg?e=kMrkVQ).
