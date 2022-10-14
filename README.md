@@ -20,6 +20,7 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Updates
+- **14 October, 2022**: OpenOOD is accepted to NeurIPS 2022. Check the report [here](https://arxiv.org/abs/2210.07242).
 - **14 June, 2022**: We release `v0.5`.
 - **12 April, 2022**: Primary release to support [Full-Spectrum OOD Detection](https://arxiv.org/abs/2204.05306).
 
@@ -64,7 +65,6 @@ Our codebase accesses the datasets from `./data/` and pretrained models from `./
 
 | OSR Benchmark |   MNIST-6   |     CIFAR-6    |   CIFAR-50   |    TIN-20   |
 | ------------- | ----------- | -------------- | ------------ | ----------- |
-| Accuracy (avg 5 seeds) |        |              |     |     |
 | Checkpoint    |    [links]()    |    [links]()    |   [links]()  | [links]() |
 
 
