@@ -3,7 +3,7 @@
 &nbsp;&nbsp;&nbsp;
 [![paper](https://img.shields.io/badge/Integrate-30+%20Methods-228c22?style=for-the-badge)]()
 &nbsp;&nbsp;&nbsp;
-[![paper](https://img.shields.io/badge/Support-Dist%20Training-797ef6?style=for-the-badge)]()
+[![paper](https://img.shields.io/badge/Forum-SLACK-797ef6?style=for-the-badge)](https://openood.slack.com/)
 
 
 <img src="https://live.staticflickr.com/65535/52145428300_78fd595193_k.jpg" width="800">
