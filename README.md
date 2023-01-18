@@ -19,6 +19,9 @@ Comments, issues, contributions, and collaborations are all welcomed!
 | <b>Timeline of the methods that OpenOOD supports.</b>|
 
 
+## FAQ
+- `APS_mode` means Automatic (hyper)Parameter Searching mode, which enables the model to validate all the hyperparameters in the sweep list based on the validation ID/OOD set. The default value is False. Check [here](https://github.com/Jingkang50/OpenOOD/blob/main/configs/postprocessors/dice.yml) for example.
+
 ## Updates
 - **14 October, 2022**: OpenOOD is accepted to NeurIPS 2022. Check the report [here](https://arxiv.org/abs/2210.07242).
 - **14 June, 2022**: We release `v0.5`.
