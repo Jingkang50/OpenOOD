@@ -13,7 +13,7 @@ ood_dataset:
   split_names: [val, nearood, farood]
   val:
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar100.txt
+    imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar10.txt
   nearood:
     datasets: [cifar10, tin]
     cifar10:
