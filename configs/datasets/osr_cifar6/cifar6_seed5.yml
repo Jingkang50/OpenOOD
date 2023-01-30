@@ -16,18 +16,18 @@ dataset:
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_cifar6/train/train_cifar6_seed5.txt
+    imglist_pth: ./data/benchmark_imglist/osr_cifar6/train/train_cifar10_6_seed5.txt
     batch_size: 128
     shuffle: True
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_cifar6/val/val_cifar6_seed5.txt
+    imglist_pth: ./data/benchmark_imglist/osr_cifar6/val/val_cifar10_6_seed5.txt
     batch_size: 200
     shuffle: False
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_cifar6/test/test_cifar6_id_seed5.txt
+    imglist_pth: ./data/benchmark_imglist/osr_cifar6/test/test_cifar10_6_id_seed5.txt
     batch_size: 200
     shuffle: False

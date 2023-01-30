@@ -15,9 +15,9 @@ ood_dataset:
   split_names: [val, osr]
   val:
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_cifar6/test/test_cifar6_ood_seed2.txt
+    imglist_pth: ./data/benchmark_imglist/osr_cifar6/test/test_cifar10_6_id_seed2.txt
   osr:
     datasets: [cifar4]
     cifar4:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/benchmark_imglist/osr_cifar6/test/test_cifar6_ood_seed2.txt
+      imglist_pth: ./data/benchmark_imglist/osr_cifar6/test/test_cifar10_4_ood_seed2.txt
