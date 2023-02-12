@@ -16,18 +16,18 @@ dataset:
   train:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_mnist6/train/train_mnist6_seed3.txt
+    imglist_pth: ./data/benchmark_imglist/osr_mnist6/train/train_mnist_6_seed3.txt
     batch_size: 128
     shuffle: True
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_mnist6/val/val_mnist6_seed3.txt
+    imglist_pth: ./data/benchmark_imglist/osr_mnist6/val/val_mnist_6_seed3.txt
     batch_size: 200
     shuffle: False
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_mnist6/test/test_mnist6_id_seed3.txt
+    imglist_pth: ./data/benchmark_imglist/osr_mnist6/test/test_mnist_6_id_seed3.txt
     batch_size: 200
     shuffle: False

@@ -15,9 +15,9 @@ ood_dataset:
   split_names: [val, osr]
   val:
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/osr_mnist6/test/test_mnist6_ood_seed3.txt
+    imglist_pth: ./data/benchmark_imglist/osr_mnist6/test/test_mnist_6_id_seed3.txt
   osr:
     datasets: [mnist4]
     mnist4:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/benchmark_imglist/osr_mnist6/test/test_mnist6_ood_seed3.txt
+      imglist_pth: ./data/benchmark_imglist/osr_mnist6/test/test_mnist_4_ood_seed3.txt
