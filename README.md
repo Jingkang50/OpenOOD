@@ -1,4 +1,8 @@
 # OpenOOD: Benchmarking Generalized OOD Detection
+
+| :exclamation:  We are currently building OpenOOD V2. You can checkout our scope and project plan [here](https://github.com/Jingkang50/OpenOOD/discussions/145). If you want to join us, please don't heisitate to contact [jingkang001@e.ntu.edu.sg](mailto:jingkang001@e.ntu.edu.sg)! |
+|-----------------------------------------|
+
 [![paper](https://img.shields.io/badge/Paper-OpenReview-b31b1b?style=for-the-badge)](https://openreview.net/pdf?id=gT6j4_tskUt)
 &nbsp;&nbsp;&nbsp;
 [![paper](https://img.shields.io/badge/Integrate-30+%20Methods-228c22?style=for-the-badge)]()
