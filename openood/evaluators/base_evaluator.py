@@ -40,6 +40,9 @@ class BaseEvaluator:
 
                 # forward
                 output = net(data)
+                if isinstance(output, tuple):
+                    output = output[0]
+                    
                 loss = F.cross_entropy(output, target)
 
                 # accuracy

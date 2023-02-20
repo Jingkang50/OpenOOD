@@ -1,0 +1,17 @@
+network:
+  name: rts_net
+  num_classes: '@{dataset.num_classes}'
+  image_size: '@{dataset.image_size}'
+  pretrained: False
+  checkpoint: none           # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'
+  dof: 32
+  kl_scale: 0.1
+
+  # network used for feature extraction
+  backbone:
+    name: resnet18_32x32
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    pretrained: False
+    num_gpus: '@{num_gpus}'

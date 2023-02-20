@@ -31,6 +31,7 @@ from .resnet18_256x256 import ResNet18_256x256
 from .resnet50 import ResNet50
 from .udg_net import UDGNet
 from .wrn import WideResNet
+from .rts_net import RTSNet
 
 
 def get_network(network_config):
@@ -88,6 +89,13 @@ def get_network(network_config):
                        feature_size=backbone.feature_size,
                        num_classes=num_classes,
                        similarity_measure=network_config.similarity_measure)
+        
+    elif network_config.name == 'rts_net':
+        backbone = get_network(network_config.backbone)
+        net = RTSNet(backbone=backbone,
+                     feature_size=backbone.feature_size,
+                     num_classes=num_classes,
+                     dof=network_config.dof)
 
     elif network_config.name == 'react_net':
         backbone = get_network(network_config.backbone)
