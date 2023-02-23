@@ -13,7 +13,7 @@ class RTSPostprocessor(BasePostprocessor):
         self.ood_score = self.args.ood_score
 
     def postprocess(self, net: nn.Module, data: Any):
-        output, variance = net(data)
+        output, variance = net(data, return_var=True)
         if self.ood_score == 'var':
             _, pred = torch.max(torch.softmax(output, dim=1), dim=1)
             conf = torch.mean(variance, dim=1)

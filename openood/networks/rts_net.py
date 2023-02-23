@@ -18,9 +18,12 @@ class RTSNet(nn.Module):
             nn.BatchNorm1d(self.dof),
         )
     
-    def forward(self, x):
+    def forward(self, x, return_var=False):
         logits_cls, feature = self.backbone(x, return_feature=True)
-        logvar = self.logvar_rts(feature)
-        variance = logvar.exp()
-        return logits_cls, variance
+        if return_var:
+            logvar = self.logvar_rts(feature)
+            variance = logvar.exp()
+            return logits_cls, variance
+        else:
+            return logits_cls
         

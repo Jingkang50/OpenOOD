@@ -54,7 +54,7 @@ class RTSTrainer:
             target = batch['label'].cuda()
 
             # forward
-            logits_classifier, variance = self.net(data)
+            logits_classifier, variance = self.net(data, return_var=True)
             epsilon = torch.randn_like(variance)
             temperature = torch.sum(variance * epsilon * epsilon, dim=1, keepdim=True) / (self.config.network.dof - 2)
             loss_kl = ((variance - torch.log(variance + 1e-8) - 1) * 0.5).mean()
