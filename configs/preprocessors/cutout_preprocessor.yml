@@ -1,4 +1,4 @@
 preprocessor:
-  name: randaugment
+  name: cutout
   n_holes: 1
   length: 16
