@@ -99,11 +99,7 @@ DATA_INFO = {
             }
         },
         'csid': {
-            'datasets': ['cifar100c'],
-            'cifar100c': {
-                'data_dir': 'images_classic/',
-                'imglist_path': 'benchmark_imglist/cifar100/test_cifar100c.txt'
-            }
+            'datasets': [],
         },
         'ood': {
             'val': {
@@ -111,12 +107,16 @@ DATA_INFO = {
                 'imglist_path': 'benchmark_imglist/cifar100/val_cifar10.txt'
             },
             'near': {
-                'datasets': ['cifar10'],
+                'datasets': ['cifar10', 'tin'],
                 'cifar10': {
                     'data_dir': 'images_classic/',
                     'imglist_path':
                     'benchmark_imglist/cifar100/test_cifar10.txt'
                 },
+                'tin': {
+                    'data_dir': 'images_classic/',
+                    'imglist_path': 'benchmark_imglist/cifar100/test_tin.txt'
+                }
             },
             'far': {
                 'datasets': ['mnist', 'svhn', 'texture', 'places365'],
