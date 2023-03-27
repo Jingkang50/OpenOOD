@@ -114,7 +114,7 @@ def get_deviations(model, data, mins, maxs, num_classes, powers):
     num_poles_list = powers
     exist = 1
     pred_list = []
-    dev = [0 for x in range(200)]
+    dev = [0 for x in range(data.shape[0])]
 
     # get predictions
     logits, feature_list = model(data, return_feature_list=True)
