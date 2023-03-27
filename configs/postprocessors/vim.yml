@@ -1,4 +1,5 @@
 postprocessor:
   name: vim
+  APS_mode: False
   postprocessor_args:
     dim: 42

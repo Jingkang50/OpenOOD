@@ -1,3 +1,4 @@
 postprocessor:
   name: gradnorm
+  APS_mode: False
   postprocessor_args:
