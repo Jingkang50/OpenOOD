@@ -43,12 +43,16 @@ DATA_INFO = {
                 'imglist_path': 'benchmark_imglist/cifar10/val_cifar100.txt'
             },
             'near': {
-                'datasets': ['cifar100'],
+                'datasets': ['cifar100', 'tin'],
                 'cifar100': {
                     'data_dir': 'images_classic/',
                     'imglist_path':
                     'benchmark_imglist/cifar10/test_cifar100.txt'
                 },
+                'tin': {
+                    'data_dir': 'images_classic/',
+                    'imglist_path': 'benchmark_imglist/cifar10/test_tin.txt'
+                }
             },
             'far': {
                 'datasets': ['mnist', 'svhn', 'texture', 'places365'],
