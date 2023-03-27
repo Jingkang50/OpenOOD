@@ -1,5 +1,6 @@
 from openood.utils import Config
 
+from .ash_postprocessor import ASHPostprocessor
 from .base_postprocessor import BasePostprocessor
 from .conf_branch_postprocessor import ConfBranchPostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
@@ -35,6 +36,7 @@ from .vim_postprocessor import VIMPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
+        'ash': ASHPostprocessor,
         'conf_branch': ConfBranchPostprocessor,
         'msp': BasePostprocessor,
         'ebo': EBOPostprocessor,

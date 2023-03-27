@@ -1,19 +1,21 @@
 import os
 
 from openood.postprocessors import (
-    BasePostprocessor, ConfBranchPostprocessor, CutPastePostprocessor,
-    DICEPostprocessor, DRAEMPostprocessor, DropoutPostProcessor,
-    DSVDDPostprocessor, EBOPostprocessor, EnsemblePostprocessor,
-    GMMPostprocessor, GodinPostprocessor, GradNormPostprocessor,
-    GRAMPostprocessor, KLMatchingPostprocessor, KNNPostprocessor,
-    MaxLogitPostprocessor, MCDPostprocessor, MDSPostprocessor,
-    MOSPostprocessor, ODINPostprocessor, OpenGanPostprocessor, OpenMax,
-    PatchcorePostprocessor, Rd4adPostprocessor, ReactPostprocessor,
-    ResidualPostprocessor, SSDPostprocessor, TemperatureScalingPostprocessor,
-    VIMPostprocessor, RotPredPostprocessor, RankFeatPostprocessor)
+    ASHPostprocessor, BasePostprocessor, ConfBranchPostprocessor,
+    CutPastePostprocessor, DICEPostprocessor, DRAEMPostprocessor,
+    DropoutPostProcessor, DSVDDPostprocessor, EBOPostprocessor,
+    EnsemblePostprocessor, GMMPostprocessor, GodinPostprocessor,
+    GradNormPostprocessor, GRAMPostprocessor, KLMatchingPostprocessor,
+    KNNPostprocessor, MaxLogitPostprocessor, MCDPostprocessor,
+    MDSPostprocessor, MOSPostprocessor, ODINPostprocessor,
+    OpenGanPostprocessor, OpenMax, PatchcorePostprocessor, Rd4adPostprocessor,
+    ReactPostprocessor, ResidualPostprocessor, SSDPostprocessor,
+    TemperatureScalingPostprocessor, VIMPostprocessor, RotPredPostprocessor,
+    RankFeatPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
+    'ash': ASHPostprocessor,
     'conf_branch': ConfBranchPostprocessor,
     'msp': BasePostprocessor,
     'ebo': EBOPostprocessor,

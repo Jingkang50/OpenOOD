@@ -1,3 +1,4 @@
+from .ash_postprocessor import ASHPostprocessor
 from .base_postprocessor import BasePostprocessor
 from .conf_branch_postprocessor import ConfBranchPostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
