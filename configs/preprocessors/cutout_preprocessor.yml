@@ -1,0 +1,4 @@
+preprocessor:
+  name: randaugment
+  n_holes: 1
+  length: 16

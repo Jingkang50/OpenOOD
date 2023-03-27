@@ -5,8 +5,7 @@ from openood.utils.config import Config
 from .transform import Convert, interpolation_modes, normalization_dict
 
 
-class BasePreprocessor():
-    """For train dataset standard transformation."""
+class RandAugmentPreprocessor():
     def __init__(self, config: Config):
         self.pre_size = config.dataset.pre_size
         self.image_size = config.dataset.image_size
@@ -19,8 +18,14 @@ class BasePreprocessor():
             self.mean = [0.5, 0.5, 0.5]
             self.std = [0.5, 0.5, 0.5]
 
+        self.n = config.preprocessor.n
+        self.m = config.preprocessor.m
+
         self.transform = tvs_trans.Compose([
             Convert('RGB'),
+            tvs_trans.RandAugment(num_ops=self.n,
+                                  magnitude=self.m,
+                                  interpolation=self.interpolation),
             tvs_trans.Resize(self.pre_size, interpolation=self.interpolation),
             tvs_trans.CenterCrop(self.image_size),
             tvs_trans.RandomHorizontalFlip(),

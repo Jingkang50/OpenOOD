@@ -1,6 +1,2 @@
 preprocessor:
   name: base
-  randaugment:
-    enable: False
-    n: 1
-    m: 6
