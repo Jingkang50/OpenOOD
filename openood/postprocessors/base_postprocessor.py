@@ -1,6 +1,5 @@
 from typing import Any
 
-import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -26,14 +25,14 @@ class BasePostprocessor:
             data = batch['data'].cuda()
             label = batch['label'].cuda()
             pred, conf = self.postprocess(net, data)
-            for idx in range(len(data)):
-                pred_list.append(pred[idx].cpu().tolist())
-                conf_list.append(conf[idx].cpu().tolist())
-                label_list.append(label[idx].cpu().tolist())
+
+            pred_list.append(pred.cpu())
+            conf_list.append(conf.cpu())
+            label_list.append(label.cpu())
 
         # convert values into numpy array
-        pred_list = np.array(pred_list, dtype=int)
-        conf_list = np.array(conf_list)
-        label_list = np.array(label_list, dtype=int)
+        pred_list = torch.cat(pred_list).numpy().astype(int)
+        conf_list = torch.cat(conf_list).numpy()
+        label_list = torch.cat(label_list).numpy().astype(int)
 
         return pred_list, conf_list, label_list
