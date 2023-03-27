@@ -22,14 +22,14 @@ class VOSTrainer:
         self.optimizer = torch.optim.SGD(
             list(net.parameters()) + list(weight_energy.parameters()) + \
             list(self.logistic_regression.parameters()),
-            config.optimizer['learning_rate'],
-             momentum=config.optimizer['momentum'],
+            config.optimizer['lr'],
+            momentum=config.optimizer['momentum'],
             weight_decay=config.optimizer['weight_decay'], nesterov=True)
         self.scheduler = torch.optim.lr_scheduler.LambdaLR(
             self.optimizer,
             lr_lambda=lambda step: cosine_annealing(
                 step, config.optimizer['num_epochs'] * len(train_loader), 1,
-                1e-6 / config.optimizer['learning_rate']))
+                1e-6 / config.optimizer['lr']))
         self.number_dict = {}
         for i in range(self.config['num_classes']):
             self.number_dict[i] = 0
@@ -107,11 +107,15 @@ class VOSTrainer:
                             (ood_samples, negative_samples[index_prob]), 0)
                 if len(ood_samples) != 0:
 
-                    energy_score_for_fg = log_sum_exp(x,num_classes=num_classes, dim=1)
+                    energy_score_for_fg = log_sum_exp(x,
+                                                      num_classes=num_classes,
+                                                      dim=1)
 
                     predictions_ood = self.net.fc(ood_samples)
 
-                    energy_score_for_bg = log_sum_exp(predictions_ood,num_classes=num_classes, dim=1)
+                    energy_score_for_bg = log_sum_exp(predictions_ood,
+                                                      num_classes=num_classes,
+                                                      dim=1)
 
                     input_for_lr = torch.cat(
                         (energy_score_for_fg, energy_score_for_bg), -1)
