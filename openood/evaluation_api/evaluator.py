@@ -205,12 +205,12 @@ class Evaluator:
                                          ood_split='far')
 
             self.metrics[f'{id_name}_ood']['overall'] = pd.DataFrame(
-                np.concatenate([near_metrics, far_metrics], axis=0)[:,:-1],
+                np.concatenate([near_metrics, far_metrics], axis=0),
                 index=list(self.dataloader_dict['ood']['near'].keys()) \
                     + ['nearood'] + list(self.dataloader_dict['ood']['far'].keys()) \
                     + ['farood'],
                 columns=['FPR@95', 'AUROC', 'AUPR_IN', 'AUPR_OUT',
-                         'CCR_4', 'CCR_3', 'CCR_2', 'CCR_1'],
+                         'CCR_4', 'CCR_3', 'CCR_2', 'CCR_1', 'ACC'],
             )
         else:
             print('Evaluation has already been done!')
@@ -221,6 +221,8 @@ class Evaluator:
                     'display.float_format',
                     '{:,.2f}'.format):  # more options can be specified also
                 print(self.metrics[f'{id_name}_ood']['overall'])
+
+        return self.metrics[f'{id_name}_ood']['overall']
 
     def _eval_ood(self, id_list: List[np.ndarray], ood_split: str = 'near'):
         print(f'Processing {ood_split} ood...', flush=True)
