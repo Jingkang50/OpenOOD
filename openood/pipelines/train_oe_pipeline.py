@@ -1,3 +1,6 @@
+import numpy as np
+import torch
+
 import openood.utils.comm as comm
 from openood.datasets import get_dataloader
 from openood.evaluators import get_evaluator
@@ -14,6 +17,10 @@ class TrainOEPipeline:
     def run(self):
         # generate output directory and save the full config file
         setup_logger(self.config)
+
+        # set random seed
+        torch.manual_seed(self.config.seed)
+        np.random.seed(self.config.seed)
 
         # get dataloader
         loader_dict = get_dataloader(self.config)

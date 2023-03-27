@@ -275,7 +275,6 @@ def get_network(network_config):
                 subnet.cuda()
         else:
             net.cuda()
-        torch.cuda.manual_seed(1)
-        np.random.seed(1)
+
     cudnn.benchmark = True
     return net
