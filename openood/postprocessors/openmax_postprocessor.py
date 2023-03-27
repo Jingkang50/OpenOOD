@@ -26,57 +26,29 @@ class OpenMax(BasePostprocessor):
         self.weibull_model = fit_weibull(mavs, dists, categories,
                                          self.weibull_tail, 'euclidean')
 
+    @torch.no_grad()
     def postprocess(self, net: nn.Module, data):
         net.eval()
-
-        device = 'cuda'
-        scores = []
-        with torch.no_grad():
-            for inputs in data.split(1, dim=0):
-                inputs = inputs.to(device)
-                outputs = net(inputs)
-                # loss = criterion(outputs, targets)
-                # test_loss += loss.item()
-                # _, predicted = outputs.max(1)
-                scores.append(outputs)
-
-                # total += targets.size(0)
-                # correct += predicted.eq(targets).sum().item()
-
-        # Get the prdict results.
-        scores = torch.cat(scores, dim=0).cpu().numpy()
+        scores = net(data).cpu().numpy()
         scores = np.array(scores)[:, np.newaxis, :]
-
         categories = list(range(0, self.nc))
 
         pred_openmax = []
         score_openmax = []
-        score_softmax = []
         for score in scores:
-            so, ss = openmax(self.weibull_model, categories, score, 0.5,
-                             self.weibull_alpha,
-                             'euclidean')  # openmax_prob, softmax_prob
+            so, _ = openmax(self.weibull_model, categories, score, 0.5,
+                            self.weibull_alpha,
+                            'euclidean')  # openmax_prob, softmax_prob
             pred_openmax.append(
                 np.argmax(so) if np.max(so) >= self.weibull_threshold else (
                     self.nc - 1))
 
             score_openmax.append(so)
 
-            softmax_conf = np.max(ss)
-            score_softmax.append(softmax_conf)
+        pred = torch.tensor(pred_openmax)
+        conf = -1 * torch.from_numpy(np.array(score_openmax))[:, -1]
 
-        pred = []
-        for i in pred_openmax:
-            pred.append(torch.tensor(i))
-
-        conf = []
-        for i in score_openmax:
-            conf.append(i)
-
-        conf = torch.tensor(conf, dtype=torch.float32)
-        conf = conf.cuda()
-
-        return torch.tensor(pred), torch.max(conf, dim=1)[0]  # conf[:, -1]
+        return pred, conf
 
 
 def compute_channel_distances(mavs, features, eu_weight=0.5):
