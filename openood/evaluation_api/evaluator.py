@@ -204,6 +204,13 @@ class Evaluator:
             far_metrics = self._eval_ood([id_pred, id_conf, id_gt],
                                          ood_split='far')
 
+            if self.metrics[f'{id_name}_acc'] is None:
+                self.eval_acc(csid)
+            near_metrics[:, -1] = np.array([self.metrics[f'{id_name}_acc']] *
+                                           len(near_metrics))
+            far_metrics[:, -1] = np.array([self.metrics[f'{id_name}_acc']] *
+                                          len(far_metrics))
+
             self.metrics[f'{id_name}_ood']['overall'] = pd.DataFrame(
                 np.concatenate([near_metrics, far_metrics], axis=0),
                 index=list(self.dataloader_dict['ood']['near'].keys()) \
