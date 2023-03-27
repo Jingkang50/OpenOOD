@@ -12,7 +12,6 @@ class OpenMax(BasePostprocessor):
     def __init__(self, config):
         super(OpenMax, self).__init__(config)
         self.nc = config.dataset.num_classes
-        self.ood_nc = config.ood_dataset.num_classes
         self.weibull_alpha = 3
         self.weibull_threshold = 0.9
         self.weibull_tail = 20
@@ -77,7 +76,7 @@ class OpenMax(BasePostprocessor):
         conf = torch.tensor(conf, dtype=torch.float32)
         conf = conf.cuda()
 
-        return torch.tensor(pred), torch.max(conf, dim=1)[0] # conf[:, -1]
+        return torch.tensor(pred), torch.max(conf, dim=1)[0]  # conf[:, -1]
 
 
 def compute_channel_distances(mavs, features, eu_weight=0.5):
