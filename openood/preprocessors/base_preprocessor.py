@@ -29,9 +29,9 @@ class BasePreprocessor():
             tvs_trans.Normalize(mean=self.mean, std=self.std),
         ])
 
-        if config.preprocessor.randaug.enable:
-            n = config.preprocessor.randaug.n
-            m = config.preprocessor.randaug.m
+        if config.preprocessor.randaugment.enable:
+            n = config.preprocessor.randaugment.n
+            m = config.preprocessor.randaugment.m
             self.transform.transforms.insert(
                 1,
                 tvs_trans.RandAugment(num_ops=n,
