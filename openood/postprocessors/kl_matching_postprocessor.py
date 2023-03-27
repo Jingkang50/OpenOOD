@@ -3,7 +3,7 @@ from typing import Any
 import numpy as np
 import torch
 import torch.nn as nn
-from scipy.special import softmax
+import torch.nn.functional as F
 from sklearn.metrics import pairwise_distances_argmin_min
 from tqdm import tqdm
 
@@ -24,57 +24,34 @@ class KLMatchingPostprocessor(BasePostprocessor):
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         net.eval()
 
+        print('Extracting id validation softmax posterior distributions')
+        all_softmax = []
+        preds = []
         with torch.no_grad():
-            self.w, self.b = net.get_fc()
-            print('Extracting id training feature')
-            feature_id_train = []
-            for batch in tqdm(id_loader_dict['train'],
-                              desc='Eval: ',
-                              position=0,
-                              leave=True):
-                data = batch['data'].cuda()
-                data = data.float()
-                _, feature = net(data, return_feature=True)
-                feature = feature.cpu().numpy()
-                feature_id_train.append(feature)
-            feature_id_train = np.concatenate(feature_id_train, axis=0)
-            logit_id_train = feature_id_train @ self.w.T + self.b
-            softmax_id_train = softmax(logit_id_train, axis=-1)
-            pred_labels_train = np.argmax(softmax_id_train, axis=-1)
-            self.mean_softmax_train = [
-                softmax_id_train[pred_labels_train == i].mean(axis=0)
-                for i in tqdm(range(self.num_classes))
-            ]
-
-            print('Extracting id validation feature')
-            feature_id_val = []
             for batch in tqdm(id_loader_dict['val'],
                               desc='Eval: ',
                               position=0,
                               leave=True):
                 data = batch['data'].cuda()
-                data = data.float()
-                _, feature = net(data, return_feature=True)
-                feature = feature.cpu().numpy()
-                feature_id_val.append(feature)
-            feature_id_val = np.concatenate(feature_id_val, axis=0)
-            logit_id_val = feature_id_val @ self.w.T + self.b
-            softmax_id_val = softmax(logit_id_val, axis=-1)
-            self.score_id = -pairwise_distances_argmin_min(
-                softmax_id_val,
-                np.array(self.mean_softmax_train),
-                metric=self.kl)[1]
+                logits = net(data)
+                all_softmax.append(F.softmax(logits, 1).cpu())
+                preds.append(logits.argmax(1).cpu())
+
+        all_softmax = torch.cat(all_softmax)
+        preds = torch.cat(preds)
+        self.mean_softmax_val = [
+            all_softmax[preds.eq(i)].mean(0).numpy()
+            for i in tqdm(range(self.num_classes))
+        ]
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        _, feature_ood = net(data, return_feature=True)
-        feature_ood = feature_ood.cpu()
-        logit_ood = feature_ood @ self.w.T + self.b
-        softmax_ood = softmax(logit_ood.numpy(), axis=-1)
-        _, pred = torch.max(logit_ood, dim=1)
-        score_ood = -pairwise_distances_argmin_min(
-            softmax_ood, np.array(self.mean_softmax_train), metric=self.kl)[1]
-        return pred, torch.from_numpy(score_ood)
+        logits = net(data)
+        preds = logits.argmax(1)
+        softmax = F.softmax(logits, 1).cpu().numpy()
+        scores = -pairwise_distances_argmin_min(
+            softmax, np.array(self.mean_softmax_val), metric=self.kl)[1]
+        return preds, torch.from_numpy(scores)
 
     def set_hyperparam(self, hyperparam: list):
         self.dim = hyperparam[0]
