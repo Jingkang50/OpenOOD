@@ -1,4 +1,5 @@
 from typing import Any
+from tqdm import tqdm
 
 import torch
 import torch.nn as nn
@@ -19,9 +20,12 @@ class BasePostprocessor:
         conf, pred = torch.max(score, dim=1)
         return pred, conf
 
-    def inference(self, net: nn.Module, data_loader: DataLoader):
+    def inference(self,
+                  net: nn.Module,
+                  data_loader: DataLoader,
+                  progress: bool = True):
         pred_list, conf_list, label_list = [], [], []
-        for batch in data_loader:
+        for batch in tqdm(data_loader, disable=not progress):
             data = batch['data'].cuda()
             label = batch['label'].cuda()
             pred, conf = self.postprocess(net, data)
