@@ -11,7 +11,6 @@ class ResNet50(ResNet):
                                        num_classes=num_classes)
         self.feature_size = 2048
 
-
     def forward(self, x, return_feature=False, return_feature_list=False):
         feature1 = self.relu(self.bn1(self.conv1(x)))
         feature1 = self.maxpool(feature1)
@@ -44,6 +43,28 @@ class ResNet50(ResNet):
         logits_cls = self.fc(feature)
 
         return logits_cls
+
+    def intermediate_forward(self, x, layer_index):
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.maxpool(out)
+
+        out = self.layer1(out)
+        if layer_index == 1:
+            return out
+
+        out = self.layer2(out)
+        if layer_index == 2:
+            return out
+
+        out = self.layer3(out)
+        if layer_index == 3:
+            return out
+
+        out = self.layer4(out)
+        if layer_index == 4:
+            return out
+
+        raise ValueError
 
     def get_fc(self):
         fc = self.fc
