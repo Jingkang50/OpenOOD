@@ -16,12 +16,12 @@ class OpenMax(BasePostprocessor):
         self.weibull_threshold = 0.9
         self.weibull_tail = 20
 
-    def setup(self, net: nn.Module, train_loader_dict, ood_loder_dict):
+    def setup(self, net: nn.Module, id_loader_dict, ood_loder_dict):
 
         # Fit the weibull distribution from training data.
         print('Fittting Weibull distribution...')
         _, mavs, dists = compute_train_score_and_mavs_and_dists(
-            self.nc, train_loader_dict['train'], device='cuda', net=net)
+            self.nc, id_loader_dict['train'], device='cuda', net=net)
         categories = list(range(0, self.nc))
         self.weibull_model = fit_weibull(mavs, dists, categories,
                                          self.weibull_tail, 'euclidean')
