@@ -2,7 +2,7 @@ import os
 
 from torch.utils.data import DataLoader
 import torchvision as tvs
-if int(tvs.__version__.split('.')[1]) >= 13:
+if tvs.__version__ >= '0.13':
     tvs_new = True
 else:
     tvs_new = False
