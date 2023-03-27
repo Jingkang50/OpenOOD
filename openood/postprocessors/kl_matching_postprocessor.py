@@ -16,7 +16,6 @@ class KLMatchingPostprocessor(BasePostprocessor):
         self.args = self.config.postprocessor.postprocessor_args
         self.dim = self.args.dim
         self.num_classes = self.config.dataset.num_classes
-        self.net_name = config.network.name
         self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def kl(self, p, q):
@@ -29,7 +28,7 @@ class KLMatchingPostprocessor(BasePostprocessor):
             self.w, self.b = net.get_fc()
             print('Extracting id training feature')
             feature_id_train = []
-            for batch in tqdm(id_loader_dict['val'],
+            for batch in tqdm(id_loader_dict['train'],
                               desc='Eval: ',
                               position=0,
                               leave=True):
@@ -47,9 +46,9 @@ class KLMatchingPostprocessor(BasePostprocessor):
                 for i in tqdm(range(self.num_classes))
             ]
 
-            print('Extracting id testing feature')
+            print('Extracting id validation feature')
             feature_id_val = []
-            for batch in tqdm(id_loader_dict['test'],
+            for batch in tqdm(id_loader_dict['val'],
                               desc='Eval: ',
                               position=0,
                               leave=True):
