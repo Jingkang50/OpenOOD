@@ -44,6 +44,14 @@ class TestStandardPreProcessor(BasePreprocessor):
         ])
 
 
+class ImageNetCPreProcessor(BasePreprocessor):
+    def __init__(self, mean, std):
+        self.transform = tvs_trans.Compose([
+            tvs_trans.ToTensor(),
+            tvs_trans.Normalize(mean, std),
+        ])
+
+
 def get_default_preprocessor(data_name: str):
     # TODO: include fine-grained datasets proposed in Vaze et al.?
 

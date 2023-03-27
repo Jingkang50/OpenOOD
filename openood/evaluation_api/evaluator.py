@@ -38,7 +38,7 @@ class Evaluator:
             raise ValueError(
                 'Please pass postprocessor_name or postprocessor, not both')
         if id_name not in DATA_INFO:
-            raise ValueError('Dataset [{id_name}] is not supported')
+            raise ValueError(f'Dataset [{id_name}] is not supported')
 
         # get data preprocessor
         if preprocessor is None:
@@ -110,12 +110,13 @@ class Evaluator:
 
     def _classifier_inference(self,
                               data_loader: DataLoader,
-                              msg: str = 'Acc Eval'):
+                              msg: str = 'Acc Eval',
+                              progress: bool = True):
         self.net.eval()
 
         correct = 0
         with torch.no_grad():
-            for batch in tqdm(data_loader, desc=msg, position=0, leave=True):
+            for batch in tqdm(data_loader, desc=msg, disable=not progress):
                 data = batch['data'].cuda()
                 target = batch['label'].cuda()
 
@@ -151,7 +152,7 @@ class Evaluator:
                 self.metrics['csid_acc'] = acc
                 return acc
 
-    def eval_ood(self, csid: bool = False, verbose: bool = True):
+    def eval_ood(self, csid: bool = False, progress: bool = True):
         id_name = 'id' if not csid else 'csid'
         if self.metrics[f'{id_name}_ood']['overall'] is None:
             self.net.eval()
@@ -166,7 +167,7 @@ class Evaluator:
                 print(f'Performing inference on {self.id_name} test set...',
                       flush=True)
                 id_pred, id_conf, id_gt = self.postprocessor.inference(
-                    self.net, self.dataloader_dict['id']['test'])
+                    self.net, self.dataloader_dict['id']['test'], progress)
                 self.scores['id']['test'] = [id_pred, id_conf, id_gt]
             else:
                 id_pred, id_conf, id_gt = self.scores['id']['test']
@@ -180,7 +181,8 @@ class Evaluator:
                             flush=True)
                         temp_pred, temp_conf, temp_gt = self.postprocessor.inference(
                             self.net,
-                            self.dataloader_dict['csid'][dataset_name])
+                            self.dataloader_dict['csid'][dataset_name],
+                            progress)
                         self.scores['csid'][dataset_name] = [
                             temp_pred, temp_conf, temp_gt
                         ]
@@ -199,10 +201,12 @@ class Evaluator:
 
             # load nearood data and compute ood metrics
             near_metrics = self._eval_ood([id_pred, id_conf, id_gt],
-                                          ood_split='near')
+                                          ood_split='near',
+                                          progress=progress)
             # load farood data and compute ood metrics
             far_metrics = self._eval_ood([id_pred, id_conf, id_gt],
-                                         ood_split='far')
+                                         ood_split='far',
+                                         progress=progress)
 
             if self.metrics[f'{id_name}_acc'] is None:
                 self.eval_acc(csid)
@@ -222,16 +226,18 @@ class Evaluator:
         else:
             print('Evaluation has already been done!')
 
-        if verbose:
-            with pd.option_context(
-                    'display.max_rows', None, 'display.max_columns', None,
-                    'display.float_format',
-                    '{:,.2f}'.format):  # more options can be specified also
-                print(self.metrics[f'{id_name}_ood']['overall'])
+        with pd.option_context(
+                'display.max_rows', None, 'display.max_columns', None,
+                'display.float_format',
+                '{:,.2f}'.format):  # more options can be specified also
+            print(self.metrics[f'{id_name}_ood']['overall'])
 
         return self.metrics[f'{id_name}_ood']['overall']
 
-    def _eval_ood(self, id_list: List[np.ndarray], ood_split: str = 'near'):
+    def _eval_ood(self,
+                  id_list: List[np.ndarray],
+                  ood_split: str = 'near',
+                  progress: bool = True):
         print(f'Processing {ood_split} ood...', flush=True)
         [id_pred, id_conf, id_gt] = id_list
         metrics_list = []
@@ -241,7 +247,7 @@ class Evaluator:
                 print(f'Performing inference on {dataset_name} dataset...',
                       flush=True)
                 ood_pred, ood_conf, ood_gt = self.postprocessor.inference(
-                    self.net, ood_dl)
+                    self.net, ood_dl, progress)
                 self.scores['ood'][ood_split][dataset_name] = [
                     ood_pred, ood_conf, ood_gt
                 ]
