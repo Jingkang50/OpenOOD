@@ -12,7 +12,7 @@ from openood.postprocessors import BasePostprocessor
 
 from .datasets import DATA_INFO, get_id_ood_dataloader
 from .postprocessor import get_postprocessor
-from .preprocessor import get_default_preprocessor
+from .preprocessor import get_default_preprocessor, default_preprocessing_dict
 
 
 class Evaluator:
@@ -30,26 +30,7 @@ class Evaluator:
         num_workers: int = 4,
     ) -> None:
         # TODO
-        """_summary_
-
-        Args:
-            net (nn.Module): _description_
-            id_name (str): _description_
-            data_root (str, optional): _description_. Defaults to './data'.
-            config_root (str, optional): _description_. Defaults to './configs'.
-            preprocessor (Callable, optional): _description_. Defaults to None.
-            postprocessor_name (str, optional): _description_. Defaults to None.
-            postprocessor (Type[BasePostprocessor], optional): _description_. Defaults to None.
-            batch_size (int, optional): _description_. Defaults to 200.
-            shuffle (bool, optional): _description_. Defaults to False.
-            num_workers (int, optional): _description_. Defaults to 4.
-
-        Raises:
-            ValueError: _description_
-            ValueError: _description_
-            ValueError: _description_
-            TypeError: _description_
-        """
+        """_summary_"""
         # check the arguments
         if postprocessor_name is None and postprocessor is None:
             raise ValueError('Please pass postprocessor_name or postprocessor')
@@ -76,7 +57,8 @@ class Evaluator:
         if postprocessor is None:
             postprocessor = get_postprocessor(
                 config_root, postprocessor_name,
-                DATA_INFO[id_name]['num_classes'])
+                DATA_INFO[id_name]['num_classes'],
+                default_preprocessing_dict[id_name]['normalization'][-1])
         if not isinstance(postprocessor, BasePostprocessor):
             raise TypeError(
                 'postprocessor should inherit BasePostprocessor in OpenOOD')
@@ -224,10 +206,11 @@ class Evaluator:
 
             self.metrics[f'{id_name}_ood']['overall'] = pd.DataFrame(
                 np.concatenate([near_metrics, far_metrics], axis=0)[:,:-1],
-                index=list(self.dataloader_dict['ood']['near'].keys()) + \
-                    ['nearood'] + list(self.dataloader_dict['ood']['far'].keys()) + \
-                    ['farood'],
-                columns=['FPR@95', 'AUROC', 'AUPR_IN', 'AUPR_OUT', 'CCR_4', 'CCR_3', 'CCR_2', 'CCR_1'],
+                index=list(self.dataloader_dict['ood']['near'].keys()) \
+                    + ['nearood'] + list(self.dataloader_dict['ood']['far'].keys()) \
+                    + ['farood'],
+                columns=['FPR@95', 'AUROC', 'AUPR_IN', 'AUPR_OUT',
+                         'CCR_4', 'CCR_3', 'CCR_2', 'CCR_1'],
             )
         else:
             print('Evaluation has already been done!')
