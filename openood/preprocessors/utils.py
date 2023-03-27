@@ -27,4 +27,7 @@ def get_preprocessor(config: Config, split):
     if split == 'train':
         return train_preprocessors[config.preprocessor.name](config)
     else:
-        return test_preprocessors[config.preprocessor.name](config)
+        try:
+            return test_preprocessors[config.preprocessor.name](config)
+        except KeyError:
+            return test_preprocessors['base'](config)
