@@ -10,7 +10,7 @@ from openood.postprocessors import (
     MOSPostprocessor, ODINPostprocessor, OpenGanPostprocessor, OpenMax,
     PatchcorePostprocessor, Rd4adPostprocessor, ReactPostprocessor,
     ResidualPostprocessor, SSDPostprocessor, TemperatureScalingPostprocessor,
-    VIMPostprocessor)
+    VIMPostprocessor, RotPredPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
@@ -44,6 +44,7 @@ postprocessors = {
     'dice': DICEPostprocessor,
     'ssd': SSDPostprocessor,
     'rd4ad': Rd4adPostprocessor,
+    'rotpred': RotPredPostprocessor
 }
 
 

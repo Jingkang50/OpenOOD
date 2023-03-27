@@ -35,7 +35,7 @@ class RotPredPostprocessor(BasePostprocessor):
             3 * torch.ones(batch_size),
         ]).long().cuda()
 
-        logits, logits_rot = net(x_rot)
+        logits, logits_rot = net(x_rot, return_rot_logits=True)
         logits = logits[:batch_size]
         preds = logits.argmax(1)
 

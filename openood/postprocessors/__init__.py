@@ -28,3 +28,4 @@ from .ssd_postprocessor import SSDPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .utils import get_postprocessor
 from .vim_postprocessor import VIMPostprocessor
+from .rotpred_postprocessor import RotPredPostprocessor

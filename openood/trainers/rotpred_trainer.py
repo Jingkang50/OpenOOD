@@ -11,7 +11,7 @@ from openood.utils import Config
 from .lr_scheduler import cosine_annealing
 
 
-class ROTTrainer:
+class RotPredTrainer:
     def __init__(self, net: nn.Module, train_loader: DataLoader,
                  config: Config) -> None:
 
@@ -67,7 +67,7 @@ class ROTTrainer:
             ]).long().cuda()
 
             # forward
-            logits, logits_rot = self.net(x_rot)
+            logits, logits_rot = self.net(x_rot, return_rot_logits=True)
             loss_cls = F.cross_entropy(logits[:batch_size], target)
             loss_rot = F.cross_entropy(logits_rot, y_rot)
             loss = loss_cls + loss_rot

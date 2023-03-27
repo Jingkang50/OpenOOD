@@ -10,10 +10,13 @@ class RotNet(nn.Module):
         self.fc = nn.Linear(backbone.feature_size, num_classes)
         self.rot_fc = nn.Linear(backbone.feature_size, 4)
 
-    def forward(self, x):
+    def forward(self, x, return_rot_logits=False):
         _, feature = self.backbone(x, return_feature=True)
 
         logits = self.fc(feature)
         rot_logits = self.rot_fc(feature)
 
-        return logits, rot_logits
+        if return_rot_logits:
+            return logits, rot_logits
+        else:
+            return logits
