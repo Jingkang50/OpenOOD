@@ -1,6 +1,7 @@
 from openood.utils import Config
 
 from .base_preprocessor import BasePreprocessor
+from .csi_preprocessor import CSIPreprocessor
 from .cutpaste_preprocessor import CutPastePreprocessor
 from .draem_preprocessor import DRAEMPreprocessor
 from .pixmix_preprocessor import PixMixPreprocessor
@@ -16,7 +17,8 @@ def get_preprocessor(config: Config, split):
         'cutpaste': CutPastePreprocessor,
         'pixmix': PixMixPreprocessor,
         'randaugment': RandAugmentPreprocessor,
-        'cutout': CutoutPreprocessor
+        'cutout': CutoutPreprocessor,
+        'csi': CSIPreprocessor
     }
     test_preprocessors = {
         'base': TestStandardPreProcessor,
