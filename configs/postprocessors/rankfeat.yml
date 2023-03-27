@@ -1,6 +1,6 @@
 postprocessor:
-  name: dice
-  APS_mode: True
+  name: rankfeat
+  APS_mode: False
   postprocessor_args:
     accelerate: False
     temperature: 1
