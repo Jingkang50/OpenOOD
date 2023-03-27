@@ -25,6 +25,7 @@ from .sae_trainer import SAETrainer
 from .udg_trainer import UDGTrainer
 from .vos_trainer import VOSTrainer
 from .rotpred_trainer import RotPredTrainer
+from .regmixup_trainer import RegMixupTrainer
 
 
 def get_trainer(net, train_loader: DataLoader, config: Config):
@@ -32,6 +33,7 @@ def get_trainer(net, train_loader: DataLoader, config: Config):
         trainers = {
             'base': BaseTrainer,
             'mixup': MixupTrainer,
+            'regmixup': RegMixupTrainer,
             'sae': SAETrainer,
             'draem': DRAEMTrainer,
             'kdad': KdadTrainer,
