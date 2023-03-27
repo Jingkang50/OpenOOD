@@ -163,3 +163,6 @@ tools/mytools/
 # ignore pretrained bit model
 bit_pretrained_models/
 group_config/
+
+# local dev
+local/
