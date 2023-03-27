@@ -27,6 +27,7 @@ from .rd4ad_postprocessor import Rd4adPostprocessor
 from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .rotpred_postprocessor import RotPredPostprocessor
+from .rankfeat_postprocessor import RankFeatPostprocessor
 from .ssd_postprocessor import SSDPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
@@ -63,7 +64,8 @@ def get_postprocessor(config: Config):
         'dice': DICEPostprocessor,
         'ssd': SSDPostprocessor,
         'rd4ad': Rd4adPostprocessor,
-        'rotpred': RotPredPostprocessor
+        'rotpred': RotPredPostprocessor,
+        'rankfeat': RankFeatPostprocessor
     }
 
     return postprocessors[config.postprocessor.name](config)
