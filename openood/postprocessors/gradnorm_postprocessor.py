@@ -3,7 +3,6 @@ from typing import Any
 import numpy as np
 import torch
 import torch.nn as nn
-from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
 
@@ -37,32 +36,13 @@ class GradNormPostprocessor(BasePostprocessor):
         return np.array(confs)
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
-        self.w, self.b = net.get_fc()
-        net.eval()
-
-        with torch.no_grad():
-
-            print('Extracting id testing feature')
-            feature_id_val = []
-            for batch in tqdm(id_loader_dict['test'],
-                              desc='Eval: ',
-                              position=0,
-                              leave=True):
-                data = batch['data'].cuda()
-                data = data.float()
-                _, feature = net(data, return_feature=True)
-                feature_id_val.append(feature.cpu().numpy())
-            feature_id_val = np.concatenate(feature_id_val, axis=0)
-
-        self.score_id = self.gradnorm(feature_id_val, self.w, self.b)
+        pass
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        _, feature_ood = net.forward(data, return_feature=True)
+        w, b = net.get_fc()
+        logits, features = net.forward(data, return_feature=True)
         with torch.enable_grad():
-            score_ood = self.gradnorm(feature_ood.cpu().numpy(), self.w,
-                                      self.b)
-        with torch.no_grad():
-            logit_ood = feature_ood.cpu() @ self.w.T + self.b
-            _, pred = torch.max(logit_ood, dim=1)
-        return pred, torch.from_numpy(score_ood)
+            scores = self.gradnorm(features.cpu().numpy(), w, b)
+        _, preds = torch.max(logits, dim=1)
+        return preds, torch.from_numpy(scores)
