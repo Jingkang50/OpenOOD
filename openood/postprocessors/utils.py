@@ -32,6 +32,7 @@ from .rankfeat_postprocessor import RankFeatPostprocessor
 from .ssd_postprocessor import SSDPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
+from .rts_postprocessor import RTSPostprocessor
 
 
 def get_postprocessor(config: Config):
@@ -66,6 +67,7 @@ def get_postprocessor(config: Config):
         'dice': DICEPostprocessor,
         'ssd': SSDPostprocessor,
         'rd4ad': Rd4adPostprocessor,
+        'rts': RTSPostprocessor,
         'rotpred': RotPredPostprocessor,
         'rankfeat': RankFeatPostprocessor
     }

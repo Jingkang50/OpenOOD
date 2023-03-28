@@ -1,0 +1,5 @@
+postprocessor:
+  name: rts
+  APS_mode: False
+  postprocessor_args:
+    ood_score: 'var' # msp or var

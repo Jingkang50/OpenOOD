@@ -40,6 +40,7 @@ class BaseEvaluator:
 
                 # forward
                 output = net(data)
+
                 loss = F.cross_entropy(output, target)
 
                 # accuracy

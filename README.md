@@ -126,7 +126,7 @@ This part lists all the benchmarks we support. Feel free to include more.
 >      > Near-OOD: `Species`, `iNaturalist`, `ImageNet-O`, `OpenImage-O`;<br>
 >      > Far-OOD:  `Texture`, `MNIST`;<br>
 >      > Robust-ID: `ImageNet-v2`;
-</details>
+     </details>
 
 
 
@@ -238,11 +238,12 @@ distance: f4d5b3 -->
 
 
 <details open>
-<summary><b>Method Uncertainty (3)</b></summary>
+<summary><b>Method Uncertainty (4)</b></summary>
 
 > - [x] [![mcdropout](https://img.shields.io/badge/ICML'16-MC&#8211;Dropout-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![deepensemble](https://img.shields.io/badge/NeurIPS'17-Deep&#8211;Ensemble-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training]
 > - [x] [![tempscale](https://img.shields.io/badge/ICML'17-Temp&#8211;Scaling-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![postprocess]
+> - [x] [![rts](https://img.shields.io/badge/AAAI'23-RTS-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 </details>
 
 
