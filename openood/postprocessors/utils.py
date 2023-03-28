@@ -1,5 +1,6 @@
 from openood.utils import Config
 
+from .ash_postprocessor import ASHPostprocessor
 from .base_postprocessor import BasePostprocessor
 from .conf_branch_postprocessor import ConfBranchPostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
@@ -26,6 +27,8 @@ from .patchcore_postprocessor import PatchcorePostprocessor
 from .rd4ad_postprocessor import Rd4adPostprocessor
 from .react_postprocessor import ReactPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
+from .rotpred_postprocessor import RotPredPostprocessor
+from .rankfeat_postprocessor import RankFeatPostprocessor
 from .ssd_postprocessor import SSDPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
@@ -34,6 +37,7 @@ from .rts_postprocessor import RTSPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
+        'ash': ASHPostprocessor,
         'conf_branch': ConfBranchPostprocessor,
         'msp': BasePostprocessor,
         'ebo': EBOPostprocessor,
@@ -64,6 +68,8 @@ def get_postprocessor(config: Config):
         'ssd': SSDPostprocessor,
         'rd4ad': Rd4adPostprocessor,
         'rts': RTSPostprocessor,
+        'rotpred': RotPredPostprocessor,
+        'rankfeat': RankFeatPostprocessor
     }
 
     return postprocessors[config.postprocessor.name](config)

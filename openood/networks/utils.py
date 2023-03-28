@@ -29,6 +29,7 @@ from .resnet18_64x64 import ResNet18_64x64
 from .resnet18_224x224 import ResNet18_224x224
 from .resnet18_256x256 import ResNet18_256x256
 from .resnet50 import ResNet50
+from .rot_net import RotNet
 from .udg_net import UDGNet
 from .wrn import WideResNet
 from .rts_net import RTSNet
@@ -215,6 +216,10 @@ def get_network(network_config):
         backbone = get_network(network_config.backbone)
         net = ConfBranchNet(backbone=backbone, num_classes=num_classes)
 
+    elif network_config.name == 'rot_net':
+        backbone = get_network(network_config.backbone)
+        net = RotNet(backbone=backbone, num_classes=num_classes)
+
     elif network_config.name == 'dsvdd':
         net = build_network(network_config.type)
 
@@ -283,7 +288,6 @@ def get_network(network_config):
                 subnet.cuda()
         else:
             net.cuda()
-        torch.cuda.manual_seed(1)
-        np.random.seed(1)
+
     cudnn.benchmark = True
     return net

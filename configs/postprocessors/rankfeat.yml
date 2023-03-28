@@ -1,0 +1,6 @@
+postprocessor:
+  name: rankfeat
+  APS_mode: False
+  postprocessor_args:
+    accelerate: False
+    temperature: 1

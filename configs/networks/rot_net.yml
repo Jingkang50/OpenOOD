@@ -1,0 +1,13 @@
+network:
+  name: rot_net
+  num_classes: '@{dataset.num_classes}'
+  pretrained: False # In training pipeline:"False"; In testing pipeline:"True"
+  num_gpus: '@{num_gpus}'
+  checkpoint: none
+  backbone:
+    name: resnet18_32x32
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    pretrained: False
+    checkpoint: none
+    num_gpus: '@{num_gpus}'

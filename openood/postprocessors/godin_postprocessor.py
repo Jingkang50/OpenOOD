@@ -13,6 +13,7 @@ class GodinPostprocessor(BasePostprocessor):
 
         self.score_func = self.args.score_func
         self.noise_magnitude = self.args.noise_magnitude
+        self.input_std = self.config.dataset.std
 
     def postprocess(self, net: nn.Module, data: Any):
         data.requires_grad = True
@@ -28,9 +29,9 @@ class GodinPostprocessor(BasePostprocessor):
         gradient = (gradient.float() - 0.5) * 2
 
         # Scaling values taken from original code
-        gradient[:, 0] = (gradient[:, 0]) / (63.0 / 255.0)
-        gradient[:, 1] = (gradient[:, 1]) / (62.1 / 255.0)
-        gradient[:, 2] = (gradient[:, 2]) / (66.7 / 255.0)
+        gradient[:, 0] = (gradient[:, 0]) / self.input_std[0]
+        gradient[:, 1] = (gradient[:, 1]) / self.input_std[1]
+        gradient[:, 2] = (gradient[:, 2]) / self.input_std[2]
 
         # Adding small perturbations to images
         tempInputs = torch.add(data.detach(),

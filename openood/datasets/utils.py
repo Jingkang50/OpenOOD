@@ -8,6 +8,7 @@ from openood.utils.config import Config
 
 from .feature_dataset import FeatDataset
 from .imglist_dataset import ImglistDataset
+from .imglist_extradata_dataset import ImglistExtraDataDataset, TwoSourceSampler
 from .udg_dataset import UDGDataset
 
 
@@ -20,23 +21,49 @@ def get_dataloader(config: Config):
         preprocessor = get_preprocessor(config, split)
         # weak augmentation for data_aux
         data_aux_preprocessor = TestStandardPreProcessor(config)
-        CustomDataset = eval(split_config.dataset_class)
-        dataset = CustomDataset(name=dataset_config.name + '_' + split,
-                                imglist_pth=split_config.imglist_pth,
-                                data_dir=split_config.data_dir,
-                                num_classes=dataset_config.num_classes,
-                                preprocessor=preprocessor,
-                                data_aux_preprocessor=data_aux_preprocessor)
-        sampler = None
-        if dataset_config.num_gpus * dataset_config.num_machines > 1:
-            sampler = torch.utils.data.distributed.DistributedSampler(dataset)
-            split_config.shuffle = False
 
-        dataloader = DataLoader(dataset,
-                                batch_size=split_config.batch_size,
-                                shuffle=split_config.shuffle,
-                                num_workers=dataset_config.num_workers,
-                                sampler=sampler)
+        if split_config.dataset_class != 'ImglistExtraDataDataset':
+            CustomDataset = eval(split_config.dataset_class)
+            dataset = CustomDataset(
+                name=dataset_config.name + '_' + split,
+                imglist_pth=split_config.imglist_pth,
+                data_dir=split_config.data_dir,
+                num_classes=dataset_config.num_classes,
+                preprocessor=preprocessor,
+                data_aux_preprocessor=data_aux_preprocessor)
+            sampler = None
+            if dataset_config.num_gpus * dataset_config.num_machines > 1:
+                sampler = torch.utils.data.distributed.DistributedSampler(
+                    dataset)
+                split_config.shuffle = False
+
+            dataloader = DataLoader(dataset,
+                                    batch_size=split_config.batch_size,
+                                    shuffle=split_config.shuffle,
+                                    num_workers=dataset_config.num_workers,
+                                    sampler=sampler)
+        else:
+            dataset = ImglistExtraDataDataset(
+                name=dataset_config.name + '_' + split,
+                imglist_pth=split_config.imglist_pth,
+                data_dir=split_config.data_dir,
+                num_classes=dataset_config.num_classes,
+                preprocessor=preprocessor,
+                data_aux_preprocessor=data_aux_preprocessor,
+                extra_data_pth=split_config.extra_data_pth,
+                extra_label_pth=split_config.extra_label_pth,
+                extra_percent=split_config.extra_percent)
+
+            batch_sampler = TwoSourceSampler(dataset.orig_ids,
+                                             dataset.extra_ids,
+                                             split_config.batch_size,
+                                             split_config.orig_ratio)
+
+            dataloader = DataLoader(
+                dataset,
+                batch_sampler=batch_sampler,
+                num_workers=dataset_config.num_workers,
+            )
 
         dataloader_dict[split] = dataloader
     return dataloader_dict

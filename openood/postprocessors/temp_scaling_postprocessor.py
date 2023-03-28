@@ -13,7 +13,8 @@ class TemperatureScalingPostprocessor(BasePostprocessor):
     def __init__(self, config):
         super(TemperatureScalingPostprocessor, self).__init__(config)
         self.config = config
-        self.temperature = nn.Parameter(torch.ones(1) * 1.5)  # initialize T
+        self.temperature = nn.Parameter(torch.ones(1, device='cuda') *
+                                        1.5)  # initialize T
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         # make sure that validation set exists
@@ -32,8 +33,8 @@ class TemperatureScalingPostprocessor(BasePostprocessor):
                 logits = net(data)
                 logits_list.append(logits)
                 labels_list.append(labels)
-            logits = torch.cat(logits_list).cuda(
-            )  # convert a list of many tensors (each of a batch) to one tensor
+            # convert a list of many tensors (each of a batch) to one tensor
+            logits = torch.cat(logits_list).cuda()
             labels = torch.cat(labels_list).cuda()
             # calculate NLL before temperature scaling
             before_temperature_nll = nll_criterion(logits, labels)
@@ -60,11 +61,9 @@ class TemperatureScalingPostprocessor(BasePostprocessor):
         print('After temperature - NLL: %.3f' % (after_temperature_nll))
 
     def _temperature_scale(self, logits):
-        temperature = self.temperature.unsqueeze(1).expand(
-            logits.size()[0],
-            logits.size()[1]).cuda()
-        return logits / temperature
+        return logits / self.temperature
 
+    @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
         logits = net(data)
         logits_ts = self._temperature_scale(logits)
