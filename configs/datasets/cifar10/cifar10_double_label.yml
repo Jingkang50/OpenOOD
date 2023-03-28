@@ -1,5 +1,7 @@
 dataset:
   name: cifar10_double_label
+  interpolation: bilinear
+  normalization_type: cifar10
   split_names: [train, val, test]
   num_classes: 12 # actually it's 100 classes but it has 20 groups
   image_size: 32

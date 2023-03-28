@@ -1,13 +1,15 @@
-exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'_'@{mark}'/s'@{seed}'"
 output_dir: ./results/
 save_output: True
 merge_option: default # disabled if 'save_output' is False
 num_classes: '@{dataset.num_classes}'
+mark: default
 
 num_gpus: 1
-num_workers: 2
+num_workers: 8
 num_machines: 1
 machine_rank: 0
+seed: 0
 
 baseline: False
 
@@ -24,7 +26,7 @@ evaluator:
   name: base
 
 optimizer:
-  num_epochs: 200
+  num_epochs: 100
   lr: 0.1
   momentum: 0.9
   nesterov: True
@@ -33,7 +35,3 @@ optimizer:
 recorder:
   name: base
   save_all_models: False
-
-scheduler:
-  milestones: [80, 120] #[60,120,160] for cifar10, [80, 120] for svhn
-  gamma: 0.1 #0.2 for cifar10, 0.1 for svhn

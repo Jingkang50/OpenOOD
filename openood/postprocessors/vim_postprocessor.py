@@ -35,9 +35,9 @@ class VIMPostprocessor(BasePostprocessor):
             feature_id_train = np.concatenate(feature_id_train, axis=0)
             logit_id_train = feature_id_train @ self.w.T + self.b
 
-            print('Extracting id testing feature')
+            print('Extracting id validation feature')
             feature_id_val = []
-            for batch in tqdm(id_loader_dict['test'],
+            for batch in tqdm(id_loader_dict['val'],
                               desc='Eval: ',
                               position=0,
                               leave=True):

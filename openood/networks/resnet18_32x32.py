@@ -138,6 +138,27 @@ class ResNet18_32x32(nn.Module):
 
         return logits_cls
 
+    def intermediate_forward(self, x, layer_index):
+        out = F.relu(self.bn1(self.conv1(x)))
+
+        out = self.layer1(out)
+        if layer_index == 1:
+            return out
+
+        out = self.layer2(out)
+        if layer_index == 2:
+            return out
+
+        out = self.layer3(out)
+        if layer_index == 3:
+            return out
+
+        out = self.layer4(out)
+        if layer_index == 4:
+            return out
+
+        raise ValueError
+
     def get_fc(self):
         fc = self.fc
         return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()

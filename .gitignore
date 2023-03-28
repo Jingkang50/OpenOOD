@@ -152,8 +152,8 @@ dmypy.json
 .isort.cfg
 
 # no jupyter notebook
-.ipynb_checkpoints
-.ipynb
+*.ipynb_checkpoints
+*.ipynb
 
 # ignore custom config and scripts
 config/*/_*/
@@ -163,3 +163,6 @@ tools/mytools/
 # ignore pretrained bit model
 bit_pretrained_models/
 group_config/
+
+# local dev
+local/

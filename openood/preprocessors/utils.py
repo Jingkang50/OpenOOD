@@ -1,9 +1,12 @@
 from openood.utils import Config
 
 from .base_preprocessor import BasePreprocessor
+from .csi_preprocessor import CSIPreprocessor
 from .cutpaste_preprocessor import CutPastePreprocessor
 from .draem_preprocessor import DRAEMPreprocessor
 from .pixmix_preprocessor import PixMixPreprocessor
+from .randaugment_preprocessor import RandAugmentPreprocessor
+from .cutout_preprocessor import CutoutPreprocessor
 from .test_preprocessor import TestStandardPreProcessor
 
 
@@ -13,6 +16,9 @@ def get_preprocessor(config: Config, split):
         'draem': DRAEMPreprocessor,
         'cutpaste': CutPastePreprocessor,
         'pixmix': PixMixPreprocessor,
+        'randaugment': RandAugmentPreprocessor,
+        'cutout': CutoutPreprocessor,
+        'csi': CSIPreprocessor
     }
     test_preprocessors = {
         'base': TestStandardPreProcessor,
@@ -23,4 +29,7 @@ def get_preprocessor(config: Config, split):
     if split == 'train':
         return train_preprocessors[config.preprocessor.name](config)
     else:
-        return test_preprocessors[config.preprocessor.name](config)
+        try:
+            return test_preprocessors[config.preprocessor.name](config)
+        except KeyError:
+            return test_preprocessors['base'](config)

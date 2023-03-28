@@ -1,17 +1,9 @@
 exclude: ^tests/data/
 repos:
-  - repo: https://gitlab.com/pycqa/flake8.git
+  - repo: https://github.com/PyCQA/flake8.git
     rev: 3.8.3
     hooks:
       - id: flake8
-  - repo: https://github.com/asottile/seed-isort-config
-    rev: v2.2.0
-    hooks:
-      - id: seed-isort-config
-  - repo: https://github.com/timothycrosley/isort
-    rev: 4.3.21
-    hooks:
-      - id: isort
   - repo: https://github.com/pre-commit/mirrors-yapf
     rev: v0.30.0
     hooks:

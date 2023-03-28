@@ -5,7 +5,6 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 import openood.utils.comm as comm
-from openood.losses import soft_cross_entropy
 from openood.utils import Config
 
 from .base_trainer import BaseTrainer
@@ -40,25 +39,24 @@ class OETrainer(BaseTrainer):
                                disable=not comm.is_main_process()):
             batch = next(train_dataiter)
 
-            data = batch['data'].cuda()
+            try:
+                unlabeled_batch = next(unlabeled_dataiter)
+            except StopIteration:
+                unlabeled_dataiter = iter(self.train_unlabeled_loader)
+                unlabeled_batch = next(unlabeled_dataiter)
+
+            data = torch.cat((batch['data'], unlabeled_batch['data'])).cuda()
+            batch_size = batch['data'].size(0)
+
             # forward
             logits_classifier = self.net(data)
-            loss = F.cross_entropy(logits_classifier, batch['label'].cuda())
+            loss = F.cross_entropy(logits_classifier[:batch_size],
+                                   batch['label'].cuda())
 
-            if self.train_unlabeled_loader:
-                try:
-                    unlabeled_batch = next(unlabeled_dataiter)
-                except StopIteration:
-                    unlabeled_dataiter = iter(self.train_unlabeled_loader)
-                    unlabeled_batch = next(unlabeled_dataiter)
-
-                unlabeled_data = unlabeled_batch['data'].cuda()
-
-                logits_oe = self.net(unlabeled_data)
-                loss_oe = soft_cross_entropy(
-                    logits_oe, unlabeled_batch['soft_label'].cuda())
-
-                loss += self.lambda_oe * loss_oe
+            loss_oe = -(
+                logits_classifier[batch_size:].mean(1) -
+                torch.logsumexp(logits_classifier[batch_size:], dim=1)).mean()
+            loss += self.lambda_oe * loss_oe
 
             # backward
             self.optimizer.zero_grad()
