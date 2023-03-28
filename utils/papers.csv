@@ -1,0 +1,26 @@
+Alias,Paper,Link,Venue
+OpenMax,Towards open-set deep networks,https://openaccess.thecvf.com/content_cvpr_2016/papers/Bendale_Towards_Open_Set_CVPR_2016_paper.pdf,CVPR'16
+MSP,A simple baseline for detecting out-of-distribution and misclassified examples,https://openreview.net/forum?id=Hkg4TI9xl,ICLR'17
+TempScale,On calibration of modern neural network,https://proceedings.mlr.press/v70/guo17a.html,ICML'17
+ODIN,Enhancing The Reliability of Out-of-distribution Image Detection in Neural Networks,https://openreview.net/forum?id=H1VGkIxRZ,ICLR'18
+MDS,A Simple Unified Framework for Detecting Out-of-Distribution Samples and Adversarial Attacks,https://papers.nips.cc/paper/2018/hash/abdeb6f575ac5c6676b747bca8d09cc2-Abstract.html,NeurIPS'18
+Gram,Detecting Out-of-Distribution Examples with Gram Matrices,https://proceedings.mlr.press/v119/sastry20a.html,ICML'20
+EBO,Energy-based Out-of-distribution Detection,https://papers.nips.cc/paper/2020/hash/f5496252609c43eb8a3d147ab9b9c006-Abstract.html,NeurIPS'20
+GradNorm,On the Importance of Gradients for Detecting Distributional Shifts in the Wild,https://papers.nips.cc/paper/2021/hash/063e26c670d07bb7c4d30e6fc69fe056-Abstract.html,NeurIPS'21
+ReAct,ReAct: Out-of-distribution Detection With Rectified Activations,https://papers.nips.cc/paper/2021/hash/01894d6f048493d2cacde3c579c315a3-Abstract.html,NeurIPS'21
+MLS,Scaling Out-of-Distribution Detection for Real-World Settings,https://proceedings.mlr.press/v162/hendrycks22a.html,ICML'22
+KLM,Scaling Out-of-Distribution Detection for Real-World Settings,https://proceedings.mlr.press/v162/hendrycks22a.html,ICML'22
+VIM,ViM: Out-of-Distribution With Virtual-Logit Matching,https://openaccess.thecvf.com/content/CVPR2022/html/Wang_ViM_Out-of-Distribution_With_Virtual-Logit_Matching_CVPR_2022_paper.html,CVPR'22
+KNN,Out-of-Distribution Detection with Deep Nearest Neighbors,https://proceedings.mlr.press/v162/sun22d.html,ICML'22
+DICE,DICE: Leveraging Sparsification for Out-of-Distribution Detection,https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/4405_ECCV_2022_paper.php,ECCV'22
+ASH,Extremely Simple Activation Shaping for Out-of-Distribution Detection,https://openreview.net/forum?id=ndYXTEL6cZz,ICLR'23
+Cutout,,https://arxiv.org/abs/1708.04552,
+RandAugment,,https://papers.nips.cc/paper_files/paper/2020/hash/d85b63ef0ccb114d0a3bb7b7d808028f-Abstract.html,
+PixMix,,https://openaccess.thecvf.com/content/CVPR2022/html/Hendrycks_PixMix_Dreamlike_Pictures_Comprehensively_Improve_Safety_Measures_CVPR_2022_paper.html,
+RegMixup,,https://openreview.net/forum?id=5j6fWcPccO,
+ConfBranch,,https://arxiv.org/pdf/1802.04865.pdf,
+RotPred,,https://papers.nips.cc/paper/2019/hash/a2b15837edac15df90721968986f7f8e-Abstract.html,
+G-ODIN,,https://openaccess.thecvf.com/content_CVPR_2020/html/Hsu_Generalized_ODIN_Detecting_Out-of-Distribution_Image_Without_Learning_From_Out-of-Distribution_Data_CVPR_2020_paper.html,
+VOS,,https://openreview.net/forum?id=TW7d65uYu5M,
+LogitNorm,,https://proceedings.mlr.press/v162/wei22d.html,
+RankFeat,,https://openreview.net/forum?id=-deKNiSOXLG,

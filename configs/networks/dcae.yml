@@ -1,6 +1,0 @@
-network:
-  name: dcae
-  type: cifar10_LeNet
-  num_classes: '@{dataset.num_classes}'
-  num_gpus: 1
-  pretrained: False

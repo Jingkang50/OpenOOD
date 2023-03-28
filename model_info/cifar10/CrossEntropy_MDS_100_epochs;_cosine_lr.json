@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://papers.nips.cc/paper/2018/hash/abdeb6f575ac5c6676b747bca8d09cc2-Abstract.html>MDS</a>",
+  "ID_Accuracy": "39.95 \u00b1 0.60",
+  "Near-OOD_AUROC": "60.42 \u00b1 0.26",
+  "Far-OOD_AUROC": "73.90 \u00b1 0.27",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "100 epochs; cosine lr",
+  "ID_Accuracy_Mean": "39.95",
+  "Near-OOD_AUROC_Mean": "60.42",
+  "Far-OOD_AUROC_Mean": "73.90",
+  "Rank": 33
+}

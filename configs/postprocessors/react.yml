@@ -1,7 +1,0 @@
-postprocessor:
-  name: react
-  APS_mode: True
-  postprocessor_args:
-    percentile: 90
-  postprocessor_sweep:
-    percentile_list: [90]

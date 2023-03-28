@@ -1,7 +1,0 @@
-postprocessor:
-  name: gram
-  APS_mode: True
-  postprocessor_args:
-    powers: [1,2,3,4,5]
-  postprocessor_sweep:
-    powers_list: [[1,2,3,4,5]]

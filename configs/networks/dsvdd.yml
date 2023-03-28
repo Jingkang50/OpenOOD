@@ -1,7 +1,0 @@
-network:
-  name: dsvdd
-  type: cifar10_LeNet
-  num_classes: '@{dataset.num_classes}'
-  num_gpus: 1
-  pretrained: True
-  checkpoint: './results/cifar10_dcae_dcae/AE_best_epoch1_roc_auc0.4976.pth'

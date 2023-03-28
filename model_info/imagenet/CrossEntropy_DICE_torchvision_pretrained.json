@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://www.ecva.net/papers/eccv_2022/papers_ECCV/html/4405_ECCV_2022_paper.php>DICE</a>",
+  "ID_Accuracy": "76.18",
+  "Near-OOD_AUROC": "70.69",
+  "Far-OOD_AUROC": "89.46",
+  "Outlier_Data": "No",
+  "Arch": "ResNet50",
+  "Additional_Description": "torchvision pretrained",
+  "ID_Accuracy_Mean": "76.18",
+  "Near-OOD_AUROC_Mean": "70.69",
+  "Far-OOD_AUROC_Mean": "89.46",
+  "Rank": 11
+}

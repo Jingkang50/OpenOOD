@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://openaccess.thecvf.com/content_cvpr_2016/papers/Bendale_Towards_Open_Set_CVPR_2016_paper.pdf>OpenMax</a>",
+  "ID_Accuracy": "77.25 \u00b1 0.10",
+  "Near-OOD_AUROC": "76.43 \u00b1 0.24",
+  "Far-OOD_AUROC": "79.48 \u00b1 0.41",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "100 epochs; cosine lr",
+  "ID_Accuracy_Mean": "77.25",
+  "Near-OOD_AUROC_Mean": "76.43",
+  "Far-OOD_AUROC_Mean": "79.48",
+  "Rank": 11
+}

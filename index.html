@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-178132094-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "UA-178132094-1");
+  </script>
+  <link rel="icon" href="./images/icon.ico">
+  <meta charset="UTF-8" />
+  <!--  <meta name="viewport" content="width=device-width, initial-scale=1" />-->
+  <meta name="viewport" content="width=1024" />
+  <title>OpenOOD: Out-of-Distribution benchmark</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css" />
+  <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css" />
+  <script src="https://kit.fontawesome.com/b939870cfb.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.foundation.min.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/dataTables.foundation.min.js"></script>
+
+  <link rel="stylesheet" href="./css/main.css" />
+</head>
+
+
+<body>
+  <nav class="navbar navbar-expand-md">
+      <div class="container">
+        <a class="navbar-brand" href="./index.html"
+          >OpenOOD</a>
+        <button
+          class="navbar-toggler navbar-light"
+          type="button"
+          data-toggle="collapse"
+          data-target="#main-navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-navigation">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#leaderboard">Leaderboards</a>
+            </li>
+            <li>
+              <a class="nav-link" href="https://arxiv.org/abs/2010.09670">Paper</a>
+            </li>
+            <li>
+              <a class="nav-link" href="#faq"
+                >FAQ</a
+              >
+            </li>
+            <li>
+              <a class="nav-link" href="#contribute">Contribute</a>
+            </li>
+            <li>
+              <a class="nav-link text-nowrap" href="https://github.com/OpenOOD/OpenOOD">Open Models ☄️</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+  <!-- <hr class="toprule" /> -->
+  <header>
+    <div class="header-block container">
+      <!--div class="logo"><img src="./images/logo.png" alt="logo" /></div-->
+      <!--div class="title">OpenOOD</div-->
+      <!--p style="text-align:center;"><img src="https://live.staticflickr.com/65535/52145428300_78fd595193_k.jpg" width="600"></p-->
+      <div class='top_image'>
+        <img src="images/openood_logo.jpeg">
+      </div>
+      <div class="description">
+        A standardized benchmark for Out-of-Distribution Detection
+      </div>
+    </div>
+  </header>
+  <!-- <hr class="toprule" /> -->
+
+  <div class="container">
+    <section id="introduction">
+      <div class="overview">
+        <p class="doublealign">
+          Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. 
+          Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. 
+          <br><br>
+          <strong> News:</strong>
+          <ul>
+             <li>  <strong>May 2023:</strong> 
+                Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. 
+             </li>
+          </ul>
+
+        </p>
+        <div class="flexbox-container features">
+          <div class="element">
+            <div class="icon">
+              <img src="https://img.icons8.com/wired/100/000000/leaderboard.png" />
+            </div>
+            <p>
+              Up-to-date leaderboard based <br />
+              on 30+ methods
+            </p>
+          </div>
+          <div class="element">
+            <div class="icon">
+              <img src="https://img.icons8.com/ios-glyphs/80/000000/user-credentials.png" />
+            </div>
+            <p>
+                Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. 
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="details">
+        <div class="box usage">
+          <p>Open Models</p>
+          <div class="divider">
+            <hr />
+          </div>
+          Check out the
+          <a href="https://github.com/OpenOOD/OpenOOD#Open-Models">available models</a>
+          and our
+          <a href="https://github.com/OpenOOD/OpenOOD#notebooks">Colab tutorials</a>.
+          <div class="codeblock">
+            <div class="vspace10"></div>
+            <div style="background: #ffffff; overflow:auto;width:auto;padding:.2em .6em;">
+              <pre style="margin: 0; line-height: 125%"><span style="color: #888888"># !pip install git+https://github.com/OpenOOD/OpenOOD@v0.2.1</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">OpenOOD.utils</span> <span style="color: #008800; font-weight: bold">import</span> load_model
+<span style="color: #888888"># Load a model from the Open Models</span>
+model <span style="color: #333333">=</span> load_model(model_name<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Rebuffi2021Fixing_70_16_cutmix_extra&#39;</span>,
+                   dataset<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;cifar10&#39;</span>,
+                   threat_model<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Linf&#39;</span>)
+
+<span style="color: #888888"># Evaluate the OOD of the model using AutoAttack</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">OpenOOD.eval</span> <span style="color: #008800; font-weight: bold">import</span> benchmark
+clean_acc, near_ood_auroc, far_ood_auroc <span style="color: #333333">=</span> benchmark(model,
+                                  dataset<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;cifar10&#39;</span>,
+                                  threat_model<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Linf&#39;</span>)
+</pre>
+            </div>
+
+
+            <!-- HTML generated using hilite.me -->
+            <div style="
+                background: #ffffff;
+                overflow: auto;
+                width: auto;
+                border: solid gray;
+                border-width: 0em 0em 0em 0em;
+                padding: 0.2em 0.6em;
+              ">
+
+              </pre>
+            </div>
+          </div>
+        </div>
+        <div class="box images">
+          <p>Analysis</p>
+          <div class="divider">
+            <hr />
+          </div>
+          Check out <a href="https://arxiv.org/abs/2010.09670">our paper</a> with a detailed analysis.
+          <div>
+            <!--          <div class="scroller analysis-images">-->
+            <img class="analysis" src="./images/aa_robustness_vs_venues_Linf.png" alt="robustness_vs_venues" />
+            <!--            <img-->
+            <!--              src="./images/aa_robustness_vs_standard_Linf.png"-->
+            <!--              alt="robustness_vs_clean"-->
+            <!--            />-->
+          </div>
+        </div>
+      </div>
+      <div class="vspace10"></div>
+    </section>
+
+
+    <div id="leaderboard" class="container button-list">
+      <div class="heading">
+        <u>
+          Available Leaderboards
+        </u>
+      </div>
+      <a class="btn btn-secondary" href="#div_cifar10_heading">CIFAR-10</a>
+      <a class="btn btn-secondary" href="#div_cifar100_heading">CIFAR-100</a>
+      <a class="btn btn-secondary" href="#div_imagenet_heading">ImageNet</a>
+    </div>
+
+
+    <section class="container" id="div_cifar10_heading">
+      <div class="heading">
+        <p>
+          Leaderboard: CIFAR-10
+        </p>
+      </div>
+
+      <p class="doublealign">
+        <ul>
+           <li>  <strong>Near-OOD:</strong> 
+           CIFAR-100, Tiny ImageNet 
+           </li>
+           <li>  <strong>Far-OOD:</strong> 
+            MNIST, SVHN, Textures, Places365
+            </li>
+            Methods are ranked according to near-OOD AUROC by default. Unless otherwise stated, the results are averaged over 3 independent training runs.
+        </ul>
+
+      </p>
+
+      <div id="div_cifar10">
+      </div>
+    </section>
+
+    <section class="container" id="div_cifar100_heading">
+      <div class="heading">
+        <p>
+          Leaderboard: CIFAR-100
+        </p>
+      </div>
+
+      <p class="doublealign">
+        <ul>
+           <li>  <strong>Near-OOD:</strong> 
+           CIFAR-10, Tiny ImageNet 
+           </li>
+           <li>  <strong>Far-OOD:</strong> 
+            MNIST, SVHN, Textures, Places365
+            </li>
+            Methods are ranked according to near-OOD AUROC by default. Unless otherwise stated, the results are averaged over 3 independent training runs.
+        </ul>
+
+      </p>
+
+      <div id="div_cifar100">
+      </div>
+    </section>
+
+    <section class="container" id="div_imagenet_heading">
+      <div class="heading">
+        <p>
+          Leaderboard: ImageNet
+        </p>
+      </div>
+
+      <p class="doublealign">
+        <ul>
+           <li>  <strong>Near(Hard)-OOD:</strong> 
+           Species, ImageNet-21K 
+           </li>
+           <li>  <strong>Far(Easy)-OOD:</strong> 
+            iNaturalist, Places, SUN, Textures, OpenImage-O
+            </li>
+            Methods are ranked according to near-OOD AUROC by default.
+        </ul>
+
+      </p>
+
+      <div id="div_imagenet">
+      </div>
+    </section>
+
+    <div class="vspace30"></div>
+
+    <section id="faq">
+      <div class="heading">
+        <p>FAQ</p>
+      </div>
+
+      <p class="qa-box">
+        <span class="question">&#10148; Placeholder. Placeholder. Placeholder. Placeholder. ? 🤔
+        </span>
+        <br />
+        <span class="answer"> Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. 
+        </span>
+      </p>
+
+      <p class="qa-box">
+        <span class="question">&#10148; Placeholder. Placeholder. Placeholder. Placeholder. ? 🤔
+        </span>
+        <br />
+        <span class="answer">Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. </span>
+      </p>
+    </section>
+
+    <div class="vspace50"></div>
+
+    <section id="citation">
+      <div class="heading">
+        <p>Citation</p>
+      </div>
+      Consider citing our papers if you reference our leaderboard or use our implementations in your research:
+      <div
+        style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.0em .0em .0em .0em;padding:.2em .6em;">
+        <pre style="margin: 0; line-height: 125%"><span style="color: #555555; font-weight: bold">@inproceedings</span>{yang2022openood,
+    title<span style="color: #333333">=</span>{Open{OOD}: Benchmarking Generalized Out-of-Distribution Detection},
+    author<span style="color: #333333">=</span>{Jingkang Yang <span style="color: #000000; font-weight: bold">and</span> Pengyun Wang <span style="color: #000000; font-weight: bold">and</span> Dejian Zou <span style="color: #000000; font-weight: bold">and</span> Zitang Zhou <span style="color: #000000; font-weight: bold">and</span> Kunyuan Ding <span style="color: #000000; font-weight: bold">and</span> WenXuan Peng <span style="color: #000000; font-weight: bold">and</span> Haoqi Wang <span style="color: #000000; font-weight: bold">and</span> Guangyao Chen <span style="color: #000000; font-weight: bold">and</span> Bo Li <span style="color: #000000; font-weight: bold">and</span> Yiyou Sun <span style="color: #000000; font-weight: bold">and</span> Xuefeng Du <span style="color: #000000; font-weight: bold">and</span> Kaiyang Zhou <span style="color: #000000; font-weight: bold">and</span> Wayne Zhang <span style="color: #000000; font-weight: bold">and</span> Dan Hendrycks <span style="color: #000000; font-weight: bold">and</span> Yixuan Li <span style="color: #000000; font-weight: bold">and</span> Ziwei Liu},
+    booktitle<span style="color: #333333">=</span>{Thirty-sixth Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
+    year<span style="color: #333333">=</span>{2022},
+    url<span style="color: #333333">=</span>{https://openreview.net/forum?id=gT6j4_tskUt}
+}</pre>
+      </div>
+
+    </section>
+
+    <div class="vspace50"></div>
+
+    <section id="contribute">
+      <div class="details">
+        <div class="box2">
+          <p>Contribute to OpenOOD!</p>
+          <div class="divider">
+            <hr />
+          </div>
+          We welcome any contribution in terms of both new methods and
+          application scenarios. Please check
+          <a href="https://github.com/OpenOOD/OpenOOD#how-to-contribute">here</a>
+          for more details.
+          <br />
+          <br />
+          Feel free to contact us at
+          <a href="mailto:openood@googlegroups.com">openood@googlegroups.com</a>
+        </div>
+        <div class="box2">
+          <p>Maintainers</p>
+          <div class="divider">
+            <hr />
+          </div>
+          <ul>
+            <li>
+              Jingkang Yang
+              <!--<a href="https://twitter.com/fra__31" target="_blank">Jingkang Yang</a>-->
+              <!--<a href="https://twitter.com/fra__31"><i class="fas fa-globe"></i></a>-->
+              <a href="https://github.com/Jingkang50"><i class="fab fa-github"></i></a>
+              <!--<a href="https://scholar.google.com/citations?user=laq9cq0AAAAJ"><i class="ai ai-google-scholar"></i></a>-->
+            </li>
+            <li>
+              Pengyun Wang
+              <!--<a href="https://people.epfl.ch/maksym.andriushchenko" target="_blank">Pengyun Wang</a>-->
+              <!--a href="https://people.epfl.ch/maksym.andriushchenko"><i class="fas fa-globe"></i></a>-->
+              <a href="https://github.com/Prophet-C"><i class="fab fa-github"></i></a>
+              <!--<a href="https://scholar.google.com/citations?user=ZNtuJYoAAAAJ"><i class="ai ai-google-scholar"></i></a>-->
+            </li>
+            <li>
+              Jingyang Zhang
+              <!--<a href="https://zjysteven.github.io/"><i class="fas fa-globe"></i></a>-->
+              <a href="https://github.com/zjysteven"><i class="fab fa-github"></i></a>
+              <!--<a href="https://scholar.google.com/citations?user=f3DQwmgAAAAJ&hl=en"><i class="ai ai-google-scholar"></i></a>-->
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <hr class="bottomrule" />
+
+  <footer>
+    <small>&copy; 2023, OpenOOD;
+      <a href="https://icons8.com/icon/100413/access">Icons from Icons8</a></small>
+  </footer>
+
+  <script>
+    // When the user scrolls the page, execute myFunction
+    window.onscroll = function () {
+      myFunction();
+    };
+    // Get the navbar
+    var navbar = document.getElementById("navbar");
+    // Get the offset position of the navbar
+    var sticky = navbar.offsetTop;
+    // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+    function myFunction() {
+      if (window.pageYOffset >= sticky) {
+        navbar.classList.add("sticky");
+      } else {
+        navbar.classList.remove("sticky");
+      }
+    }
+  </script>
+  <script>
+    $("#div_cifar10").load("./html_outputs/cifar10.html");
+    $("#div_cifar100").load("./html_outputs/cifar100.html");
+    $("#div_imagenet").load("./html_outputs/imagenet.html");
+  </script>
+</body>

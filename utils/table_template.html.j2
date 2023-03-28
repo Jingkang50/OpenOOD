@@ -1,0 +1,54 @@
+<table id = "{{ dataset }}_leaderboard" class="datatable" style="width: 100%">
+    <thead>
+        <tr>
+            <th class="rank">Rank</th>
+            <th class="training">Training</th>
+            <th class="pp">Postprocessor</th>
+            <th class="id">ID Accuracy</th>
+            <th class="no">Near-OOD AUROC</th>
+            <th class="fo">Far-OOD AUROC</th>
+            <th class="extra-data">Outlier Data</th>
+            <th class="arch">Model Arch.</th>
+            <th class="desc">Additional Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for model in models %}
+        <tr>
+            <td class = "ranktd">{{ model.Rank }}</td>
+            <td class = "trainingtd">{{ model.Training }}</td>
+            <td class = "pptd">{{ model.Postprocessor }}</td>
+            <td class = "idtd">{{ model['ID_Accuracy_Mean'] }}</td>
+            <td class = "notd">{{ model['Near-OOD_AUROC_Mean'] }}</td>
+            <td class = "fotd" >{{ model['Far-OOD_AUROC_Mean'] }}</td>
+            <td class = "datatd">{{ "&#x2713;" if model['Outlier_Data'] == "Yes" else "&#x2717;" }}</td>
+            <td class = "archtd">{{ model.Arch }}</td>
+            <td class = "desctd">{{ model.Additional_Description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        $("#{{ dataset }}_leaderboard").DataTable({
+            lengthMenu: [15, 25, 50, 75, 100],
+            "drawCallback": function (settings) {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            },
+            language: {
+                searchPlaceholder: "Aliases"
+            },
+            columnDefs: [
+                { width: "3%", targets: 0 },
+                { width: "20%", targets: 1 },
+                { width: "10%", targets: 2 },
+                { width: "6%", targets: 3 },
+                { width: "5%", targets: 4 },
+                { width: "5%", targets: 5 },
+                { width: "5%", targets: 6 },
+                { width: "10%", targets: 7 },
+                { width: "15%", targets: 7 },
+            ]
+        });
+    });
+</script>

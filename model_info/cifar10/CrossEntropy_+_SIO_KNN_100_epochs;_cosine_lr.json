@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy + SIO",
+  "Postprocessor": "<a href=https://proceedings.mlr.press/v162/sun22d.html>KNN</a>",
+  "ID_Accuracy": "95.36 \u00b1 0.14",
+  "Near-OOD_AUROC": "91.86 \u00b1 0.09",
+  "Far-OOD_AUROC": "94.14 \u00b1 0.25",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "100 epochs; cosine lr",
+  "ID_Accuracy_Mean": "95.36",
+  "Near-OOD_AUROC_Mean": "91.86",
+  "Far-OOD_AUROC_Mean": "94.14",
+  "Rank": 9
+}
