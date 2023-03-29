@@ -2,7 +2,7 @@
   "Training": "CrossEntropy + <a href=https://papers.nips.cc/paper_files/paper/2020/hash/d85b63ef0ccb114d0a3bb7b7d808028f-Abstract.html>RandAugment</a>",
   "Postprocessor": "<a href=https://proceedings.mlr.press/v162/sun22d.html>KNN</a>",
   "ID_Accuracy": "95.59 \u00b1 0.03",
-  "Near-OOD_AUROC": "91.97 \u00b1 0.07",
+  "Near-OOD_AUROC": "91.97 \u00b1 0.08",
   "Far-OOD_AUROC": "94.39 \u00b1 0.15",
   "Outlier_Data": "No",
   "Arch": "ResNet18",
