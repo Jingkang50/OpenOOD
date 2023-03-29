@@ -1,4 +1,5 @@
 Training,Postprocessor,ID_Accuracy,Near-OOD_AUROC,Far-OOD_AUROC,Outlier_Data,Arch,Additional_Description
+CSI,MSP,91.25 ± 0.04,89.63 ± 0.03,92.28 ± 0.04,No,ResNet18,100 epochs; cosine lr
 RotPred + PixMix,RotPred,95.91 ± 0.25,94.86 ± 0.14,98.18 ± 0.14,No,ResNet18,100 epochs; cosine lr
 RotPred,RotPred,95.35 ± 0.52,92.68 ± 0.27,96.62 ± 0.18,No,ResNet18,100 epochs; cosine lr
 CrossEntropy + SIO,MSP,95.36 ± 0.14,90.34 ± 0.04,92.60 ± 0.17,No,ResNet18,100 epochs; cosine lr
