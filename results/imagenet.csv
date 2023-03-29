@@ -1,0 +1,17 @@
+Training,Postprocessor,ID_Accuracy,Near-OOD_AUROC,Far-OOD_AUROC,Outlier_Data,Arch,Additional_Description
+CrossEntropy,VIM,76.18,64.39,84.48,No,ResNet50,torchvision pretrained
+CrossEntropy,KLM,76.18,73.0,84.6,No,ResNet50,torchvision pretrained
+CrossEntropy,EBO,76.18,72.03,87.79,No,ResNet50,torchvision pretrained
+CrossEntropy,MSP,76.18,73.64,83.58,No,ResNet50,torchvision pretrained
+CrossEntropy,OpenMax,76.18,71.45,87.18,No,ResNet50,torchvision pretrained
+CrossEntropy,MDS,76.18,48.1,58.75,No,ResNet50,torchvision pretrained
+CrossEntropy,KNN,76.18,69.84,84.73,No,ResNet50,torchvision pretrained
+CrossEntropy,ASH,76.18,76.21,94.2,No,ResNet50,torchvision pretrained
+CrossEntropy,ODIN,76.18,71.71,87.93,No,ResNet50,torchvision pretrained
+CrossEntropy,TempScale,76.18,74.32,85.71,No,ResNet50,torchvision pretrained
+CrossEntropy,RankFeat,76.18,46.0,59.74,No,ResNet50,torchvision pretrained
+CrossEntropy,DICE,76.18,70.69,89.46,No,ResNet50,torchvision pretrained
+CrossEntropy,ReAct,76.18,75.16,92.99,No,ResNet50,torchvision pretrained
+CrossEntropy,GradNorm,76.18,73.85,89.38,No,ResNet50,torchvision pretrained
+CrossEntropy,Gram,76.18,59.97,75.01,No,ResNet50,torchvision pretrained
+CrossEntropy,MLS,76.18,72.67,87.85,No,ResNet50,torchvision pretrained
