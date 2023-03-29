@@ -45,7 +45,7 @@ DATA_INFO = {
         'ood': {
             'val': {
                 'data_dir': 'images_classic/',
-                'imglist_path': 'benchmark_imglist/cifar10/val_cifar100.txt'
+                'imglist_path': 'benchmark_imglist/cifar10/val_tin.txt'
             },
             'near': {
                 'datasets': ['cifar100', 'tin'],
@@ -104,7 +104,7 @@ DATA_INFO = {
         'ood': {
             'val': {
                 'data_dir': 'images_classic/',
-                'imglist_path': 'benchmark_imglist/cifar100/val_cifar10.txt'
+                'imglist_path': 'benchmark_imglist/cifar100/val_tin.txt'
             },
             'near': {
                 'datasets': ['cifar10', 'tin'],
