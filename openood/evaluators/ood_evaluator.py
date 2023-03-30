@@ -25,7 +25,7 @@ class OODEvaluator(BaseEvaluator):
         self.id_conf = None
         self.id_gt = None
 
-    def eval_ood(self, net: nn.Module, id_data_loader: DataLoader,
+    def eval_ood(self, net: nn.Module, id_data_loaders: Dict[str, DataLoader],
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                  postprocessor: BasePostprocessor):
         if type(net) is dict:
@@ -33,19 +33,21 @@ class OODEvaluator(BaseEvaluator):
                 subnet.eval()
         else:
             net.eval()
-        # load training in-distribution data
-        assert 'test' in id_data_loader, \
+        assert 'test' in id_data_loaders, \
             'id_data_loaders should have the key: test!'
         dataset_name = self.config.dataset.name
-        print(f'Performing inference on {dataset_name} dataset...', flush=True)
-        id_pred, id_conf, id_gt = postprocessor.inference(
-            net, id_data_loader['test'])
-        if self.config.recorder.save_scores:
-            self._save_scores(id_pred, id_conf, id_gt, dataset_name)
 
         if self.config.postprocessor.APS_mode:
-            self.hyperparam_search(net, [id_pred, id_conf, id_gt],
+            assert 'val' in id_data_loaders
+            assert 'val' in ood_data_loaders
+            self.hyperparam_search(net, id_data_loaders['val'],
                                    ood_data_loaders['val'], postprocessor)
+
+        print(f'Performing inference on {dataset_name} dataset...', flush=True)
+        id_pred, id_conf, id_gt = postprocessor.inference(
+            net, id_data_loaders['test'])
+        if self.config.recorder.save_scores:
+            self._save_scores(id_pred, id_conf, id_gt, dataset_name)
 
         # load nearood data and compute ood metrics
         self._eval_ood(net, [id_pred, id_conf, id_gt],
@@ -91,6 +93,34 @@ class OODEvaluator(BaseEvaluator):
         metrics_mean = np.mean(metrics_list, axis=0)
         if self.config.recorder.save_csv:
             self._save_csv(metrics_mean, dataset_name=ood_split)
+
+    def eval_ood_val(self, net: nn.Module, id_data_loaders: Dict[str,
+                                                                 DataLoader],
+                     ood_data_loaders: Dict[str, DataLoader],
+                     postprocessor: BasePostprocessor):
+        if type(net) is dict:
+            for subnet in net.values():
+                subnet.eval()
+        else:
+            net.eval()
+        assert 'val' in id_data_loaders
+        assert 'val' in ood_data_loaders
+        if self.config.postprocessor.APS_mode:
+            val_auroc = self.hyperparam_search(net, id_data_loaders['val'],
+                                               ood_data_loaders['val'],
+                                               postprocessor)
+        else:
+            id_pred, id_conf, id_gt = postprocessor.inference(
+                net, id_data_loaders['val'])
+            ood_pred, ood_conf, ood_gt = postprocessor.inference(
+                net, ood_data_loaders['val'])
+            ood_gt = -1 * np.ones_like(ood_gt)  # hard set to -1 as ood
+            pred = np.concatenate([id_pred, ood_pred])
+            conf = np.concatenate([id_conf, ood_conf])
+            label = np.concatenate([id_gt, ood_gt])
+            ood_metrics = compute_all_metrics(conf, label, pred)
+            val_auroc = ood_metrics[1]
+        return {'auroc': 100 * val_auroc}
 
     def _save_csv(self, metrics, dataset_name):
         [fpr, auroc, aupr_in, aupr_out,
@@ -171,8 +201,8 @@ class OODEvaluator(BaseEvaluator):
     def hyperparam_search(
         self,
         net: nn.Module,
-        id_list: List[np.ndarray],
-        val_data_loader,
+        id_data_loader,
+        ood_data_loader,
         postprocessor: BasePostprocessor,
     ):
         print('Starting automatic parameter search...')
@@ -190,10 +220,10 @@ class OODEvaluator(BaseEvaluator):
             hyperparam_list, count)
         for hyperparam in hyperparam_combination:
             postprocessor.set_hyperparam(hyperparam)
-            [id_pred, id_conf, id_gt] = id_list
-
+            id_pred, id_conf, id_gt = postprocessor.inference(
+                net, id_data_loader)
             ood_pred, ood_conf, ood_gt = postprocessor.inference(
-                net, val_data_loader)
+                net, ood_data_loader)
             ood_gt = -1 * np.ones_like(ood_gt)  # hard set to -1 as ood
             pred = np.concatenate([id_pred, ood_pred])
             conf = np.concatenate([id_conf, ood_conf])
@@ -209,6 +239,7 @@ class OODEvaluator(BaseEvaluator):
             if aps_dict[key] == max_auroc:
                 postprocessor.set_hyperparam(hyperparam_combination[key])
         print('Final hyperparam: {}'.format(postprocessor.get_hyperparam()))
+        return max_auroc
 
     def recursive_generator(self, list, n):
         if n == 1:

@@ -57,7 +57,7 @@ class OpenGanTrainer:
                                desc='Epoch {:03d}: '.format(epoch_idx),
                                position=0,
                                leave=True):
-            data = next(feat_dataiter)
+            data = next(feat_dataiter)['data']
             ############################
             # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
             ###########################

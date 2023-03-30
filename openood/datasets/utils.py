@@ -1,3 +1,4 @@
+import os
 import torch
 from numpy import load
 from torch.utils.data import DataLoader
@@ -134,3 +135,35 @@ def get_feature_dataloader(dataset_config: Config):
                             num_workers=dataset_config.num_workers)
 
     return dataloader
+
+
+def get_feature_opengan_dataloader(dataset_config: Config):
+    feat_root = dataset_config.feat_root
+
+    dataloader_dict = {}
+    for d in ['id_train', 'id_val', 'ood_val']:
+        # load in the cached feature
+        loaded_data = load(os.path.join(feat_root, f'{d}.npz'),
+                           allow_pickle=True)
+        total_feat = torch.from_numpy(loaded_data['feat_list'])
+        total_labels = loaded_data['label_list']
+        del loaded_data
+        # reshape the vector to fit in to the network
+        total_feat.unsqueeze_(-1).unsqueeze_(-1)
+        # let's see what we got here should be something like:
+        # torch.Size([total_num, channel_size, 1, 1])
+        print('Loaded feature size: {}'.format(total_feat.shape))
+
+        if d == 'id_train':
+            split_config = dataset_config['train']
+        else:
+            split_config = dataset_config['val']
+
+        dataset = FeatDataset(feat=total_feat, labels=total_labels)
+        dataloader = DataLoader(dataset,
+                                batch_size=split_config.batch_size,
+                                shuffle=split_config.shuffle,
+                                num_workers=dataset_config.num_workers)
+        dataloader_dict[d] = dataloader
+
+    return dataloader_dict
