@@ -9,7 +9,7 @@ from tqdm import tqdm
 from .base_postprocessor import BasePostprocessor
 
 
-class RelMDSPostprocessor(BasePostprocessor):
+class RMDSPostprocessor(BasePostprocessor):
     def __init__(self, config):
         self.config = config
         self.num_classes = self.config.dataset.num_classes

@@ -27,7 +27,7 @@ from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
 from .rd4ad_postprocessor import Rd4adPostprocessor
 from .react_postprocessor import ReactPostprocessor
-from .rel_mds_postprocessor import RelMDSPostprocessor
+from .rmds_postprocessor import RMDSPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .rotpred_postprocessor import RotPredPostprocessor
 from .rankfeat_postprocessor import RankFeatPostprocessor
@@ -46,7 +46,7 @@ def get_postprocessor(config: Config):
         'odin': ODINPostprocessor,
         'mds': MDSPostprocessor,
         'mds_ensemble': MDSEnsemblePostprocessor,
-        'rel_mds': RelMDSPostprocessor,
+        'rmds': RMDSPostprocessor,
         'gmm': GMMPostprocessor,
         'patchcore': PatchcorePostprocessor,
         'openmax': OpenMax,
