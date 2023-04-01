@@ -1,5 +1,5 @@
 postprocessor:
-  name: mds
+  name: mds_ensemble
   APS_mode: True
   postprocessor_args:
     noise: 0.0014
