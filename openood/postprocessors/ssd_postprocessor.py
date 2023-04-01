@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from .base_postprocessor import BasePostprocessor
-from .mds_postprocessor import get_MDS_stat
+from .mds_ensemble_postprocessor import get_MDS_stat
 
 
 class SSDPostprocessor(BasePostprocessor):

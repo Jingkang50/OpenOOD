@@ -16,7 +16,7 @@ from tqdm import tqdm
 from .base_postprocessor import BasePostprocessor
 
 
-class MDSPostprocessor(BasePostprocessor):
+class MDSEnsemblePostprocessor(BasePostprocessor):
     def __init__(self, config):
         self.config = config
         self.postprocessor_args = config.postprocessor.postprocessor_args

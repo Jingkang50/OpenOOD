@@ -7,11 +7,11 @@ from openood.postprocessors import (
     EnsemblePostprocessor, GMMPostprocessor, GodinPostprocessor,
     GradNormPostprocessor, GRAMPostprocessor, KLMatchingPostprocessor,
     KNNPostprocessor, MaxLogitPostprocessor, MCDPostprocessor,
-    MDSPostprocessor, MOSPostprocessor, ODINPostprocessor,
-    OpenGanPostprocessor, OpenMax, PatchcorePostprocessor, Rd4adPostprocessor,
-    ReactPostprocessor, ResidualPostprocessor, SSDPostprocessor,
-    TemperatureScalingPostprocessor, VIMPostprocessor, RotPredPostprocessor,
-    RankFeatPostprocessor)
+    MDSPostprocessor, MDSEnsemblePostprocessor, MOSPostprocessor,
+    ODINPostprocessor, OpenGanPostprocessor, OpenMax, PatchcorePostprocessor,
+    Rd4adPostprocessor, ReactPostprocessor, ResidualPostprocessor,
+    SSDPostprocessor, TemperatureScalingPostprocessor, VIMPostprocessor,
+    RotPredPostprocessor, RankFeatPostprocessor, RelMDSPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
@@ -21,6 +21,8 @@ postprocessors = {
     'ebo': EBOPostprocessor,
     'odin': ODINPostprocessor,
     'mds': MDSPostprocessor,
+    'mds_ensemble': MDSEnsemblePostprocessor,
+    'rel_mds': RelMDSPostprocessor,
     'gmm': GMMPostprocessor,
     'patchcore': PatchcorePostprocessor,
     'openmax': OpenMax,
