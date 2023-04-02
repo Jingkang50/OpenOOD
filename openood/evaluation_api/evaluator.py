@@ -35,8 +35,9 @@ class Evaluator:
         if postprocessor_name is None and postprocessor is None:
             raise ValueError('Please pass postprocessor_name or postprocessor')
         if postprocessor_name is not None and postprocessor is not None:
-            raise ValueError(
-                'Please pass postprocessor_name or postprocessor, not both')
+            print(
+                'Postprocessor_name is ignored because postprocessor is passed'
+            )
         if id_name not in DATA_INFO:
             raise ValueError(f'Dataset [{id_name}] is not supported')
 
@@ -100,7 +101,13 @@ class Evaluator:
                  for k in dataloader_dict['ood']['near'].keys()},
                 'far': {k: None
                         for k in dataloader_dict['ood']['far'].keys()},
-            }
+            },
+            'id_preds': None,
+            'id_labels': None,
+            'csid_preds': {k: None
+                           for k in dataloader_dict['csid'].keys()},
+            'csid_labels': {k: None
+                            for k in dataloader_dict['csid'].keys()},
         }
         self.hyperparam_search_flag = False
         self.net.eval()
@@ -114,27 +121,37 @@ class Evaluator:
                               progress: bool = True):
         self.net.eval()
 
-        correct = 0
+        all_preds = []
+        all_labels = []
         with torch.no_grad():
             for batch in tqdm(data_loader, desc=msg, disable=not progress):
                 data = batch['data'].cuda()
-                target = batch['label'].cuda()
-
                 logits = self.net(data)
                 preds = logits.argmax(1)
-                correct += preds.eq(target).sum().item()
+                all_preds.append(preds.cpu())
+                all_labels.append(batch['label'])
 
-        total = len(data_loader.dataset)
-        return correct, total
+        all_preds = torch.cat(all_preds)
+        all_labels = torch.cat(all_labels)
+        return all_preds, all_labels
 
     def eval_acc(self, csid: bool = False) -> float:
         if not csid:
             if self.metrics['id_acc'] is not None:
                 return self.metrics['id_acc']
             else:
-                correct, total = self._classifier_inference(
-                    self.dataloader_dict['id']['test'], 'ID Acc Eval')
-                acc = correct / total * 100
+                if self.scores['id_preds'] is None:
+                    all_preds, all_labels = self._classifier_inference(
+                        self.dataloader_dict['id']['test'], 'ID Acc Eval')
+                    self.scores['id_preds'] = all_preds
+                    self.scores['id_labels'] = all_labels
+                else:
+                    all_preds = self.scores['id_preds']
+                    all_labels = self.scores['id_labels']
+
+                assert len(all_preds) == len(all_labels)
+                correct = (all_preds == all_labels).sum().item()
+                acc = correct / len(all_labels) * 100
                 self.metrics['id_acc'] = acc
                 return acc
         else:
@@ -142,12 +159,23 @@ class Evaluator:
                 return self.metrics['csid_acc']
             else:
                 correct, total = 0
-                for i, (_, dataloader) in enumerate(
+                for _, (dataname, dataloader) in enumerate(
                         self.dataloader_dict['csid'].items()):
-                    c, t = self._classifier_inference(dataloader,
-                                                      f'CSID {i+1} Acc Eval')
+                    if self.scores['csid_preds'][dataname] is None:
+                        all_preds, all_labels = self._classifier_inference(
+                            dataloader, f'CSID {dataname} Acc Eval')
+                        self.scores['csid_preds'][dataname] = all_preds
+                        self.scores['csid_labels'][dataname] = all_labels
+                    else:
+                        all_preds = self.scores['csid_preds'][dataname]
+                        all_labels = self.scores['csid_labels'][dataname]
+
+                    assert len(all_preds) == len(all_labels)
+                    c = (all_preds == all_labels).sum().item()
+                    t = len(all_labels)
                     correct += c
                     total += t
+
                 acc = correct / total * 100
                 self.metrics['csid_acc'] = acc
                 return acc
