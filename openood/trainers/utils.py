@@ -27,6 +27,7 @@ from .vos_trainer import VOSTrainer
 from .rts_trainer import RTSTrainer
 from .rotpred_trainer import RotPredTrainer
 from .regmixup_trainer import RegMixupTrainer
+from .mixoe_trainer import MixOETrainer
 
 
 def get_trainer(net, train_loader: DataLoader, config: Config):
@@ -64,6 +65,7 @@ def get_trainer(net, train_loader: DataLoader, config: Config):
             'oe': OETrainer,
             'mcd': MCDTrainer,
             'udg': UDGTrainer,
+            'mixoe': MixOETrainer
         }
         return trainers[config.trainer.name](net, train_loader[0],
                                              train_loader[1], config)
