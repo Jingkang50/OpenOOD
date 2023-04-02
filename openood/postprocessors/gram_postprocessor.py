@@ -20,11 +20,15 @@ class GRAMPostprocessor(BasePostprocessor):
 
         self.feature_min, self.feature_max = None, None
         self.args_dict = self.config.postprocessor.postprocessor_sweep
+        self.setup_flag = False
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
-
-        self.feature_min, self.feature_max = sample_estimator(
-            net, id_loader_dict['train'], self.num_classes, self.powers)
+        if not self.setup_flag:
+            self.feature_min, self.feature_max = sample_estimator(
+                net, id_loader_dict['train'], self.num_classes, self.powers)
+            self.setup_flag = True
+        else:
+            pass
 
     def postprocess(self, net: nn.Module, data: Any):
         preds, deviations = get_deviations(net, data, self.feature_min,

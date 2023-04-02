@@ -18,29 +18,34 @@ class DICEPostprocessor(BasePostprocessor):
         self.mean_act = None
         self.masked_w = None
         self.args_dict = self.config.postprocessor.postprocessor_sweep
+        self.setup_flag = False
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
-        activation_log = []
-        net.eval()
-        with torch.no_grad():
-            for batch in tqdm(id_loader_dict['train'],
-                              desc='Eval: ',
-                              position=0,
-                              leave=True):
-                data = batch['data'].cuda()
-                data = data.float()
+        if not self.setup_flag:
+            activation_log = []
+            net.eval()
+            with torch.no_grad():
+                for batch in tqdm(id_loader_dict['train'],
+                                  desc='Eval: ',
+                                  position=0,
+                                  leave=True):
+                    data = batch['data'].cuda()
+                    data = data.float()
 
-                batch_size = data.shape[0]
+                    batch_size = data.shape[0]
 
-                _, features = net(data, return_feature_list=True)
+                    _, features = net(data, return_feature_list=True)
 
-                feature = features[-1]
-                dim = feature.shape[1]
-                activation_log.append(feature.data.cpu().numpy().reshape(
-                    batch_size, dim, -1).mean(2))
+                    feature = features[-1]
+                    dim = feature.shape[1]
+                    activation_log.append(feature.data.cpu().numpy().reshape(
+                        batch_size, dim, -1).mean(2))
 
-        activation_log = np.concatenate(activation_log, axis=0)
-        self.mean_act = activation_log.mean(0)
+            activation_log = np.concatenate(activation_log, axis=0)
+            self.mean_act = activation_log.mean(0)
+            self.setup_flag = True
+        else:
+            pass
 
     def calculate_mask(self, w):
         contrib = self.mean_act[None, :] * w.data.squeeze().cpu().numpy()
