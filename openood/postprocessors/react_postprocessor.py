@@ -28,10 +28,7 @@ class ReactPostprocessor(BasePostprocessor):
                     data = batch['data'].cuda()
                     data = data.float()
 
-                    batch_size = data.shape[0]
-
                     _, feature = net(data, return_feature=True)
-                    dim = feature.shape[1]
                     activation_log.append(feature.data.cpu().numpy())
 
             self.activation_log = np.concatenate(activation_log, axis=0)
