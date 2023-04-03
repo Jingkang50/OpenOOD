@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import Any
 
 import numpy as np
@@ -27,7 +28,7 @@ class RMDSPostprocessor(BasePostprocessor):
                     data, labels = batch['data'].cuda(), batch['label']
                     logits, features = net(data, return_feature=True)
                     all_feats.append(features.cpu())
-                    all_labels.append(labels)
+                    all_labels.append(deepcopy(labels))
                     all_preds.append(logits.argmax(1).cpu())
 
             all_feats = torch.cat(all_feats)
