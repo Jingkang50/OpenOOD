@@ -32,15 +32,9 @@ class KNNPostprocessor(BasePostprocessor):
                     data = batch['data'].cuda()
                     data = data.float()
 
-                    batch_size = data.shape[0]
-
-                    _, features = net(data, return_feature_list=True)
-
-                    feature = features[-1]
-                    dim = feature.shape[1]
+                    _, feature = net(data, return_feature=True)
                     activation_log.append(
-                        normalizer(feature.data.cpu().numpy().reshape(
-                            batch_size, dim, -1).mean(2)))
+                        normalizer(feature.data.cpu().numpy()))
 
             self.activation_log = np.concatenate(activation_log, axis=0)
             self.index = faiss.IndexFlatL2(feature.shape[1])
