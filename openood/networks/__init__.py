@@ -6,3 +6,5 @@ from .resnet18_224x224 import ResNet18_224x224
 from .resnet50 import ResNet50
 from .utils import get_network
 from .wrn import WideResNet
+from .swin_t import Swin_T
+from .vit_b_16 import ViT_B_16
