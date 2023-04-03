@@ -16,7 +16,7 @@ class ReactNet(nn.Module):
         _, feature = self.backbone(x, return_feature=True)
         feature = feature.clip(max=threshold)
         feature = feature.view(feature.size(0), -1)
-        logits_cls = self.backbone.fc(feature)
+        logits_cls = self.backbone.get_fc_layer()(feature)
         return logits_cls
 
     def get_fc(self):

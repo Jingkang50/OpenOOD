@@ -61,3 +61,6 @@ class ViT_B_16(VisionTransformer):
     def get_fc(self):
         fc = self.heads['head']
         return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
+
+    def get_fc_layer(self):
+        return self.heads['head']

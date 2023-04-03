@@ -47,3 +47,6 @@ class Swin_T(SwinTransformer):
     def get_fc(self):
         fc = self.head
         return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
+
+    def get_fc_layer(self):
+        return self.head
