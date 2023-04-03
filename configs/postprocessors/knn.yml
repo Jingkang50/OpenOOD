@@ -1,7 +1,7 @@
 postprocessor:
   name: knn
-  APS_mode: False
+  APS_mode: True
   postprocessor_args:
     K: 50
   postprocessor_sweep:
-    K_list: [50]
+    K_list: [50, 100, 200, 500, 1000]
