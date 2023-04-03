@@ -59,8 +59,8 @@ class ViT_B_16(VisionTransformer):
         return logits_cls
 
     def get_fc(self):
-        fc = self.heads['head']
+        fc = self.heads[0]
         return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
 
     def get_fc_layer(self):
-        return self.heads['head']
+        return self.heads[0]
