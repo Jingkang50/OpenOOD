@@ -9,7 +9,10 @@ class ASHNet(nn.Module):
         self.backbone = backbone
 
     def forward(self, x, return_feature=False, return_feature_list=False):
-        return self.backbone(x, return_feature, return_feature_list)
+        try:
+            return self.backbone(x, return_feature, return_feature_list)
+        except TypeError:
+            return self.backbone(x, return_feature)
 
     def forward_threshold(self, x, percentile):
         _, feature = self.backbone(x, return_feature=True)

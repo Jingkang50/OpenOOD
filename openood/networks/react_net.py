@@ -9,7 +9,7 @@ class ReactNet(nn.Module):
     def forward(self, x, return_feature=False, return_feature_list=False):
         try:
             return self.backbone(x, return_feature, return_feature_list)
-        except:
+        except TypeError:
             return self.backbone(x, return_feature)
 
     def forward_threshold(self, x, threshold):
