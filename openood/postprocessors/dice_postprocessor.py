@@ -32,14 +32,8 @@ class DICEPostprocessor(BasePostprocessor):
                     data = batch['data'].cuda()
                     data = data.float()
 
-                    batch_size = data.shape[0]
-
-                    _, features = net(data, return_feature_list=True)
-
-                    feature = features[-1]
-                    dim = feature.shape[1]
-                    activation_log.append(feature.data.cpu().numpy().reshape(
-                        batch_size, dim, -1).mean(2))
+                    _, feature = net(data, return_feature=True)
+                    activation_log.append(feature.data.cpu().numpy())
 
             activation_log = np.concatenate(activation_log, axis=0)
             self.mean_act = activation_log.mean(0)
@@ -55,11 +49,12 @@ class DICEPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
+        fc_weight, fc_bias = net.get_fc()
         if self.masked_w is None:
-            self.calculate_mask(net.fc.weight)
+            self.calculate_mask(torch.from_numpy(fc_weight).cuda())
         _, feature = net(data, return_feature=True)
         vote = feature[:, None, :] * self.masked_w
-        output = vote.sum(2) + net.fc.bias
+        output = vote.sum(2) + torch.from_numpy(fc_bias).cuda()
         _, pred = torch.max(torch.softmax(output, dim=1), dim=1)
         energyconf = torch.logsumexp(output.data.cpu(), dim=1)
         return pred, energyconf
