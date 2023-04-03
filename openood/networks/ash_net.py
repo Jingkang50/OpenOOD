@@ -12,9 +12,8 @@ class ASHNet(nn.Module):
         return self.backbone(x, return_feature, return_feature_list)
 
     def forward_threshold(self, x, percentile):
-        _, feature_list = self.backbone(x, return_feature_list=True)
-        feature = feature_list[-1]
-        feature = ash_b(feature, percentile)
+        _, feature = self.backbone(x, return_feature=True)
+        feature = ash_b(feature.view(feature.size(0), -1, 1, 1), percentile)
         feature = feature.view(feature.size(0), -1)
         logits_cls = self.backbone.fc(feature)
         return logits_cls
