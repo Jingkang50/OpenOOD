@@ -30,18 +30,11 @@ class ReactPostprocessor(BasePostprocessor):
 
                     batch_size = data.shape[0]
 
-                    _, features = net(data, return_feature_list=True)
-
-                    feature = features[-1]
+                    _, feature = net(data, return_feature=True)
                     dim = feature.shape[1]
-                    activation_log.append(feature.data.cpu().numpy().reshape(
-                        batch_size, dim, -1).mean(2))
+                    activation_log.append(feature.data.cpu().numpy())
 
-            activation_log = np.concatenate(activation_log, axis=0)
-            self.threshold = np.percentile(activation_log.flatten(),
-                                           self.percentile)
-            print('Threshold at percentile {:2d} over id data is: {}'.format(
-                self.percentile, self.threshold))
+            self.activation_log = np.concatenate(activation_log, axis=0)
             self.setup_flag = True
         else:
             pass
@@ -56,6 +49,10 @@ class ReactPostprocessor(BasePostprocessor):
 
     def set_hyperparam(self, hyperparam: list):
         self.percentile = hyperparam[0]
+        self.threshold = np.percentile(self.activation_log.flatten(),
+                                       self.percentile)
+        print('Threshold at percentile {:2d} over id data is: {}'.format(
+            self.percentile, self.threshold))
 
     def get_hyperparam(self):
         return self.percentile
