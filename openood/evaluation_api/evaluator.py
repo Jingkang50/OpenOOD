@@ -75,16 +75,8 @@ class Evaluator:
         self.metrics = {
             'id_acc': None,
             'csid_acc': None,
-            'id_ood': {
-                'near': None,
-                'far': None,
-                'overall': None
-            },
-            'csid_ood': {
-                'near': None,
-                'far': None,
-                'overall': None
-            }
+            'ood': None,
+            'fsood': None
         }
         self.scores = {
             'id': {
@@ -109,7 +101,11 @@ class Evaluator:
             'csid_labels': {k: None
                             for k in dataloader_dict['csid'].keys()},
         }
-        self.hyperparam_search_flag = False
+        # perform hyperparameter search if have not done so
+        if (self.postprocessor.APS_mode
+                and not self.postprocessor.hyperparam_search_done):
+            self.hyperparam_search()
+
         self.net.eval()
 
         # how to ensure the postprocessors can work with
@@ -135,8 +131,8 @@ class Evaluator:
         all_labels = torch.cat(all_labels)
         return all_preds, all_labels
 
-    def eval_acc(self, csid: bool = False) -> float:
-        if not csid:
+    def eval_acc(self, data_name: str = 'id') -> float:
+        if data_name == 'id':
             if self.metrics['id_acc'] is not None:
                 return self.metrics['id_acc']
             else:
@@ -154,11 +150,11 @@ class Evaluator:
                 acc = correct / len(all_labels) * 100
                 self.metrics['id_acc'] = acc
                 return acc
-        else:
+        elif data_name == 'csid':
             if self.metrics['csid_acc'] is not None:
                 return self.metrics['csid_acc']
             else:
-                correct, total = 0
+                correct, total = 0, 0
                 for _, (dataname, dataloader) in enumerate(
                         self.dataloader_dict['csid'].items()):
                     if self.scores['csid_preds'][dataname] is None:
@@ -176,19 +172,29 @@ class Evaluator:
                     correct += c
                     total += t
 
+                if self.scores['id_preds'] is None:
+                    all_preds, all_labels = self._classifier_inference(
+                        self.dataloader_dict['id']['test'], 'ID Acc Eval')
+                    self.scores['id_preds'] = all_preds
+                    self.scores['id_labels'] = all_labels
+                else:
+                    all_preds = self.scores['id_preds']
+                    all_labels = self.scores['id_labels']
+
+                correct += (all_preds == all_labels).sum().item()
+                total += len(all_labels)
+
                 acc = correct / total * 100
                 self.metrics['csid_acc'] = acc
                 return acc
+        else:
+            raise ValueError(f'Unknown data name {data_name}')
 
-    def eval_ood(self, csid: bool = False, progress: bool = True):
-        id_name = 'id' if not csid else 'csid'
-        if self.metrics[f'{id_name}_ood']['overall'] is None:
+    def eval_ood(self, fsood: bool = False, progress: bool = True):
+        id_name = 'id' if not fsood else 'csid'
+        task = 'ood' if not fsood else 'fsood'
+        if self.metrics[task] is None:
             self.net.eval()
-
-            # perform hyperparameter search if have not done so
-            if self.postprocessor.APS_mode and not self.hyperparam_search_flag:
-                self.hyperparam_search()
-                self.hyperparam_search_flag = True
 
             # id score
             if self.scores['id']['test'] is None:
@@ -200,17 +206,19 @@ class Evaluator:
             else:
                 id_pred, id_conf, id_gt = self.scores['id']['test']
 
-            if csid:
+            if fsood:
                 csid_pred, csid_conf, csid_gt = [], [], []
                 for i, dataset_name in enumerate(self.scores['csid'].keys()):
                     if self.scores['csid'][dataset_name] is None:
                         print(
-                            f'Performing inference on {self.id_name} (cs) test set {i+1}...',
+                            f'Performing inference on {self.id_name} '
+                            f'(cs) test set [{i+1}]: {dataset_name}...',
                             flush=True)
-                        temp_pred, temp_conf, temp_gt = self.postprocessor.inference(
-                            self.net,
-                            self.dataloader_dict['csid'][dataset_name],
-                            progress)
+                        temp_pred, temp_conf, temp_gt = \
+                            self.postprocessor.inference(
+                                self.net,
+                                self.dataloader_dict['csid'][dataset_name],
+                                progress)
                         self.scores['csid'][dataset_name] = [
                             temp_pred, temp_conf, temp_gt
                         ]
@@ -219,9 +227,9 @@ class Evaluator:
                     csid_conf.append(self.scores['csid'][dataset_name][1])
                     csid_gt.append(self.scores['csid'][dataset_name][2])
 
-                csid_pred = np.concatenate(id_pred)
-                csid_conf = np.concatenate(id_conf)
-                csid_gt = np.concatenate(id_gt)
+                csid_pred = np.concatenate(csid_pred)
+                csid_conf = np.concatenate(csid_conf)
+                csid_gt = np.concatenate(csid_gt)
 
                 id_pred = np.concatenate((id_pred, csid_pred))
                 id_conf = np.concatenate((id_conf, csid_conf))
@@ -237,19 +245,21 @@ class Evaluator:
                                          progress=progress)
 
             if self.metrics[f'{id_name}_acc'] is None:
-                self.eval_acc(csid)
+                self.eval_acc(id_name)
             near_metrics[:, -1] = np.array([self.metrics[f'{id_name}_acc']] *
                                            len(near_metrics))
             far_metrics[:, -1] = np.array([self.metrics[f'{id_name}_acc']] *
                                           len(far_metrics))
 
-            self.metrics[f'{id_name}_ood']['overall'] = pd.DataFrame(
+            self.metrics[task] = pd.DataFrame(
                 np.concatenate([near_metrics, far_metrics], axis=0),
-                index=list(self.dataloader_dict['ood']['near'].keys()) \
-                    + ['nearood'] + list(self.dataloader_dict['ood']['far'].keys()) \
-                    + ['farood'],
-                columns=['FPR@95', 'AUROC', 'AUPR_IN', 'AUPR_OUT',
-                         'CCR_4', 'CCR_3', 'CCR_2', 'CCR_1', 'ACC'],
+                index=list(self.dataloader_dict['ood']['near'].keys()) +
+                ['nearood'] + list(self.dataloader_dict['ood']['far'].keys()) +
+                ['farood'],
+                columns=[
+                    'FPR@95', 'AUROC', 'AUPR_IN', 'AUPR_OUT', 'CCR_4', 'CCR_3',
+                    'CCR_2', 'CCR_1', 'ACC'
+                ],
             )
         else:
             print('Evaluation has already been done!')
@@ -258,9 +268,9 @@ class Evaluator:
                 'display.max_rows', None, 'display.max_columns', None,
                 'display.float_format',
                 '{:,.2f}'.format):  # more options can be specified also
-            print(self.metrics[f'{id_name}_ood']['overall'])
+            print(self.metrics[task])
 
-        return self.metrics[f'{id_name}_ood']['overall']
+        return self.metrics[task]
 
     def _eval_ood(self,
                   id_list: List[np.ndarray],
@@ -281,7 +291,8 @@ class Evaluator:
                 ]
             else:
                 print(
-                    f'Inference has been performed on {dataset_name} dataset...',
+                    'Inference has been performed on '
+                    f'{dataset_name} dataset...',
                     flush=True)
                 [ood_pred, ood_conf,
                  ood_gt] = self.scores['ood'][ood_split][dataset_name]
@@ -362,6 +373,7 @@ class Evaluator:
         self.postprocessor.set_hyperparam(hyperparam_combination[final_index])
         print('Final hyperparam: {}'.format(
             self.postprocessor.get_hyperparam()))
+        self.postprocessor.hyperparam_search_done = True
 
     def recursive_generator(self, list, n):
         if n == 1:

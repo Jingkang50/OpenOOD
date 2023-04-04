@@ -8,9 +8,6 @@ else:
     tvs_new = False
 
 from openood.datasets.imglist_dataset import ImglistDataset
-from openood.preprocessors.test_preprocessor import TestStandardPreProcessor
-from openood.preprocessors.utils import get_preprocessor
-from openood.utils.config import Config
 
 from .preprocessor import get_default_preprocessor, ImageNetCPreProcessor
 
@@ -158,12 +155,22 @@ DATA_INFO = {
             }
         },
         'csid': {
-            'datasets': ['imagenetv2'],
+            'datasets': ['imagenetv2', 'imagenet_c', 'imagenet_r'],
             'imagenetv2': {
                 'data_dir': 'images_largescale/',
                 'imglist_path':
                 'benchmark_imglist/imagenet/test_imagenetv2.txt'
-            }
+            },
+            'imagenet_c': {
+                'data_dir': 'images_largescale/',
+                'imglist_path':
+                'benchmark_imglist/imagenet/test_imagenet_c.txt'
+            },
+            'imagenet_r': {
+                'data_dir': 'images_largescale/',
+                'imglist_path':
+                'benchmark_imglist/imagenet/test_imagenet_r.txt'
+            },
         },
         'ood': {
             'val': {
