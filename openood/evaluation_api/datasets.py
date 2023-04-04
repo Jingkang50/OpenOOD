@@ -155,11 +155,11 @@ DATA_INFO = {
             }
         },
         'csid': {
-            'datasets': ['imagenetv2', 'imagenet_c', 'imagenet_r'],
-            'imagenetv2': {
+            'datasets': ['imagenet_v2', 'imagenet_c', 'imagenet_r'],
+            'imagenet_v2': {
                 'data_dir': 'images_largescale/',
                 'imglist_path':
-                'benchmark_imglist/imagenet/test_imagenetv2.txt'
+                'benchmark_imglist/imagenet/test_imagenet_v2.txt'
             },
             'imagenet_c': {
                 'data_dir': 'images_largescale/',
