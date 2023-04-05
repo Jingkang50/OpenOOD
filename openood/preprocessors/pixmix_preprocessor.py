@@ -15,7 +15,10 @@ resize_list = {
     'cifar10': 36,
     'cifar100': 36,
     'tin': 72,
-    'imagenet': 256
+    'imagenet': 256,
+    'aircraft': 256,
+    'cub': 256,
+    'cars': 256,
 }  # set mnist bymyself, imagenet was set to 224 by author, but 256 here
 
 
@@ -37,13 +40,21 @@ class PixMixPreprocessor(BasePreprocessor):
 
         self.args = config.preprocessor.preprocessor_args
 
-        self.transform = tvs_trans.Compose([
-            Convert('RGB'),
-            tvs_trans.Resize(self.pre_size, interpolation=self.interpolation),
-            tvs_trans.CenterCrop(self.image_size),
-            tvs_trans.RandomHorizontalFlip(),
-            tvs_trans.RandomCrop(self.image_size, padding=4),
-        ])
+        if config.dataset.name in ['imagenet', 'aircraft', 'cub', 'cars']:
+            self.transform = tvs_trans.Compose([
+                tvs_trans.Resize(self.pre_size,
+                                 interpolation=self.interpolation),
+                tvs_trans.CenterCrop(self.image_size),
+            ])
+        else:
+            self.transform = tvs_trans.Compose([
+                Convert('RGB'),
+                tvs_trans.Resize(self.pre_size,
+                                 interpolation=self.interpolation),
+                tvs_trans.CenterCrop(self.image_size),
+                tvs_trans.RandomHorizontalFlip(),
+                tvs_trans.RandomCrop(self.image_size, padding=4),
+            ])
 
         self.mixing_set_transform = tvs_trans.Compose([
             tvs_trans.Resize(resize_list[self.dataset_name]),

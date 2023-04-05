@@ -22,16 +22,27 @@ class CutoutPreprocessor():
         self.n_holes = config.preprocessor.n_holes
         self.length = config.preprocessor.length
 
-        self.transform = tvs_trans.Compose([
-            Convert('RGB'),
-            tvs_trans.Resize(self.pre_size, interpolation=self.interpolation),
-            tvs_trans.CenterCrop(self.image_size),
-            tvs_trans.RandomHorizontalFlip(),
-            tvs_trans.RandomCrop(self.image_size, padding=4),
-            tvs_trans.ToTensor(),
-            tvs_trans.Normalize(mean=self.mean, std=self.std),
-            Cutout(n_holes=self.n_holes, length=self.length)
-        ])
+        if config.dataset.name in ['imagenet', 'aircraft', 'cub', 'cars']:
+            self.transform = tvs_trans.Compose([
+                tvs_trans.Resize(self.pre_size,
+                                 interpolation=self.interpolation),
+                tvs_trans.CenterCrop(self.image_size),
+                tvs_trans.ToTensor(),
+                tvs_trans.Normalize(mean=self.mean, std=self.std),
+                Cutout(n_holes=self.n_holes, length=self.length)
+            ])
+        else:
+            self.transform = tvs_trans.Compose([
+                Convert('RGB'),
+                tvs_trans.Resize(self.pre_size,
+                                 interpolation=self.interpolation),
+                tvs_trans.CenterCrop(self.image_size),
+                tvs_trans.RandomHorizontalFlip(),
+                tvs_trans.RandomCrop(self.image_size, padding=4),
+                tvs_trans.ToTensor(),
+                tvs_trans.Normalize(mean=self.mean, std=self.std),
+                Cutout(n_holes=self.n_holes, length=self.length)
+            ])
 
     def setup(self, **kwargs):
         pass
