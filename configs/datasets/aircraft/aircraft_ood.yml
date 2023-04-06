@@ -15,14 +15,14 @@ ood_dataset:
   split_names: [val, nearood, farood]
   val:
     data_dir: ./data/images_largescale/
-    imglist_pth: ./data/benchmark_imglist/fgvc_aircraft/val_ood.txt
+    imglist_pth: ./data/benchmark_imglist/aircraft/val_ood.txt
   nearood:
     datasets: [hardood]
     hard:
       data_dir: ./data/images_largescale/
-      imglist_pth: ./data/benchmark_imglist/fgvc_aircraft/test_ood_hard.txt
+      imglist_pth: ./data/benchmark_imglist/aircraft/test_ood_hard.txt
   farood:
     datasets: [easyood]
     easy:
       data_dir: ./data/images_largescale/
-      imglist_pth: ./data/benchmark_imglist/fgvc_aircraft/test_ood_easy.txt
+      imglist_pth: ./data/benchmark_imglist/aircraft/test_ood_easy.txt

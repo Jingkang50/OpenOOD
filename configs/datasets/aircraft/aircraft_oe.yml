@@ -6,7 +6,7 @@ dataset:
   oe:
     dataset_class: ImglistDataset
     data_dir: ./data/images_largescale/
-    imglist_pth: ./data/benchmark_imglist/fgvc_aircraft/train_oe.txt
+    imglist_pth: ./data/benchmark_imglist/aircraft/train_oe.txt
     batch_size: 32
     shuffle: True
     interpolation: bilinear
