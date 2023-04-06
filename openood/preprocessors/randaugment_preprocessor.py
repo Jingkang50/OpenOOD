@@ -23,12 +23,12 @@ class RandAugmentPreprocessor():
 
         if config.dataset.name in ['imagenet', 'aircraft', 'cub', 'cars']:
             self.transform = tvs_trans.Compose([
+                tvs_trans.RandomResizedCrop(self.image_size,
+                                            interpolation=self.interpolation),
+                tvs_trans.RandomHorizontalFlip(0.5),
                 tvs_trans.RandAugment(num_ops=self.n,
                                       magnitude=self.m,
                                       interpolation=self.interpolation),
-                tvs_trans.Resize(self.pre_size,
-                                 interpolation=self.interpolation),
-                tvs_trans.CenterCrop(self.image_size),
                 tvs_trans.ToTensor(),
                 tvs_trans.Normalize(mean=self.mean, std=self.std),
             ])

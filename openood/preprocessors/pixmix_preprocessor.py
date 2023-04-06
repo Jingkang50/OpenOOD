@@ -42,9 +42,9 @@ class PixMixPreprocessor(BasePreprocessor):
 
         if config.dataset.name in ['imagenet', 'aircraft', 'cub', 'cars']:
             self.transform = tvs_trans.Compose([
-                tvs_trans.Resize(self.pre_size,
-                                 interpolation=self.interpolation),
-                tvs_trans.CenterCrop(self.image_size),
+                tvs_trans.RandomResizedCrop(self.image_size,
+                                            interpolation=self.interpolation),
+                tvs_trans.RandomHorizontalFlip(0.5),
             ])
         else:
             self.transform = tvs_trans.Compose([
