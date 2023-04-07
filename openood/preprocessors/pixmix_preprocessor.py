@@ -40,11 +40,18 @@ class PixMixPreprocessor(BasePreprocessor):
 
         self.args = config.preprocessor.preprocessor_args
 
-        if config.dataset.name in ['imagenet', 'aircraft', 'cub', 'cars']:
+        if 'imagenet' in config.dataset.name:
             self.transform = tvs_trans.Compose([
                 tvs_trans.RandomResizedCrop(self.image_size,
                                             interpolation=self.interpolation),
                 tvs_trans.RandomHorizontalFlip(0.5),
+            ])
+        elif 'aircraft' in config.dataset.name or 'cub' in config.dataset.name:
+            self.transform = tvs_trans.Compose([
+                tvs_trans.Resize(self.pre_size,
+                                 interpolation=self.interpolation),
+                tvs_trans.RandomCrop(self.image_size),
+                tvs_trans.RandomHorizontalFlip(),
             ])
         else:
             self.transform = tvs_trans.Compose([

@@ -224,6 +224,88 @@ DATA_INFO = {
             },
         }
     },
+    'aircraft': {
+        'num_classes': 50,
+        'id': {
+            'train': {
+                'data_dir': 'images_largescale/',
+                'imglist_path': 'benchmark_imglist/aircraft/train_id.txt'
+            },
+            'val': {
+                'data_dir': 'images_largescale/',
+                'imglist_path': 'benchmark_imglist/aircraft/val_id.txt'
+            },
+            'test': {
+                'data_dir': 'images_largescale/',
+                'imglist_path': 'benchmark_imglist/aircraft/test_id.txt'
+            }
+        },
+        'csid': {
+            'datasets': [],
+        },
+        'ood': {
+            'val': {
+                'data_dir': 'images_largescale/',
+                'imglist_path': 'benchmark_imglist/aircraft/val_ood.txt'
+            },
+            'near': {
+                'datasets': ['hardood'],
+                'hardood': {
+                    'data_dir': 'images_largescale/',
+                    'imglist_path':
+                    'benchmark_imglist/aircraft/test_ood_hard.txt'
+                },
+            },
+            'far': {
+                'datasets': ['easyood'],
+                'easyood': {
+                    'data_dir': 'images_largescale/',
+                    'imglist_path':
+                    'benchmark_imglist/aircraft/test_ood_easy.txt'
+                },
+            },
+        }
+    },
+    'cub': {
+        'num_classes': 100,
+        'id': {
+            'train': {
+                'data_dir': 'images_largescale/',
+                'imglist_path': 'benchmark_imglist/cub/train_id.txt'
+            },
+            'val': {
+                'data_dir': 'images_largescale/',
+                'imglist_path': 'benchmark_imglist/cub/val_id.txt'
+            },
+            'test': {
+                'data_dir': 'images_largescale/',
+                'imglist_path': 'benchmark_imglist/cub/test_id.txt'
+            }
+        },
+        'csid': {
+            'datasets': [],
+        },
+        'ood': {
+            'val': {
+                'data_dir': 'images_largescale/',
+                'imglist_path': 'benchmark_imglist/cub/val_ood.txt'
+            },
+            'near': {
+                'datasets': ['hardood'],
+                'hardood': {
+                    'data_dir': 'images_largescale/',
+                    'imglist_path': 'benchmark_imglist/cub/test_ood_hard.txt'
+                },
+            },
+            'far': {
+                'datasets': ['easyood'],
+                'easyood': {
+                    'data_dir': 'images_largescale/',
+                    'imglist_path': 'benchmark_imglist/cub/test_ood_easy.txt'
+                },
+            },
+        }
+    }
 }
 
 

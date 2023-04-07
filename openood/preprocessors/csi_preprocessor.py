@@ -18,11 +18,21 @@ class CSIPreprocessor():
             self.mean = [0.5, 0.5, 0.5]
             self.std = [0.5, 0.5, 0.5]
 
-        if config.dataset.name in ['imagenet', 'aircraft', 'cub', 'cars']:
+        if 'imagenet' in config.dataset.name:
             self.transform = tvs_trans.Compose([
                 tvs_trans.RandomResizedCrop(self.image_size,
                                             interpolation=self.interpolation),
-                tvs_trans.RandomHorizontalFlip(0.5),
+                # tvs_trans.RandomHorizontalFlip(0.5),
+                tvs_trans.ToTensor(),
+                tvs_trans.Normalize(mean=self.mean, std=self.std),
+            ])
+        elif 'aircraft' in config.dataset.name or 'cub' in config.dataset.name:
+            self.transform = tvs_trans.Compose([
+                tvs_trans.Resize(self.pre_size,
+                                 interpolation=self.interpolation),
+                tvs_trans.RandomCrop(self.image_size),
+                # tvs_trans.RandomHorizontalFlip(),
+                # tvs_trans.ColorJitter(brightness=32./255., saturation=0.5),
                 tvs_trans.ToTensor(),
                 tvs_trans.Normalize(mean=self.mean, std=self.std),
             ])
@@ -31,6 +41,8 @@ class CSIPreprocessor():
                 Convert('RGB'),
                 tvs_trans.Resize(self.pre_size,
                                  interpolation=self.interpolation),
+                # tvs_trans.RandomHorizontalFlip(),
+                # tvs_trans.RandomCrop(self.image_size, padding=4),
                 tvs_trans.CenterCrop(self.image_size),
                 tvs_trans.ToTensor(),
                 tvs_trans.Normalize(mean=self.mean, std=self.std),
