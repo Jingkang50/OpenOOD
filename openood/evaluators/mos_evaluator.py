@@ -1,9 +1,11 @@
-from typing import Dict
+import csv
+import os
+from typing import Dict, List
 
 import numpy as np
-import sklearn.metrics as sk
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
@@ -11,6 +13,7 @@ from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
 
 from .base_evaluator import BaseEvaluator
+from .metrics import compute_all_metrics
 
 
 def topk(output, target, ks=(1, )):
@@ -36,12 +39,10 @@ def cal_ood_score(logits, group_slices):
     num_groups = group_slices.shape[0]
 
     all_group_ood_score_MOS = []
-
-    smax = torch.nn.Softmax(dim=-1).cuda()
     for i in range(num_groups):
         group_logit = logits[:, group_slices[i][0]:group_slices[i][1]]
 
-        group_softmax = smax(group_logit)
+        group_softmax = F.softmax(group_logit, dim=-1)
         group_others_score = group_softmax[:, 0]
 
         all_group_ood_score_MOS.append(-group_others_score)
@@ -53,121 +54,22 @@ def cal_ood_score(logits, group_slices):
 
 def iterate_data(data_loader, model, group_slices):
     confs_mos = []
-    train_dataiter = iter(data_loader)
-    for train_step in tqdm(range(1,
-                                 len(train_dataiter) + 1),
-                           desc='Epoch {:03d}: '.format(0),
-                           position=0,
-                           leave=True):
-        batch = next(train_dataiter)
-        data = batch['data'].cuda()
+    dataiter = iter(data_loader)
 
-        with torch.no_grad():
+    with torch.no_grad():
+        for _ in tqdm(range(1,
+                            len(dataiter) + 1),
+                      desc='Batches',
+                      position=0,
+                      leave=True):
+            batch = next(dataiter)
+            data = batch['data'].cuda()
 
             logits = model(data)
             conf_mos = cal_ood_score(logits, group_slices)
             confs_mos.extend(conf_mos)
 
     return np.array(confs_mos)
-
-
-def stable_cumsum(arr, rtol=1e-05, atol=1e-08):
-    """Use high precision for cumsum and check that final value matches sum
-    Parameters
-    ----------
-    arr : array-like
-        To be cumulatively summed as flat
-    rtol : float
-        Relative tolerance, see ``np.allclose``
-    atol : float
-        Absolute tolerance, see ``np.allclose``
-    """
-    out = np.cumsum(arr, dtype=np.float64)
-    expected = np.sum(arr, dtype=np.float64)
-    if not np.allclose(out[-1], expected, rtol=rtol, atol=atol):
-        raise RuntimeError('cumsum was found to be unstable: '
-                           'its last element does not correspond to sum')
-    return out
-
-
-def fpr_and_fdr_at_recall(y_true, y_score, recall_level, pos_label=1.):
-    # make y_true a boolean vector
-    y_true = (y_true == pos_label)
-
-    # sort scores and corresponding truth values
-    desc_score_indices = np.argsort(y_score, kind='mergesort')[::-1]
-    y_score = y_score[desc_score_indices]
-    y_true = y_true[desc_score_indices]
-
-    # y_score typically has many tied values. Here we extract
-    # the indices associated with the distinct values. We also
-    # concatenate a value for the end of the curve.
-    distinct_value_indices = np.where(np.diff(y_score))[0]
-    threshold_idxs = np.r_[distinct_value_indices, y_true.size - 1]
-
-    # accumulate the true positives with decreasing threshold
-    tps = stable_cumsum(y_true)[threshold_idxs]
-    fps = 1 + threshold_idxs - tps  # add one because of zero-based indexing
-
-    thresholds = y_score[threshold_idxs]
-
-    recall = tps / tps[-1]
-
-    last_ind = tps.searchsorted(tps[-1])
-    sl = slice(last_ind, None, -1)  # [last_ind::-1]
-    recall, fps, tps, thresholds = np.r_[recall[sl],
-                                         1], np.r_[fps[sl],
-                                                   0], np.r_[tps[sl],
-                                                             0], thresholds[sl]
-
-    cutoff = np.argmin(np.abs(recall - recall_level))
-
-    return fps[cutoff] / (np.sum(np.logical_not(y_true))
-                          )  # , fps[cutoff]/(fps[cutoff] + tps[cutoff])
-
-
-def get_measures(in_examples, out_examples):
-    num_in = in_examples.shape[0]
-    num_out = out_examples.shape[0]
-
-    labels = np.zeros(num_in + num_out, dtype=np.int32)
-    labels[:num_in] += 1
-
-    examples = np.squeeze(np.vstack((in_examples, out_examples)))
-    aupr_in = sk.average_precision_score(labels, examples)
-    auroc = sk.roc_auc_score(labels, examples)
-
-    recall_level = 0.95
-    fpr = fpr_and_fdr_at_recall(labels, examples, recall_level)
-
-    labels_rev = np.zeros(num_in + num_out, dtype=np.int32)
-    labels_rev[num_in:] += 1
-    examples = np.squeeze(-np.vstack((in_examples, out_examples)))
-    aupr_out = sk.average_precision_score(labels_rev, examples)
-    return auroc, aupr_in, aupr_out, fpr
-
-
-def run_eval(model, in_loader, out_loader, group_slices):
-    # switch to evaluate mode
-    model.eval()
-    print('Running test...')
-    print('Processing in-distribution data...')
-
-    in_confs = iterate_data(in_loader, model, group_slices)
-
-    print('Processing out-of-distribution data...')
-    out_confs = iterate_data(out_loader, model, group_slices)
-
-    in_examples = in_confs.reshape((-1, 1))
-    out_examples = out_confs.reshape((-1, 1))
-
-    auroc, aupr_in, aupr_out, fpr95 = get_measures(in_examples, out_examples)
-
-    print('============Results for MOS============')
-    print('AUROC: {}'.format(auroc))
-    print('AUPR (In): {}'.format(aupr_in))
-    print('AUPR (Out): {}'.format(aupr_out))
-    print('FPR95: {}'.format(fpr95))
 
 
 def calc_group_softmax_acc(logits, labels, group_slices):
@@ -260,6 +162,9 @@ class MOSEvaluator(BaseEvaluator):
     def __init__(self, config: Config):
         super(MOSEvaluator, self).__init__(config)
         self.config = config
+        self.num_groups = None
+        self.group_slices = None
+        self.acc = None
 
     def cal_group_slices(self, train_loader):
         config = self.config
@@ -308,29 +213,121 @@ class MOSEvaluator(BaseEvaluator):
                  id_data_loader: DataLoader,
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
                  postprocessor=None):
-        net = net.cuda()
         net.eval()
-        self.cal_group_slices(id_data_loader['train'])
+        if self.group_slices is None or self.num_groups is None:
+            self.cal_group_slices(id_data_loader['train'])
         dataset_name = self.config.dataset.name
 
         print(f'Performing inference on {dataset_name} dataset...', flush=True)
+        id_conf = iterate_data(id_data_loader['test'], net, self.group_slices)
+        # dummy pred and gt
+        # the accuracy will be handled by self.eval_acc
+        id_pred = np.zeros_like(id_conf)
+        id_gt = np.zeros_like(id_conf)
+        if self.config.recorder.save_scores:
+            self._save_scores(id_pred, id_conf, id_gt, dataset_name)
 
-        run_eval(net, id_data_loader['val'], id_data_loader['test'],
-                 self.group_slices)
+        # load nearood data and compute ood metrics
+        self._eval_ood(net, [id_pred, id_conf, id_gt],
+                       ood_data_loaders,
+                       ood_split='nearood')
+        # load farood data and compute ood metrics
+        self._eval_ood(net, [id_pred, id_conf, id_gt],
+                       ood_data_loaders,
+                       ood_split='farood')
 
-        # test nearood
-        for dataset_name, ood_dl in ood_data_loaders['nearood'].items():
-            print(u'\u2500' * 70, flush=True)
+    def _eval_ood(self,
+                  net: nn.Module,
+                  id_list: List[np.ndarray],
+                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
+                  ood_split: str = 'nearood'):
+        print(f'Processing {ood_split}...', flush=True)
+        [id_pred, id_conf, id_gt] = id_list
+        metrics_list = []
+        for dataset_name, ood_dl in ood_data_loaders[ood_split].items():
             print(f'Performing inference on {dataset_name} dataset...',
                   flush=True)
-            run_eval(net, id_data_loader['val'], ood_dl, self.group_slices)
+            ood_conf = iterate_data(ood_dl, net, self.group_slices)
+            ood_gt = -1 * np.ones_like(ood_conf)  # hard set to -1 as ood
+            # dummy pred
+            ood_pred = np.zeros_like(ood_conf)
+            if self.config.recorder.save_scores:
+                self._save_scores(ood_pred, ood_conf, ood_gt, dataset_name)
 
-        # test farood
-        for dataset_name, ood_dl in ood_data_loaders['farood'].items():
-            print(u'\u2500' * 70, flush=True)
-            print(f'Performing inference on {dataset_name} dataset...',
-                  flush=True)
-            run_eval(net, id_data_loader['val'], ood_dl, self.group_slices)
+            pred = np.concatenate([id_pred, ood_pred])
+            conf = np.concatenate([id_conf, ood_conf])
+            label = np.concatenate([id_gt, ood_gt])
+
+            print(f'Computing metrics on {dataset_name} dataset...')
+
+            ood_metrics = compute_all_metrics(conf, label, pred)
+            # the acc here is not reliable
+            # since we use dummy pred and gt for id samples
+            # so we use the acc computed by self.eval_acc
+            ood_metrics[-1] = self.acc
+
+            if self.config.recorder.save_csv:
+                self._save_csv(ood_metrics, dataset_name=dataset_name)
+            metrics_list.append(ood_metrics)
+
+        print('Computing mean metrics...', flush=True)
+        metrics_list = np.array(metrics_list)
+        metrics_mean = np.mean(metrics_list, axis=0)
+        if self.config.recorder.save_csv:
+            self._save_csv(metrics_mean, dataset_name=ood_split)
+
+    def _save_csv(self, metrics, dataset_name):
+        [fpr, auroc, aupr_in, aupr_out,
+         ccr_4, ccr_3, ccr_2, ccr_1, accuracy] \
+         = metrics
+
+        write_content = {
+            'dataset': dataset_name,
+            'FPR@95': '{:.2f}'.format(100 * fpr),
+            'AUROC': '{:.2f}'.format(100 * auroc),
+            'AUPR_IN': '{:.2f}'.format(100 * aupr_in),
+            'AUPR_OUT': '{:.2f}'.format(100 * aupr_out),
+            'CCR_4': '{:.2f}'.format(100 * ccr_4),
+            'CCR_3': '{:.2f}'.format(100 * ccr_3),
+            'CCR_2': '{:.2f}'.format(100 * ccr_2),
+            'CCR_1': '{:.2f}'.format(100 * ccr_1),
+            'ACC': '{:.2f}'.format(100 * accuracy)
+        }
+
+        fieldnames = list(write_content.keys())
+
+        # print ood metric results
+        print('FPR@95: {:.2f}, AUROC: {:.2f}'.format(100 * fpr, 100 * auroc),
+              end=' ',
+              flush=True)
+        print('AUPR_IN: {:.2f}, AUPR_OUT: {:.2f}'.format(
+            100 * aupr_in, 100 * aupr_out),
+              flush=True)
+        print('CCR: {:.2f}, {:.2f}, {:.2f}, {:.2f},'.format(
+            ccr_4 * 100, ccr_3 * 100, ccr_2 * 100, ccr_1 * 100),
+              end=' ',
+              flush=True)
+        print('ACC: {:.2f}'.format(accuracy * 100), flush=True)
+        print(u'\u2500' * 70, flush=True)
+
+        csv_path = os.path.join(self.config.output_dir, 'ood.csv')
+        if not os.path.exists(csv_path):
+            with open(csv_path, 'w', newline='') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerow(write_content)
+        else:
+            with open(csv_path, 'a', newline='') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writerow(write_content)
+
+    def _save_scores(self, pred, conf, gt, save_name):
+        save_dir = os.path.join(self.config.output_dir, 'scores')
+        os.makedirs(save_dir, exist_ok=True)
+        np.savez(os.path.join(save_dir, save_name),
+                 pred=pred,
+                 conf=conf,
+                 label=gt)
 
     def eval_acc(self,
                  net: nn.Module,
@@ -353,6 +350,7 @@ class MOSEvaluator(BaseEvaluator):
         metrics['acc'] = np.mean(top1)
         metrics['epoch_idx'] = epoch_idx
         metrics['loss'] = np.mean(loss)
+        self.acc = metrics['acc']
 
         return metrics
 

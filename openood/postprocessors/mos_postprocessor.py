@@ -1,15 +1,8 @@
 from __future__ import absolute_import, division, print_function
 
-import abc
-import os
-
-import faiss
 import numpy as np
 import torch
-from sklearn.metrics import pairwise_distances
-from sklearn.random_projection import SparseRandomProjection
 from torch import nn
-from torch.nn import functional as F
 from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
@@ -69,7 +62,6 @@ class MOSPostprocessor(BasePostprocessor):
                                    position=0,
                                    leave=True):
                 batch = next(train_dataiter)
-                data = batch['data'].cuda()
                 group_label = batch['group_label'].cuda()
                 class_label = batch['class_label'].cuda()
 
@@ -96,15 +88,9 @@ class MOSPostprocessor(BasePostprocessor):
         self.group_slices = self.group_slices.cuda()
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
-        if not self.setup_flag:
-            # step 1:
-            self.model = net
-            # on train start
-            self.model.eval()  # to stop running_var move (maybe not critical)
-            self.cal_group_slices(id_loader_dict['train'])
-            self.setup_flag = True
-        else:
-            pass
+        # this postprocessor does not really do anything
+        # the inference is done in the mos_evaluator
+        pass
 
     def postprocess(self, net: nn.Module, data):
         net.eval()
