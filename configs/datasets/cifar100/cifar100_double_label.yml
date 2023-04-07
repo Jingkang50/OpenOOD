@@ -1,5 +1,7 @@
 dataset:
   name: cifar100_double_label
+  interpolation: bilinear
+  normalization_type: cifar100
   split_names: [train, val, test]
   num_classes: 120 # actually it's 100 classes but it has 20 groups
   image_size: 32
@@ -17,7 +19,7 @@ dataset:
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/cifar100/train_cifar100_mos.txt
+    imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar100_mos.txt
     batch_size: 128
     shuffle: False
     interpolation: bilinear

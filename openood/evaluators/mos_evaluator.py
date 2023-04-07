@@ -13,6 +13,15 @@ from openood.utils import Config
 from .base_evaluator import BaseEvaluator
 
 
+def topk(output, target, ks=(1, )):
+    """Returns one boolean vector for each k, whether the target is within the
+    output's top-k."""
+    _, pred = output.topk(max(ks), 1, True, True)
+    pred = pred.t()
+    correct = pred.eq(target.view(1, -1).expand_as(pred))
+    return [correct[:k].max(0)[0] for k in ks]
+
+
 def get_group_slices(classes_per_group):
     group_slices = []
     start = 0
@@ -36,7 +45,6 @@ def cal_ood_score(logits, group_slices):
         group_others_score = group_softmax[:, 0]
 
         all_group_ood_score_MOS.append(-group_others_score)
-
 
     all_group_ood_score_MOS = torch.stack(all_group_ood_score_MOS, dim=1)
     final_max_score_MOS, _ = torch.max(all_group_ood_score_MOS, dim=1)
@@ -208,7 +216,7 @@ def calc_group_softmax_acc(logits, labels, group_slices):
 def run_eval_acc(model, data_loader, group_slices, num_group):
     # switch to evaluate mode
     model.eval()
-    
+
     print('Running validation...')
 
     all_c, all_top1 = [], []
@@ -245,9 +253,7 @@ def run_eval_acc(model, data_loader, group_slices, num_group):
     model.train()
     # all_c is val loss
     # all_top1 is val top1 acc
-    return all_c, all_top1 
-
-
+    return all_c, all_top1
 
 
 class MOSEvaluator(BaseEvaluator):
@@ -257,47 +263,45 @@ class MOSEvaluator(BaseEvaluator):
 
     def cal_group_slices(self, train_loader):
         config = self.config
-         # if specified group_config
+        # if specified group_config
         if (config.trainer.group_config.endswith('npy')):
             classes_per_group = np.load(config.trainer.group_config)
-        elif(config.trainer.group_config.endswith('txt')):
-            classes_per_group = np.loadtxt(config.trainer.group_config, dtype=int)
+        elif (config.trainer.group_config.endswith('txt')):
+            classes_per_group = np.loadtxt(config.trainer.group_config,
+                                           dtype=int)
         else:
             # cal group config
             config = self.config
             group = {}
             train_dataiter = iter(train_loader)
             for train_step in tqdm(range(1,
-                                            len(train_dataiter) + 1),
-                                    desc='cal group_config',
-                                    position=0,
-                                    leave=True):
+                                         len(train_dataiter) + 1),
+                                   desc='cal group_config',
+                                   position=0,
+                                   leave=True):
                 batch = next(train_dataiter)
-                data = batch['data'].cuda()
-                group_label = batch['group_label'].cuda()
-                class_label = batch['class_label'].cuda()
+                group_label = batch['group_label']
+                class_label = batch['class_label']
 
-                
                 for i in range(len(class_label)):
-                    try:
-                        group[str(group_label[i].cpu().detach().numpy().tolist())]
-                    except:
-                        group[str(group_label[i].cpu().detach().numpy().tolist())] = []
-                    
-                    if class_label[i].cpu().detach().numpy().tolist() \
-                            not in group[str(group_label[i].cpu().detach().numpy().tolist())]:
-                        group[str(group_label[i].cpu().detach().numpy().tolist())].append(class_label[i].cpu().detach().numpy().tolist())
+                    gl = group_label[i].item()
+                    cl = class_label[i].item()
 
-            classes_per_group=[]
+                    try:
+                        group[str(gl)]
+                    except:
+                        group[str(gl)] = []
+
+                    if cl not in group[str(gl)]:
+                        group[str(gl)].append(cl)
+
+            classes_per_group = []
             for i in range(len(group)):
-                classes_per_group.append(max(group[str(i)])+1)
+                classes_per_group.append(max(group[str(i)]) + 1)
 
         self.num_groups = len(classes_per_group)
         self.group_slices = get_group_slices(classes_per_group)
         self.group_slices = self.group_slices.cuda()
-
-
-
 
     def eval_ood(self,
                  net: nn.Module,
@@ -313,34 +317,38 @@ class MOSEvaluator(BaseEvaluator):
 
         run_eval(net, id_data_loader['val'], id_data_loader['test'],
                  self.group_slices)
-        
+
         # test nearood
         for dataset_name, ood_dl in ood_data_loaders['nearood'].items():
             print(u'\u2500' * 70, flush=True)
             print(f'Performing inference on {dataset_name} dataset...',
                   flush=True)
-            run_eval(net, id_data_loader['val'], ood_dl,
-                 self.group_slices)
-        
+            run_eval(net, id_data_loader['val'], ood_dl, self.group_slices)
+
         # test farood
         for dataset_name, ood_dl in ood_data_loaders['farood'].items():
             print(u'\u2500' * 70, flush=True)
             print(f'Performing inference on {dataset_name} dataset...',
                   flush=True)
-            run_eval(net, id_data_loader['val'], ood_dl,
-                 self.group_slices)
-
+            run_eval(net, id_data_loader['val'], ood_dl, self.group_slices)
 
     def eval_acc(self,
                  net: nn.Module,
                  data_loader: DataLoader,
                  postprocessor: BasePostprocessor = None,
-                 epoch_idx: int = -1):
+                 epoch_idx: int = -1,
+                 num_groups: int = None,
+                 group_slices: torch.Tensor = None):
         net.eval()
-        self.cal_group_slices(data_loader)
+        if num_groups is None or group_slices is None:
+            self.cal_group_slices(data_loader)
+        else:
+            self.num_groups = num_groups
+            self.group_slices = group_slices.cuda()
 
-        loss, top1 = run_eval_acc(net, data_loader, self.group_slices, self.num_groups)
-        
+        loss, top1 = run_eval_acc(net, data_loader, self.group_slices,
+                                  self.num_groups)
+
         metrics = {}
         metrics['acc'] = np.mean(top1)
         metrics['epoch_idx'] = epoch_idx
