@@ -16,9 +16,9 @@ resize_list = {
     'cifar100': 36,
     'tin': 72,
     'imagenet': 256,
-    'aircraft': 256,
-    'cub': 256,
-    'cars': 256,
+    'imagenet200': 256,
+    'aircraft': 512,
+    'cub': 512,
 }  # set mnist bymyself, imagenet was set to 224 by author, but 256 here
 
 
