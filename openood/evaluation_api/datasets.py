@@ -8,6 +8,7 @@ else:
     tvs_new = False
 
 from openood.datasets.imglist_dataset import ImglistDataset
+from openood.preprocessors import BasePreprocessor
 
 from .preprocessor import get_default_preprocessor, ImageNetCPreProcessor
 
@@ -135,6 +136,100 @@ DATA_INFO = {
                     'imglist_path':
                     'benchmark_imglist/cifar100/test_places365.txt'
                 }
+            },
+        }
+    },
+    'imagenet200': {
+        'num_classes': 200,
+        'id': {
+            'train': {
+                'data_dir':
+                'images_largescale/',
+                'imglist_path':
+                'benchmark_imglist/imagenet200/train_imagenet200.txt'
+            },
+            'val': {
+                'data_dir': 'images_largescale/',
+                'imglist_path':
+                'benchmark_imglist/imagenet200/val_imagenet200.txt'
+            },
+            'test': {
+                'data_dir':
+                'images_largescale/',
+                'imglist_path':
+                'benchmark_imglist/imagenet200/test_imagenet200.txt'
+            }
+        },
+        'csid': {
+            'datasets': ['imagenet_v2', 'imagenet_c', 'imagenet_r'],
+            'imagenet_v2': {
+                'data_dir':
+                'images_largescale/',
+                'imglist_path':
+                'benchmark_imglist/imagenet200/test_imagenet200_v2.txt'
+            },
+            'imagenet_c': {
+                'data_dir':
+                'images_largescale/',
+                'imglist_path':
+                'benchmark_imglist/imagenet200/test_imagenet200_c.txt'
+            },
+            'imagenet_r': {
+                'data_dir':
+                'images_largescale/',
+                'imglist_path':
+                'benchmark_imglist/imagenet200/test_imagenet200_r.txt'
+            },
+        },
+        'ood': {
+            'val': {
+                'data_dir': 'images_largescale/',
+                'imglist_path':
+                'benchmark_imglist/imagenet/val_openimage_o.txt'
+            },
+            'near': {
+                'datasets': ['species', 'imagenet_21k'],
+                'species': {
+                    'data_dir': 'images_largescale/',
+                    'imglist_path':
+                    'benchmark_imglist/imagenet/test_species.txt'
+                },
+                'imagenet_21k': {
+                    'data_dir':
+                    'images_largescale/',
+                    'imglist_path':
+                    'benchmark_imglist/imagenet/test_imagenet_21k.txt'
+                },
+            },
+            'far': {
+                'datasets':
+                ['inaturalist', 'texture', 'places', 'sun', 'openimage_o'],
+                'inaturalist': {
+                    'data_dir':
+                    'images_largescale/',
+                    'imglist_path':
+                    'benchmark_imglist/imagenet/test_inaturalist.txt'
+                },
+                'texture': {
+                    'data_dir': 'images_classic/',
+                    'imglist_path':
+                    'benchmark_imglist/imagenet/test_texture.txt'
+                },
+                'places': {
+                    'data_dir': 'images_largescale/',
+                    'imglist_path':
+                    'benchmark_imglist/imagenet/test_places.txt'
+                },
+                'sun': {
+                    'data_dir': 'images_largescale/',
+                    'imglist_path': 'benchmark_imglist/imagenet/test_sun.txt'
+                },
+                'openimage_o': {
+                    'data_dir':
+                    'images_largescale/',
+                    'imglist_path':
+                    'benchmark_imglist/imagenet/test_openimage_o.txt'
+                },
             },
         }
     },
@@ -310,7 +405,7 @@ DATA_INFO = {
 
 
 def get_id_ood_dataloader(id_name, data_root, preprocessor, **loader_kwargs):
-    if id_name == 'imagenet':
+    if 'imagenet' in id_name:
         if tvs_new:
             if isinstance(preprocessor,
                           tvs.transforms._presets.ImageClassification):
@@ -318,11 +413,17 @@ def get_id_ood_dataloader(id_name, data_root, preprocessor, **loader_kwargs):
             elif isinstance(preprocessor, tvs.transforms.Compose):
                 temp = preprocessor.transforms[-1]
                 mean, std = temp.mean, temp.std
+            elif isinstance(preprocessor, BasePreprocessor):
+                temp = preprocessor.transform.transforms[-1]
+                mean, std = temp.mean, temp.std
             else:
                 raise TypeError
         else:
             if isinstance(preprocessor, tvs.transforms.Compose):
                 temp = preprocessor.transforms[-1]
+                mean, std = temp.mean, temp.std
+            elif isinstance(preprocessor, BasePreprocessor):
+                temp = preprocessor.transform.transforms[-1]
                 mean, std = temp.mean, temp.std
             else:
                 raise TypeError
