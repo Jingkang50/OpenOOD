@@ -24,9 +24,14 @@ class BaseRecorder:
               flush=True)
 
     def save_model(self, net, val_metrics):
+        try:
+            state_dict = net.module.state_dict()
+        except AttributeError:
+            state_dict = net.state_dict()
+
         if self.config.recorder.save_all_models:
             torch.save(
-                net.state_dict(),
+                state_dict,
                 os.path.join(
                     self.output_dir,
                     'model_epoch{}.ckpt'.format(val_metrics['epoch_idx'])))
@@ -42,20 +47,19 @@ class BaseRecorder:
             # update the best model
             self.best_epoch_idx = val_metrics['epoch_idx']
             self.best_acc = val_metrics['acc']
-            torch.save(net.state_dict(),
-                       os.path.join(self.output_dir, 'best.ckpt'))
+            torch.save(state_dict, os.path.join(self.output_dir, 'best.ckpt'))
 
             save_fname = 'best_epoch{}_acc{:.4f}.ckpt'.format(
                 self.best_epoch_idx, self.best_acc)
             save_pth = os.path.join(self.output_dir, save_fname)
-            torch.save(net.state_dict(), save_pth)
+            torch.save(state_dict, save_pth)
 
         # save last path
         if val_metrics['epoch_idx'] == self.config.optimizer.num_epochs:
             save_fname = 'last_epoch{}_acc{:.4f}.ckpt'.format(
                 val_metrics['epoch_idx'], val_metrics['acc'])
             save_pth = os.path.join(self.output_dir, save_fname)
-            torch.save(net.state_dict(), save_pth)
+            torch.save(state_dict, save_pth)
 
     def summary(self):
         print('Training Completed! '

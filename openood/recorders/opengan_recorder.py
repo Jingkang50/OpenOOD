@@ -28,8 +28,12 @@ class OpenGanRecorder(BaseRecorder):
         netD = net['netD']
         epoch_idx = val_metrics['epoch_idx']
 
-        netG_wts = copy.deepcopy(netG.state_dict())
-        netD_wts = copy.deepcopy(netD.state_dict())
+        try:
+            netG_wts = copy.deepcopy(netG.module.state_dict())
+            netD_wts = copy.deepcopy(netD.module.state_dict())
+        except AttributeError:
+            netG_wts = copy.deepcopy(netG.state_dict())
+            netD_wts = copy.deepcopy(netD.state_dict())
 
         if self.config.recorder.save_all_models:
             save_pth = os.path.join(self.save_dir,

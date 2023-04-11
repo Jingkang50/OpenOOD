@@ -37,8 +37,12 @@ class ARPLRecorder(BaseRecorder):
         criterion = net['criterion']
         epoch_idx = val_metrics['epoch_idx']
 
-        netF_wts = copy.deepcopy(netF.state_dict())
-        criterion_wts = copy.deepcopy(criterion.state_dict())
+        try:
+            netF_wts = copy.deepcopy(netF.module.state_dict())
+            criterion_wts = copy.deepcopy(criterion.module.state_dict())
+        except AttributeError:
+            netF_wts = copy.deepcopy(netF.state_dict())
+            criterion_wts = copy.deepcopy(criterion.state_dict())
 
         if self.config.recorder.save_all_models:
             save_pth = os.path.join(self.save_dir,
