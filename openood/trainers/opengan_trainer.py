@@ -5,6 +5,8 @@ import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm
 
+import openood.utils.comm as comm
+
 
 def weights_init(m):
     classname = m.__class__.__name__
@@ -56,7 +58,8 @@ class OpenGanTrainer:
                                      len(feat_dataiter) + 1),
                                desc='Epoch {:03d}: '.format(epoch_idx),
                                position=0,
-                               leave=True):
+                               leave=True,
+                               disable=not comm.is_main_process()):
             data = next(feat_dataiter)['data']
             ############################
             # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))

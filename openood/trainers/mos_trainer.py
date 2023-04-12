@@ -6,6 +6,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+import openood.utils.comm as comm
 from openood.utils import Config
 
 
@@ -139,7 +140,8 @@ def run_eval(model, data_loader, step, group_slices, num_group):
                                  len(train_dataiter) + 1),
                            desc='Test : ',
                            position=0,
-                           leave=True):
+                           leave=True,
+                           disable=not comm.is_main_process()):
         batch = next(train_dataiter)
         data = batch['data'].cuda()
         group_label = batch['group_label'].cuda()
@@ -225,7 +227,8 @@ class MOSTrainer:
                                      len(train_dataiter) + 1),
                                desc='cal group_config',
                                position=0,
-                               leave=True):
+                               leave=True,
+                               disable=not comm.is_main_process()):
             batch = next(train_dataiter)
             group_label = deepcopy(batch['group_label'])
             class_label = deepcopy(batch['class_label'])
@@ -254,7 +257,8 @@ class MOSTrainer:
                                      len(train_dataiter) + 1),
                                desc='Epoch {:03d}: '.format(epoch_idx),
                                position=0,
-                               leave=True):
+                               leave=True,
+                               disable=not comm.is_main_process()):
             batch = next(train_dataiter)
             data = batch['data'].cuda()
             group_label = batch['group_label'].cuda()
