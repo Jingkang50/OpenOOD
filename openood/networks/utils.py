@@ -84,11 +84,15 @@ def get_network(network_config):
         net = PatchcoreNet(module)
 
     elif network_config.name == 'godin_net':
+        # don't wrap ddp here cuz we need to modify
+        # backbone
+        network_config.backbone.num_gpus = 1
         backbone = get_network(network_config.backbone)
-        try:
-            feature_size = backbone.feature_size
-        except AttributeError:
-            feature_size = backbone.module.feature_size
+        feature_size = backbone.feature_size
+        # remove fc otherwise ddp will
+        # report unused params
+        backbone.fc = nn.Identity()
+
         net = GodinNet(backbone=backbone,
                        feature_size=feature_size,
                        num_classes=num_classes,
@@ -110,11 +114,15 @@ def get_network(network_config):
         net = ReactNet(backbone)
 
     elif network_config.name == 'csi_net':
+        # don't wrap ddp here cuz we need to modify
+        # backbone
+        network_config.backbone.num_gpus = 1
         backbone = get_network(network_config.backbone)
-        try:
-            feature_size = backbone.feature_size
-        except AttributeError:
-            feature_size = backbone.module.feature_size
+        feature_size = backbone.feature_size
+        # remove fc otherwise ddp will
+        # report unused params
+        backbone.fc = nn.Identity()
+
         net = CSINet(backbone,
                      feature_size=feature_size,
                      num_classes=num_classes,
@@ -138,11 +146,27 @@ def get_network(network_config):
         net = OpenMax(backbone=backbone, num_classes=num_classes)
 
     elif network_config.name == 'mcd':
+        # don't wrap ddp here cuz we need to modify
+        # backbone
+        network_config.backbone.num_gpus = 1
         backbone = get_network(network_config.backbone)
+        feature_size = backbone.feature_size
+        # remove fc otherwise ddp will
+        # report unused params
+        backbone.fc = nn.Identity()
+
         net = MCDNet(backbone=backbone, num_classes=num_classes)
 
     elif network_config.name == 'udg':
+        # don't wrap ddp here cuz we need to modify
+        # backbone
+        network_config.backbone.num_gpus = 1
         backbone = get_network(network_config.backbone)
+        feature_size = backbone.feature_size
+        # remove fc otherwise ddp will
+        # report unused params
+        backbone.fc = nn.Identity()
+
         net = UDGNet(backbone=backbone,
                      num_classes=num_classes,
                      num_clusters=network_config.num_clusters)
@@ -194,13 +218,24 @@ def get_network(network_config):
 
     elif network_config.name == 'arpl_net':
         from .arpl_net import ARPLayer
+        # don't wrap ddp here because we need to modify
+        # feature_net
+        network_config.feat_extract_network.num_gpus = 1
         feature_net = get_network(network_config.feat_extract_network)
         try:
-            dim_centers = feature_net.fc.weight.shape[1]
-            feature_net.fc = nn.Identity()
+            if isinstance(feature_net, nn.parallel.DistributedDataParallel):
+                dim_centers = feature_net.module.fc.weight.shape[1]
+                feature_net.module.fc = nn.Identity()
+            else:
+                dim_centers = feature_net.fc.weight.shape[1]
+                feature_net.fc = nn.Identity()
         except Exception:
-            dim_centers = feature_net.classifier[0].weight.shape[1]
-            feature_net.classifier = nn.Identity()
+            if isinstance(feature_net, nn.parallel.DistributedDataParallel):
+                dim_centers = feature_net.module.classifier[0].weight.shape[1]
+                feature_net.module.classifier = nn.Identity()
+            else:
+                dim_centers = feature_net.classifier[0].weight.shape[1]
+                feature_net.classifier = nn.Identity()
 
         criterion = ARPLayer(feat_dim=dim_centers,
                              num_classes=num_classes,
@@ -219,12 +254,27 @@ def get_network(network_config):
         net = ViT_B_16(num_classes=num_classes)
 
     elif network_config.name == 'conf_branch_net':
-
+        # don't wrap ddp here cuz we need to modify
+        # backbone
+        network_config.backbone.num_gpus = 1
         backbone = get_network(network_config.backbone)
+        feature_size = backbone.feature_size
+        # remove fc otherwise ddp will
+        # report unused params
+        backbone.fc = nn.Identity()
+
         net = ConfBranchNet(backbone=backbone, num_classes=num_classes)
 
     elif network_config.name == 'rot_net':
+        # don't wrap ddp here cuz we need to modify
+        # backbone
+        network_config.backbone.num_gpus = 1
         backbone = get_network(network_config.backbone)
+        feature_size = backbone.feature_size
+        # remove fc otherwise ddp will
+        # report unused params
+        backbone.fc = nn.Identity()
+
         net = RotNet(backbone=backbone, num_classes=num_classes)
 
     elif network_config.name == 'dsvdd':
@@ -280,7 +330,7 @@ def get_network(network_config):
         if type(net) is dict:
             for key, subnet in zip(net.keys(), net.values()):
                 net[key] = torch.nn.parallel.DistributedDataParallel(
-                    subnet,
+                    subnet.cuda(),
                     device_ids=[comm.get_local_rank()],
                     broadcast_buffers=True)
         else:

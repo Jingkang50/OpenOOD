@@ -5,6 +5,8 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
+import openood.utils.comm as comm
+
 
 class BasePostprocessor:
     def __init__(self, config):
@@ -25,7 +27,8 @@ class BasePostprocessor:
                   data_loader: DataLoader,
                   progress: bool = True):
         pred_list, conf_list, label_list = [], [], []
-        for batch in tqdm(data_loader, disable=not progress):
+        for batch in tqdm(data_loader,
+                          disable=not progress or not comm.is_main_process()):
             data = batch['data'].cuda()
             label = batch['label'].cuda()
             pred, conf = self.postprocess(net, data)
