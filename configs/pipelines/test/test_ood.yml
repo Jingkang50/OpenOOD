@@ -18,6 +18,7 @@ pipeline:
 
 evaluator:
   name: ood
+  fsood: False
 
 recorder:
   save_scores: True

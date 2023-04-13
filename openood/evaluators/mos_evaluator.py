@@ -216,7 +216,8 @@ class MOSEvaluator(BaseEvaluator):
                  net: nn.Module,
                  id_data_loader: DataLoader,
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
-                 postprocessor=None):
+                 postprocessor=None,
+                 fsood=False):
         net.eval()
         if self.group_slices is None or self.num_groups is None:
             self.cal_group_slices(id_data_loader['train'])
@@ -228,8 +229,23 @@ class MOSEvaluator(BaseEvaluator):
         # the accuracy will be handled by self.eval_acc
         id_pred = np.zeros_like(id_conf)
         id_gt = np.zeros_like(id_conf)
-        if self.config.recorder.save_scores:
-            self._save_scores(id_pred, id_conf, id_gt, dataset_name)
+
+        if fsood:
+            # load csid data and compute confidence
+            for dataset_name, csid_dl in ood_data_loaders['csid'].items():
+                print(f'Performing inference on {dataset_name} dataset...',
+                      flush=True)
+                csid_conf = iterate_data(csid_dl, net, self.group_slices)
+                # dummy pred and gt
+                # the accuracy will be handled by self.eval_acc
+                csid_pred = np.zeros_like(csid_conf)
+                csid_gt = np.zeros_like(csid_conf)
+                if self.config.recorder.save_scores:
+                    self._save_scores(csid_pred, csid_conf, csid_gt,
+                                      dataset_name)
+                id_pred = np.concatenate([id_pred, csid_pred])
+                id_conf = np.concatenate([id_conf, csid_conf])
+                id_gt = np.concatenate([id_gt, csid_gt])
 
         # load nearood data and compute ood metrics
         self._eval_ood(net, [id_pred, id_conf, id_gt],
@@ -339,7 +355,9 @@ class MOSEvaluator(BaseEvaluator):
                  postprocessor: BasePostprocessor = None,
                  epoch_idx: int = -1,
                  num_groups: int = None,
-                 group_slices: torch.Tensor = None):
+                 group_slices: torch.Tensor = None,
+                 fsood: bool = False,
+                 csid_data_loaders: DataLoader = None):
         net.eval()
         if num_groups is None or group_slices is None:
             self.cal_group_slices(data_loader)
@@ -349,6 +367,13 @@ class MOSEvaluator(BaseEvaluator):
 
         loss, top1 = run_eval_acc(net, data_loader, self.group_slices,
                                   self.num_groups)
+
+        if fsood:
+            assert csid_data_loaders is not None
+            for dataset_name, csid_dl in csid_data_loaders.items():
+                _, temp = run_eval_acc(net, csid_dl, self.group_slices,
+                                       self.num_groups)
+                top1.extend(temp)
 
         metrics = {}
         metrics['acc'] = np.mean(top1)

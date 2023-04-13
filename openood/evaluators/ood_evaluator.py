@@ -25,9 +25,12 @@ class OODEvaluator(BaseEvaluator):
         self.id_conf = None
         self.id_gt = None
 
-    def eval_ood(self, net: nn.Module, id_data_loaders: Dict[str, DataLoader],
+    def eval_ood(self,
+                 net: nn.Module,
+                 id_data_loaders: Dict[str, DataLoader],
                  ood_data_loaders: Dict[str, Dict[str, DataLoader]],
-                 postprocessor: BasePostprocessor):
+                 postprocessor: BasePostprocessor,
+                 fsood: bool = False):
         if type(net) is dict:
             for subnet in net.values():
                 subnet.eval()
@@ -49,12 +52,29 @@ class OODEvaluator(BaseEvaluator):
         if self.config.recorder.save_scores:
             self._save_scores(id_pred, id_conf, id_gt, dataset_name)
 
+        if fsood:
+            # load csid data and compute confidence
+            for dataset_name, csid_dl in ood_data_loaders['csid'].items():
+                print(f'Performing inference on {dataset_name} dataset...',
+                      flush=True)
+                csid_pred, csid_conf, csid_gt = postprocessor.inference(
+                    net, csid_dl)
+                if self.config.recorder.save_scores:
+                    self._save_scores(csid_pred, csid_conf, csid_gt,
+                                      dataset_name)
+                id_pred = np.concatenate([id_pred, csid_pred])
+                id_conf = np.concatenate([id_conf, csid_conf])
+                id_gt = np.concatenate([id_gt, csid_gt])
+
         # load nearood data and compute ood metrics
+        print(u'\u2500' * 70, flush=True)
         self._eval_ood(net, [id_pred, id_conf, id_gt],
                        ood_data_loaders,
                        postprocessor,
                        ood_split='nearood')
+
         # load farood data and compute ood metrics
+        print(u'\u2500' * 70, flush=True)
         self._eval_ood(net, [id_pred, id_conf, id_gt],
                        ood_data_loaders,
                        postprocessor,
@@ -179,7 +199,9 @@ class OODEvaluator(BaseEvaluator):
                  net: nn.Module,
                  data_loader: DataLoader,
                  postprocessor: BasePostprocessor = None,
-                 epoch_idx: int = -1):
+                 epoch_idx: int = -1,
+                 fsood: bool = False,
+                 csid_data_loaders: DataLoader = None):
         """Returns the accuracy score of the labels and predictions.
 
         :return: float
@@ -190,6 +212,16 @@ class OODEvaluator(BaseEvaluator):
             net.eval()
         self.id_pred, self.id_conf, self.id_gt = postprocessor.inference(
             net, data_loader)
+
+        if fsood:
+            assert csid_data_loaders is not None
+            for dataset_name, csid_dl in csid_data_loaders.items():
+                csid_pred, csid_conf, csid_gt = postprocessor.inference(
+                    net, csid_dl)
+                self.id_pred = np.concatenate([self.id_pred, csid_pred])
+                self.id_conf = np.concatenate([self.id_conf, csid_conf])
+                self.id_gt = np.concatenate([self.id_gt, csid_gt])
+
         metrics = {}
         metrics['acc'] = sum(self.id_pred == self.id_gt) / len(self.id_pred)
         metrics['epoch_idx'] = epoch_idx
