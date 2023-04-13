@@ -33,7 +33,8 @@ class BaseEvaluator:
             for batch in tqdm(data_loader,
                               desc='Eval: ',
                               position=0,
-                              leave=True):
+                              leave=True,
+                              disable=not comm.is_main_process()):
                 # prepare data
                 data = batch['data'].cuda()
                 target = batch['label'].cuda()
@@ -70,7 +71,8 @@ class BaseEvaluator:
             for batch in tqdm(data_loader,
                               desc='Feature Extracting: ',
                               position=0,
-                              leave=True):
+                              leave=True,
+                              disable=not comm.is_main_process()):
                 data = batch['data'].cuda()
                 label = batch['label']
 

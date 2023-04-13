@@ -9,6 +9,7 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+import openood.utils.comm as comm
 from openood.postprocessors import BasePostprocessor
 from openood.utils import Config
 
@@ -61,7 +62,8 @@ def iterate_data(data_loader, model, group_slices):
                             len(dataiter) + 1),
                       desc='Batches',
                       position=0,
-                      leave=True):
+                      leave=True,
+                      disable=not comm.is_main_process()):
             batch = next(dataiter)
             data = batch['data'].cuda()
 
@@ -128,7 +130,8 @@ def run_eval_acc(model, data_loader, group_slices, num_group):
                                  len(train_dataiter) + 1),
                            desc='Test: ',
                            position=0,
-                           leave=True):
+                           leave=True,
+                           disable=not comm.is_main_process()):
         batch = next(train_dataiter)
         data = batch['data'].cuda()
         group_label = batch['group_label'].cuda()
@@ -183,7 +186,8 @@ class MOSEvaluator(BaseEvaluator):
                                          len(train_dataiter) + 1),
                                    desc='cal group_config',
                                    position=0,
-                                   leave=True):
+                                   leave=True,
+                                   disable=not comm.is_main_process()):
                 batch = next(train_dataiter)
                 group_label = batch['group_label']
                 class_label = batch['class_label']
