@@ -1,11 +1,9 @@
-from types import MethodType
-
-import mmcv
+# import mmcv
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
-from mmcls.apis import init_model
+# from mmcls.apis import init_model
 
 import openood.utils.comm as comm
 
@@ -31,6 +29,7 @@ from .resnet18_256x256 import ResNet18_256x256
 from .resnet50 import ResNet50
 from .rot_net import RotNet
 from .udg_net import UDGNet
+from .vit_b_16 import ViT_B_16
 from .wrn import WideResNet
 from .rts_net import RTSNet
 
@@ -90,7 +89,7 @@ def get_network(network_config):
                        feature_size=backbone.feature_size,
                        num_classes=num_classes,
                        similarity_measure=network_config.similarity_measure)
-        
+
     elif network_config.name == 'rts_net':
         backbone = get_network(network_config.backbone)
         net = RTSNet(backbone=backbone,
@@ -204,12 +203,8 @@ def get_network(network_config):
             zero_head=True,
             num_block_open=network_config.num_block_open)
 
-    elif network_config.name == 'vit':
-        cfg = mmcv.Config.fromfile(network_config.model)
-        net = init_model(cfg, network_config.checkpoint, 0)
-        net.get_fc = MethodType(
-            lambda self: (self.head.layers.head.weight.cpu().numpy(),
-                          self.head.layers.head.bias.cpu().numpy()), net)
+    elif network_config.name == 'vit-b-16':
+        net = ViT_B_16(num_classes=num_classes)
 
     elif network_config.name == 'conf_branch_net':
 
