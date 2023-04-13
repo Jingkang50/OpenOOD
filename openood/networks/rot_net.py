@@ -6,9 +6,13 @@ class RotNet(nn.Module):
         super(RotNet, self).__init__()
 
         self.backbone = backbone
+        try:
+            feature_size = backbone.feature_size
+        except AttributeError:
+            feature_size = backbone.module.feature_size
 
-        self.fc = nn.Linear(backbone.feature_size, num_classes)
-        self.rot_fc = nn.Linear(backbone.feature_size, 4)
+        self.fc = nn.Linear(feature_size, num_classes)
+        self.rot_fc = nn.Linear(feature_size, 4)
 
     def forward(self, x, return_rot_logits=False):
         _, feature = self.backbone(x, return_feature=True)

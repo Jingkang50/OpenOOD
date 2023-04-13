@@ -85,15 +85,23 @@ def get_network(network_config):
 
     elif network_config.name == 'godin_net':
         backbone = get_network(network_config.backbone)
+        try:
+            feature_size = backbone.feature_size
+        except AttributeError:
+            feature_size = backbone.module.feature_size
         net = GodinNet(backbone=backbone,
-                       feature_size=backbone.feature_size,
+                       feature_size=feature_size,
                        num_classes=num_classes,
                        similarity_measure=network_config.similarity_measure)
 
     elif network_config.name == 'rts_net':
         backbone = get_network(network_config.backbone)
+        try:
+            feature_size = backbone.feature_size
+        except AttributeError:
+            feature_size = backbone.module.feature_size
         net = RTSNet(backbone=backbone,
-                     feature_size=backbone.feature_size,
+                     feature_size=feature_size,
                      num_classes=num_classes,
                      dof=network_config.dof)
 
@@ -103,8 +111,12 @@ def get_network(network_config):
 
     elif network_config.name == 'csi_net':
         backbone = get_network(network_config.backbone)
+        try:
+            feature_size = backbone.feature_size
+        except AttributeError:
+            feature_size = backbone.module.feature_size
         net = CSINet(backbone,
-                     feature_size=backbone.feature_size,
+                     feature_size=feature_size,
                      num_classes=num_classes,
                      simclr_dim=network_config.simclr_dim,
                      shift_trans_type=network_config.shift_trans_type)
