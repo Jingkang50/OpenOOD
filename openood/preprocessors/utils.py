@@ -4,6 +4,7 @@ from .base_preprocessor import BasePreprocessor
 from .csi_preprocessor import CSIPreprocessor
 from .cutpaste_preprocessor import CutPastePreprocessor
 from .draem_preprocessor import DRAEMPreprocessor
+from .augmix_preprocessor import AugMixPreprocessor
 from .pixmix_preprocessor import PixMixPreprocessor
 from .randaugment_preprocessor import RandAugmentPreprocessor
 from .cutout_preprocessor import CutoutPreprocessor
@@ -15,6 +16,7 @@ def get_preprocessor(config: Config, split):
         'base': BasePreprocessor,
         'draem': DRAEMPreprocessor,
         'cutpaste': CutPastePreprocessor,
+        'augmix': AugMixPreprocessor,
         'pixmix': PixMixPreprocessor,
         'randaugment': RandAugmentPreprocessor,
         'cutout': CutoutPreprocessor,
