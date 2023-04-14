@@ -17,7 +17,10 @@ class GodinTrainer:
         parameters = []
         h_parameters = []
         for name, parameter in net.named_parameters():
-            if name == 'h.h.weight' or name == 'h.h.bias':
+            if name in [
+                    'h.h.weight', 'h.h.bias', 'module.h.h.weight',
+                    'module.h.h.bias'
+            ]:
                 h_parameters.append(parameter)
             else:
                 parameters.append(parameter)
