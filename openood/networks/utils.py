@@ -1,4 +1,5 @@
 # import mmcv
+from copy import deepcopy
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
@@ -9,7 +10,7 @@ import openood.utils.comm as comm
 
 from .bit import KNOWN_MODELS
 from .conf_branch_net import ConfBranchNet
-from .csi_net import CSINet
+from .csi_net import get_csi_linear_layers, CSINet
 from .de_resnet18_256x256 import AttnBasicBlock, BN_layer, De_ResNet18_256x256
 from .densenet import DenseNet3
 from .draem_net import DiscriminativeSubNetwork, ReconstructiveSubNetwork
@@ -123,11 +124,17 @@ def get_network(network_config):
         # report unused params
         backbone.fc = nn.Identity()
 
-        net = CSINet(backbone,
-                     feature_size=feature_size,
-                     num_classes=num_classes,
-                     simclr_dim=network_config.simclr_dim,
-                     shift_trans_type=network_config.shift_trans_type)
+        net = get_csi_linear_layers(feature_size, num_classes,
+                                    network_config.simclr_dim,
+                                    network_config.shift_trans_type)
+        net['backbone'] = backbone
+
+        dummy_net = CSINet(deepcopy(backbone),
+                           feature_size=feature_size,
+                           num_classes=num_classes,
+                           simclr_dim=network_config.simclr_dim,
+                           shift_trans_type=network_config.shift_trans_type)
+        net['dummy_net'] = dummy_net
 
     elif network_config.name == 'draem':
         model = ReconstructiveSubNetwork(in_channels=3,
@@ -305,12 +312,26 @@ def get_network(network_config):
 
     if network_config.pretrained:
         if type(net) is dict:
-            for subnet, checkpoint in zip(net.values(),
-                                          network_config.checkpoint):
-                if checkpoint is not None:
-                    if checkpoint != 'none':
-                        subnet.load_state_dict(torch.load(checkpoint),
-                                               strict=False)
+            if isinstance(network_config.checkpoint, list):
+                for subnet, checkpoint in zip(net.values(),
+                                              network_config.checkpoint):
+                    if checkpoint is not None:
+                        if checkpoint != 'none':
+                            subnet.load_state_dict(torch.load(checkpoint),
+                                                   strict=False)
+            elif isinstance(network_config.checkpoint, str):
+                ckpt = torch.load(network_config.checkpoint)
+                subnet_ckpts = {k: {} for k in net.keys()}
+                for k, v in ckpt.items():
+                    for subnet_name in net.keys():
+                        if k.startwith(subnet_name):
+                            subnet_ckpts[subnet_name][k.replace(
+                                subnet_name + '.', '')] = v
+                            break
+
+                for subnet_name, subnet in net.items():
+                    subnet.load_state_dict(subnet_ckpts[subnet_name])
+
         elif network_config.name == 'bit' and not network_config.normal_load:
             net.load_from(np.load(network_config.checkpoint))
         elif network_config.name == 'vit':
@@ -326,6 +347,7 @@ def get_network(network_config):
                 loaded_pth.pop('fc.bias')
                 net.load_state_dict(loaded_pth, strict=False)
         print('Model Loading {} Completed!'.format(network_config.name))
+
     if network_config.num_gpus > 1:
         if type(net) is dict:
             for key, subnet in zip(net.keys(), net.values()):
