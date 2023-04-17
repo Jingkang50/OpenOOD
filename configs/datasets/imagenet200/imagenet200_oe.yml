@@ -1,0 +1,12 @@
+name: imagenet200_oe
+
+dataset:
+  name: imagenet200_oe
+  split_names: [train, oe, val, test]
+  oe:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/imagenet200/train_imagenet800.txt
+    batch_size: 256
+    shuffle: True
+    interpolation: bilinear
