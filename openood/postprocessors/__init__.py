@@ -28,6 +28,7 @@ from .react_postprocessor import ReactPostprocessor
 from .rmds_postprocessor import RMDSPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .ssd_postprocessor import SSDPostprocessor
+from .she_postprocessor import SHEPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .utils import get_postprocessor
 from .vim_postprocessor import VIMPostprocessor
