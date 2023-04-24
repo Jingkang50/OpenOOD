@@ -32,6 +32,11 @@ class CSINet(nn.Module):
                  shift_trans_type='rotation'):
         super(CSINet, self).__init__()
         self.backbone = backbone
+        if hasattr(self.backbone, 'fc'):
+            # remove fc otherwise ddp will
+            # report unused params
+            self.backbone.fc = nn.Identity()
+
         self.linear = nn.Linear(feature_size, num_classes)
         self.simclr_layer = nn.Sequential(
             nn.Linear(feature_size, feature_size),

@@ -6,6 +6,11 @@ class ConfBranchNet(nn.Module):
         super(ConfBranchNet, self).__init__()
 
         self.backbone = backbone
+        if hasattr(self.backbone, 'fc'):
+            # remove fc otherwise ddp will
+            # report unused params
+            self.backbone.fc = nn.Identity()
+
         try:
             feature_size = backbone.feature_size
         except AttributeError:
