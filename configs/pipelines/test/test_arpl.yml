@@ -1,4 +1,4 @@
-exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'_'@{evaluator.name}'_'@{postprocessor.name}'_'@{mark}'/s'@{seed}'"
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'_'@{evaluator.name}'_'@{postprocessor.name}'_'@{mark}'/s'@{seed}'/'@{evaluator.ood_scheme}'"
 output_dir: ./results/
 save_output: True
 merge_option: default # disabled if 'save_output' is False
@@ -12,14 +12,15 @@ machine_rank: 0
 
 network:
   pretrained: True
-  checkpoint: ["results/cifar100_arpl_net_arpl_e100_lr0.1/s0/best_NetF.ckpt",
-               "results/cifar100_arpl_net_arpl_e100_lr0.1/s0/best_criterion.ckpt"]
+  checkpoint: ["results/imagenet200_arpl_net_arpl_e90_lr0.1/s0/best_NetF.ckpt",
+               "results/imagenet200_arpl_net_arpl_e90_lr0.1/s0/best_criterion.ckpt"]
 
 pipeline:
   name: test_ood
 
 evaluator:
   name: arpl
+  ood_scheme: ood # [ood, fsood]
 
 recorder:
   save_scores: True

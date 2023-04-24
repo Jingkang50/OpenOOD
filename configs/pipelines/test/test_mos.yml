@@ -22,7 +22,7 @@ trainer:
 
 evaluator:
   name: mos
-  ood_scheme: ood
+  ood_scheme: ood # [ood, fsood]
 
 optimizer:
   name: sgd
