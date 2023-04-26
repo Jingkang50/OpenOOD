@@ -1,0 +1,42 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'_protom'@{trainer.trainer_args.proto_m}'_'@{mark}'/s'@{seed}'"
+output_dir: ./results/
+save_output: True
+merge_option: default
+mark: default
+seed: 0
+
+num_gpus: 1
+num_workers: 8
+num_machines: 1
+machine_rank: 0
+
+preprocessor:
+  name: base
+
+pipeline:
+  name: train
+
+trainer:
+  name: cider
+  trainer_args:
+    proto_m: 0.95
+    temp: 0.1
+    w: 2
+
+evaluator:
+  name: base
+
+optimizer:
+  name: sgd
+  num_epochs: 100
+  lr: 0.5
+  momentum: 0.9
+  weight_decay: 0.0001
+  warm: True
+  cosine: True
+  lr_decay_rate: 0.1
+  lr_decay_epochs: [50, 75, 90]
+
+recorder:
+  name: cider
+  save_all_models: False

@@ -11,6 +11,7 @@ import openood.utils.comm as comm
 from .bit import KNOWN_MODELS
 from .conf_branch_net import ConfBranchNet
 from .csi_net import get_csi_linear_layers, CSINet
+from .cider_net import CiderNet
 from .de_resnet18_256x256 import AttnBasicBlock, BN_layer, De_ResNet18_256x256
 from .densenet import DenseNet3
 from .draem_net import DiscriminativeSubNetwork, ReconstructiveSubNetwork
@@ -98,6 +99,20 @@ def get_network(network_config):
                        feature_size=feature_size,
                        num_classes=num_classes,
                        similarity_measure=network_config.similarity_measure)
+
+    elif network_config.name == 'cider_net':
+        # don't wrap ddp here cuz we need to modify
+        # backbone
+        network_config.backbone.num_gpus = 1
+        backbone = get_network(network_config.backbone)
+        # remove fc otherwise ddp will
+        # report unused params
+        backbone.fc = nn.Identity()
+
+        net = CiderNet(backbone=backbone,
+                       head=network_config.head,
+                       feat_dim=network_config.feat_dim,
+                       num_classes=num_classes)
 
     elif network_config.name == 'rts_net':
         backbone = get_network(network_config.backbone)

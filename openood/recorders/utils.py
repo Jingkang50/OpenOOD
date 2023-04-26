@@ -3,6 +3,7 @@ from openood.utils import Config
 from .ad_recorder import ADRecorder
 from .arpl_recorder import ARPLRecorder
 from .base_recorder import BaseRecorder
+from .cider_recorder import CiderRecorder
 from .cutpaste_recorder import CutpasteRecorder
 from .draem_recorder import DRAEMRecorder
 from .dsvdd_recorder import DCAERecorder, DSVDDRecorder
@@ -14,6 +15,7 @@ from .rd4ad_recorder import Rd4adRecorder
 def get_recorder(config: Config):
     recorders = {
         'base': BaseRecorder,
+        'cider': CiderRecorder,
         'draem': DRAEMRecorder,
         'opengan': OpenGanRecorder,
         'dcae': DCAERecorder,
