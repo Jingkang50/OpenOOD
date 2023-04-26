@@ -5,6 +5,10 @@ class UDGNet(nn.Module):
     def __init__(self, backbone, num_classes, num_clusters):
         super(UDGNet, self).__init__()
         self.backbone = backbone
+        if hasattr(self.backbone, 'fc'):
+            # remove fc otherwise ddp will
+            # report unused params
+            self.backbone.fc = nn.Identity()
         self.fc = nn.Linear(backbone.feature_size, num_classes)
         self.fc_aux = nn.Linear(backbone.feature_size, num_clusters)
 
