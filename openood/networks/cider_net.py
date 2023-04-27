@@ -17,8 +17,6 @@ class CiderNet(nn.Module):
         except AttributeError:
             feature_size = backbone.module.feature_size
 
-        self.fc = nn.Linear(feature_size, num_classes)
-
         if head == 'linear':
             self.head = nn.Linear(feature_size, feat_dim)
         elif head == 'mlp':

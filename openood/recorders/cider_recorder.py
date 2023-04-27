@@ -61,6 +61,6 @@ class CiderRecorder:
 
     def summary(self):
         print('Training Completed! '
-              'Best accuracy: {:.2f} '
-              'at epoch {:d}'.format(100 * self.best_acc, self.best_epoch_idx),
+              'Best loss: {:.4f} '
+              'at epoch {:d}'.format(self.best_loss, self.best_epoch_idx),
               flush=True)
