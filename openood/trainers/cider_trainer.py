@@ -65,17 +65,6 @@ class CIDERTrainer:
             val_loader,
             temperature=config.trainer.trainer_args.temp).cuda()
 
-        if config.num_gpus > 1:
-            self.criterion_comp = nn.DistributedDataParallel(
-                self.criterion_comp,
-                device_ids=[comm.get_local_rank()],
-                broadcast_buffers=True)
-
-            self.criterion_dis = nn.DistributedDataParallel(
-                self.criterion_dis,
-                device_ids=[comm.get_local_rank()],
-                broadcast_buffers=True)
-
     def train_epoch(self, epoch_idx):
         adjust_learning_rate(self.config, self.optimizer, epoch_idx - 1)
 
@@ -105,10 +94,9 @@ class CIDERTrainer:
             # forward
             features = self.net(data)
             dis_loss = self.criterion_dis(features, target)  # V2: EMA style
-            comp_loss = self.criterion_comp(
-                features, self.criterion_dis.module.prototypes
-                if self.config.num_gpus > 1 else self.criterion_dis.prototypes,
-                target)
+            comp_loss = self.criterion_comp(features,
+                                            self.criterion_dis.prototypes,
+                                            target)
             loss = self.config.trainer.trainer_args.w * comp_loss + dis_loss
 
             # backward
