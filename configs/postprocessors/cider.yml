@@ -1,0 +1,7 @@
+postprocessor:
+  name: cider
+  APS_mode: True
+  postprocessor_args:
+    K: 50
+  postprocessor_sweep:
+    K_list: [50, 100, 200, 500, 1000]

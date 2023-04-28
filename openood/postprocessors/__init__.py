@@ -1,5 +1,6 @@
 from .ash_postprocessor import ASHPostprocessor
 from .base_postprocessor import BasePostprocessor
+from .cider_postprocessor import CiderPostprocessor
 from .conf_branch_postprocessor import ConfBranchPostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
 from .dice_postprocessor import DICEPostprocessor

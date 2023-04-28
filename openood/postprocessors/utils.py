@@ -2,6 +2,7 @@ from openood.utils import Config
 
 from .ash_postprocessor import ASHPostprocessor
 from .base_postprocessor import BasePostprocessor
+from .cider_postprocessor import CiderPostprocessor
 from .conf_branch_postprocessor import ConfBranchPostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
 from .dice_postprocessor import DICEPostprocessor
@@ -41,6 +42,7 @@ from .rts_postprocessor import RTSPostprocessor
 def get_postprocessor(config: Config):
     postprocessors = {
         'ash': ASHPostprocessor,
+        'cider': CiderPostprocessor,
         'conf_branch': ConfBranchPostprocessor,
         'msp': BasePostprocessor,
         'ebo': EBOPostprocessor,

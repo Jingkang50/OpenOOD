@@ -12,11 +12,12 @@ from openood.postprocessors import (
     Rd4adPostprocessor, ReactPostprocessor, ResidualPostprocessor,
     SSDPostprocessor, TemperatureScalingPostprocessor, VIMPostprocessor,
     RotPredPostprocessor, RankFeatPostprocessor, RMDSPostprocessor,
-    SHEPostprocessor)
+    SHEPostprocessor, CiderPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
     'ash': ASHPostprocessor,
+    'cider': CiderPostprocessor,
     'conf_branch': ConfBranchPostprocessor,
     'msp': BasePostprocessor,
     'ebo': EBOPostprocessor,
