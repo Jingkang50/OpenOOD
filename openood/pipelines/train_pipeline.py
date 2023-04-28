@@ -50,9 +50,9 @@ class TrainPipeline:
                                                  epoch_idx,
                                                  num_groups=num_groups,
                                                  group_slices=group_slices)
-            elif self.config.trainer.name == 'cider':
+            elif self.config.trainer.name in ['cider', 'npos']:
                 net, train_metrics = trainer.train_epoch(epoch_idx)
-                # cider only trains the backbone
+                # cider and npos only trains the backbone
                 # cannot evaluate ID acc without training the fc layer
                 val_metrics = train_metrics
             else:

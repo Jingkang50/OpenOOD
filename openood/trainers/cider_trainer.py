@@ -11,7 +11,7 @@ import openood.utils.comm as comm
 from openood.utils import Config
 
 
-class CiderTrainer:
+class CIDERTrainer:
     def __init__(self, net: nn.Module, train_loader: DataLoader,
                  val_loader: DataLoader, config: Config) -> None:
 

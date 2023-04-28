@@ -9,9 +9,9 @@ from tqdm import tqdm
 from .base_postprocessor import BasePostprocessor
 
 
-class CiderPostprocessor(BasePostprocessor):
+class CIDERPostprocessor(BasePostprocessor):
     def __init__(self, config):
-        super(CiderPostprocessor, self).__init__(config)
+        super(CIDERPostprocessor, self).__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
         self.K = self.args.K
         self.activation_log = None

@@ -6,7 +6,7 @@ from .arpl_gan_trainer import ARPLGANTrainer
 from .arpl_trainer import ARPLTrainer
 from .augmix_trainer import AugMixTrainer
 from .base_trainer import BaseTrainer
-from .cider_trainer import CiderTrainer
+from .cider_trainer import CIDERTrainer
 from .conf_branch_trainer import ConfBranchTrainer
 from .csi_trainer import CSITrainer
 from .cutmix_trainer import CutMixTrainer
@@ -20,6 +20,7 @@ from .logitnorm_trainer import LogitNormTrainer
 from .mcd_trainer import MCDTrainer
 from .mixup_trainer import MixupTrainer
 from .mos_trainer import MOSTrainer
+from .npos_trainer import NPOSTrainer
 from .oe_trainer import OETrainer
 from .opengan_trainer import OpenGanTrainer
 from .rd4ad_trainer import Rd4adTrainer
@@ -35,36 +36,39 @@ from .mixoe_trainer import MixOETrainer
 def get_trainer(net, train_loader: DataLoader, val_loader: DataLoader,
                 config: Config):
     if type(train_loader) is DataLoader:
-        if config.trainer.name == 'cider':
-            return CiderTrainer(net, train_loader, val_loader, config)
+        trainers = {
+            'base': BaseTrainer,
+            'augmix': AugMixTrainer,
+            'mixup': MixupTrainer,
+            'regmixup': RegMixupTrainer,
+            'sae': SAETrainer,
+            'draem': DRAEMTrainer,
+            'kdad': KdadTrainer,
+            'conf_branch': ConfBranchTrainer,
+            'dcae': AETrainer,
+            'dsvdd': DSVDDTrainer,
+            'npos': NPOSTrainer,
+            'opengan': OpenGanTrainer,
+            'kdad': KdadTrainer,
+            'godin': GodinTrainer,
+            'arpl': ARPLTrainer,
+            'arpl_gan': ARPLGANTrainer,
+            'mos': MOSTrainer,
+            'vos': VOSTrainer,
+            'cider': CIDERTrainer,
+            'cutpaste': CutPasteTrainer,
+            'cutmix': CutMixTrainer,
+            'dropout': DropoutTrainer,
+            'csi': CSITrainer,
+            'logitnorm': LogitNormTrainer,
+            'rd4ad': Rd4adTrainer,
+            'rts': RTSTrainer,
+            'rotpred': RotPredTrainer
+        }
+        if config.trainer.name in ['cider', 'npos']:
+            return trainers[config.trainer.name](net, train_loader, val_loader,
+                                                 config)
         else:
-            trainers = {
-                'base': BaseTrainer,
-                'augmix': AugMixTrainer,
-                'mixup': MixupTrainer,
-                'regmixup': RegMixupTrainer,
-                'sae': SAETrainer,
-                'draem': DRAEMTrainer,
-                'kdad': KdadTrainer,
-                'conf_branch': ConfBranchTrainer,
-                'dcae': AETrainer,
-                'dsvdd': DSVDDTrainer,
-                'opengan': OpenGanTrainer,
-                'kdad': KdadTrainer,
-                'godin': GodinTrainer,
-                'arpl': ARPLTrainer,
-                'arpl_gan': ARPLGANTrainer,
-                'mos': MOSTrainer,
-                'vos': VOSTrainer,
-                'cutpaste': CutPasteTrainer,
-                'cutmix': CutMixTrainer,
-                'dropout': DropoutTrainer,
-                'csi': CSITrainer,
-                'logitnorm': LogitNormTrainer,
-                'rd4ad': Rd4adTrainer,
-                'rts': RTSTrainer,
-                'rotpred': RotPredTrainer
-            }
             return trainers[config.trainer.name](net, train_loader, config)
 
     else:

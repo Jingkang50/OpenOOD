@@ -1,10 +1,11 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
-class CIDERNet(nn.Module):
+class NPOSNet(nn.Module):
     def __init__(self, backbone, head, feat_dim, num_classes):
-        super(CIDERNet, self).__init__()
+        super(NPOSNet, self).__init__()
 
         self.backbone = backbone
         if hasattr(self.backbone, 'fc'):
@@ -16,6 +17,11 @@ class CIDERNet(nn.Module):
             feature_size = backbone.feature_size
         except AttributeError:
             feature_size = backbone.module.feature_size
+
+        self.prototypes = nn.Parameter(torch.zeros(num_classes, feat_dim),
+                                       requires_grad=True)
+        self.mlp = nn.Sequential(nn.Linear(feature_size, feat_dim),
+                                 nn.ReLU(inplace=True), nn.Linear(feat_dim, 1))
 
         if head == 'linear':
             self.head = nn.Linear(feature_size, feat_dim)
@@ -31,5 +37,5 @@ class CIDERNet(nn.Module):
         return features
 
     def intermediate_forward(self, x):
-        feat = self.backbone(x).squeeze()
+        feat = self.encoder(x).squeeze()
         return F.normalize(feat, dim=1)
