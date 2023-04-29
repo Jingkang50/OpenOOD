@@ -34,7 +34,8 @@ class TrainOpenGanPipeline:
         net = get_network(self.config.network)
 
         # init trainer
-        trainer = get_trainer(net, dataloaders['id_train'], self.config)
+        trainer = get_trainer(net, dataloaders['id_train'],
+                              dataloaders['id_val'], self.config)
         evaluator = get_evaluator(self.config)
 
         # init recorder
