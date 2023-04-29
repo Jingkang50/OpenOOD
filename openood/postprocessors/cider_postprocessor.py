@@ -24,7 +24,7 @@ class CIDERPostprocessor(BasePostprocessor):
             net.eval()
             with torch.no_grad():
                 for batch in tqdm(id_loader_dict['train'],
-                                  desc='Eval: ',
+                                  desc='Setup: ',
                                   position=0,
                                   leave=True):
                     data = batch['data'].cuda()

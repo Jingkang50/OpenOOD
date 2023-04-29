@@ -37,5 +37,5 @@ class NPOSNet(nn.Module):
         return features
 
     def intermediate_forward(self, x):
-        feat = self.encoder(x).squeeze()
+        feat = self.backbone(x).squeeze()
         return F.normalize(feat, dim=1)

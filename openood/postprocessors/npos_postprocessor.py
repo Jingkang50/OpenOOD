@@ -8,12 +8,10 @@ from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
 
-normalizer = lambda x: x / np.linalg.norm(x, axis=-1, keepdims=True) + 1e-10
 
-
-class KNNPostprocessor(BasePostprocessor):
+class NPOSPostprocessor(BasePostprocessor):
     def __init__(self, config):
-        super(KNNPostprocessor, self).__init__(config)
+        super(NPOSPostprocessor, self).__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
         self.K = self.args.K
         self.activation_log = None
@@ -30,11 +28,9 @@ class KNNPostprocessor(BasePostprocessor):
                                   position=0,
                                   leave=True):
                     data = batch['data'].cuda()
-                    data = data.float()
 
-                    _, feature = net(data, return_feature=True)
-                    activation_log.append(
-                        normalizer(feature.data.cpu().numpy()))
+                    feature = net.intermediate_forward(data)
+                    activation_log.append(feature.data.cpu().numpy())
 
             self.activation_log = np.concatenate(activation_log, axis=0)
             self.index = faiss.IndexFlatL2(feature.shape[1])
@@ -45,14 +41,15 @@ class KNNPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
-        output, feature = net(data, return_feature=True)
-        feature_normed = normalizer(feature.data.cpu().numpy())
+        feature = net.intermediate_forward(data)
         D, _ = self.index.search(
-            feature_normed,
+            feature.cpu().numpy(),  # feature is already normalized within net
             self.K,
         )
         kth_dist = -D[:, -1]
-        _, pred = torch.max(torch.softmax(output, dim=1), dim=1)
+        # put dummy prediction here
+        # as cider only trains the feature extractor
+        pred = torch.zeros(len(kth_dist))
         return pred, torch.from_numpy(kth_dist)
 
     def set_hyperparam(self, hyperparam: list):

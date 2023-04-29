@@ -24,7 +24,10 @@ class MDSPostprocessor(BasePostprocessor):
             all_labels = []
             all_preds = []
             with torch.no_grad():
-                for batch in tqdm(id_loader_dict['train']):
+                for batch in tqdm(id_loader_dict['train'],
+                                  desc='Setup: ',
+                                  position=0,
+                                  leave=True):
                     data, labels = batch['data'].cuda(), batch['label']
                     logits, features = net(data, return_feature=True)
                     all_feats.append(features.cpu())

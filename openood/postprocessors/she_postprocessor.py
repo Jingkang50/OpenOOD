@@ -1,7 +1,6 @@
 from typing import Any
 
 from copy import deepcopy
-import numpy as np
 import torch
 import torch.nn as nn
 from tqdm import tqdm
@@ -37,7 +36,7 @@ class SHEPostprocessor(BasePostprocessor):
             all_preds = []
             with torch.no_grad():
                 for batch in tqdm(id_loader_dict['train'],
-                                  desc='Setup: ',
+                                  desc='Eval: ',
                                   position=0,
                                   leave=True):
                     data = batch['data'].cuda()

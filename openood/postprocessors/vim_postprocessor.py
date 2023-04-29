@@ -27,7 +27,7 @@ class VIMPostprocessor(BasePostprocessor):
                 print('Extracting id training feature')
                 feature_id_train = []
                 for batch in tqdm(id_loader_dict['train'],
-                                  desc='Eval: ',
+                                  desc='Setup: ',
                                   position=0,
                                   leave=True):
                     data = batch['data'].cuda()

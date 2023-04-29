@@ -20,6 +20,7 @@ from .mcd_postprocessor import MCDPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .mds_ensemble_postprocessor import MDSEnsemblePostprocessor
 from .mos_postprocessor import MOSPostprocessor
+from .npos_postprocessor import NPOSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
 from .opengan_postprocessor import OpenGanPostprocessor
 from .openmax_postprocessor import OpenMax

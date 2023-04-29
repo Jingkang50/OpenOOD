@@ -22,7 +22,7 @@ class ReactPostprocessor(BasePostprocessor):
             net.eval()
             with torch.no_grad():
                 for batch in tqdm(id_loader_dict['val'],
-                                  desc='Eval: ',
+                                  desc='Setup: ',
                                   position=0,
                                   leave=True):
                     data = batch['data'].cuda()
