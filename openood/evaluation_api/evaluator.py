@@ -29,8 +29,45 @@ class Evaluator:
         shuffle: bool = False,
         num_workers: int = 4,
     ) -> None:
-        # TODO
-        """_summary_"""
+        """A unified, easy-to-use API for evaluating (most) discriminative OOD
+        detection methods.
+
+        Args:
+            net (nn.Module):
+                The base classifier.
+            id_name (str):
+                The name of the in-distribution dataset.
+            data_root (str, optional):
+                The path of the data folder. Defaults to './data'.
+            config_root (str, optional):
+                The path of the config folder. Defaults to './configs'.
+            preprocessor (Callable, optional):
+                The preprocessor of input images.
+                Passing None will use the default preprocessor
+                following convention. Defaults to None.
+            postprocessor_name (str, optional):
+                The name of the postprocessor that obtains OOD score.
+                Ignored if an actual postprocessor is passed.
+                Defaults to None.
+            postprocessor (Type[BasePostprocessor], optional):
+                An actual postprocessor instance which inherits
+                OpenOOD's BasePostprocessor. Defaults to None.
+            batch_size (int, optional):
+                The batch size of samples. Defaults to 200.
+            shuffle (bool, optional):
+                Whether shuffling samples. Defaults to False.
+            num_workers (int, optional):
+                The num_workers argument that will be passed to
+                data loaders. Defaults to 4.
+
+        Raises:
+            ValueError:
+                If both postprocessor_name and postprocessor are None.
+            ValueError:
+                If the specified ID dataset {id_name} is not supported.
+            TypeError:
+                If the passed postprocessor does not inherit BasePostprocessor.
+        """
         # check the arguments
         if postprocessor_name is None and postprocessor is None:
             raise ValueError('Please pass postprocessor_name or postprocessor')
