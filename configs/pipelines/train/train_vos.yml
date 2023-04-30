@@ -7,7 +7,7 @@ mark: default
 seed: 0
 
 num_gpus: 1
-num_workers: 0
+num_workers: 8
 num_machines: 1
 machine_rank: 0
 
