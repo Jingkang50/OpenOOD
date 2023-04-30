@@ -6,6 +6,7 @@ import torch.nn as nn
 from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
+from .info import num_classes_dict
 
 
 def distance(penultimate, target, metric='inner_product'):
@@ -23,7 +24,7 @@ class SHEPostprocessor(BasePostprocessor):
     def __init__(self, config):
         super(SHEPostprocessor, self).__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
-        self.num_classes = self.config.dataset.num_classes
+        self.num_classes = num_classes_dict[self.config.dataset.name]
         self.activation_log = None
         self.setup_flag = False
 

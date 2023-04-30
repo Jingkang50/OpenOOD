@@ -9,13 +9,14 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
+from .info import num_classes_dict
 
 
 class GRAMPostprocessor(BasePostprocessor):
     def __init__(self, config):
         self.config = config
         self.postprocessor_args = config.postprocessor.postprocessor_args
-        self.num_classes = self.config.dataset.num_classes
+        self.num_classes = num_classes_dict[self.config.dataset.name]
         self.powers = self.postprocessor_args.powers
 
         self.feature_min, self.feature_max = None, None

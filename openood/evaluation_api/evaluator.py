@@ -12,7 +12,7 @@ from openood.postprocessors import BasePostprocessor
 
 from .datasets import DATA_INFO, get_id_ood_dataloader
 from .postprocessor import get_postprocessor
-from .preprocessor import get_default_preprocessor, default_preprocessing_dict
+from .preprocessor import get_default_preprocessor
 
 
 class Evaluator:
@@ -56,10 +56,8 @@ class Evaluator:
 
         # get postprocessor
         if postprocessor is None:
-            postprocessor = get_postprocessor(
-                config_root, postprocessor_name,
-                DATA_INFO[id_name]['num_classes'],
-                default_preprocessing_dict[id_name]['normalization'][-1])
+            postprocessor = get_postprocessor(config_root, postprocessor_name,
+                                              id_name)
         if not isinstance(postprocessor, BasePostprocessor):
             raise TypeError(
                 'postprocessor should inherit BasePostprocessor in OpenOOD')

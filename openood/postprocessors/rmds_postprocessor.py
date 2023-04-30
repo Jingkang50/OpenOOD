@@ -8,12 +8,13 @@ import sklearn.covariance
 from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
+from .info import num_classes_dict
 
 
 class RMDSPostprocessor(BasePostprocessor):
     def __init__(self, config):
         self.config = config
-        self.num_classes = self.config.dataset.num_classes
+        self.num_classes = num_classes_dict[self.config.dataset.name]
         self.setup_flag = False
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):

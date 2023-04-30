@@ -14,6 +14,7 @@ from torch.autograd import Variable
 from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
+from .info import num_classes_dict
 
 
 class MDSEnsemblePostprocessor(BasePostprocessor):
@@ -24,7 +25,7 @@ class MDSEnsemblePostprocessor(BasePostprocessor):
         self.feature_type_list = self.postprocessor_args.feature_type_list
         self.reduce_dim_list = self.postprocessor_args.reduce_dim_list
 
-        self.num_classes = self.config.dataset.num_classes
+        self.num_classes = num_classes_dict[self.config.dataset.name]
         self.num_layer = len(self.feature_type_list)
 
         self.feature_mean, self.feature_prec = None, None
@@ -37,7 +38,7 @@ class MDSEnsemblePostprocessor(BasePostprocessor):
             # step 1: estimate initial mean and variance from training set
             self.feature_mean, self.feature_prec, self.transform_matrix = \
                 get_MDS_stat(net, id_loader_dict['train'], self.num_classes,
-                            self.feature_type_list, self.reduce_dim_list)
+                             self.feature_type_list, self.reduce_dim_list)
 
             # step 2: input process and hyperparam searching for alpha
             if self.postprocessor_args.alpha_list:

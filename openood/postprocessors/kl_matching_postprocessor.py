@@ -9,12 +9,13 @@ import scipy
 from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
+from .info import num_classes_dict
 
 
 class KLMatchingPostprocessor(BasePostprocessor):
     def __init__(self, config):
         super().__init__(config)
-        self.num_classes = self.config.dataset.num_classes
+        self.num_classes = num_classes_dict[self.config.dataset.name]
         self.setup_flag = False
 
     def kl(self, p, q):

@@ -6,12 +6,13 @@ import torch.nn as nn
 from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
+from .info import num_classes_dict
 
 
 class OpenMax(BasePostprocessor):
     def __init__(self, config):
         super(OpenMax, self).__init__(config)
-        self.nc = config.dataset.num_classes
+        self.nc = num_classes_dict[config.dataset.name]
         self.weibull_alpha = 3
         self.weibull_threshold = 0.9
         self.weibull_tail = 20

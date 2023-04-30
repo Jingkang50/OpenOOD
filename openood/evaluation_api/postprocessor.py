@@ -58,15 +58,14 @@ postprocessors = {
 
 
 def get_postprocessor(config_root: str, postprocessor_name: str,
-                      num_classes: int, std: list):
+                      id_data_name: str):
     config = Config(
         os.path.join(config_root, 'postprocessors',
                      f'{postprocessor_name}.yml'))
-    config = merge_configs(
-        config, Config(**{'dataset': {
-            'num_classes': num_classes,
-            'std': std
-        }}))
+    config = merge_configs(config,
+                           Config(**{'dataset': {
+                               'name': id_data_name
+                           }}))
     postprocessor = postprocessors[postprocessor_name](config)
     postprocessor.APS_mode = config.postprocessor.APS_mode
     postprocessor.hyperparam_search_done = False
