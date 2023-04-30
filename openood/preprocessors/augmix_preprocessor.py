@@ -23,6 +23,7 @@ class AugMixPreprocessor():
         self.alpha = config.preprocessor.alpha
         self.chain_depth = config.preprocessor.chain_depth
         self.all_ops = config.preprocessor.all_ops
+        self.jsd = config.trainer.trainer_args.jsd
 
         self.augmix = tvs_trans.AugMix(severity=self.severity,
                                        mixture_width=self.mixture_width,
@@ -62,7 +63,10 @@ class AugMixPreprocessor():
         pass
 
     def __call__(self, image):
-        orig = self.transform(image)
-        aug1 = self.normalize(self.augmix(orig))
-        aug2 = self.normalize(self.augmix(orig))
-        return self.normalize(orig), aug1, aug2
+        if self.jsd:
+            orig = self.transform(image)
+            aug1 = self.normalize(self.augmix(orig))
+            aug2 = self.normalize(self.augmix(orig))
+            return self.normalize(orig), aug1, aug2
+        else:
+            return self.normalize(self.augmix(self.transform(image)))

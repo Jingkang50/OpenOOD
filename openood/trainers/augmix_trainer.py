@@ -19,6 +19,7 @@ class AugMixTrainer:
         self.train_loader = train_loader
         self.config = config
         self.lam = config.trainer.trainer_args.lam
+        self.jsd = config.trainer.trainer_args.jsd
 
         self.optimizer = torch.optim.SGD(
             net.parameters(),
@@ -53,31 +54,38 @@ class AugMixTrainer:
             batch = next(train_dataiter)
             target = batch['label'].cuda()
 
-            orig_data = batch['data'].cuda()
-            aug1_data = batch['data_aug1'].cuda()
-            aug2_data = batch['data_aug2'].cuda()
-            data = torch.cat([orig_data, aug1_data, aug2_data])
+            if self.jsd:
+                orig_data = batch['data'].cuda()
+                aug1_data = batch['data_aug1'].cuda()
+                aug2_data = batch['data_aug2'].cuda()
+                data = torch.cat([orig_data, aug1_data, aug2_data])
 
-            # forward
-            logits_all = self.net(data)
-            logits_clean, logits_aug1, logits_aug2 = torch.split(
-                logits_all, orig_data.size(0))
+                # forward
+                logits_all = self.net(data)
+                logits_clean, logits_aug1, logits_aug2 = torch.split(
+                    logits_all, orig_data.size(0))
 
-            # Cross-entropy is only computed on clean images
-            loss = F.cross_entropy(logits_clean, target)
+                # Cross-entropy is only computed on clean images
+                loss = F.cross_entropy(logits_clean, target)
 
-            p_clean, p_aug1, p_aug2 = \
-                F.softmax(logits_clean, dim=1), \
-                F.softmax(logits_aug1, dim=1), \
-                F.softmax(logits_aug2, dim=1)
+                p_clean, p_aug1, p_aug2 = \
+                    F.softmax(logits_clean, dim=1), \
+                    F.softmax(logits_aug1, dim=1), \
+                    F.softmax(logits_aug2, dim=1)
 
-            # Clamp mixture distribution to avoid exploding KL divergence
-            p_mixture = torch.clamp((p_clean + p_aug1 + p_aug2) / 3., 1e-7,
-                                    1).log()
-            loss += self.lam * (
-                F.kl_div(p_mixture, p_clean, reduction='batchmean') +
-                F.kl_div(p_mixture, p_aug1, reduction='batchmean') +
-                F.kl_div(p_mixture, p_aug2, reduction='batchmean')) / 3.
+                # Clamp mixture distribution to avoid exploding KL divergence
+                p_mixture = torch.clamp((p_clean + p_aug1 + p_aug2) / 3., 1e-7,
+                                        1).log()
+                loss += self.lam * (
+                    F.kl_div(p_mixture, p_clean, reduction='batchmean') +
+                    F.kl_div(p_mixture, p_aug1, reduction='batchmean') +
+                    F.kl_div(p_mixture, p_aug2, reduction='batchmean')) / 3.
+            else:
+                data = batch['data'].cuda()
+
+                # forward
+                logits = self.net(data)
+                loss = F.cross_entropy(logits, target)
 
             # backward
             self.optimizer.zero_grad()
