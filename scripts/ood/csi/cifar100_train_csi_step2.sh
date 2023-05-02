@@ -12,14 +12,15 @@ PYTHONPATH='.':$PYTHONPATH \
 # --kill-on-bad-exit=1 --job-name=${jobname} \
 # -w SG-IDC1-10-51-2-${node} \
 
+SEED=0
 python main.py \
---config configs/datasets/cifar100/cifar100.yml \
-configs/networks/csi_net.yml \
-configs/pipelines/train/train_csi.yml \
-configs/preprocessors/base_preprocessor.yml \
---network.pretrained True \
---network.checkpoint 'results/cifar100_csi_net_csi_step1_e100_lr0.1/best.ckpt' \
---optimizer.num_epochs 100 \
---dataset.train.batch_size 128 \
---merge_option merge \
---mode csi_step2
+    --config configs/datasets/cifar100/cifar100.yml \
+    configs/networks/csi_net.yml \
+    configs/pipelines/train/train_csi.yml \
+    configs/preprocessors/base_preprocessor.yml \
+    --network.pretrained True \
+    --network.checkpoint ./results/cifar100_csi_net_csi_step1_e100_lr0.1/s${SEED}/best.ckpt \
+    --optimizer.num_epochs 100 \
+    --dataset.train.batch_size 128 \
+    --mode csi_step2 \
+    --seed ${SEED}

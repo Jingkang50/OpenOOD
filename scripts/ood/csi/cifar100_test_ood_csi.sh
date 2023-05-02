@@ -12,12 +12,24 @@ PYTHONPATH='.':$PYTHONPATH \
 #--kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 
 python main.py \
---config configs/datasets/cifar100/cifar100.yml \
-configs/datasets/cifar100/cifar100_ood.yml \
-configs/networks/csi_net.yml \
-configs/pipelines/test/test_ood.yml \
-configs/postprocessors/msp.yml \
-configs/preprocessors/base_preprocessor.yml \
---network.pretrained True \
---network.checkpoint 'results/cifar100_csi_net_csi_step2_e100_lr0.1/best.ckpt' \
---merge_option merge
+    --config configs/datasets/cifar100/cifar100.yml \
+    configs/datasets/cifar100/cifar100_ood.yml \
+    configs/networks/csi_net.yml \
+    configs/pipelines/test/test_ood.yml \
+    configs/postprocessors/msp.yml \
+    configs/preprocessors/base_preprocessor.yml \
+    --network.pretrained True \
+    --network.checkpoint 'results/cifar100_csi_net_csi_step2_e100_lr0.1/s0/best.ckpt' \
+    --merge_option merge
+
+############################################
+# alternatively, we recommend using the
+# new unified, easy-to-use evaluator with
+# the example script scripts/eval_ood.py
+# especially if you want to get results from
+# multiple runs
+python scripts/eval_ood.py \
+    --id-data cifar100 \
+    --root ./results/cifar100_csi_net_csi_step2_e100_lr0.1 \
+    --postprocessor msp \
+    --save-score --save-csv
