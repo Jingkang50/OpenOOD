@@ -1,5 +1,5 @@
 #!/bin/bash
-# sh scripts/uncertainty/regmixup/imagenet_test_ood_msp.sh
+# sh scripts/ood/godin/imagenet_test_ood_godin.sh
 
 ############################################
 # we recommend using the
@@ -10,14 +10,14 @@
 # resnet50
 # ood
 python scripts/eval_ood_imagenet.py \
-   --ckpt-path ./results/imagenet_resnet50_regmixup_e30_lr0.001_alpha10_default/s0/best.ckpt \
+   --ckpt-path ./results/imagenet_godin_net_godin_e30_lr0.001_default/s0/best.ckpt \
    --arch resnet50 \
    --postprocessor msp \
    --save-score --save-csv #--fsood
 
 # full-spectrum ood
 python scripts/eval_ood_imagenet.py \
-   --ckpt-path ./results/imagenet_resnet50_regmixup_e30_lr0.001_alpha10_default/s0/best.ckpt \
+   --ckpt-path ./results/imagenet_godin_net_godin_e30_lr0.001_default/s0/best.ckpt \
    --arch resnet50 \
    --postprocessor msp \
    --save-score --save-csv --fsood

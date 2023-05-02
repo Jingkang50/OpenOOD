@@ -10,14 +10,14 @@
 # resnet50
 # ood
 python scripts/eval_ood_imagenet.py \
-   --ckpt-path ./results/imagenet_resnet50_base_e30_lr0.001_randaugment-2-9/ckpt.pth \
+   --ckpt-path ./results/imagenet_resnet50_base_e30_lr0.001_randaugment-2-9/s0/best.ckpt \
    --arch resnet50 \
    --postprocessor msp \
    --save-score --save-csv #--fsood
 
 # full-spectrum ood
 python scripts/eval_ood_imagenet.py \
-   --ckpt-path ./results/imagenet_resnet50_base_e30_lr0.001_randaugment-2-9/ckpt.pth \
+   --ckpt-path ./results/imagenet_resnet50_base_e30_lr0.001_randaugment-2-9/s0/best.ckpt \
    --arch resnet50 \
    --postprocessor msp \
    --save-score --save-csv --fsood

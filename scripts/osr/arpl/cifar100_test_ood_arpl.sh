@@ -12,14 +12,14 @@
 # --kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 
 # this method needs to load multiple networks, please set the checkpoints in test_pipeling config file
-
+# need to manually change the checkpoint path in test_arpl.yml
 python main.py \
---config configs/datasets/cifar100/cifar100.yml \
-configs/datasets/cifar100/cifar100_ood.yml \
-configs/networks/arpl_net.yml \
-configs/pipelines/test/test_arpl.yml \
-configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/msp.yml \
---network.feat_extract_network.name resnet18_32x32 \
---num_workers 8 \
---mark 0
+    --config configs/datasets/cifar100/cifar100.yml \
+    configs/datasets/cifar100/cifar100_ood.yml \
+    configs/networks/arpl_net.yml \
+    configs/pipelines/test/test_arpl.yml \
+    configs/preprocessors/base_preprocessor.yml \
+    configs/postprocessors/msp.yml \
+    --network.feat_extract_network.name resnet18_32x32 \
+    --num_workers 8 \
+    --seed 0
