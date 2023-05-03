@@ -10,7 +10,7 @@ from tqdm import tqdm
 from openood.evaluators.metrics import compute_all_metrics
 from openood.postprocessors import BasePostprocessor
 
-from .datasets import DATA_INFO, get_id_ood_dataloader
+from .datasets import DATA_INFO, data_setup, get_id_ood_dataloader
 from .postprocessor import get_postprocessor
 from .preprocessor import get_default_preprocessor
 
@@ -78,11 +78,8 @@ class Evaluator:
         if id_name not in DATA_INFO:
             raise ValueError(f'Dataset [{id_name}] is not supported')
 
-        # get data preprocessor
-        if preprocessor is None:
-            preprocessor = get_default_preprocessor(id_name)
-
         # load data
+        data_setup(data_root, id_name)
         loader_kwargs = {
             'batch_size': batch_size,
             'shuffle': shuffle,
@@ -90,6 +87,10 @@ class Evaluator:
         }
         dataloader_dict = get_id_ood_dataloader(id_name, data_root,
                                                 preprocessor, **loader_kwargs)
+
+        # get data preprocessor
+        if preprocessor is None:
+            preprocessor = get_default_preprocessor(id_name)
 
         # get postprocessor
         if postprocessor is None:

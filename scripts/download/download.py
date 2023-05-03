@@ -15,33 +15,45 @@ benchmarks_dict = {
     ],
     'cifar-10': [
         'cifar10', 'cifar100', 'tin', 'mnist', 'svhn', 'texture', 'places365',
-        'cinic10'
+        'cinic10', 'tin597'
     ],
     'cifar-100': [
-        'cifar100', 'cifar10', 'tin', 'cifar100', 'svhn', 'texture',
-        'places365', 'cifar100c'
-    ],
-    'imagenet-1k': [
-        'imagenet_1k', 'species_sub', 'inaturalist', 'imagenet_o',
-        'openimage_o', 'texture', 'mnist', 'imagenet_v2'
+        'cifar100', 'cifar10', 'tin', 'svhn', 'texture', 'places365',
+        'cifar100c', 'tin597'
     ],
     'imagenet_1k': [
-        'imagenet_1k', 'species_sub', 'inaturalist', 'imagenet_o',
-        'openimage_o', 'texture', 'mnist', 'imagenet_v2'
+        'imagenet_1k', 'species_sub', 'imagenet_21k', 'inaturalist', 'places',
+        'sun', 'texture', 'openimage_o', 'imagenet_v2', 'imagenet_c',
+        'imagenet_r'
     ],
-    'misc':
-    ['cifar10c', 'fractals_and_fvis', 'usps', 'imagenet10', 'hannover'],
+    'misc': [
+        'cifar10c',
+        'fractals_and_fvis',
+        'usps',
+        'imagenet10',
+        'hannover',
+        # 'imagenet200_cae', 'imagenet200_edsr', 'imagenet200_stylized'
+    ],
 }
 
 dir_dict = {
     'images_classic/': [
-        'cifar100', 'tin', 'svhn', 'cinic10', 'imagenet10', 'mnist',
+        'cifar100', 'tin', 'tin597', 'svhn', 'cinic10', 'imagenet10', 'mnist',
         'fashionmnist', 'cifar10', 'cifar100c', 'places365', 'cifar10c',
         'fractals_and_fvis', 'usps', 'texture', 'notmnist'
     ],
     'images_largescale/': [
-        'imagenet_1k', 'species_sub', 'inaturalist', 'imagenet_o',
-        'openimage_o', 'imagenet_v2'
+        'imagenet_1k',
+        'species_sub',
+        'imagenet_21k',
+        'inaturalist',
+        'places',
+        'sun',
+        'openimage_o',
+        'imagenet_v2',
+        'imagenet_c',
+        'imagenet_r',
+        # 'imagenet200_cae', 'imagenet200_edsr', 'imagenet200_stylized'
     ],
     'images_medical/': ['actmed', 'bimcv', 'ct', 'hannover', 'xraybone'],
 }
@@ -52,7 +64,11 @@ download_id_dict = {
     'cifar10_res18': '1rPEScK7TFjBn_W_frO-8RSPwIG6_x0fJ',
     'cifar100_res18': '1OOf88A48yXFw4fSU02XQT-3OQKf31Csy',
     'imagenet_res50': '1tgY_PsfkazLDyI1pniDMDEehntBhFyF3',
-    'benchmark_imglist': '1t6-8u7LVsoTKvU8zhK31oOl00udim7wC',
+    'cifar10_res18_v1.5': '1byGeYxM_PlLjT72wZsMQvP6popJeWBgt',
+    'cifar100_res18_v1.5': '1s-1oNrRtmA0pGefxXJOUVRYpaoAML0C-',
+    'imagenet200_res18_v1.5': '1ddVmwc8zmzSjdLUO84EuV4Gz1c7vhIAs',
+    'imagenet_res50_v1.5': '1ToAkpicAlv_PoGZiy-lVU-FhYoSUUd_t',
+    'benchmark_imglist': '1kXO8ESkF2GemrycdWM0sFCKH31731GPp',
     'usps': '1KhbWhlFlpFjEIb4wpvW0s9jmXXsHonVl',
     'cifar100': '1PGKheHUsf29leJPPGuXqzLBMwl8qMF8_',
     'cifar10': '1Co32RiiWe16lTaiOU6JMMnyUYS41IlO1',
@@ -64,16 +80,22 @@ download_id_dict = {
     'mnist': '1CCHAGWqA1KJTFFswuF9cbhmB-j98Y1Sb',
     'fractals_and_fvis': '1EZP8RGOP-XbMsKex3r-BGI5F1WAP_PJ3',
     'tin': '1PZ-ixyx52U989IKsMA2OT-24fToTrelC',
+    'tin597': '1VD2YzQVkPCavnIAPj0Lj22d3wdWchq_P',
     'texture': '1OSz1m3hHfVWbRdmMwKbUzoU8Hg9UKcam',
     'imagenet10': '1qRKp-HCLkmfiWwR-PXthN7-2dxIQVKxP',
     'notmnist': '16ueghlyzunbksnc_ccPgEAloRW9pKO-K',
     'places365': '1Ec-LRSTf6u5vEctKX9vRp9OA6tqnJ0Ay',
-    'imagenet_v2': '1WYWlRgfbl4waD8KZolfxPzOoemfsWyIJ',
+    'places': '1jjKUr7GXqbpgD6zdoHybqcR5xKm0Lv7e',
+    'sun': '1At-L7ixSytXxC7SSPxbJIkvMos41NuUS',
     'species_sub': '1-JCxDx__iFMExkYRMylnGJYTPvyuX6aq',
+    'imagenet_1k': '11hbDGjQrR25FiqXm9ZNO5tJnvPb8QmkQ',
+    'imagenet_21k': '1MYyE1_WmtKcHyIKCilMSFg4q0KX9u5uP',
+    'imagenet_v2': '1WYWlRgfbl4waD8KZolfxPzOoemfsWyIJ',
+    'imagenet_r': '14FHhjv5MzUn7FD8k5CokkbZfhhuyu0qy',
+    'imagenet_c': '1vRp4bkelshSO2d9j8uI48Po2VXkPDOsY',
     'imagenet_o': '1S9cFV7fGvJCcka220-pIO9JPZL1p1V8w',
     'openimage_o': '1VUFXnB_z70uHfdgJG2E_pjYOcEgqM7tE',
     'inaturalist': '1zfLfMvoUD0CUlKNnkk7LgxZZBnTBipdj',
-    'imagenet_1k': '11hbDGjQrR25FiqXm9ZNO5tJnvPb8QmkQ',
     'actmed': '1tibxL_wt6b3BjliPaQ2qjH54Wo4ZXWYb',
     'ct': '1k5OYN4inaGgivJBJ5L8pHlopQSVnhQ36',
     'hannover': '1NmqBDlcA1dZQKOvgcILG0U1Tm6RP0s2N',
@@ -83,7 +105,6 @@ download_id_dict = {
 
 
 def require_download(filename, path):
-
     for item in os.listdir(path):
         if item.startswith(filename) or filename.startswith(
                 item) or path.endswith(filename):
@@ -140,6 +161,11 @@ if __name__ == '__main__':
         args.checkpoints = [
             'mnist_lenet', 'cifar10_res18', 'cifar100_res18', 'imagenet_res50'
         ]
+    elif args.checkpoints[0] == 'ood_v1.5':
+        args.checkpoints = [
+            'cifar10_res18_v1.5', 'cifar100_res18_v1.5',
+            'imagenet200_res18_v1.5', 'imagenet_res50_v1.5'
+        ]
     elif args.checkpoints[0] == 'all':
         args.checkpoints = [
             'mnist_lenet', 'cifar10_res18', 'cifar100_res18', 'imagenet_res50',
@@ -162,7 +188,8 @@ if __name__ == '__main__':
                     zip_file.extractall(store_path)
                 os.remove(file_path)
 
-            if args.dataset_mode == 'default' or args.dataset_mode == 'benchmark':
+            if args.dataset_mode == 'default' or \
+                    args.dataset_mode == 'benchmark':
                 for benchmark in args.datasets:
                     for dataset in benchmarks_dict[benchmark]:
                         download_dataset(dataset, args)
@@ -172,8 +199,10 @@ if __name__ == '__main__':
                     download_dataset(dataset, args)
 
         elif content == 'checkpoints':
-
-            store_path = os.path.join(args.save_dir[1], 'checkpoints/')
+            if 'v1.5' in args.checkpoints[0]:
+                store_path = args.save_dir[1]
+            else:
+                store_path = os.path.join(args.save_dir[1], 'checkpoints/')
             if not os.path.exists(store_path):
                 os.makedirs(store_path)
 
