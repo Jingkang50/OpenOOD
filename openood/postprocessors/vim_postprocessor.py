@@ -15,6 +15,7 @@ class VIMPostprocessor(BasePostprocessor):
     def __init__(self, config):
         super().__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
         self.dim = self.args.dim
         self.setup_flag = False
 
@@ -66,3 +67,9 @@ class VIMPostprocessor(BasePostprocessor):
                           axis=-1) * self.alpha
         score_ood = -vlogit_ood + energy_ood
         return pred, torch.from_numpy(score_ood)
+
+    def set_hyperparam(self, hyperparam: list):
+        self.dim = hyperparam[0]
+
+    def get_hyperparam(self):
+        return self.dim

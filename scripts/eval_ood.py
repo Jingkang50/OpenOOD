@@ -173,7 +173,6 @@ for subfolder in sorted(glob(os.path.join(root, 's*'))):
     # save computed scores
     if args.save_score:
         score_save_root = os.path.join(subfolder, 'scores')
-        print(score_save_root)
         if not os.path.exists(score_save_root):
             os.makedirs(score_save_root)
         with open(os.path.join(score_save_root, f'{postprocessor_name}.pkl'),
