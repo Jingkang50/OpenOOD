@@ -18,8 +18,7 @@ setuptools.setup(
         'torch>=1.13.1', 'torchvision>=0.13', 'scikit-learn', 'json5',
         'matplotlib', 'scipy', 'tqdm', 'pyyaml>=5.4.1', 'pre-commit',
         'opencv-python>=4.4.0.46', 'imgaug>=0.4.0', 'pandas', 'diffdist>=0.1',
-        'torchlars>=0.1.2', 'Cython>=0.29.30', 'faiss-gpu>=1.7.2',
-        'gdown>=4.7.1', 'libmr>=0.1.9'
+        'Cython>=0.29.30', 'faiss-gpu>=1.7.2', 'gdown>=4.7.1', 'libmr>=0.1.9'
     ],
     classifiers=[
         'Programming Language :: Python :: 3',

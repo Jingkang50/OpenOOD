@@ -408,21 +408,21 @@ DATA_INFO = {
 download_id_dict = {
     'cifar10': '1Co32RiiWe16lTaiOU6JMMnyUYS41IlO1',
     'cifar100': '1PGKheHUsf29leJPPGuXqzLBMwl8qMF8_',
-    'imagenet_1k': '11hbDGjQrR25FiqXm9ZNO5tJnvPb8QmkQ',
     'tin': '1PZ-ixyx52U989IKsMA2OT-24fToTrelC',
     'mnist': '1CCHAGWqA1KJTFFswuF9cbhmB-j98Y1Sb',
     'svhn': '1DQfc11HOtB1nEwqS4pWUFp8vtQ3DczvI',
     'texture': '1OSz1m3hHfVWbRdmMwKbUzoU8Hg9UKcam',
     'places365': '1Ec-LRSTf6u5vEctKX9vRp9OA6tqnJ0Ay',
+    'imagenet_1k': '1i1ipLDFARR-JZ9argXd2-0a6DXwVhXEj',
     'species_sub': '1-JCxDx__iFMExkYRMylnGJYTPvyuX6aq',
-    'imagenet_21k': '1MYyE1_WmtKcHyIKCilMSFg4q0KX9u5uP',
+    'imagenet_21k': '1PzkA-WGG8Z18h0ooL_pDdz9cO-DCIouE',
     'inaturalist': '1zfLfMvoUD0CUlKNnkk7LgxZZBnTBipdj',
-    'places': '1jjKUr7GXqbpgD6zdoHybqcR5xKm0Lv7e',
-    'sun': '1At-L7ixSytXxC7SSPxbJIkvMos41NuUS',
+    'places': '1fZ8TbPC4JGqUCm-VtvrmkYxqRNp2PoB3',
+    'sun': '1ISK0STxWzWmg-_uUr4RQ8GSLFW7TZiKp',
     'openimage_o': '1VUFXnB_z70uHfdgJG2E_pjYOcEgqM7tE',
-    'imagenet_v2': '1WYWlRgfbl4waD8KZolfxPzOoemfsWyIJ',
-    'imagenet_r': '14FHhjv5MzUn7FD8k5CokkbZfhhuyu0qy',
-    'imagenet_c': '1vRp4bkelshSO2d9j8uI48Po2VXkPDOsY',
+    'imagenet_v2': '1akg2IiE22HcbvTBpwXQoD7tgfPCdkoho',
+    'imagenet_r': '1EzjMN2gq-bVV7lg-MEAdeuBuz-7jbGYU',
+    'imagenet_c': '1JeXL9YH4BO8gCJ631c5BHbaSsl-lekHt',
     'benchmark_imglist': '1kXO8ESkF2GemrycdWM0sFCKH31731GPp'
 }
 
@@ -459,7 +459,8 @@ benchmarks_dict = {
     ],
     'imagenet': [
         'imagenet_1k', 'species_sub', 'imagenet_21k', 'inaturalist', 'places',
-        'sun', 'openimage_o', 'imagenet_v2', 'imagenet_c', 'imagenet_r'
+        'sun', 'openimage_o', 'texture', 'imagenet_v2', 'imagenet_c',
+        'imagenet_r'
     ],
 }
 
