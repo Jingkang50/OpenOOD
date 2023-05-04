@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://papers.nips.cc/paper_files/paper/2020/hash/d85b63ef0ccb114d0a3bb7b7d808028f-Abstract.html>RandAugment</a>",
+  "Postprocessor": "<a href=https://openreview.net/forum?id=Hkg4TI9xl>MSP</a>",
+  "Near-OOD_AUROC": "73.81",
+  "Far-OOD_AUROC": "83.46",
+  "ID_Accuracy": "76.9",
+  "Outlier_Data": "No",
+  "Arch": "resnet50",
+  "Additional_Description": "finetuned 30 epochs",
+  "ID_Accuracy_Mean": "76.9",
+  "Near-OOD_AUROC_Mean": "73.81",
+  "Far-OOD_AUROC_Mean": "83.46",
+  "Rank": 19
+}

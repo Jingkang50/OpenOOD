@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://arxiv.org/pdf/2103.00953.pdf>ARPL</a>",
+  "Postprocessor": "<a href=https://arxiv.org/pdf/2103.00953.pdf>ARPL</a>",
+  "Near-OOD_AUROC": "73.69",
+  "Far-OOD_AUROC": "83.84",
+  "ID_Accuracy": "75.87",
+  "Outlier_Data": "No",
+  "Arch": "resnet50",
+  "Additional_Description": "finetuned 30 epochs",
+  "ID_Accuracy_Mean": "75.87",
+  "Near-OOD_AUROC_Mean": "73.69",
+  "Far-OOD_AUROC_Mean": "83.84",
+  "Rank": 22
+}

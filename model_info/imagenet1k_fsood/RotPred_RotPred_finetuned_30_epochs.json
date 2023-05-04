@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://papers.nips.cc/paper/2019/hash/a2b15837edac15df90721968986f7f8e-Abstract.html>RotPred</a>",
+  "Postprocessor": "<a href=https://papers.nips.cc/paper/2019/hash/a2b15837edac15df90721968986f7f8e-Abstract.html>RotPred</a>",
+  "Near-OOD_AUROC": "56.34",
+  "Far-OOD_AUROC": "70.11",
+  "ID_Accuracy": "54.59",
+  "Outlier_Data": "No",
+  "Arch": "resnet50",
+  "Additional_Description": "finetuned 30 epochs",
+  "ID_Accuracy_Mean": "54.59",
+  "Near-OOD_AUROC_Mean": "56.34",
+  "Far-OOD_AUROC_Mean": "70.11",
+  "Rank": 37
+}
