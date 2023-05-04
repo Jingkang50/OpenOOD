@@ -33,14 +33,14 @@ LogitNorm,RMDS,60.29 ± 0.57,59.46 ± 0.68,44.20 ± 0.02,No,ResNet18,90 epochs
 LogitNorm,ASH,49.08 ± 1.46,47.81 ± 1.75,44.20 ± 0.02,No,ResNet18,90 epochs
 CIDER,KNN,49.91 ± 1.61,66.70 ± 2.04,/,No,ResNet18,90 epochs
 NPOS,KNN,50.37 ± 0.47,78.01 ± 0.37,/,No,ResNet18,90 epochs
-OE,MSP,55.34 ± 0.28,61.17 ± 0.33,44.29 ± 0.10,No,ResNet18,90 epochs
-OE,RMDS,62.45 ± 0.19,71.42 ± 0.14,44.29 ± 0.10,No,ResNet18,90 epochs
-OE,ASH,52.50 ± 0.54,56.10 ± 0.69,44.29 ± 0.10,No,ResNet18,90 epochs
-MCD,MCD,57.36 ± 0.15,65.87 ± 0.46,43.95 ± 0.13,No,ResNet18,90 epochs
-UDG,MSP,50.81 ± 2.13,66.41 ± 3.18,33.26 ± 1.35,No,ResNet18,90 epochs
-MixOE,MSP,49.78 ± 0.27,61.08 ± 0.56,42.97 ± 0.08,No,ResNet18,90 epochs
-MixOE,RMDS,56.87 ± 0.75,66.76 ± 1.06,42.97 ± 0.08,No,ResNet18,90 epochs
-MixOE,ASH,50.45 ± 1.70,70.52 ± 0.08,42.97 ± 0.08,No,ResNet18,90 epochs
+OE,MSP,55.34 ± 0.28,61.17 ± 0.33,44.29 ± 0.10,Yes,ResNet18,90 epochs
+OE,RMDS,62.45 ± 0.19,71.42 ± 0.14,44.29 ± 0.10,Yes,ResNet18,90 epochs
+OE,ASH,52.50 ± 0.54,56.10 ± 0.69,44.29 ± 0.10,Yes,ResNet18,90 epochs
+MCD,MCD,57.36 ± 0.15,65.87 ± 0.46,43.95 ± 0.13,Yes,ResNet18,90 epochs
+UDG,MSP,50.81 ± 2.13,66.41 ± 3.18,33.26 ± 1.35,Yes,ResNet18,90 epochs
+MixOE,MSP,49.78 ± 0.27,61.08 ± 0.56,42.97 ± 0.08,Yes,ResNet18,90 epochs
+MixOE,RMDS,56.87 ± 0.75,66.76 ± 1.06,42.97 ± 0.08,Yes,ResNet18,90 epochs
+MixOE,ASH,50.45 ± 1.70,70.52 ± 0.08,42.97 ± 0.08,Yes,ResNet18,90 epochs
 RandAugment,MSP,52.97 ± 0.10,67.46 ± 0.25,45.85 ± 0.03,No,ResNet18,90 epochs
 RandAugment,RMDS,60.24 ± 0.19,68.98 ± 0.39,45.85 ± 0.03,No,ResNet18,90 epochs
 RandAugment,ASH,52.27 ± 0.45,76.90 ± 0.16,45.85 ± 0.03,No,ResNet18,90 epochs

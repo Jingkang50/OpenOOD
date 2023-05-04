@@ -4,7 +4,7 @@
   "Near-OOD_AUROC": "57.36 \u00b1 0.15",
   "Far-OOD_AUROC": "65.87 \u00b1 0.46",
   "ID_Accuracy": "43.95 \u00b1 0.13",
-  "Outlier_Data": "No",
+  "Outlier_Data": "Yes",
   "Arch": "ResNet18",
   "Additional_Description": "90 epochs",
   "ID_Accuracy_Mean": "43.95",
