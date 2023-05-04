@@ -18,9 +18,9 @@
             <td class = "ranktd">{{ model.Rank }}</td>
             <td class = "trainingtd">{{ model.Training }}</td>
             <td class = "pptd">{{ model.Postprocessor }}</td>
-            <td class = "idtd">{{ model['ID_Accuracy_Mean'] }}</td>
             <td class = "notd">{{ model['Near-OOD_AUROC_Mean'] }}</td>
             <td class = "fotd" >{{ model['Far-OOD_AUROC_Mean'] }}</td>
+            <td class = "idtd">{{ model['ID_Accuracy_Mean'] }}</td>
             <td class = "datatd">{{ "&#x2713;" if model['Outlier_Data'] == "Yes" else "&#x2717;" }}</td>
             <td class = "archtd">{{ model.Arch }}</td>
             <td class = "desctd">{{ model.Additional_Description }}</td>
