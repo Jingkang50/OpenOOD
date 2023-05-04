@@ -1,7 +1,0 @@
-postprocessor:
-  name: ensemble
-  postprocessor_args:
-    network_name: lenet
-    checkpoint_root: ./results/lenet_ensemble_pretrained
-    checkpoints: [net1, net2, net3, net4, net5]
-    num_networks: 5  # number of networks to ensembel

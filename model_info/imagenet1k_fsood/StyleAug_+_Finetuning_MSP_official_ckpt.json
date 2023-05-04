@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://openreview.net/forum?id=Bygh9j09KX&source=techstories.org>StyleAug</a> + Finetuning",
+  "Postprocessor": "<a href=https://openreview.net/forum?id=Hkg4TI9xl>MSP</a>",
+  "Near-OOD_AUROC": "59.53",
+  "Far-OOD_AUROC": "71.48",
+  "ID_Accuracy": "55.68",
+  "Outlier_Data": "No",
+  "Arch": "ResNet50",
+  "Additional_Description": "official ckpt",
+  "ID_Accuracy_Mean": "55.68",
+  "Near-OOD_AUROC_Mean": "59.53",
+  "Far-OOD_AUROC_Mean": "71.48",
+  "Rank": 15
+}

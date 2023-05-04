@@ -1,6 +1,0 @@
-postprocessor:
-  name: dropout
-  APS_mode: False
-  postprocessor_args:
-    dropout_p: 0.5
-    dropout_times: 5
