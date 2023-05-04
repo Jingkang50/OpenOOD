@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://openaccess.thecvf.com/content_cvpr_2016/papers/Bendale_Towards_Open_Set_CVPR_2016_paper.pdf>OpenMax</a>",
+  "Near-OOD_AUROC": "72.36",
+  "Far-OOD_AUROC": "84.78",
+  "ID_Accuracy": "81.14",
+  "Outlier_Data": "No",
+  "Arch": "vit-b-16",
+  "Additional_Description": "torchvision checkpoint",
+  "ID_Accuracy_Mean": "81.14",
+  "Near-OOD_AUROC_Mean": "72.36",
+  "Far-OOD_AUROC_Mean": "84.78",
+  "Rank": 31
+}

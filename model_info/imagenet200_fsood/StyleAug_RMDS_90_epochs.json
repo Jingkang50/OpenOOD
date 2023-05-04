@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://openreview.net/forum?id=Bygh9j09KX&source=techstories.org>StyleAug</a>",
+  "Postprocessor": "<a href=https://arxiv.org/abs/2106.09022>RMDS</a>",
+  "Near-OOD_AUROC": "59.97 \u00b1 0.63",
+  "Far-OOD_AUROC": "65.74 \u00b1 1.24",
+  "ID_Accuracy": "48.42 \u00b1 0.13",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "48.42",
+  "Near-OOD_AUROC_Mean": "59.97",
+  "Far-OOD_AUROC_Mean": "65.74",
+  "Rank": 7
+}

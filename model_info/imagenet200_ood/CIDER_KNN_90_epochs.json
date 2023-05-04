@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://openreview.net/forum?id=aEFaE0W5pAd>CIDER</a>",
+  "Postprocessor": "<a href=https://proceedings.mlr.press/v162/sun22d.html>KNN</a>",
+  "Near-OOD_AUROC": "78.82 \u00b1 1.93",
+  "Far-OOD_AUROC": "90.20 \u00b1 1.46",
+  "ID_Accuracy": "/",
+  "Outlier_Data": "No",
+  "Arch": "resnet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": NaN,
+  "Near-OOD_AUROC_Mean": "78.82",
+  "Far-OOD_AUROC_Mean": "90.20",
+  "Rank": 42
+}

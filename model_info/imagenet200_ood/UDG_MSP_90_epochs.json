@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://openaccess.thecvf.com/content/ICCV2021/html/Yang_Semantically_Coherent_Out-of-Distribution_Detection_ICCV_2021_paper.html>UDG</a>",
+  "Postprocessor": "<a href=https://openreview.net/forum?id=Hkg4TI9xl>MSP</a>",
+  "Near-OOD_AUROC": "72.99 \u00b1 1.54",
+  "Far-OOD_AUROC": "83.79 \u00b1 2.22",
+  "ID_Accuracy": "68.11 \u00b1 1.24",
+  "Outlier_Data": "No",
+  "Arch": "resnet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "68.11",
+  "Near-OOD_AUROC_Mean": "72.99",
+  "Far-OOD_AUROC_Mean": "83.79",
+  "Rank": 52
+}

@@ -1,0 +1,68 @@
+Training,Postprocessor,Near-OOD_AUROC,Far-OOD_AUROC,ID_Accuracy,Outlier_Data,Arch,Additional_Description
+CrossEntropy,OpenMax,71.45,87.18,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,MSP,73.64,83.58,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,TempScale,74.32,85.71,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,ODIN,71.71,87.93,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,MDS,53.29,65.27,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,MDSEns,48.1,58.75,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,RMDS,74.99,81.26,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,Gram,59.97,75.01,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,EBO,72.03,87.79,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,GradNorm,73.85,89.38,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,ReAct,75.33,93.07,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,MLS,72.67,87.85,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,KLM,73.0,84.6,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,VIM,67.15,88.26,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,KNN,68.42,85.89,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,DICE,70.69,89.46,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,RankFeat,46.0,59.74,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,ASH,76.21,94.2,76.18,No,resnet50,torchvision checkpoint
+CrossEntropy,SHE,73.5,90.15,76.18,No,resnet50,torchvision checkpoint
+ConfBranch,ConfBranch,67.08,83.46,75.63,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+RotPred,RotPred,73.7,86.25,76.55,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+G-ODIN,G-ODIN,66.08,83.83,74.85,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+ARPL,ARPL,73.69,83.84,75.87,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+MOS,MOS,75.79,82.91,72.81,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+LogitNorm,MSP,70.26,89.84,76.45,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+LogitNorm,ASH,53.72,72.31,76.45,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+CIDER,KNN,64.35,87.68,/,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+RandAugment,MSP,73.81,83.46,76.9,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+RandAugment,ASH,78.16,93.68,76.9,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+StyleAug + Finetuning,MSP,74.03,84.19,76.75,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+StyleAug + Finetuning,ASH,78.22,92.44,76.75,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+AugMix,MSP,74.52,84.89,77.63,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+AugMix,ASH,80.33,94.42,77.63,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+RegMixup,MSP,74.05,84.33,76.68,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+RegMixup,ASH,77.17,93.42,76.68,No,resnet50,finetuned 30 epochs from torchvision checkpoint
+CrossEntropy,OpenMax,74.63,84.18,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,MSP,73.63,84.1,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,TempScale,73.8,84.35,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,ODIN,69.95,71.03,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,MDS,70.03,88.01,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,RMDS,73.85,89.18,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,EBO,70.23,77.58,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,GradNorm,52.2,34.01,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,ReAct,70.49,85.1,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,MLS,72.55,81.58,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,KLM,71.86,85.73,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,VIM,69.68,88.32,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,KNN,64.81,85.19,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,DICE,43.34,59.55,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,ASH,45.6,44.46,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,SHE,75.74,79.9,81.59,No,swin-t,torchvision checkpoint
+CrossEntropy,OpenMax,72.36,84.78,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,MSP,70.98,83.88,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,TempScale,70.65,83.99,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,ODIN,65.64,72.97,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,MDS,74.54,89.42,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,RMDS,75.92,89.77,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,EBO,60.36,75.11,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,GradNorm,43.9,40.21,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,ReAct,64.64,82.71,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,MLS,66.13,80.39,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,KLM,70.32,85.17,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,VIM,72.91,88.25,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,KNN,68.47,87.33,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,DICE,62.34,76.53,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,ASH,53.81,52.38,81.14,No,vit-b-16,torchvision checkpoint
+CrossEntropy,SHE,73.05,86.94,81.14,No,vit-b-16,torchvision checkpoint

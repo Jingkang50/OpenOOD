@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://arxiv.org/abs/2106.09022>RMDS</a>",
+  "Near-OOD_AUROC": "82.17 \u00b1 0.25",
+  "Far-OOD_AUROC": "89.01 \u00b1 0.28",
+  "ID_Accuracy": "86.37 \u00b1 0.08",
+  "Outlier_Data": "No",
+  "Arch": "resnet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "86.37",
+  "Near-OOD_AUROC_Mean": "82.17",
+  "Far-OOD_AUROC_Mean": "89.01",
+  "Rank": 5
+}

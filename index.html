@@ -113,7 +113,7 @@
             </div>
             <p>
               Up-to-date leaderboard based <br />
-              on 30+ methods
+              on 35+ methods
             </p>
           </div>
           <div class="element">
@@ -128,29 +128,32 @@
       </div>
       <div class="details">
         <div class="box usage">
-          <p>Open Models</p>
+          <p>Light-weight Evaluator</p>
           <div class="divider">
             <hr />
           </div>
-          Check out the
-          <a href="https://github.com/OpenOOD/OpenOOD#Open-Models">available models</a>
-          and our
-          <a href="https://github.com/OpenOOD/OpenOOD#notebooks">Colab tutorials</a>.
+          Check out our
+          <a href="https://github.com/Jingkang50/OpenOOD/blob/main/example_imagenet_eval.ipynb">tutorial</a>.
           <div class="codeblock">
             <div class="vspace10"></div>
             <div style="background: #ffffff; overflow:auto;width:auto;padding:.2em .6em;">
-              <pre style="margin: 0; line-height: 125%"><span style="color: #888888"># !pip install git+https://github.com/OpenOOD/OpenOOD@v0.2.1</span>
-<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">OpenOOD.utils</span> <span style="color: #008800; font-weight: bold">import</span> load_model
-<span style="color: #888888"># Load a model from the Open Models</span>
-model <span style="color: #333333">=</span> load_model(model_name<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Rebuffi2021Fixing_70_16_cutmix_extra&#39;</span>,
-                   dataset<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;cifar10&#39;</span>,
-                   threat_model<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Linf&#39;</span>)
+              <pre style="margin: 0; line-height: 125%"><span style="color: #888888"># !pip install git+https://github.com/Jingkang50/OpenOOD.git</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">openood.evaluation_api</span> <span style="color: #008800; font-weight: bold">import</span> Evaluator
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">openood.networks</span> <span style="color: #008800; font-weight: bold">import</span> ResNet50
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">torchvision.models</span> <span style="color: #008800; font-weight: bold">import</span> ResNet50_Weights
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">torch.hub</span> <span style="color: #008800; font-weight: bold">import</span> load_state_dict_from_url
 
-<span style="color: #888888"># Evaluate the OOD of the model using AutoAttack</span>
-<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">OpenOOD.eval</span> <span style="color: #008800; font-weight: bold">import</span> benchmark
-clean_acc, near_ood_auroc, far_ood_auroc <span style="color: #333333">=</span> benchmark(model,
-                                  dataset<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;cifar10&#39;</span>,
-                                  threat_model<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Linf&#39;</span>)
+<span style="color: #888888"># Load an ImageNet-pretrained model from torchvision</span>
+net <span style="color: #333333">=</span> ResNet50()
+weights <span style="color: #333333">=</span> ResNet50_Weights.IMAGENET1K_V1
+net.load_state_dict(load_state_dict_from_url(weights.url))
+preprocessor <span style="color: #333333">=</span> weights.transforms()
+net.eval(); net.cuda()
+
+<span style="color: #888888"># Initialize an evaluator and evaluate</span>
+evaluator <span style="color: #333333">=</span> Evaluator(net, id_name<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;imagenet&#39;</span>, 
+    preprocessor<span style="color: #333333">=</span>preprocessor, postprocessor_name<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;msp&#39;</span>)
+metrics <span style="color: #333333">=</span> evaluator.eval_ood()
 </pre>
             </div>
 
@@ -197,7 +200,10 @@ clean_acc, near_ood_auroc, far_ood_auroc <span style="color: #333333">=</span> b
       </div>
       <a class="btn btn-secondary" href="#div_cifar10_heading">CIFAR-10</a>
       <a class="btn btn-secondary" href="#div_cifar100_heading">CIFAR-100</a>
-      <a class="btn btn-secondary" href="#div_imagenet_heading">ImageNet</a>
+      <a class="btn btn-secondary" href="#div_imagenet200_heading">ImageNet-200</a>
+      <a class="btn btn-secondary" href="#div_imagenet200_fs_heading">ImageNet-200 (full-spectrum)</a>
+      <a class="btn btn-secondary" href="#div_imagenet1k_heading">ImageNet-1K</a>
+      <a class="btn btn-secondary" href="#div_imagenet1k_fs_heading">ImageNet-1K (full-spectrum)</a>
     </div>
 
 
@@ -249,10 +255,61 @@ clean_acc, near_ood_auroc, far_ood_auroc <span style="color: #333333">=</span> b
       </div>
     </section>
 
-    <section class="container" id="div_imagenet_heading">
+    <section class="container" id="div_imagenet200_heading">
+        <div class="heading">
+          <p>
+            Leaderboard: ImageNet-200
+          </p>
+        </div>
+  
+        <p class="doublealign">
+          <ul>
+             <li>  <strong>Near(Hard)-OOD:</strong> 
+             Species, ImageNet-21K 
+             </li>
+             <li>  <strong>Far(Easy)-OOD:</strong> 
+              iNaturalist, Places, SUN, Textures, OpenImage-O
+              </li>
+              Methods are ranked according to near-OOD AUROC by default. Unless otherwise stated, the results are averaged over 3 independent training runs.
+          </ul>
+  
+        </p>
+  
+        <div id="div_imagenet200">
+        </div>
+      </section>
+  
+      <section class="container" id="div_imagenet200_fs_heading">
+          <div class="heading">
+            <p>
+              Leaderboard: ImageNet-200 (full-spectrum)
+            </p>
+          </div>
+    
+          <p class="doublealign">
+            <ul>
+               <li>  <strong>Covariate-shifted ID (Non-semantic OOD):</strong> 
+               ImageNet-V2, ImageNet-C, ImageNet-R 
+               </li>
+               <li>  <strong>Near(Hard)-OOD:</strong> 
+               Species, ImageNet-21K 
+               </li>
+               <li>  <strong>Far(Easy)-OOD:</strong> 
+                iNaturalist, Places, SUN, Textures, OpenImage-O
+                </li>
+                Methods are ranked according to near-OOD AUROC by default. Unless otherwise stated, the results are averaged over 3 independent training runs.
+            </ul>
+    
+          </p>
+    
+          <div id="div_imagenet200_fs">
+          </div>
+      </section>
+
+    <section class="container" id="div_imagenet1k_heading">
       <div class="heading">
         <p>
-          Leaderboard: ImageNet
+          Leaderboard: ImageNet-1K
         </p>
       </div>
 
@@ -269,8 +326,35 @@ clean_acc, near_ood_auroc, far_ood_auroc <span style="color: #333333">=</span> b
 
       </p>
 
-      <div id="div_imagenet">
+      <div id="div_imagenet1k">
       </div>
+    </section>
+
+    <section class="container" id="div_imagenet1k_fs_heading">
+        <div class="heading">
+          <p>
+            Leaderboard: ImageNet-1K (full-spectrum)
+          </p>
+        </div>
+  
+        <p class="doublealign">
+          <ul>
+             <li>  <strong>Covariate-shifted ID (Non-semantic OOD):</strong> 
+             ImageNet-V2, ImageNet-C, ImageNet-R 
+             </li>
+             <li>  <strong>Near(Hard)-OOD:</strong> 
+             Species, ImageNet-21K 
+             </li>
+             <li>  <strong>Far(Easy)-OOD:</strong> 
+              iNaturalist, Places, SUN, Textures, OpenImage-O
+              </li>
+              Methods are ranked according to near-OOD AUROC by default.
+          </ul>
+  
+        </p>
+  
+        <div id="div_imagenet1k_fs">
+        </div>
     </section>
 
     <div class="vspace30"></div>
@@ -327,12 +411,11 @@ clean_acc, near_ood_auroc, far_ood_auroc <span style="color: #333333">=</span> b
           </div>
           We welcome any contribution in terms of both new methods and
           application scenarios. Please check
-          <a href="https://github.com/OpenOOD/OpenOOD#how-to-contribute">here</a>
+          <a href="https://github.com/Jingkang50/OpenOOD#how-to-contribute">here</a>
           for more details.
           <br />
           <br />
-          Feel free to contact us at
-          <a href="mailto:openood@googlegroups.com">openood@googlegroups.com</a>
+          Feel free to leave a message by either opening an issue or discussion in our github repo.
         </div>
         <div class="box2">
           <p>Maintainers</p>
@@ -394,6 +477,9 @@ clean_acc, near_ood_auroc, far_ood_auroc <span style="color: #333333">=</span> b
   <script>
     $("#div_cifar10").load("./html_outputs/cifar10.html");
     $("#div_cifar100").load("./html_outputs/cifar100.html");
-    $("#div_imagenet").load("./html_outputs/imagenet.html");
+    $("#div_imagenet200").load("./html_outputs/imagenet200_ood.html");
+    $("#div_imagenet200_fs").load("./html_outputs/imagenet200_fsood.html");
+    $("#div_imagenet1k").load("./html_outputs/imagenet1k_ood.html");
+    $("#div_imagenet1k_fs").load("./html_outputs/imagenet1k_fsood.html");
   </script>
 </body>

@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://proceedings.mlr.press/v162/hendrycks22a.html>KLM</a>",
+  "Near-OOD_AUROC": "79.02 \u00b1 0.19",
+  "Far-OOD_AUROC": "88.61 \u00b1 0.03",
+  "ID_Accuracy": "86.37 \u00b1 0.08",
+  "Outlier_Data": "No",
+  "Arch": "resnet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "86.37",
+  "Near-OOD_AUROC_Mean": "79.02",
+  "Far-OOD_AUROC_Mean": "88.61",
+  "Rank": 40
+}

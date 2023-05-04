@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://papers.nips.cc/paper/2021/hash/063e26c670d07bb7c4d30e6fc69fe056-Abstract.html>GradNorm</a>",
+  "Near-OOD_AUROC": "47.82",
+  "Far-OOD_AUROC": "44.28",
+  "ID_Accuracy": "61.49",
+  "Outlier_Data": "No",
+  "Arch": "vit-b-16",
+  "Additional_Description": "torchvision checkpoint",
+  "ID_Accuracy_Mean": "61.49",
+  "Near-OOD_AUROC_Mean": "47.82",
+  "Far-OOD_AUROC_Mean": "44.28",
+  "Rank": 61
+}

@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://openreview.net/forum?id=HyxCxhRcY7>OE</a>",
+  "Postprocessor": "<a href=https://arxiv.org/abs/2106.09022>RMDS</a>",
+  "Near-OOD_AUROC": "80.53 \u00b1 0.05",
+  "Far-OOD_AUROC": "86.55 \u00b1 0.15",
+  "ID_Accuracy": "85.82 \u00b1 0.21",
+  "Outlier_Data": "No",
+  "Arch": "resnet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "85.82",
+  "Near-OOD_AUROC_Mean": "80.53",
+  "Far-OOD_AUROC_Mean": "86.55",
+  "Rank": 21
+}

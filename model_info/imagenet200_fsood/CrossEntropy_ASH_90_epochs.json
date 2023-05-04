@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://openreview.net/forum?id=ndYXTEL6cZz>ASH</a>",
+  "Near-OOD_AUROC": "52.88 \u00b1 0.70",
+  "Far-OOD_AUROC": "73.63 \u00b1 1.06",
+  "ID_Accuracy": "43.92 \u00b1 0.12",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "43.92",
+  "Near-OOD_AUROC_Mean": "52.88",
+  "Far-OOD_AUROC_Mean": "73.63",
+  "Rank": 26
+}

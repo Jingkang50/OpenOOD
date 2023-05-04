@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://openreview.net/forum?id=5j6fWcPccO>RegMixup</a>",
+  "Postprocessor": "<a href=https://openreview.net/forum?id=Hkg4TI9xl>MSP</a>",
+  "Near-OOD_AUROC": "87.47 \u00b1 0.49",
+  "Far-OOD_AUROC": "90.25 \u00b1 1.90",
+  "ID_Accuracy": "95.75 \u00b1 0.15",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "100 epochs",
+  "ID_Accuracy_Mean": "95.75",
+  "Near-OOD_AUROC_Mean": "87.47",
+  "Far-OOD_AUROC_Mean": "90.25",
+  "Rank": 28
+}

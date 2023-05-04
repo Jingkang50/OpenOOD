@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://openreview.net/forum?id=TW7d65uYu5M>VOS</a>",
+  "Postprocessor": "<a href=https://openreview.net/forum?id=Hkg4TI9xl>MSP</a>",
+  "Near-OOD_AUROC": "81.08 \u00b1 0.11",
+  "Far-OOD_AUROC": "90.25 \u00b1 0.10",
+  "ID_Accuracy": "86.23 \u00b1 0.19",
+  "Outlier_Data": "No",
+  "Arch": "resnet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "86.23",
+  "Near-OOD_AUROC_Mean": "81.08",
+  "Far-OOD_AUROC_Mean": "90.25",
+  "Rank": 15
+}
