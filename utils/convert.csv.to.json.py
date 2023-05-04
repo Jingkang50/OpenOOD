@@ -29,9 +29,11 @@ def csv_to_multiple_json_files(input_csv_file, output_root):
     #}
     
     # Extract the first float value from the strings in the "NearOOD AUROC" and "FarOOD AUROC" columns
-    df["ID_Accuracy_Mean"] = df["ID_Accuracy"].str.extract(r"(\d+\.\d+)", expand=False)
-    df["Near-OOD_AUROC_Mean"] = df["Near-OOD_AUROC"].str.extract(r"(\d+\.\d+)", expand=False)
-    df["Far-OOD_AUROC_Mean"] = df["Far-OOD_AUROC"].str.extract(r"(\d+\.\d+)", expand=False)
+    df["ID_Accuracy_Mean"] = df["ID_Accuracy"].str.extract(r"(\d+\.\d+)", expand=False).apply(float).apply('{:.2f}'.format)
+    df["ID_Accuracy_Mean"] = df["ID_Accuracy_Mean"].fillna('/')
+    df["ID_Accuracy_Mean"] = df["ID_Accuracy_Mean"].replace('nan', '/')
+    df["Near-OOD_AUROC_Mean"] = df["Near-OOD_AUROC"].str.extract(r"(\d+\.\d+)", expand=False).apply(float).apply('{:.2f}'.format)
+    df["Far-OOD_AUROC_Mean"] = df["Far-OOD_AUROC"].str.extract(r"(\d+\.\d+)", expand=False).apply(float).apply('{:.2f}'.format)
 
     # Rank methods according to NearOOD AUROC by default
     df["Rank"] = df["Near-OOD_AUROC_Mean"].rank(ascending=False, method='first').astype(int)
