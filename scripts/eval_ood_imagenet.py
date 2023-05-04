@@ -54,7 +54,8 @@ if not args.tvs_pretrained:
     root = '/'.join(args.ckpt_path.split('/')[:-1])
 else:
     root = os.path.join(
-        f'../results/imagenet_{args.arch}_tvsv{args.tvs_version}_base_default')
+        ROOT_DIR, 'results',
+        f'imagenet_{args.arch}_tvsv{args.tvs_version}_base_default')
     if not os.path.exists(root):
         os.makedirs(root)
 
