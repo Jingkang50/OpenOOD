@@ -5,7 +5,7 @@
   "Far-OOD_AUROC": "80.39",
   "ID_Accuracy": "81.14",
   "Outlier_Data": "No",
-  "Arch": "vit-b-16",
+  "Arch": "ViT-B/16",
   "Additional_Description": "torchvision ckpt",
   "ID_Accuracy_Mean": "81.14",
   "Near-OOD_AUROC_Mean": "66.13",

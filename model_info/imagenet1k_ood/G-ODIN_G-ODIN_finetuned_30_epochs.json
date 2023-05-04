@@ -5,7 +5,7 @@
   "Far-OOD_AUROC": "83.83",
   "ID_Accuracy": "74.85",
   "Outlier_Data": "No",
-  "Arch": "resnet50",
+  "Arch": "ResNet50",
   "Additional_Description": "finetuned 30 epochs",
   "ID_Accuracy_Mean": "74.85",
   "Near-OOD_AUROC_Mean": "66.08",

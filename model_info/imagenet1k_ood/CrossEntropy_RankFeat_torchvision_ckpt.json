@@ -5,7 +5,7 @@
   "Far-OOD_AUROC": "59.74",
   "ID_Accuracy": "76.18",
   "Outlier_Data": "No",
-  "Arch": "resnet50",
+  "Arch": "ResNet50",
   "Additional_Description": "torchvision ckpt",
   "ID_Accuracy_Mean": "76.18",
   "Near-OOD_AUROC_Mean": "46.00",
