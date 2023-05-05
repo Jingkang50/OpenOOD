@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://openreview.net/forum?id=Hkg4TI9xl>MSP</a>",
+  "Near-OOD_AUROC": "58.42",
+  "Far-OOD_AUROC": "70.18",
+  "ID_Accuracy": "54.35",
+  "Outlier_Data": "No",
+  "Arch": "ResNet50",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "54.35",
+  "Near-OOD_AUROC_Mean": "58.42",
+  "Far-OOD_AUROC_Mean": "70.18",
+  "Rank": 25
+}

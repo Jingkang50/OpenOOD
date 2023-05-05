@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://proceedings.mlr.press/v162/sun22d.html>KNN</a>",
+  "Near-OOD_AUROC": "68.42",
+  "Far-OOD_AUROC": "85.89",
+  "ID_Accuracy": "76.18",
+  "Outlier_Data": "No",
+  "Arch": "ResNet50",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "76.18",
+  "Near-OOD_AUROC_Mean": "68.42",
+  "Far-OOD_AUROC_Mean": "85.89",
+  "Rank": 47
+}

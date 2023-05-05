@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://papers.nips.cc/paper/2021/hash/01894d6f048493d2cacde3c579c315a3-Abstract.html>ReAct</a>",
+  "Near-OOD_AUROC": "58.48",
+  "Far-OOD_AUROC": "82.11",
+  "ID_Accuracy": "54.35",
+  "Outlier_Data": "No",
+  "Arch": "ResNet50",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "54.35",
+  "Near-OOD_AUROC_Mean": "58.48",
+  "Far-OOD_AUROC_Mean": "82.11",
+  "Rank": 23
+}
