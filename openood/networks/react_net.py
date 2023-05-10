@@ -7,14 +7,16 @@ class ReactNet(nn.Module):
         self.backbone = backbone
 
     def forward(self, x, return_feature=False, return_feature_list=False):
-        return self.backbone(x, return_feature, return_feature_list)
+        try:
+            return self.backbone(x, return_feature, return_feature_list)
+        except TypeError:
+            return self.backbone(x, return_feature)
 
     def forward_threshold(self, x, threshold):
-        _, feature_list = self.backbone(x, return_feature_list=True)
-        feature = feature_list[-1]
+        _, feature = self.backbone(x, return_feature=True)
         feature = feature.clip(max=threshold)
         feature = feature.view(feature.size(0), -1)
-        logits_cls = self.backbone.fc(feature)
+        logits_cls = self.backbone.get_fc_layer()(feature)
         return logits_cls
 
     def get_fc(self):

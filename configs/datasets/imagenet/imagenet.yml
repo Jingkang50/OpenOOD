@@ -17,17 +17,17 @@ dataset:
     dataset_class: ImglistDataset
     data_dir: ./data/images_largescale/
     imglist_pth: ./data/benchmark_imglist/imagenet/train_imagenet.txt
-    batch_size: 32
+    batch_size: 128
     shuffle: True
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images_largescale/
     imglist_pth: ./data/benchmark_imglist/imagenet/val_imagenet.txt
-    batch_size: 32
+    batch_size: 128
     shuffle: False
   test:
     dataset_class: ImglistDataset
     data_dir: ./data/images_largescale/
     imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet.txt
-    batch_size: 32
+    batch_size: 128
     shuffle: False

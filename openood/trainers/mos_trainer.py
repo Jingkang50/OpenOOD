@@ -1,4 +1,4 @@
-import os
+from copy import deepcopy
 
 import numpy as np
 import torch
@@ -6,6 +6,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+import openood.utils.comm as comm
 from openood.utils import Config
 
 
@@ -49,18 +50,18 @@ def get_lr(step, dataset_size, base_lr=0.003):
         return base_lr
 
 
-def mixup_data(x, y, l):
+def mixup_data(x, y, lam):
     """Returns mixed inputs, pairs of targets, and lambda."""
     indices = torch.randperm(x.shape[0]).to(x.device)
 
-    mixed_x = l * x + (1 - l) * x[indices]
+    mixed_x = lam * x + (1 - lam) * x[indices]
     y_a, y_b = y, y[indices]
     return mixed_x, y_a, y_b
 
 
-def mixup_criterion_group(criterion, pred, y_a, y_b, l, group_slices):
-    return l * calc_group_softmax_loss(criterion, pred, y_a, group_slices) \
-           + (1 - l) * calc_group_softmax_loss(criterion,
+def mixup_criterion_group(criterion, pred, y_a, y_b, lam, group_slices):
+    return lam * calc_group_softmax_loss(criterion, pred, y_a, group_slices) \
+           + (1 - lam) * calc_group_softmax_loss(criterion,
                                                pred, y_b, group_slices)
 
 
@@ -132,8 +133,6 @@ def run_eval(model, data_loader, step, group_slices, num_group):
     # switch to evaluate mode
     model.eval()
 
-    print('Running validation...')
-
     all_c, all_top1 = [], []
 
     train_dataiter = iter(data_loader)
@@ -141,7 +140,8 @@ def run_eval(model, data_loader, step, group_slices, num_group):
                                  len(train_dataiter) + 1),
                            desc='Test : ',
                            position=0,
-                           leave=True):
+                           leave=True,
+                           disable=not comm.is_main_process()):
         batch = next(train_dataiter)
         data = batch['data'].cuda()
         group_label = batch['group_label'].cuda()
@@ -193,13 +193,12 @@ class MOSTrainer:
         self.optim.zero_grad()
         self.net.train()
 
-        #  train_set len
+        # train_set len
         self.train_set_len = config.dataset.train.batch_size * len(
             train_loader)
         self.mixup = get_mixup(self.train_set_len)
         self.cri = torch.nn.CrossEntropyLoss().cuda()
 
-        print('Starting finetuning!')
         self.accum_steps = 0
         self.mixup_l = np.random.beta(self.mixup,
                                       self.mixup) if self.mixup > 0 else 1
@@ -222,30 +221,29 @@ class MOSTrainer:
 
     def cal_group_slices(self, train_loader):
         # cal group config
-        config = self.config
         group = {}
         train_dataiter = iter(self.train_loader)
         for train_step in tqdm(range(1,
                                      len(train_dataiter) + 1),
                                desc='cal group_config',
                                position=0,
-                               leave=True):
+                               leave=True,
+                               disable=not comm.is_main_process()):
             batch = next(train_dataiter)
-            data = batch['data'].cuda()
-            group_label = batch['group_label'].cuda()
-            class_label = batch['class_label'].cuda()
+            group_label = deepcopy(batch['group_label'])
+            class_label = deepcopy(batch['class_label'])
 
             for i in range(len(class_label)):
-                try:
-                    group[str(group_label[i].cpu().detach().numpy().tolist())]
-                except:
-                    group[str(
-                        group_label[i].cpu().detach().numpy().tolist())] = []
+                gl = group_label[i].item()
+                cl = class_label[i].item()
 
-                if class_label[i].cpu().detach().numpy().tolist() \
-                        not in group[str(group_label[i].cpu().detach().numpy().tolist())]:
-                    group[str(group_label[i].cpu().detach().numpy().tolist(
-                    ))].append(class_label[i].cpu().detach().numpy().tolist())
+                try:
+                    group[str(gl)]
+                except:
+                    group[str(gl)] = []
+
+                if cl not in group[str(gl)]:
+                    group[str(gl)].append(cl)
 
         self.classes_per_group = []
         for i in range(len(group)):
@@ -259,7 +257,8 @@ class MOSTrainer:
                                      len(train_dataiter) + 1),
                                desc='Epoch {:03d}: '.format(epoch_idx),
                                position=0,
-                               leave=True):
+                               leave=True,
+                               disable=not comm.is_main_process()):
             batch = next(train_dataiter)
             data = batch['data'].cuda()
             group_label = batch['group_label'].cuda()
@@ -329,6 +328,4 @@ class MOSTrainer:
         metrics['loss'] = loss_avg
         # metrics['acc'] = np.mean(all_top1) # the acc used in there is the top1 acc
 
-        print('one epoch end')
-
-        return self.net, metrics
+        return self.net, metrics, self.num_group, self.group_slices

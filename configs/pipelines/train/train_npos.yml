@@ -1,0 +1,53 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'_'@{mark}'/s'@{seed}'"
+output_dir: ./results/
+save_output: True
+merge_option: default
+mark: default
+seed: 0
+
+num_gpus: 1
+num_workers: 8
+num_machines: 1
+machine_rank: 0
+
+preprocessor:
+  name: base
+
+pipeline:
+  name: train
+
+trainer:
+  name: npos
+  trainer_args:
+    proto_m: 0.95
+    temp: 0.1
+    sample_number: 1000
+    sample_from: 600
+    start_epoch_KNN: 40
+    K: 300
+    cov_mat: 0.1
+    select: 200
+    ID_points_num: 200
+    pick_nums: 2
+    w_disp: 0.5
+    w_comp: 1
+    loss_weight: 0.1
+
+evaluator:
+  name: base
+
+optimizer:
+  name: sgd
+  num_epochs: 100
+  lr: 0.5
+  momentum: 0.9
+  weight_decay: 0.0001
+  warm: True
+  cosine: True
+  lr_decay_rate: 0.1
+  lr_decay_epochs: [30, 50, 120]
+  mlp_decay_rate: 0.1
+
+recorder:
+  name: cider
+  save_all_models: False

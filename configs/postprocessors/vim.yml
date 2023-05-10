@@ -1,5 +1,7 @@
 postprocessor:
   name: vim
-  APS_mode: False
+  APS_mode: True
   postprocessor_args:
-    dim: 42
+    dim: 256
+  postprocessor_sweep:
+    dim_list: [256, 1000]

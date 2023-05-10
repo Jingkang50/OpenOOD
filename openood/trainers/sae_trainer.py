@@ -8,9 +8,8 @@ from tqdm import tqdm
 
 from openood.losses import soft_cross_entropy
 from openood.postprocessors.gmm_postprocessor import compute_single_GMM_score
-from openood.postprocessors.mds_postprocessor import (process_feature_type,
-                                                      reduce_feature_dim,
-                                                      tensor2list)
+from openood.postprocessors.mds_ensemble_postprocessor import (
+    process_feature_type, reduce_feature_dim, tensor2list)
 from openood.utils import Config
 
 from .lr_scheduler import cosine_annealing

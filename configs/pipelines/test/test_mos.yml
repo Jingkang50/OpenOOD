@@ -1,7 +1,8 @@
-exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'_'@{evaluator.name}'/s'@{seed}'/'@{evaluator.ood_scheme}'"
 output_dir: ./results/
 save_output: True
 merge_option: default
+seed: 0
 
 num_gpus: 1
 num_workers: 0
@@ -21,6 +22,7 @@ trainer:
 
 evaluator:
   name: mos
+  ood_scheme: ood # [ood, fsood]
 
 optimizer:
   name: sgd

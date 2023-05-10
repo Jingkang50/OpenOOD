@@ -14,32 +14,27 @@ class ReactPostprocessor(BasePostprocessor):
         self.args = self.config.postprocessor.postprocessor_args
         self.percentile = self.args.percentile
         self.args_dict = self.config.postprocessor.postprocessor_sweep
+        self.setup_flag = False
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
-        activation_log = []
-        net.eval()
-        with torch.no_grad():
-            for batch in tqdm(id_loader_dict['val'],
-                              desc='Eval: ',
-                              position=0,
-                              leave=True):
-                data = batch['data'].cuda()
-                data = data.float()
+        if not self.setup_flag:
+            activation_log = []
+            net.eval()
+            with torch.no_grad():
+                for batch in tqdm(id_loader_dict['val'],
+                                  desc='Setup: ',
+                                  position=0,
+                                  leave=True):
+                    data = batch['data'].cuda()
+                    data = data.float()
 
-                batch_size = data.shape[0]
+                    _, feature = net(data, return_feature=True)
+                    activation_log.append(feature.data.cpu().numpy())
 
-                _, features = net(data, return_feature_list=True)
-
-                feature = features[-1]
-                dim = feature.shape[1]
-                activation_log.append(feature.data.cpu().numpy().reshape(
-                    batch_size, dim, -1).mean(2))
-
-        activation_log = np.concatenate(activation_log, axis=0)
-        self.threshold = np.percentile(activation_log.flatten(),
-                                       self.percentile)
-        print('Threshold at percentile {:2d} over id data is: {}'.format(
-            self.percentile, self.threshold))
+            self.activation_log = np.concatenate(activation_log, axis=0)
+            self.setup_flag = True
+        else:
+            pass
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
@@ -51,6 +46,10 @@ class ReactPostprocessor(BasePostprocessor):
 
     def set_hyperparam(self, hyperparam: list):
         self.percentile = hyperparam[0]
+        self.threshold = np.percentile(self.activation_log.flatten(),
+                                       self.percentile)
+        print('Threshold at percentile {:2d} over id data is: {}'.format(
+            self.percentile, self.threshold))
 
     def get_hyperparam(self):
         return self.percentile

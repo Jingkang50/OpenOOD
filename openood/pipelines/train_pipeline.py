@@ -31,7 +31,7 @@ class TrainPipeline:
         net = get_network(self.config.network)
 
         # init trainer and evaluator
-        trainer = get_trainer(net, train_loader, self.config)
+        trainer = get_trainer(net, train_loader, val_loader, self.config)
         evaluator = get_evaluator(self.config)
 
         if comm.is_main_process():
@@ -41,8 +41,24 @@ class TrainPipeline:
             print('Start training...', flush=True)
         for epoch_idx in range(1, self.config.optimizer.num_epochs + 1):
             # train and eval the model
-            net, train_metrics = trainer.train_epoch(epoch_idx)
-            val_metrics = evaluator.eval_acc(net, val_loader, None, epoch_idx)
+            if self.config.trainer.name == 'mos':
+                net, train_metrics, num_groups, group_slices = \
+                    trainer.train_epoch(epoch_idx)
+                val_metrics = evaluator.eval_acc(net,
+                                                 val_loader,
+                                                 train_loader,
+                                                 epoch_idx,
+                                                 num_groups=num_groups,
+                                                 group_slices=group_slices)
+            elif self.config.trainer.name in ['cider', 'npos']:
+                net, train_metrics = trainer.train_epoch(epoch_idx)
+                # cider and npos only trains the backbone
+                # cannot evaluate ID acc without training the fc layer
+                val_metrics = train_metrics
+            else:
+                net, train_metrics = trainer.train_epoch(epoch_idx)
+                val_metrics = evaluator.eval_acc(net, val_loader, None,
+                                                 epoch_idx)
             comm.synchronize()
             if comm.is_main_process():
                 # save model and report the result

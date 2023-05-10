@@ -1,0 +1,7 @@
+preprocessor:
+  name: augmix
+  severity: 1 # see torchvision docs for meaning of the args
+  all_ops: true
+  mixture_width: 3
+  alpha: 1.0
+  chain_depth: -1

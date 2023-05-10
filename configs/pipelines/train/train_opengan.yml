@@ -1,14 +1,16 @@
-exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'"
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'_'@{mark}'/s'@{seed}'"
 output_dir: ./results/
 save_output: True
-merge_option: merge
+merge_option: default
+mark: default
+seed: 0
 
 dataset:
   # cached features extracted from classifier
-  feat_path: './results/tin_resnet18_32x32_feat_extract/feature.npz'
+  feat_root: './results/cifar10_resnet18_32x32_feat_extract_opengan_default/s0'
 
 num_gpus: 1
-num_workers: 0
+num_workers: 8
 num_machines: 1
 machine_rank: 0
 
@@ -29,4 +31,4 @@ optimizer:
 
 recorder:
   name: opengan
-  save_all_models: True
+  save_all_models: False

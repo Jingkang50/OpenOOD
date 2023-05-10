@@ -1,0 +1,54 @@
+ood_dataset:
+  name: imagenet200_fsood
+  num_classes: 200
+
+  dataset_class: ImglistDataset
+  interpolation: bilinear
+  batch_size: 256
+  shuffle: False
+
+  pre_size: 256
+  image_size: 224
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+  split_names: [val, nearood, farood, csid]
+  val:
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/imagenet200/val_openimage_o.txt
+  nearood:
+    datasets: [species, imagenet21k]
+    imagenet21k:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_imagenet_21k.txt
+    species:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_species.txt
+  farood:
+    datasets: [inaturalist, texture, places, sun, openimageo]
+    places:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_places.txt
+    sun:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_sun.txt
+    texture:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_texture.txt
+    inaturalist:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_inaturalist.txt
+    openimageo:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_openimage_o.txt
+  csid:
+    datasets: [imagenetv2, imagenetc, imagenetr]
+    imagenetv2:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_imagenet200_v2.txt
+    imagenetc:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_imagenet200_c.txt
+    imagenetr:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_imagenet200_r.txt

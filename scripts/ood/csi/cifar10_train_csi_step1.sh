@@ -13,12 +13,13 @@ PYTHONPATH='.':$PYTHONPATH \
 # -w SG-IDC1-10-51-2-${node} \
 
 python main.py \
---config configs/datasets/cifar10/cifar10.yml \
-configs/networks/csi_net.yml \
-configs/pipelines/train/train_csi.yml \
-configs/preprocessors/base_preprocessor.yml \
---network.pretrained False \
---optimizer.num_epochs 100 \
---dataset.train.batch_size 64 \
---merge_option merge \
---mode csi_step1
+    --config configs/datasets/cifar10/cifar10.yml \
+    configs/networks/csi_net.yml \
+    configs/pipelines/train/train_csi.yml \
+    configs/preprocessors/csi_preprocessor.yml \
+    --network.pretrained False \
+    --optimizer.num_epochs 100 \
+    --dataset.train.batch_size 64 \
+    --merge_option merge \
+    --mode csi_step1 \
+    --seed 0

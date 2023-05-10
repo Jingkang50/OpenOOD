@@ -10,9 +10,9 @@ from tqdm import tqdm
 from openood.evaluators.metrics import compute_all_metrics
 from openood.postprocessors import BasePostprocessor
 
-from .datasets import DATA_INFO, get_id_ood_dataloader
+from .datasets import DATA_INFO, data_setup, get_id_ood_dataloader
 from .postprocessor import get_postprocessor
-from .preprocessor import get_default_preprocessor, default_preprocessing_dict
+from .preprocessor import get_default_preprocessor
 
 
 class Evaluator:
@@ -29,22 +29,57 @@ class Evaluator:
         shuffle: bool = False,
         num_workers: int = 4,
     ) -> None:
-        # TODO
-        """_summary_"""
+        """A unified, easy-to-use API for evaluating (most) discriminative OOD
+        detection methods.
+
+        Args:
+            net (nn.Module):
+                The base classifier.
+            id_name (str):
+                The name of the in-distribution dataset.
+            data_root (str, optional):
+                The path of the data folder. Defaults to './data'.
+            config_root (str, optional):
+                The path of the config folder. Defaults to './configs'.
+            preprocessor (Callable, optional):
+                The preprocessor of input images.
+                Passing None will use the default preprocessor
+                following convention. Defaults to None.
+            postprocessor_name (str, optional):
+                The name of the postprocessor that obtains OOD score.
+                Ignored if an actual postprocessor is passed.
+                Defaults to None.
+            postprocessor (Type[BasePostprocessor], optional):
+                An actual postprocessor instance which inherits
+                OpenOOD's BasePostprocessor. Defaults to None.
+            batch_size (int, optional):
+                The batch size of samples. Defaults to 200.
+            shuffle (bool, optional):
+                Whether shuffling samples. Defaults to False.
+            num_workers (int, optional):
+                The num_workers argument that will be passed to
+                data loaders. Defaults to 4.
+
+        Raises:
+            ValueError:
+                If both postprocessor_name and postprocessor are None.
+            ValueError:
+                If the specified ID dataset {id_name} is not supported.
+            TypeError:
+                If the passed postprocessor does not inherit BasePostprocessor.
+        """
         # check the arguments
         if postprocessor_name is None and postprocessor is None:
             raise ValueError('Please pass postprocessor_name or postprocessor')
         if postprocessor_name is not None and postprocessor is not None:
-            raise ValueError(
-                'Please pass postprocessor_name or postprocessor, not both')
+            print(
+                'Postprocessor_name is ignored because postprocessor is passed'
+            )
         if id_name not in DATA_INFO:
             raise ValueError(f'Dataset [{id_name}] is not supported')
 
-        # get data preprocessor
-        if preprocessor is None:
-            preprocessor = get_default_preprocessor(id_name)
-
         # load data
+        data_setup(data_root, id_name)
         loader_kwargs = {
             'batch_size': batch_size,
             'shuffle': shuffle,
@@ -53,12 +88,14 @@ class Evaluator:
         dataloader_dict = get_id_ood_dataloader(id_name, data_root,
                                                 preprocessor, **loader_kwargs)
 
+        # get data preprocessor
+        if preprocessor is None:
+            preprocessor = get_default_preprocessor(id_name)
+
         # get postprocessor
         if postprocessor is None:
-            postprocessor = get_postprocessor(
-                config_root, postprocessor_name,
-                DATA_INFO[id_name]['num_classes'],
-                default_preprocessing_dict[id_name]['normalization'][-1])
+            postprocessor = get_postprocessor(config_root, postprocessor_name,
+                                              id_name)
         if not isinstance(postprocessor, BasePostprocessor):
             raise TypeError(
                 'postprocessor should inherit BasePostprocessor in OpenOOD')
@@ -74,16 +111,8 @@ class Evaluator:
         self.metrics = {
             'id_acc': None,
             'csid_acc': None,
-            'id_ood': {
-                'near': None,
-                'far': None,
-                'overall': None
-            },
-            'csid_ood': {
-                'near': None,
-                'far': None,
-                'overall': None
-            }
+            'ood': None,
+            'fsood': None
         }
         self.scores = {
             'id': {
@@ -100,9 +129,19 @@ class Evaluator:
                  for k in dataloader_dict['ood']['near'].keys()},
                 'far': {k: None
                         for k in dataloader_dict['ood']['far'].keys()},
-            }
+            },
+            'id_preds': None,
+            'id_labels': None,
+            'csid_preds': {k: None
+                           for k in dataloader_dict['csid'].keys()},
+            'csid_labels': {k: None
+                            for k in dataloader_dict['csid'].keys()},
         }
-        self.hyperparam_search_flag = False
+        # perform hyperparameter search if have not done so
+        if (self.postprocessor.APS_mode
+                and not self.postprocessor.hyperparam_search_done):
+            self.hyperparam_search()
+
         self.net.eval()
 
         # how to ensure the postprocessors can work with
@@ -114,53 +153,84 @@ class Evaluator:
                               progress: bool = True):
         self.net.eval()
 
-        correct = 0
+        all_preds = []
+        all_labels = []
         with torch.no_grad():
             for batch in tqdm(data_loader, desc=msg, disable=not progress):
                 data = batch['data'].cuda()
-                target = batch['label'].cuda()
-
                 logits = self.net(data)
                 preds = logits.argmax(1)
-                correct += preds.eq(target).sum().item()
+                all_preds.append(preds.cpu())
+                all_labels.append(batch['label'])
 
-        total = len(data_loader.dataset)
-        return correct, total
+        all_preds = torch.cat(all_preds)
+        all_labels = torch.cat(all_labels)
+        return all_preds, all_labels
 
-    def eval_acc(self, csid: bool = False) -> float:
-        if not csid:
+    def eval_acc(self, data_name: str = 'id') -> float:
+        if data_name == 'id':
             if self.metrics['id_acc'] is not None:
                 return self.metrics['id_acc']
             else:
-                correct, total = self._classifier_inference(
-                    self.dataloader_dict['id']['test'], 'ID Acc Eval')
-                acc = correct / total * 100
+                if self.scores['id_preds'] is None:
+                    all_preds, all_labels = self._classifier_inference(
+                        self.dataloader_dict['id']['test'], 'ID Acc Eval')
+                    self.scores['id_preds'] = all_preds
+                    self.scores['id_labels'] = all_labels
+                else:
+                    all_preds = self.scores['id_preds']
+                    all_labels = self.scores['id_labels']
+
+                assert len(all_preds) == len(all_labels)
+                correct = (all_preds == all_labels).sum().item()
+                acc = correct / len(all_labels) * 100
                 self.metrics['id_acc'] = acc
                 return acc
-        else:
+        elif data_name == 'csid':
             if self.metrics['csid_acc'] is not None:
                 return self.metrics['csid_acc']
             else:
-                correct, total = 0
-                for i, (_, dataloader) in enumerate(
+                correct, total = 0, 0
+                for _, (dataname, dataloader) in enumerate(
                         self.dataloader_dict['csid'].items()):
-                    c, t = self._classifier_inference(dataloader,
-                                                      f'CSID {i+1} Acc Eval')
+                    if self.scores['csid_preds'][dataname] is None:
+                        all_preds, all_labels = self._classifier_inference(
+                            dataloader, f'CSID {dataname} Acc Eval')
+                        self.scores['csid_preds'][dataname] = all_preds
+                        self.scores['csid_labels'][dataname] = all_labels
+                    else:
+                        all_preds = self.scores['csid_preds'][dataname]
+                        all_labels = self.scores['csid_labels'][dataname]
+
+                    assert len(all_preds) == len(all_labels)
+                    c = (all_preds == all_labels).sum().item()
+                    t = len(all_labels)
                     correct += c
                     total += t
+
+                if self.scores['id_preds'] is None:
+                    all_preds, all_labels = self._classifier_inference(
+                        self.dataloader_dict['id']['test'], 'ID Acc Eval')
+                    self.scores['id_preds'] = all_preds
+                    self.scores['id_labels'] = all_labels
+                else:
+                    all_preds = self.scores['id_preds']
+                    all_labels = self.scores['id_labels']
+
+                correct += (all_preds == all_labels).sum().item()
+                total += len(all_labels)
+
                 acc = correct / total * 100
                 self.metrics['csid_acc'] = acc
                 return acc
+        else:
+            raise ValueError(f'Unknown data name {data_name}')
 
-    def eval_ood(self, csid: bool = False, progress: bool = True):
-        id_name = 'id' if not csid else 'csid'
-        if self.metrics[f'{id_name}_ood']['overall'] is None:
+    def eval_ood(self, fsood: bool = False, progress: bool = True):
+        id_name = 'id' if not fsood else 'csid'
+        task = 'ood' if not fsood else 'fsood'
+        if self.metrics[task] is None:
             self.net.eval()
-
-            # perform hyperparameter search if have not done so
-            if self.postprocessor.APS_mode and not self.hyperparam_search_flag:
-                self.hyperparam_search()
-                self.hyperparam_search_flag = True
 
             # id score
             if self.scores['id']['test'] is None:
@@ -172,17 +242,19 @@ class Evaluator:
             else:
                 id_pred, id_conf, id_gt = self.scores['id']['test']
 
-            if csid:
+            if fsood:
                 csid_pred, csid_conf, csid_gt = [], [], []
                 for i, dataset_name in enumerate(self.scores['csid'].keys()):
                     if self.scores['csid'][dataset_name] is None:
                         print(
-                            f'Performing inference on {self.id_name} (cs) test set {i+1}...',
+                            f'Performing inference on {self.id_name} '
+                            f'(cs) test set [{i+1}]: {dataset_name}...',
                             flush=True)
-                        temp_pred, temp_conf, temp_gt = self.postprocessor.inference(
-                            self.net,
-                            self.dataloader_dict['csid'][dataset_name],
-                            progress)
+                        temp_pred, temp_conf, temp_gt = \
+                            self.postprocessor.inference(
+                                self.net,
+                                self.dataloader_dict['csid'][dataset_name],
+                                progress)
                         self.scores['csid'][dataset_name] = [
                             temp_pred, temp_conf, temp_gt
                         ]
@@ -191,9 +263,9 @@ class Evaluator:
                     csid_conf.append(self.scores['csid'][dataset_name][1])
                     csid_gt.append(self.scores['csid'][dataset_name][2])
 
-                csid_pred = np.concatenate(id_pred)
-                csid_conf = np.concatenate(id_conf)
-                csid_gt = np.concatenate(id_gt)
+                csid_pred = np.concatenate(csid_pred)
+                csid_conf = np.concatenate(csid_conf)
+                csid_gt = np.concatenate(csid_gt)
 
                 id_pred = np.concatenate((id_pred, csid_pred))
                 id_conf = np.concatenate((id_conf, csid_conf))
@@ -209,19 +281,21 @@ class Evaluator:
                                          progress=progress)
 
             if self.metrics[f'{id_name}_acc'] is None:
-                self.eval_acc(csid)
+                self.eval_acc(id_name)
             near_metrics[:, -1] = np.array([self.metrics[f'{id_name}_acc']] *
                                            len(near_metrics))
             far_metrics[:, -1] = np.array([self.metrics[f'{id_name}_acc']] *
                                           len(far_metrics))
 
-            self.metrics[f'{id_name}_ood']['overall'] = pd.DataFrame(
+            self.metrics[task] = pd.DataFrame(
                 np.concatenate([near_metrics, far_metrics], axis=0),
-                index=list(self.dataloader_dict['ood']['near'].keys()) \
-                    + ['nearood'] + list(self.dataloader_dict['ood']['far'].keys()) \
-                    + ['farood'],
-                columns=['FPR@95', 'AUROC', 'AUPR_IN', 'AUPR_OUT',
-                         'CCR_4', 'CCR_3', 'CCR_2', 'CCR_1', 'ACC'],
+                index=list(self.dataloader_dict['ood']['near'].keys()) +
+                ['nearood'] + list(self.dataloader_dict['ood']['far'].keys()) +
+                ['farood'],
+                columns=[
+                    'FPR@95', 'AUROC', 'AUPR_IN', 'AUPR_OUT', 'CCR_4', 'CCR_3',
+                    'CCR_2', 'CCR_1', 'ACC'
+                ],
             )
         else:
             print('Evaluation has already been done!')
@@ -230,9 +304,9 @@ class Evaluator:
                 'display.max_rows', None, 'display.max_columns', None,
                 'display.float_format',
                 '{:,.2f}'.format):  # more options can be specified also
-            print(self.metrics[f'{id_name}_ood']['overall'])
+            print(self.metrics[task])
 
-        return self.metrics[f'{id_name}_ood']['overall']
+        return self.metrics[task]
 
     def _eval_ood(self,
                   id_list: List[np.ndarray],
@@ -253,7 +327,8 @@ class Evaluator:
                 ]
             else:
                 print(
-                    f'Inference has been performed on {dataset_name} dataset...',
+                    'Inference has been performed on '
+                    f'{dataset_name} dataset...',
                     flush=True)
                 [ood_pred, ood_conf,
                  ood_gt] = self.scores['ood'][ood_split][dataset_name]
@@ -334,6 +409,7 @@ class Evaluator:
         self.postprocessor.set_hyperparam(hyperparam_combination[final_index])
         print('Final hyperparam: {}'.format(
             self.postprocessor.get_hyperparam()))
+        self.postprocessor.hyperparam_search_done = True
 
     def recursive_generator(self, list, n):
         if n == 1:

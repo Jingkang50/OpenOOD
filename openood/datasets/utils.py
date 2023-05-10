@@ -1,3 +1,4 @@
+import os
 import torch
 from numpy import load
 from torch.utils.data import DataLoader
@@ -8,6 +9,7 @@ from openood.utils.config import Config
 
 from .feature_dataset import FeatDataset
 from .imglist_dataset import ImglistDataset
+from .imglist_augmix_dataset import ImglistAugMixDataset
 from .imglist_extradata_dataset import ImglistExtraDataDataset, TwoSourceSampler
 from .udg_dataset import UDGDataset
 
@@ -22,27 +24,7 @@ def get_dataloader(config: Config):
         # weak augmentation for data_aux
         data_aux_preprocessor = TestStandardPreProcessor(config)
 
-        if split_config.dataset_class != 'ImglistExtraDataDataset':
-            CustomDataset = eval(split_config.dataset_class)
-            dataset = CustomDataset(
-                name=dataset_config.name + '_' + split,
-                imglist_pth=split_config.imglist_pth,
-                data_dir=split_config.data_dir,
-                num_classes=dataset_config.num_classes,
-                preprocessor=preprocessor,
-                data_aux_preprocessor=data_aux_preprocessor)
-            sampler = None
-            if dataset_config.num_gpus * dataset_config.num_machines > 1:
-                sampler = torch.utils.data.distributed.DistributedSampler(
-                    dataset)
-                split_config.shuffle = False
-
-            dataloader = DataLoader(dataset,
-                                    batch_size=split_config.batch_size,
-                                    shuffle=split_config.shuffle,
-                                    num_workers=dataset_config.num_workers,
-                                    sampler=sampler)
-        else:
+        if split_config.dataset_class == 'ImglistExtraDataDataset':
             dataset = ImglistExtraDataDataset(
                 name=dataset_config.name + '_' + split,
                 imglist_pth=split_config.imglist_pth,
@@ -64,6 +46,45 @@ def get_dataloader(config: Config):
                 batch_sampler=batch_sampler,
                 num_workers=dataset_config.num_workers,
             )
+        elif split_config.dataset_class == 'ImglistAugMixDataset':
+            dataset = ImglistAugMixDataset(
+                name=dataset_config.name + '_' + split,
+                imglist_pth=split_config.imglist_pth,
+                data_dir=split_config.data_dir,
+                num_classes=dataset_config.num_classes,
+                preprocessor=preprocessor,
+                data_aux_preprocessor=data_aux_preprocessor)
+            sampler = None
+            if dataset_config.num_gpus * dataset_config.num_machines > 1:
+                sampler = torch.utils.data.distributed.DistributedSampler(
+                    dataset)
+                split_config.shuffle = False
+
+            dataloader = DataLoader(dataset,
+                                    batch_size=split_config.batch_size,
+                                    shuffle=split_config.shuffle,
+                                    num_workers=dataset_config.num_workers,
+                                    sampler=sampler)
+        else:
+            CustomDataset = eval(split_config.dataset_class)
+            dataset = CustomDataset(
+                name=dataset_config.name + '_' + split,
+                imglist_pth=split_config.imglist_pth,
+                data_dir=split_config.data_dir,
+                num_classes=dataset_config.num_classes,
+                preprocessor=preprocessor,
+                data_aux_preprocessor=data_aux_preprocessor)
+            sampler = None
+            if dataset_config.num_gpus * dataset_config.num_machines > 1:
+                sampler = torch.utils.data.distributed.DistributedSampler(
+                    dataset)
+                split_config.shuffle = False
+
+            dataloader = DataLoader(dataset,
+                                    batch_size=split_config.batch_size,
+                                    shuffle=split_config.shuffle,
+                                    num_workers=dataset_config.num_workers,
+                                    sampler=sampler)
 
         dataloader_dict[split] = dataloader
     return dataloader_dict
@@ -134,3 +155,35 @@ def get_feature_dataloader(dataset_config: Config):
                             num_workers=dataset_config.num_workers)
 
     return dataloader
+
+
+def get_feature_opengan_dataloader(dataset_config: Config):
+    feat_root = dataset_config.feat_root
+
+    dataloader_dict = {}
+    for d in ['id_train', 'id_val', 'ood_val']:
+        # load in the cached feature
+        loaded_data = load(os.path.join(feat_root, f'{d}.npz'),
+                           allow_pickle=True)
+        total_feat = torch.from_numpy(loaded_data['feat_list'])
+        total_labels = loaded_data['label_list']
+        del loaded_data
+        # reshape the vector to fit in to the network
+        total_feat.unsqueeze_(-1).unsqueeze_(-1)
+        # let's see what we got here should be something like:
+        # torch.Size([total_num, channel_size, 1, 1])
+        print('Loaded feature size: {}'.format(total_feat.shape))
+
+        if d == 'id_train':
+            split_config = dataset_config['train']
+        else:
+            split_config = dataset_config['val']
+
+        dataset = FeatDataset(feat=total_feat, labels=total_labels)
+        dataloader = DataLoader(dataset,
+                                batch_size=split_config.batch_size,
+                                shuffle=split_config.shuffle,
+                                num_workers=dataset_config.num_workers)
+        dataloader_dict[d] = dataloader
+
+    return dataloader_dict

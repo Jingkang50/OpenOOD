@@ -1,0 +1,20 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{pipeline.name}'_'@{mark}'/s'@{seed}'"
+output_dir: ./results/
+save_output: True
+merge_option: default # disabled if 'save_output' is False
+mark: default
+seed: 0
+
+num_gpus: 1
+num_workers: 8
+num_machines: 1
+machine_rank: 0
+
+network:
+  pretrained: True
+
+pipeline:
+  name: feat_extract_opengan
+
+evaluator:
+  name: base

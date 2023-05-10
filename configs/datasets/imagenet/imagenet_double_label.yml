@@ -1,0 +1,32 @@
+dataset:
+  name: imagenet_double_label
+  interpolation: bilinear
+  normalization_type: imagenet
+  split_names: [train, val, test]
+  num_classes: 1008 # actually it's 1000 classes but it has 8 groups
+  image_size: 224
+  pre_size: 256
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+  train:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/imagenet/train_imagenet_mos.txt
+    batch_size: 256
+    shuffle: True
+    interpolation: bilinear
+  val:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/imagenet/val_imagenet_mos.txt
+    batch_size: 256
+    shuffle: False
+    interpolation: bilinear
+  test:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_mos.txt
+    batch_size: 256
+    shuffle: False
+    interpolation: bilinear

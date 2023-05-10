@@ -1,0 +1,33 @@
+dataset:
+  name: aircraft
+  num_classes: 50
+  pre_size: 512
+  image_size: 448
+
+  interpolation: bilinear
+  normalization_type: aircraft
+
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+
+  split_names: [train, val, test]
+
+  train:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/aircraft/train_id.txt
+    batch_size: 32
+    shuffle: True
+  val:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/aircraft/val_id.txt
+    batch_size: 200
+    shuffle: False
+  test:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/aircraft/test_id.txt
+    batch_size: 200
+    shuffle: False

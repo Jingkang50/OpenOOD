@@ -1,0 +1,28 @@
+ood_dataset:
+  name: aircraft_ood
+  num_classes: 50
+
+  dataset_class: ImglistDataset
+  interpolation: bilinear
+  batch_size: 64
+  shuffle: False
+
+  pre_size: 512
+  image_size: 448
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+  split_names: [val, nearood, farood]
+  val:
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/aircraft/val_ood.txt
+  nearood:
+    datasets: [hardood]
+    hard:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/aircraft/test_ood_hard.txt
+  farood:
+    datasets: [easyood]
+    easy:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/aircraft/test_ood_easy.txt

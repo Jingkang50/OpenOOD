@@ -2,6 +2,7 @@ from openood.utils import Config
 
 from .ash_postprocessor import ASHPostprocessor
 from .base_postprocessor import BasePostprocessor
+from .cider_postprocessor import CIDERPostprocessor
 from .conf_branch_postprocessor import ConfBranchPostprocessor
 from .cutpaste_postprocessor import CutPastePostprocessor
 from .dice_postprocessor import DICEPostprocessor
@@ -19,17 +20,21 @@ from .knn_postprocessor import KNNPostprocessor
 from .maxlogit_postprocessor import MaxLogitPostprocessor
 from .mcd_postprocessor import MCDPostprocessor
 from .mds_postprocessor import MDSPostprocessor
+from .mds_ensemble_postprocessor import MDSEnsemblePostprocessor
 from .mos_postprocessor import MOSPostprocessor
+from .npos_postprocessor import NPOSPostprocessor
 from .odin_postprocessor import ODINPostprocessor
 from .opengan_postprocessor import OpenGanPostprocessor
 from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
 from .rd4ad_postprocessor import Rd4adPostprocessor
 from .react_postprocessor import ReactPostprocessor
+from .rmds_postprocessor import RMDSPostprocessor
 from .residual_postprocessor import ResidualPostprocessor
 from .rotpred_postprocessor import RotPredPostprocessor
 from .rankfeat_postprocessor import RankFeatPostprocessor
 from .ssd_postprocessor import SSDPostprocessor
+from .she_postprocessor import SHEPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
 from .vim_postprocessor import VIMPostprocessor
 from .rts_postprocessor import RTSPostprocessor
@@ -38,11 +43,14 @@ from .rts_postprocessor import RTSPostprocessor
 def get_postprocessor(config: Config):
     postprocessors = {
         'ash': ASHPostprocessor,
+        'cider': CIDERPostprocessor,
         'conf_branch': ConfBranchPostprocessor,
         'msp': BasePostprocessor,
         'ebo': EBOPostprocessor,
         'odin': ODINPostprocessor,
         'mds': MDSPostprocessor,
+        'mds_ensemble': MDSEnsemblePostprocessor,
+        'rmds': RMDSPostprocessor,
         'gmm': GMMPostprocessor,
         'patchcore': PatchcorePostprocessor,
         'openmax': OpenMax,
@@ -53,6 +61,7 @@ def get_postprocessor(config: Config):
         'gram': GRAMPostprocessor,
         'cutpaste': CutPastePostprocessor,
         'mls': MaxLogitPostprocessor,
+        'npos': NPOSPostprocessor,
         'residual': ResidualPostprocessor,
         'klm': KLMatchingPostprocessor,
         'temperature_scaling': TemperatureScalingPostprocessor,
@@ -66,6 +75,7 @@ def get_postprocessor(config: Config):
         'knn': KNNPostprocessor,
         'dice': DICEPostprocessor,
         'ssd': SSDPostprocessor,
+        'she': SHEPostprocessor,
         'rd4ad': Rd4adPostprocessor,
         'rts': RTSPostprocessor,
         'rotpred': RotPredPostprocessor,

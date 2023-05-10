@@ -6,7 +6,7 @@ dataset:
   oe:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/cifar10/train_tin.txt
-    batch_size: 200
+    imglist_pth: ./data/benchmark_imglist/cifar10/train_tin597.txt
+    batch_size: 256
     shuffle: True
     interpolation: bilinear

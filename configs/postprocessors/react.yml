@@ -4,4 +4,4 @@ postprocessor:
   postprocessor_args:
     percentile: 90
   postprocessor_sweep:
-    percentile_list: [90]
+    percentile_list: [85, 90, 95, 99]

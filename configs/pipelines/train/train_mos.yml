@@ -30,4 +30,4 @@ optimizer:
 
 recorder:
   name: base
-  save_all_models: True
+  save_all_models: False

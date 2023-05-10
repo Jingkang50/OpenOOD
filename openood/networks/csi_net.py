@@ -1,6 +1,28 @@
 import torch.nn as nn
 
 
+def get_csi_linear_layers(feature_size,
+                          num_classes,
+                          simclr_dim,
+                          shift_trans_type='rotation'):
+    simclr_layer = nn.Sequential(
+        nn.Linear(feature_size, feature_size),
+        nn.ReLU(),
+        nn.Linear(feature_size, simclr_dim),
+    )
+    shift_cls_layer = nn.Linear(feature_size,
+                                get_shift_module(shift_trans_type))
+    joint_distribution_layer = nn.Linear(feature_size, 4 * num_classes)
+    linear = nn.Linear(feature_size, num_classes)
+
+    return {
+        'simclr_layer': simclr_layer,
+        'shift_cls_layer': shift_cls_layer,
+        'joint_distribution_layer': joint_distribution_layer,
+        'linear': linear,
+    }
+
+
 class CSINet(nn.Module):
     def __init__(self,
                  backbone,
@@ -10,6 +32,11 @@ class CSINet(nn.Module):
                  shift_trans_type='rotation'):
         super(CSINet, self).__init__()
         self.backbone = backbone
+        if hasattr(self.backbone, 'fc'):
+            # remove fc otherwise ddp will
+            # report unused params
+            self.backbone.fc = nn.Identity()
+
         self.linear = nn.Linear(feature_size, num_classes)
         self.simclr_layer = nn.Sequential(
             nn.Linear(feature_size, feature_size),

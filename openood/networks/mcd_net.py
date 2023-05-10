@@ -6,9 +6,13 @@ class MCDNet(nn.Module):
         super(MCDNet, self).__init__()
 
         self.backbone = backbone
+        try:
+            feature_size = backbone.feature_size
+        except AttributeError:
+            feature_size = backbone.module.feature_size
 
-        self.fc1 = nn.Linear(backbone.feature_size, num_classes)
-        self.fc2 = nn.Linear(backbone.feature_size, num_classes)
+        self.fc1 = nn.Linear(feature_size, num_classes)
+        self.fc2 = nn.Linear(feature_size, num_classes)
 
     # test conf
     def forward(self, x, return_double=False):

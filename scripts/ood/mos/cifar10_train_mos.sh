@@ -8,12 +8,14 @@
 
 PYTHONPATH='.':$PYTHONPATH \
 
+SEED=0
 python main.py \
---config configs/datasets/cifar10/cifar10_double_label.yml \
-configs/networks/resnet18_32x32.yml \
-configs/pipelines/train/train_mos.yml \
-configs/preprocessors/base_preprocessor.yml \
-configs/postprocessors/mos.yml \
---num_workers 8 \
---network.pretrained False \
---merge_option merge
+    --config configs/datasets/cifar10/cifar10_double_label.yml \
+    configs/networks/resnet18_32x32.yml \
+    configs/pipelines/train/train_mos.yml \
+    configs/preprocessors/base_preprocessor.yml \
+    --network.pretrained True \
+    --network.checkpoint ./results/cifar10_resnet18_32x32_base_e100_lr0.1_default/s${SEED}/best.ckpt \
+    --optimizer.num_epochs 30 \
+    --merge_option merge \
+    --seed ${SEED}

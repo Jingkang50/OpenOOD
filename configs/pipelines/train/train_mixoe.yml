@@ -1,0 +1,11 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'_alpha'@{trainer.alpha}'_beta'@{trainer.beta}'_'@{trainer.mix_op}'_lam'@{trainer.lambda_oe}'_'@{mark}'/s'@{seed}'"
+
+pipeline:
+  name: train_oe
+
+trainer:
+  name: mixoe
+  lambda_oe: 1.0
+  alpha: 0.1
+  beta: 1.0
+  mix_op: cutmix

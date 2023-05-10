@@ -69,3 +69,6 @@ class ResNet50(ResNet):
     def get_fc(self):
         fc = self.fc
         return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
+
+    def get_fc_layer(self):
+        return self.fc

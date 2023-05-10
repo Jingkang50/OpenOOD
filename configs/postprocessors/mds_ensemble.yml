@@ -1,0 +1,10 @@
+postprocessor:
+  name: mds_ensemble
+  APS_mode: True
+  postprocessor_args:
+    noise: 0.0014
+    feature_type_list: [mean]     # flat/mean/stat
+    alpha_list: [1]
+    reduce_dim_list: [none]   # none/capca/pca_50/lda
+  postprocessor_sweep:
+    noise_list: [0.0014]

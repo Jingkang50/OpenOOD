@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 
 from .base_postprocessor import BasePostprocessor
+from openood.preprocessors.transform import normalization_dict
 
 
 class GodinPostprocessor(BasePostprocessor):
@@ -13,7 +14,10 @@ class GodinPostprocessor(BasePostprocessor):
 
         self.score_func = self.args.score_func
         self.noise_magnitude = self.args.noise_magnitude
-        self.input_std = self.config.dataset.std
+        try:
+            self.input_std = normalization_dict[self.config.dataset.name][1]
+        except KeyError:
+            self.input_std = [0.5, 0.5, 0.5]
 
     def postprocess(self, net: nn.Module, data: Any):
         data.requires_grad = True

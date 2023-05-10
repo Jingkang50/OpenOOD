@@ -6,9 +6,18 @@ class ConfBranchNet(nn.Module):
         super(ConfBranchNet, self).__init__()
 
         self.backbone = backbone
+        if hasattr(self.backbone, 'fc'):
+            # remove fc otherwise ddp will
+            # report unused params
+            self.backbone.fc = nn.Identity()
 
-        self.fc = nn.Linear(backbone.feature_size, num_classes)
-        self.confidence = nn.Linear(backbone.feature_size, 1)
+        try:
+            feature_size = backbone.feature_size
+        except AttributeError:
+            feature_size = backbone.module.feature_size
+
+        self.fc = nn.Linear(feature_size, num_classes)
+        self.confidence = nn.Linear(feature_size, 1)
 
     # test conf
     def forward(self, x, return_confidence=False):

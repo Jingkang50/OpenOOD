@@ -1,0 +1,33 @@
+dataset:
+  name: imagenet200
+  num_classes: 200
+  pre_size: 256
+  image_size: 224
+
+  interpolation: bilinear
+  normalization_type: imagenet
+
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+
+  split_names: [train, val, test]
+
+  train:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/imagenet200/train_imagenet200.txt
+    batch_size: 256
+    shuffle: True
+  val:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/imagenet200/val_imagenet200.txt
+    batch_size: 256
+    shuffle: False
+  test:
+    dataset_class: ImglistDataset
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/imagenet200/test_imagenet200.txt
+    batch_size: 256
+    shuffle: False

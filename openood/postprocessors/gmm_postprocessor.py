@@ -9,8 +9,8 @@ from sklearn.mixture import GaussianMixture
 from tqdm import tqdm
 
 from .base_postprocessor import BasePostprocessor
-from .mds_postprocessor import (process_feature_type, reduce_feature_dim,
-                                tensor2list)
+from .mds_ensemble_postprocessor import (process_feature_type,
+                                         reduce_feature_dim, tensor2list)
 
 
 class GMMPostprocessor(BasePostprocessor):

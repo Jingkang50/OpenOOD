@@ -3,7 +3,7 @@ dataset:
   interpolation: bilinear
   normalization_type: cifar10
   split_names: [train, val, test]
-  num_classes: 12 # actually it's 100 classes but it has 20 groups
+  num_classes: 12 # actually it's 10 classes but it has 2 groups
   image_size: 32
   pre_size: 32
   num_workers: '@{num_workers}'
@@ -19,7 +19,7 @@ dataset:
   val:
     dataset_class: ImglistDataset
     data_dir: ./data/images_classic/
-    imglist_pth: ./data/benchmark_imglist/cifar10/train_cifar10_mos.txt
+    imglist_pth: ./data/benchmark_imglist/cifar10/val_cifar10_mos.txt
     batch_size: 128
     shuffle: False
     interpolation: bilinear

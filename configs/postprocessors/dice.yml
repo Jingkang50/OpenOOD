@@ -1,6 +1,6 @@
 postprocessor:
   name: dice
-  APS_mode: True
+  APS_mode: False
   postprocessor_args:
     p: 90
   postprocessor_sweep:

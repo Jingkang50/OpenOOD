@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 
 from .base_postprocessor import BasePostprocessor
+from openood.preprocessors.transform import normalization_dict
 
 
 class ODINPostprocessor(BasePostprocessor):
@@ -14,7 +15,10 @@ class ODINPostprocessor(BasePostprocessor):
 
         self.temperature = self.args.temperature
         self.noise = self.args.noise
-        self.input_std = self.config.dataset.std
+        try:
+            self.input_std = normalization_dict[self.config.dataset.name][1]
+        except KeyError:
+            self.input_std = [0.5, 0.5, 0.5]
         self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def postprocess(self, net: nn.Module, data: Any):

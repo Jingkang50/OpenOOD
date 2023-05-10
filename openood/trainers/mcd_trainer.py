@@ -42,23 +42,32 @@ class MCDTrainer(BaseTrainer):
             batch = next(train_dataiter)
 
             data = batch['data'].cuda()
-            # forward
-            logits1, logits2 = self.net(data, return_double=True)
-            loss = F.cross_entropy(logits1, batch['label'].cuda()) \
-                + F.cross_entropy(logits2, batch['label'].cuda())
+            if epoch_idx < self.epoch_ft:
+                logits1, logits2 = self.net(data, return_double=True)
+                loss = F.cross_entropy(logits1, batch['label'].cuda()) \
+                    + F.cross_entropy(logits2, batch['label'].cuda())
 
-            if self.train_unlabeled_loader and epoch_idx >= self.epoch_ft:
+            elif self.train_unlabeled_loader and epoch_idx >= self.epoch_ft:
                 try:
                     unlabeled_batch = next(unlabeled_dataiter)
                 except StopIteration:
                     unlabeled_dataiter = iter(self.train_unlabeled_loader)
                     unlabeled_batch = next(unlabeled_dataiter)
 
+                id_bs = data.size(0)
+
                 unlabeled_data = unlabeled_batch['data'].cuda()
-                logits1_oe, logits2_oe = self.net(unlabeled_data,
-                                                  return_double=True)
-                ent = torch.mean(entropy(logits1_oe) - entropy(logits2_oe))
-                loss_oe = torch.max(self.margin - ent, 0)[0]
+                all_data = torch.cat([data, unlabeled_data])
+                logits1, logits2 = self.net(all_data, return_double=True)
+
+                logits1_id, logits2_id = logits1[:id_bs], logits2[:id_bs]
+                logits1_ood, logits2_ood = logits1[id_bs:], logits2[id_bs:]
+
+                loss = F.cross_entropy(logits1_id, batch['label'].cuda()) \
+                    + F.cross_entropy(logits2_id, batch['label'].cuda())
+
+                ent = torch.mean(entropy(logits1_ood) - entropy(logits2_ood))
+                loss_oe = F.relu(self.margin - ent)
 
                 loss += self.lambda_oe * loss_oe
 
