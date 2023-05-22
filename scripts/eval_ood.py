@@ -15,8 +15,6 @@ import torch.nn.functional as F
 from openood.evaluation_api import Evaluator
 
 from openood.networks import ResNet18_32x32, ResNet18_224x224, ResNet50
-from openood.networks.ash_net import ASHNet
-from openood.networks.react_net import ReactNet
 from openood.networks.conf_branch_net import ConfBranchNet
 from openood.networks.godin_net import GodinNet
 from openood.networks.rot_net import RotNet
@@ -124,10 +122,10 @@ for subfolder in sorted(glob(os.path.join(root, 's*'))):
     net.cuda()
     net.eval()
 
-    if postprocessor_name == 'react':
-        net = ReactNet(net)
-    elif postprocessor_name == 'ash':
-        net = ASHNet(net)
+    # if postprocessor_name == 'react':
+    #    net = ReactNet(net)
+    # elif postprocessor_name == 'ash':
+    #    net = ASHNet(net)
 
     evaluator = Evaluator(
         net,

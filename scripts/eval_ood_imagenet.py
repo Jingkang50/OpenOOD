@@ -18,8 +18,6 @@ from torch.hub import load_state_dict_from_url
 from openood.evaluation_api import Evaluator
 
 from openood.networks import ResNet50, Swin_T, ViT_B_16
-from openood.networks.ash_net import ASHNet
-from openood.networks.react_net import ReactNet
 from openood.networks.conf_branch_net import ConfBranchNet
 from openood.networks.godin_net import GodinNet
 from openood.networks.rot_net import RotNet
@@ -126,10 +124,10 @@ else:
 net.cuda()
 net.eval()
 
-if postprocessor_name == 'react':
-    net = ReactNet(net)
-elif postprocessor_name == 'ash':
-    net = ASHNet(net)
+# if postprocessor_name == 'react':
+#    net = ReactNet(net)
+# elif postprocessor_name == 'ash':
+#    net = ASHNet(net)
 
 evaluator = Evaluator(
     net,
