@@ -17,27 +17,21 @@ ood_dataset:
     data_dir: ./data/images_largescale/
     imglist_pth: ./data/benchmark_imglist/imagenet200/val_openimage_o.txt
   nearood:
-    datasets: [species, imagenet21k]
-    imagenet21k:
+    datasets: [ssb_hard, ninco]
+    ssb_hard:
       data_dir: ./data/images_largescale/
-      imglist_pth: ./data/benchmark_imglist/imagenet200/test_imagenet_21k.txt
-    species:
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_ssb_hard.txt
+    ninco:
       data_dir: ./data/images_largescale/
-      imglist_pth: ./data/benchmark_imglist/imagenet200/test_species.txt
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_ninco.txt
   farood:
-    datasets: [inaturalist, texture, places, sun, openimageo]
-    places:
-      data_dir: ./data/images_largescale/
-      imglist_pth: ./data/benchmark_imglist/imagenet200/test_places.txt
-    sun:
-      data_dir: ./data/images_largescale/
-      imglist_pth: ./data/benchmark_imglist/imagenet200/test_sun.txt
-    texture:
+    datasets: [inaturalist, textures, openimageo]
+    textures:
       data_dir: ./data/images_classic/
-      imglist_pth: ./data/benchmark_imglist/imagenet200/test_texture.txt
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_textures.txt
     inaturalist:
       data_dir: ./data/images_largescale/
-      imglist_pth: ./data/benchmark_imglist/imagenet200/test_inaturalist.txt
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
     openimageo:
       data_dir: ./data/images_largescale/
-      imglist_pth: ./data/benchmark_imglist/imagenet200/test_openimage_o.txt
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
