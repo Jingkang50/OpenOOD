@@ -1,8 +1,11 @@
 #!/bin/bash
 # sh scripts/ood/mcd/imagenet200_test_mcd.sh
 
+# NOTE!!!!
 # need to manually change the checkpoint path
-# can't use the best.ckpt because mcd only trains for the last 10 epochs
+# remember to use the last_*.ckpt because mcd only trains for the last 10 epochs
+# and the best.ckpt (according to accuracy) is typically not within the last 10 epochs
+# therefore using best.ckpt is equivalent to early stopping with standard cross-entropy loss
 SCHEME="ood" # "ood" or "fsood"
 python main.py \
     --config configs/datasets/imagenet200/imagenet200.yml \

@@ -12,12 +12,12 @@
 python scripts/eval_ood_imagenet.py \
    --ckpt-path ./results/imagenet_godin_net_godin_e30_lr0.001_default/s0/best.ckpt \
    --arch resnet50 \
-   --postprocessor msp \
+   --postprocessor godin \
    --save-score --save-csv #--fsood
 
 # full-spectrum ood
 python scripts/eval_ood_imagenet.py \
    --ckpt-path ./results/imagenet_godin_net_godin_e30_lr0.001_default/s0/best.ckpt \
    --arch resnet50 \
-   --postprocessor msp \
+   --postprocessor godin \
    --save-score --save-csv --fsood

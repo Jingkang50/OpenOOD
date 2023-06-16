@@ -1,8 +1,11 @@
 #!/bin/bash
 # sh scripts/ood/mcd/cifar100_test_mcd.sh
 
-# need to manually change the checkpoint path from each run
-# can't use best.ckpt because mcd only trains for the last 10 epochs
+# NOTE!!!!
+# need to manually change the checkpoint path
+# remember to use the last_*.ckpt because mcd only trains for the last 10 epochs
+# and the best.ckpt (according to accuracy) is typically not within the last 10 epochs
+# therefore using best.ckpt is equivalent to early stopping with standard cross-entropy loss
 python main.py \
     --config configs/datasets/cifar100/cifar100.yml \
     configs/datasets/cifar100/cifar100_ood.yml \

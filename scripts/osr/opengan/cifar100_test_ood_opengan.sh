@@ -1,7 +1,8 @@
 #!/bin/bash
 # sh scripts/osr/opengan/cifar100_test_ood_opengan.sh
 
-# need to manually change the checkpoint path in test_opengan.yml
+# NOTE!!!!
+# need to manually change the network checkpoint path (not backbone) in configs/pipelines/test/test_opengan.yml
 # corresponding to different runs
 SEED=0
 python main.py \

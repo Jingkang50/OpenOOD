@@ -12,7 +12,7 @@
 # --kill-on-bad-exit=1 --job-name=${jobname} -w SG-IDC1-10-51-2-${node} \
 
 # this method needs to load multiple networks, please set the checkpoints in test_pipeling config file
-# need to manually change the checkpoint path in test_arpl.yml
+# need to manually change the checkpoint path in configs/pipelines/test/test_arpl.yml
 python main.py \
     --config configs/datasets/cifar10/cifar10.yml \
     configs/datasets/cifar10/cifar10_ood.yml \
