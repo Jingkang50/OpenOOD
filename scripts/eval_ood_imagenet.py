@@ -58,9 +58,7 @@ else:
         os.makedirs(root)
 
 # specify an implemented postprocessor
-# 'msp', 'mls', 'ebo', 'odin', 'temp_scaling', 'openmax', 'vim', 'klm', 'knn', 'dice', 'gradnorm', 'mds', 'gram', 'react'
-# 'rankfeat', 'ash'
-# 'conf_branch', 'godin', 'rotpred'
+# 'openmax', 'msp', 'temp_scaling', 'odin'...
 postprocessor_name = args.postprocessor
 # load pre-setup postprocessor if exists
 if os.path.isfile(
@@ -72,6 +70,9 @@ if os.path.isfile(
 else:
     postprocessor = None
 
+# assuming the model is either
+# 1) torchvision pre-trained; or
+# 2) a specified checkpoint
 if args.tvs_pretrained:
     if args.arch == 'resnet50':
         net = ResNet50()
@@ -124,11 +125,7 @@ else:
 net.cuda()
 net.eval()
 
-# if postprocessor_name == 'react':
-#    net = ReactNet(net)
-# elif postprocessor_name == 'ash':
-#    net = ASHNet(net)
-
+# a unified evaluator
 evaluator = Evaluator(
     net,
     id_name='imagenet',  # the target ID dataset
@@ -142,6 +139,7 @@ evaluator = Evaluator(
     shuffle=False,
     num_workers=8)
 
+# load pre-computed scores if exists
 if os.path.isfile(os.path.join(root, 'scores', f'{postprocessor_name}.pkl')):
     with open(os.path.join(root, 'scores', f'{postprocessor_name}.pkl'),
               'rb') as f:
@@ -149,6 +147,7 @@ if os.path.isfile(os.path.join(root, 'scores', f'{postprocessor_name}.pkl')):
     update(evaluator.scores, scores)
     print('Loaded pre-computed scores from file.')
 
+# save postprocessor for future reuse
 if hasattr(evaluator.postprocessor, 'setup_flag'
            ) or evaluator.postprocessor.hyperparam_search_done is True:
     pp_save_root = os.path.join(root, 'postprocessors')
@@ -161,8 +160,10 @@ if hasattr(evaluator.postprocessor, 'setup_flag'
                   'wb') as f:
             pickle.dump(evaluator.postprocessor, f, pickle.HIGHEST_PROTOCOL)
 
+# the metrics is a dataframe
 metrics = evaluator.eval_ood(fsood=args.fsood)
 
+# saving and recording
 if args.save_csv:
     saving_root = os.path.join(root, 'ood' if not args.fsood else 'fsood')
     if not os.path.exists(saving_root):

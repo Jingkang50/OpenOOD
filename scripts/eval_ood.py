@@ -50,8 +50,7 @@ args = parser.parse_args()
 root = args.root
 
 # specify an implemented postprocessor
-# 'msp', 'mls', 'ebo', 'odin', 'temp_scaling', 'openmax', 'vim', 'klm', 'knn', 'dice', 'gradnorm', 'mds', 'gram', 'react', 'rankfeat', 'ash'
-# 'conf_branch', 'godin', 'rotpred'
+# 'openmax', 'msp', 'temp_scaling', 'odin'...
 postprocessor_name = args.postprocessor
 
 NUM_CLASSES = {'cifar10': 10, 'cifar100': 100, 'imagenet200': 200}
@@ -67,9 +66,13 @@ try:
 except KeyError:
     raise NotImplementedError(f'ID dataset {args.id_data} is not supported.')
 
+# assume that the root folder contains subfolders each corresponding to
+# a training run, e.g., s0, s1, s2
+# this structure is automatically created if you use OpenOOD for train
 if len(glob(os.path.join(root, 's*'))) == 0:
     raise ValueError(f'No subfolders found in {root}')
 
+# iterate through training runs
 all_metrics = []
 for subfolder in sorted(glob(os.path.join(root, 's*'))):
     # load pre-setup postprocessor if exists
@@ -125,11 +128,6 @@ for subfolder in sorted(glob(os.path.join(root, 's*'))):
     net.cuda()
     net.eval()
 
-    # if postprocessor_name == 'react':
-    #    net = ReactNet(net)
-    # elif postprocessor_name == 'ash':
-    #    net = ASHNet(net)
-
     evaluator = Evaluator(
         net,
         id_name=args.id_data,  # the target ID dataset
@@ -154,7 +152,7 @@ for subfolder in sorted(glob(os.path.join(root, 's*'))):
         update(evaluator.scores, scores)
         print('Loaded pre-computed scores from file.')
 
-    # save the postprocessor for future use
+    # save the postprocessor for future reuse
     if hasattr(evaluator.postprocessor, 'setup_flag'
                ) or evaluator.postprocessor.hyperparam_search_done is True:
         pp_save_root = os.path.join(subfolder, 'postprocessors')
@@ -180,6 +178,7 @@ for subfolder in sorted(glob(os.path.join(root, 's*'))):
                   'wb') as f:
             pickle.dump(evaluator.scores, f, pickle.HIGHEST_PROTOCOL)
 
+# compute mean metrics over training runs
 all_metrics = np.stack(all_metrics, axis=0)
 metrics_mean = np.mean(all_metrics, axis=0)
 metrics_std = np.std(all_metrics, axis=0)
