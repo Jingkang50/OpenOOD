@@ -80,16 +80,6 @@ class Evaluator:
         if id_name not in DATA_INFO:
             raise ValueError(f'Dataset [{id_name}] is not supported')
 
-        # load data
-        data_setup(data_root, id_name)
-        loader_kwargs = {
-            'batch_size': batch_size,
-            'shuffle': shuffle,
-            'num_workers': num_workers
-        }
-        dataloader_dict = get_id_ood_dataloader(id_name, data_root,
-                                                preprocessor, **loader_kwargs)
-
         # get data preprocessor
         if preprocessor is None:
             preprocessor = get_default_preprocessor(id_name)
@@ -101,6 +91,16 @@ class Evaluator:
         if not isinstance(postprocessor, BasePostprocessor):
             raise TypeError(
                 'postprocessor should inherit BasePostprocessor in OpenOOD')
+
+        # load data
+        data_setup(data_root, id_name)
+        loader_kwargs = {
+            'batch_size': batch_size,
+            'shuffle': shuffle,
+            'num_workers': num_workers
+        }
+        dataloader_dict = get_id_ood_dataloader(id_name, data_root,
+                                                preprocessor, **loader_kwargs)
 
         # wrap base model to work with certain postprocessors
         if postprocessor_name == 'react':

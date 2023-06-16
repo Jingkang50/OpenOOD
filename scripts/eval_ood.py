@@ -67,6 +67,9 @@ try:
 except KeyError:
     raise NotImplementedError(f'ID dataset {args.id_data} is not supported.')
 
+if len(glob(os.path.join(root, 's*'))) == 0:
+    raise ValueError(f'No subfolders found in {root}')
+
 all_metrics = []
 for subfolder in sorted(glob(os.path.join(root, 's*'))):
     # load pre-setup postprocessor if exists
