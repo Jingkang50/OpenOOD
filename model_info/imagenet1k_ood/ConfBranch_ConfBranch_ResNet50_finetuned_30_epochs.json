@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://arxiv.org/pdf/1802.04865.pdf>ConfBranch</a>",
+  "Postprocessor": "<a href=https://arxiv.org/pdf/1802.04865.pdf>ConfBranch</a>",
+  "Near-OOD_AUROC": "70.66",
+  "Far-OOD_AUROC": "83.94",
+  "ID_Accuracy": "75.63",
+  "Outlier_Data": "No",
+  "Arch": "ResNet50",
+  "Additional_Description": "finetuned 30 epochs",
+  "ID_Accuracy_Mean": "75.63",
+  "Near-OOD_AUROC_Mean": "70.66",
+  "Far-OOD_AUROC_Mean": "83.94",
+  "Rank": 51
+}

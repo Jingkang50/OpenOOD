@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://papers.nips.cc/paper/2020/hash/f5496252609c43eb8a3d147ab9b9c006-Abstract.html>EBO</a>",
+  "Near-OOD_AUROC": "56.61",
+  "Far-OOD_AUROC": "73.37",
+  "ID_Accuracy": "54.35",
+  "Outlier_Data": "No",
+  "Arch": "ResNet50",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "54.35",
+  "Near-OOD_AUROC_Mean": "56.61",
+  "Far-OOD_AUROC_Mean": "73.37",
+  "Rank": 44
+}

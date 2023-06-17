@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://openreview.net/forum?id=KkazG4lgKL>SHE</a>",
+  "Near-OOD_AUROC": "76.59",
+  "Far-OOD_AUROC": "89.84",
+  "ID_Accuracy": "81.59",
+  "Outlier_Data": "No",
+  "Arch": "Swin-T",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "81.59",
+  "Near-OOD_AUROC_Mean": "76.59",
+  "Far-OOD_AUROC_Mean": "89.84",
+  "Rank": 22
+}

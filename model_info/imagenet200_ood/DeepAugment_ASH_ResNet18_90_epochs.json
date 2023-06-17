@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://openaccess.thecvf.com/content/ICCV2021/html/Hendrycks_The_Many_Faces_of_Robustness_A_Critical_Analysis_of_Out-of-Distribution_ICCV_2021_paper.html>DeepAugment</a>",
+  "Postprocessor": "<a href=https://openreview.net/forum?id=ndYXTEL6cZz>ASH</a>",
+  "Near-OOD_AUROC": "80.61 \u00b1 0.43",
+  "Far-OOD_AUROC": "93.84 \u00b1 0.15",
+  "ID_Accuracy": "85.00 \u00b1 0.16",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "85.00",
+  "Near-OOD_AUROC_Mean": "80.61",
+  "Far-OOD_AUROC_Mean": "93.84",
+  "Rank": 28
+}

@@ -47,7 +47,8 @@ def csv_to_multiple_json_files(input_csv_file, output_root):
         training = df.iloc[i]["Training"]
         postproc = df.iloc[i]["Postprocessor"]
         extra_desc = df.iloc[i]["Additional_Description"]
-        output_filename = f"{training}_{postproc}"
+        arch = df.iloc[i]["Arch"].replace('/', '-')
+        output_filename = f"{training}_{postproc}_{arch}"
         if isinstance(extra_desc, str) and len(extra_desc) > 0:
             output_filename += f"_{extra_desc}"
         output_filename += ".json"

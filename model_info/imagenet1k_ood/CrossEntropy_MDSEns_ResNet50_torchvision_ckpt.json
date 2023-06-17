@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://papers.nips.cc/paper/2018/hash/abdeb6f575ac5c6676b747bca8d09cc2-Abstract.html>MDSEns</a>",
+  "Near-OOD_AUROC": "49.67",
+  "Far-OOD_AUROC": "67.52",
+  "ID_Accuracy": "76.18",
+  "Outlier_Data": "No",
+  "Arch": "ResNet50",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "76.18",
+  "Near-OOD_AUROC_Mean": "49.67",
+  "Far-OOD_AUROC_Mean": "67.52",
+  "Rank": 62
+}

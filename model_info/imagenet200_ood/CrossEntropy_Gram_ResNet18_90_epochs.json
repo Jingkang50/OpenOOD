@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://proceedings.mlr.press/v119/sastry20a.html>Gram</a>",
+  "Near-OOD_AUROC": "67.67 \u00b1 1.07",
+  "Far-OOD_AUROC": "71.19 \u00b1 0.24",
+  "ID_Accuracy": "86.37 \u00b1 0.08",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "86.37",
+  "Near-OOD_AUROC_Mean": "67.67",
+  "Far-OOD_AUROC_Mean": "71.19",
+  "Rank": 41
+}

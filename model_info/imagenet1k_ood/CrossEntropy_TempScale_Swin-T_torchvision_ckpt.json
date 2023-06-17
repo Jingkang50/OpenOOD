@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://proceedings.mlr.press/v70/guo17a.html>TempScale</a>",
+  "Near-OOD_AUROC": "76.98",
+  "Far-OOD_AUROC": "86.73",
+  "ID_Accuracy": "81.59",
+  "Outlier_Data": "No",
+  "Arch": "Swin-T",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "81.59",
+  "Near-OOD_AUROC_Mean": "76.98",
+  "Far-OOD_AUROC_Mean": "86.73",
+  "Rank": 17
+}

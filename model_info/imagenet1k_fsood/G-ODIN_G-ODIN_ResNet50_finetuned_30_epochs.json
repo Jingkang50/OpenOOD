@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://openaccess.thecvf.com/content_CVPR_2020/html/Hsu_Generalized_ODIN_Detecting_Out-of-Distribution_Image_Without_Learning_From_Out-of-Distribution_Data_CVPR_2020_paper.html>G-ODIN</a>",
+  "Postprocessor": "<a href=https://openaccess.thecvf.com/content_CVPR_2020/html/Hsu_Generalized_ODIN_Detecting_Out-of-Distribution_Image_Without_Learning_From_Out-of-Distribution_Data_CVPR_2020_paper.html>G-ODIN</a>",
+  "Near-OOD_AUROC": "53.84",
+  "Far-OOD_AUROC": "70.09",
+  "ID_Accuracy": "53.12",
+  "Outlier_Data": "No",
+  "Arch": "ResNet50",
+  "Additional_Description": "finetuned 30 epochs",
+  "ID_Accuracy_Mean": "53.12",
+  "Near-OOD_AUROC_Mean": "53.84",
+  "Far-OOD_AUROC_Mean": "70.09",
+  "Rank": 53
+}

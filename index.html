@@ -56,7 +56,7 @@
               <a class="nav-link" href="#leaderboard">Leaderboards</a>
             </li>
             <li>
-              <a class="nav-link" href="#citation">Papers</a>
+              <a class="nav-link" href="https://arxiv.org/abs/2306.09301">Papers</a>
             </li>
             <li>
               <a class="nav-link" href="#faq"
@@ -95,33 +95,36 @@
     <section id="introduction">
       <div class="overview">
         <p class="doublealign">
-          Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. 
-          Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. 
+            OpenOOD aims to provide accurate, standardized, and unified evaluation of OOD detection.
+            There are at least 100+ works on OOD detection in the past 6 years, but it is still unclear which approaches really work since the evaluation setup is highly inconsistent from paper to paper.
+            OpenOOD currently provides 6 benchmarks for OOD detection (4 for standard setting and 2 for full-spectrum setting) in the context of image classification and benchmarks 40 advanced methodologies within our framework.
+            We expect OpenOOD to foster collective efforts in the community towards advancing the state-of-the-art in OOD detection. 
           <br><br>
           <strong> News:</strong>
           <ul>
-             <li>  <strong>May 2023:</strong> 
-                Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. 
+             <li>  <strong>June 2023:</strong> 
+                This leaderboard is officially online, along with the v1.5 release of OpenOOD which
+                emphasizes large-scale and full-spectrum OOD detection. Check out our 
+                <a href="https://arxiv.org/abs/2306.09301">technical report</a> and detailed <a href="https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-change-log">changelog</a>.
              </li>
           </ul>
 
         </p>
         <div class="flexbox-container features">
           <div class="element">
-            <div class="icon">
+            <div class="icon" style="position: absolute; left:20%;">
               <img src="https://img.icons8.com/wired/100/000000/leaderboard.png" />
             </div>
-            <p>
-              Up-to-date leaderboard based <br />
-              on 35+ methods
+            <p style="position: relative; left:-5%;">
+              Up-to-date leaderboard based on 35+ methods
             </p>
           </div>
           <div class="element">
-            <div class="icon">
+            <div class="icon" style="position: absolute; right:43%;">
               <img src="https://img.icons8.com/ios-glyphs/80/000000/user-credentials.png" />
             </div>
-            <p>
-                Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. 
+            <p style="position: relative; right:-14%;">
+                Carefully designed benchmarks of various sizes <br /> and settings 
             </p>
           </div>
         </div>
@@ -133,7 +136,7 @@
             <hr />
           </div>
           Check out our
-          <a href="https://github.com/Jingkang50/OpenOOD/blob/main/example_imagenet_eval.ipynb">tutorial</a>.
+          <a href="https://colab.research.google.com/drive/1tvTpCM1_ju82Yygu40fy7Lc0L1YrlkQF?usp=sharing">Colab tutorial</a>.
           <div class="codeblock">
             <div class="vspace10"></div>
             <div style="background: #ffffff; overflow:auto;width:auto;padding:.2em .6em;">
@@ -177,14 +180,10 @@ metrics <span style="color: #333333">=</span> evaluator.eval_ood()
           <div class="divider">
             <hr />
           </div>
-          Check out our paper with a detailed analysis. (to be updated)
+          Check out our <a href="https://arxiv.org/abs/2306.09301">paper</a> with detailed analyses.
           <div>
             <!--          <div class="scroller analysis-images">-->
-            <img class="analysis" src="./images/aa_robustness_vs_venues_Linf.png" alt="robustness_vs_venues" />
-            <!--            <img-->
-            <!--              src="./images/aa_robustness_vs_standard_Linf.png"-->
-            <!--              alt="robustness_vs_clean"-->
-            <!--            />-->
+            <img class="analysis" src="./images/fsood_results.png" alt="full-spectrum results" />
           </div>
         </div>
       </div>
@@ -265,10 +264,10 @@ metrics <span style="color: #333333">=</span> evaluator.eval_ood()
         <p class="doublealign">
           <ul>
              <li>  <strong>Near(Hard)-OOD:</strong> 
-             Species, ImageNet-21K 
+             <a href="https://openreview.net/forum?id=5hLP5JY9S2d">SSB-hard</a>, <a href="https://arxiv.org/abs/2306.00826">NINCO</a>
              </li>
              <li>  <strong>Far(Easy)-OOD:</strong> 
-              iNaturalist, Places, SUN, Textures, OpenImage-O
+              iNaturalist, Textures, <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Wang_ViM_Out-of-Distribution_With_Virtual-Logit_Matching_CVPR_2022_paper.html">OpenImage-O</a>
               </li>
               Methods are ranked according to near-OOD AUROC by default. Unless otherwise stated, the results are averaged over 3 independent training runs.
           </ul>
@@ -289,14 +288,14 @@ metrics <span style="color: #333333">=</span> evaluator.eval_ood()
           <p class="doublealign">
             <ul>
                <li>  <strong>Covariate-shifted ID (Non-semantic OOD):</strong> 
-               ImageNet-V2, ImageNet-C, ImageNet-R 
+                <a href="https://github.com/modestyachts/ImageNetV2">ImageNet-V2</a>, <a href="https://github.com/hendrycks/robustness">ImageNet-C</a>, <a href="https://github.com/hendrycks/imagenet-r">ImageNet-R</a>
                </li>
                <li>  <strong>Near(Hard)-OOD:</strong> 
-               Species, ImageNet-21K 
-               </li>
-               <li>  <strong>Far(Easy)-OOD:</strong> 
-                iNaturalist, Places, SUN, Textures, OpenImage-O
+                <a href="https://openreview.net/forum?id=5hLP5JY9S2d">SSB-hard</a>, <a href="https://arxiv.org/abs/2306.00826">NINCO</a>
                 </li>
+                <li>  <strong>Far(Easy)-OOD:</strong> 
+                 iNaturalist, Textures, <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Wang_ViM_Out-of-Distribution_With_Virtual-Logit_Matching_CVPR_2022_paper.html">OpenImage-O</a>
+                 </li>
                 Methods are ranked according to near-OOD AUROC by default. Unless otherwise stated, the results are averaged over 3 independent training runs.
             </ul>
     
@@ -315,11 +314,11 @@ metrics <span style="color: #333333">=</span> evaluator.eval_ood()
 
       <p class="doublealign">
         <ul>
-           <li>  <strong>Near(Hard)-OOD:</strong> 
-           Species, ImageNet-21K 
-           </li>
-           <li>  <strong>Far(Easy)-OOD:</strong> 
-            iNaturalist, Places, SUN, Textures, OpenImage-O
+            <li>  <strong>Near(Hard)-OOD:</strong> 
+            <a href="https://openreview.net/forum?id=5hLP5JY9S2d">SSB-hard</a>, <a href="https://arxiv.org/abs/2306.00826">NINCO</a>
+            </li>
+            <li>  <strong>Far(Easy)-OOD:</strong> 
+            iNaturalist, Textures, <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Wang_ViM_Out-of-Distribution_With_Virtual-Logit_Matching_CVPR_2022_paper.html">OpenImage-O</a>
             </li>
             Methods are ranked according to near-OOD AUROC by default.
         </ul>
@@ -340,14 +339,14 @@ metrics <span style="color: #333333">=</span> evaluator.eval_ood()
         <p class="doublealign">
           <ul>
              <li>  <strong>Covariate-shifted ID (Non-semantic OOD):</strong> 
-             ImageNet-V2, ImageNet-C, ImageNet-R 
+             <a href="https://github.com/modestyachts/ImageNetV2">ImageNet-V2</a>, <a href="https://github.com/hendrycks/robustness">ImageNet-C</a>, <a href="https://github.com/hendrycks/imagenet-r">ImageNet-R</a>
              </li>
              <li>  <strong>Near(Hard)-OOD:</strong> 
-             Species, ImageNet-21K 
+             <a href="https://openreview.net/forum?id=5hLP5JY9S2d">SSB-hard</a>, <a href="https://arxiv.org/abs/2306.00826">NINCO</a>
              </li>
              <li>  <strong>Far(Easy)-OOD:</strong> 
-              iNaturalist, Places, SUN, Textures, OpenImage-O
-              </li>
+             iNaturalist, Textures, <a href="https://openaccess.thecvf.com/content/CVPR2022/html/Wang_ViM_Out-of-Distribution_With_Virtual-Logit_Matching_CVPR_2022_paper.html">OpenImage-O</a>
+             </li>
               Methods are ranked according to near-OOD AUROC by default.
           </ul>
   
@@ -365,19 +364,15 @@ metrics <span style="color: #333333">=</span> evaluator.eval_ood()
       </div>
 
       <p class="qa-box">
-        <span class="question">&#10148; Placeholder. Placeholder. Placeholder. Placeholder. ? 🤔
+        <span class="question">&#10148; What are the differences between OpenOOD v1.5 and v1.0? 🤔
         </span>
         <br />
-        <span class="answer"> Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. 
+        <span class="answer"> OpenOOD v1.5 extends its earlier version by 1) including large-scale experiment results on ImageNet, 2) 
+            studying full-spectrum detection, and 3) introducing new features such as this leaderboard and the new evaluator. As a result, the leaderboard uniquely accompanies
+            our v1.5 release. Please also see a detailed changelog <a href="https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-change-log">here</a>.
         </span>
       </p>
 
-      <p class="qa-box">
-        <span class="question">&#10148; Placeholder. Placeholder. Placeholder. Placeholder. ? 🤔
-        </span>
-        <br />
-        <span class="answer">Placeholder. Placeholder. Placeholder. Placeholder. Placeholder. </span>
-      </p>
     </section>
 
     <div class="vspace50"></div>
@@ -386,9 +381,16 @@ metrics <span style="color: #333333">=</span> evaluator.eval_ood()
       <div class="heading">
         <p>Citation</p>
       </div>
-      Checkout our papers <a href="https://openreview.net/forum?id=gT6j4_tskUt">OpenOOD v1</a> and OpenOOD v1.5 for more details and analysis. Consider citing our papers if you reference our leaderboard or use our implementations in your research:
+      Consider citing our papers if you reference our leaderboard or use our implementations in your research:
       <div
         style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.0em .0em .0em .0em;padding:.2em .6em;">
+        <pre style="margin: 0; line-height: 125%"><span style="color: #555555; font-weight: bold">@article</span>{zhang2023openood,
+    title<span style="color: #333333">=</span>{OpenOOD v1.5: Enhanced Benchmark for Out-of-Distribution Detection},
+    author<span style="color: #333333">=</span>{Zhang, Jingyang <span style="color: #000000; font-weight: bold">and</span> Yang, Jingkang <span style="color: #000000; font-weight: bold">and</span> Wang, Pengyun <span style="color: #000000; font-weight: bold">and</span> Wang, Haoqi <span style="color: #000000; font-weight: bold">and</span> Lin, Yueqian <span style="color: #000000; font-weight: bold">and</span> Zhang, Haoran <span style="color: #000000; font-weight: bold">and</span> Sun, Yiyou <span style="color: #000000; font-weight: bold">and</span> Du, Xuefeng <span style="color: #000000; font-weight: bold">and</span> Zhou, Kaiyang <span style="color: #000000; font-weight: bold">and</span> Zhang, Wayne <span style="color: #000000; font-weight: bold">and</span> Li, Yixuan <span style="color: #000000; font-weight: bold">and</span> Liu, Ziwei <span style="color: #000000; font-weight: bold">and</span> Chen, Yiran <span style="color: #000000; font-weight: bold">and</span> Hai, Li},
+    journal<span style="color: #333333">=</span>{arXiv preprint arXiv:2306.09301},
+    year<span style="color: #333333">=</span>{2023},
+}</pre>
+
         <pre style="margin: 0; line-height: 125%"><span style="color: #555555; font-weight: bold">@inproceedings</span>{yang2022openood,
     title<span style="color: #333333">=</span>{Open{OOD}: Benchmarking Generalized Out-of-Distribution Detection},
     author<span style="color: #333333">=</span>{Jingkang Yang <span style="color: #000000; font-weight: bold">and</span> Pengyun Wang <span style="color: #000000; font-weight: bold">and</span> Dejian Zou <span style="color: #000000; font-weight: bold">and</span> Zitang Zhou <span style="color: #000000; font-weight: bold">and</span> Kunyuan Ding <span style="color: #000000; font-weight: bold">and</span> WenXuan Peng <span style="color: #000000; font-weight: bold">and</span> Haoqi Wang <span style="color: #000000; font-weight: bold">and</span> Guangyao Chen <span style="color: #000000; font-weight: bold">and</span> Bo Li <span style="color: #000000; font-weight: bold">and</span> Yiyou Sun <span style="color: #000000; font-weight: bold">and</span> Xuefeng Du <span style="color: #000000; font-weight: bold">and</span> Kaiyang Zhou <span style="color: #000000; font-weight: bold">and</span> Wayne Zhang <span style="color: #000000; font-weight: bold">and</span> Dan Hendrycks <span style="color: #000000; font-weight: bold">and</span> Yixuan Li <span style="color: #000000; font-weight: bold">and</span> Ziwei Liu},
@@ -412,10 +414,8 @@ metrics <span style="color: #333333">=</span> evaluator.eval_ood()
           We welcome any contribution in terms of both new methods and
           application scenarios. Please check
           <a href="https://github.com/Jingkang50/OpenOOD#how-to-contribute">here</a>
-          for more details.
-          <br />
-          <br />
-          Feel free to leave a message by either opening an issue or discussion in our github repo.
+          for more details. Feel free to leave a message by 
+          either opening an issue or discussion in our github repo.
         </div>
         <div class="box2">
           <p>Maintainers</p>
@@ -423,6 +423,12 @@ metrics <span style="color: #333333">=</span> evaluator.eval_ood()
             <hr />
           </div>
           <ul>
+            <li>
+              Jingyang Zhang
+              <!--<a href="https://zjysteven.github.io/"><i class="fas fa-globe"></i></a>-->
+              <a href="https://github.com/zjysteven"><i class="fab fa-github"></i></a>
+              <!--<a href="https://scholar.google.com/citations?user=f3DQwmgAAAAJ&hl=en"><i class="ai ai-google-scholar"></i></a>-->
+            </li>
             <li>
               Jingkang Yang
               <!--<a href="https://twitter.com/fra__31" target="_blank">Jingkang Yang</a>-->
@@ -436,12 +442,6 @@ metrics <span style="color: #333333">=</span> evaluator.eval_ood()
               <!--a href="https://people.epfl.ch/maksym.andriushchenko"><i class="fas fa-globe"></i></a>-->
               <a href="https://github.com/Prophet-C"><i class="fab fa-github"></i></a>
               <!--<a href="https://scholar.google.com/citations?user=ZNtuJYoAAAAJ"><i class="ai ai-google-scholar"></i></a>-->
-            </li>
-            <li>
-              Jingyang Zhang
-              <!--<a href="https://zjysteven.github.io/"><i class="fas fa-globe"></i></a>-->
-              <a href="https://github.com/zjysteven"><i class="fab fa-github"></i></a>
-              <!--<a href="https://scholar.google.com/citations?user=f3DQwmgAAAAJ&hl=en"><i class="ai ai-google-scholar"></i></a>-->
             </li>
           </ul>
         </div>

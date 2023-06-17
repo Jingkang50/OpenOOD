@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://openreview.net/forum?id=H1VGkIxRZ>ODIN</a>",
+  "Near-OOD_AUROC": "57.41",
+  "Far-OOD_AUROC": "75.62",
+  "ID_Accuracy": "54.35",
+  "Outlier_Data": "No",
+  "Arch": "ResNet50",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "54.35",
+  "Near-OOD_AUROC_Mean": "57.41",
+  "Far-OOD_AUROC_Mean": "75.62",
+  "Rank": 40
+}
