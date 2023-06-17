@@ -69,10 +69,10 @@ DATA_INFO = {
                     'data_dir': 'images_classic/',
                     'imglist_path': 'benchmark_imglist/cifar10/test_svhn.txt'
                 },
-                'textures': {
+                'texture': {
                     'data_dir': 'images_classic/',
                     'imglist_path':
-                    'benchmark_imglist/cifar10/test_textures.txt'
+                    'benchmark_imglist/cifar10/test_texture.txt'
                 },
                 'places365': {
                     'data_dir': 'images_classic/',
@@ -128,10 +128,10 @@ DATA_INFO = {
                     'data_dir': 'images_classic/',
                     'imglist_path': 'benchmark_imglist/cifar100/test_svhn.txt'
                 },
-                'textures': {
+                'texture': {
                     'data_dir': 'images_classic/',
                     'imglist_path':
-                    'benchmark_imglist/cifar100/test_textures.txt'
+                    'benchmark_imglist/cifar100/test_texture.txt'
                 },
                 'places365': {
                     'data_dir': 'images_classic/',
