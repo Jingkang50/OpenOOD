@@ -321,7 +321,7 @@ download_id_dict = {
     'imagenet_v2': '1akg2IiE22HcbvTBpwXQoD7tgfPCdkoho',
     'imagenet_r': '1EzjMN2gq-bVV7lg-MEAdeuBuz-7jbGYU',
     'imagenet_c': '1JeXL9YH4BO8gCJ631c5BHbaSsl-lekHt',
-    'benchmark_imglist': '1bdU5IOpzBcR9eYRFwQPpaxEwhV6eGBSm'
+    'benchmark_imglist': '1VDorb6Xe1VhlAxbXwp-kjd-caUddKd6x'
 }
 
 dir_dict = {
