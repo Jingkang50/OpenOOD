@@ -6,7 +6,8 @@
 &nbsp;&nbsp;&nbsp;
 
 
-[![paper](https://img.shields.io/badge/Integrate-40+%20Methods-228c22?style=for-the-badge)]()
+
+[![paper](https://img.shields.io/badge/leaderboard-35%2B%20Methods-228c22?style=for-the-badge)](https://zjysteven.github.io/OpenOOD/)
 &nbsp;&nbsp;&nbsp;
 [![paper](https://img.shields.io/badge/colab-tutorial-orange?style=for-the-badge)](https://colab.research.google.com/drive/1tvTpCM1_ju82Yygu40fy7Lc0L1YrlkQF?usp=sharing)
 &nbsp;&nbsp;&nbsp;
@@ -27,10 +28,10 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Updates
-- **16 June, 2023**: :boom::boom:We are releasing OpenOOD `v1.5`, which includes the following exciting updates. A detailed changelog is provided in the [Wiki](https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-change-log).
+- **16 June, 2023**: :boom::boom: We are releasing OpenOOD `v1.5`, which includes the following exciting updates. A detailed changelog is provided in the [Wiki](https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-change-log).
     - A new [report](https://arxiv.org/abs/2306.09301) which provides benchmarking results on ImageNet and for full-spectrum detection.
     - A unified, easy-to-use evaluator that allows evaluation by simply creating an evaluator instance and calling its functions. Check out this [colab tutorial](https://colab.research.google.com/drive/1tvTpCM1_ju82Yygu40fy7Lc0L1YrlkQF?usp=sharing)!
-    - A live [leaderboard](https://zjysteven.github.io/OpenOOD/) that tracks the state-of-the-art of this field.
+    -  A live [leaderboard](https://zjysteven.github.io/OpenOOD/) that tracks the state-of-the-art of this field.
 - **14 October, 2022**: OpenOOD `v1.0` is accepted to NeurIPS 2022. Check the report [here](https://arxiv.org/abs/2210.07242).
 - **14 June, 2022**: We release `v0.5`.
 - **12 April, 2022**: Primary release to support [Full-Spectrum OOD Detection](https://arxiv.org/abs/2204.05306).
@@ -179,8 +180,8 @@ This part lists all the backbones we will support in our codebase, including CNN
 </details>
 
 ---
-## Supported Methods (36)
-This part lists all the methods we include in this codebase. Up to `v1.5`, we totally support **more than 32 popular methods** for generalized OOD detection.
+## Supported Methods (50+)
+This part lists all the methods we include in this codebase. Up to `v1.5`, we totally support **more than 50 popular methods** for generalized OOD detection.
 
 All the supported methodolgies can be placed in the following four categories.
 
@@ -213,13 +214,11 @@ distance: f4d5b3 -->
 <summary><b>Open Set Recognition (3)</b></summary>
 
 > Post-Hoc Methods (1):
-> - [x] [![](https://img.shields.io/badge/CVPR'16-OpenMax-d0e9ff?style=for-the-badge)](https://github.com/13952522076/Open-Set-Recognition) ![training] ![postprocess]
+> - [x] [![](https://img.shields.io/badge/CVPR'16-OpenMax-d0e9ff?style=for-the-badge)](https://github.com/13952522076/Open-Set-Recognition) ![postprocess]
+> - [x] [![](https://img.shields.io/badge/ICCV'21-OpenGAN-fdd7e6?style=for-the-badge)](https://github.com/aimerykong/OpenGAN/tree/main/utils) ![postprocess]
 
 > Training Methods (1):
 > - [x] [![](https://img.shields.io/badge/TPAMI'21-ARPL-f4d5b3?style=for-the-badge)](https://github.com/iCGY96/ARPL) ![training] ![postprocess]
-
-> Training With Extra Data (1):
-> - [x] [![](https://img.shields.io/badge/ICCV'21-OpenGAN-fdd7e6?style=for-the-badge)](https://github.com/aimerykong/OpenGAN/tree/main/utils) ![training] ![postprocess]
 </details>
 
 
@@ -291,7 +290,7 @@ distance: f4d5b3 -->
 > - [x] [![mixup](https://img.shields.io/badge/ICLR'18-Mixup-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 > - [x] [![cutmix](https://img.shields.io/badge/ICCV'19-CutMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 > - [x] [![styleaugment](https://img.shields.io/badge/ICLR'19-StyleAugment-fdd7e6?style=for-the-badge)](https://openreview.net/forum?id=Bygh9j09KX) &nbsp;&nbsp; ![preprocess]
-> - [x] [![randaugment](https://img.shields.io/badge/CVPRW'20-RandAugment-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
+> - [x] [![randaugment](https://img.shields.io/badge/CVPRW'20-RandAugment-fdd7e6?style=for-the-badge)](https://openaccess.thecvf.com/content_CVPRW_2020/html/w40/Cubuk_Randaugment_Practical_Automated_Data_Augmentation_With_a_Reduced_Search_Space_CVPRW_2020_paper.html) &nbsp;&nbsp; ![preprocess]
 > - [x] [![augmix](https://img.shields.io/badge/ICLR'20-AugMix-fdd7e6?style=for-the-badge)](https://github.com/google-research/augmix) &nbsp;&nbsp; ![preprocess]
 > - [x] [![deepaugment](https://img.shields.io/badge/ICCV'21-DeepAugment-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/imagenet-r) &nbsp;&nbsp; ![preprocess]
 > - [x] [![pixmix](https://img.shields.io/badge/CVPR'21-PixMix-fdd7e6?style=for-the-badge)](https://openaccess.thecvf.com/content/CVPR2022/html/Hendrycks_PixMix_Dreamlike_Pictures_Comprehensively_Improve_Safety_Measures_CVPR_2022_paper.html) &nbsp;&nbsp; ![preprocess]
