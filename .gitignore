@@ -166,5 +166,3 @@ group_config/
 
 # local dev
 local/
-
-!example_imagenet_eval.ipynb
