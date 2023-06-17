@@ -1,5 +1,6 @@
 from typing import Callable, List, Type
 
+import os
 import numpy as np
 import pandas as pd
 import torch
@@ -83,6 +84,12 @@ class Evaluator:
         # get data preprocessor
         if preprocessor is None:
             preprocessor = get_default_preprocessor(id_name)
+
+        # set up config root
+        if config_root is None:
+            filepath = os.path.dirname(os.path.abspath(__file__))
+            self.config_root = os.path.join(*filepath.split('/')[:-2],
+                                            'configs')
 
         # get postprocessor
         if postprocessor is None:
