@@ -1,7 +1,8 @@
 #!/bin/bash
 # sh scripts/osr/arpl/imagenet200_test_ood_arpl.sh
 
-# need to manually change the checkpoint path in test_arpl.yml
+# NOTE!!!!
+# need to manually change the checkpoint path in configs/pipelines/test/test_arpl.yml
 SCHEME="ood" # "ood" or "fsood"
 python main.py \
     --config configs/datasets/imagenet200/imagenet200.yml \

@@ -187,50 +187,41 @@ DATA_INFO = {
             'val': {
                 'data_dir': 'images_largescale/',
                 'imglist_path':
-                'benchmark_imglist/imagenet/val_openimage_o.txt'
+                'benchmark_imglist/imagenet200/val_openimage_o.txt'
             },
             'near': {
-                'datasets': ['species', 'imagenet_21k'],
-                'species': {
-                    'data_dir': 'images_largescale/',
-                    'imglist_path':
-                    'benchmark_imglist/imagenet/test_species.txt'
-                },
-                'imagenet_21k': {
+                'datasets': ['ssb_hard', 'ninco'],
+                'ssb_hard': {
                     'data_dir':
                     'images_largescale/',
                     'imglist_path':
-                    'benchmark_imglist/imagenet/test_imagenet_21k.txt'
+                    'benchmark_imglist/imagenet200/test_ssb_hard.txt'
                 },
+                'ninco': {
+                    'data_dir': 'images_largescale/',
+                    'imglist_path':
+                    'benchmark_imglist/imagenet200/test_ninco.txt'
+                }
             },
             'far': {
-                'datasets':
-                ['inaturalist', 'texture', 'places', 'sun', 'openimage_o'],
+                'datasets': ['inaturalist', 'textures', 'openimage_o'],
                 'inaturalist': {
                     'data_dir':
                     'images_largescale/',
                     'imglist_path':
-                    'benchmark_imglist/imagenet/test_inaturalist.txt'
+                    'benchmark_imglist/imagenet200/test_inaturalist.txt'
                 },
-                'texture': {
-                    'data_dir': 'images_classic/',
+                'textures': {
+                    'data_dir':
+                    'images_classic/',
                     'imglist_path':
-                    'benchmark_imglist/imagenet/test_texture.txt'
-                },
-                'places': {
-                    'data_dir': 'images_largescale/',
-                    'imglist_path':
-                    'benchmark_imglist/imagenet/test_places.txt'
-                },
-                'sun': {
-                    'data_dir': 'images_largescale/',
-                    'imglist_path': 'benchmark_imglist/imagenet/test_sun.txt'
+                    'benchmark_imglist/imagenet200/test_textures.txt'
                 },
                 'openimage_o': {
                     'data_dir':
                     'images_largescale/',
                     'imglist_path':
-                    'benchmark_imglist/imagenet/test_openimage_o.txt'
+                    'benchmark_imglist/imagenet200/test_openimage_o.txt'
                 },
             },
         }
@@ -276,41 +267,29 @@ DATA_INFO = {
                 'benchmark_imglist/imagenet/val_openimage_o.txt'
             },
             'near': {
-                'datasets': ['species', 'imagenet_21k'],
-                'species': {
+                'datasets': ['ssb_hard', 'ninco'],
+                'ssb_hard': {
                     'data_dir': 'images_largescale/',
                     'imglist_path':
-                    'benchmark_imglist/imagenet/test_species.txt'
+                    'benchmark_imglist/imagenet/test_ssb_hard.txt'
                 },
-                'imagenet_21k': {
-                    'data_dir':
-                    'images_largescale/',
-                    'imglist_path':
-                    'benchmark_imglist/imagenet/test_imagenet_21k.txt'
-                },
+                'ninco': {
+                    'data_dir': 'images_largescale/',
+                    'imglist_path': 'benchmark_imglist/imagenet/test_ninco.txt'
+                }
             },
             'far': {
-                'datasets':
-                ['inaturalist', 'texture', 'places', 'sun', 'openimage_o'],
+                'datasets': ['inaturalist', 'textures', 'openimage_o'],
                 'inaturalist': {
                     'data_dir':
                     'images_largescale/',
                     'imglist_path':
                     'benchmark_imglist/imagenet/test_inaturalist.txt'
                 },
-                'texture': {
+                'textures': {
                     'data_dir': 'images_classic/',
                     'imglist_path':
-                    'benchmark_imglist/imagenet/test_texture.txt'
-                },
-                'places': {
-                    'data_dir': 'images_largescale/',
-                    'imglist_path':
-                    'benchmark_imglist/imagenet/test_places.txt'
-                },
-                'sun': {
-                    'data_dir': 'images_largescale/',
-                    'imglist_path': 'benchmark_imglist/imagenet/test_sun.txt'
+                    'benchmark_imglist/imagenet/test_textures.txt'
                 },
                 'openimage_o': {
                     'data_dir':
@@ -321,88 +300,6 @@ DATA_INFO = {
             },
         }
     },
-    'aircraft': {
-        'num_classes': 50,
-        'id': {
-            'train': {
-                'data_dir': 'images_largescale/',
-                'imglist_path': 'benchmark_imglist/aircraft/train_id.txt'
-            },
-            'val': {
-                'data_dir': 'images_largescale/',
-                'imglist_path': 'benchmark_imglist/aircraft/val_id.txt'
-            },
-            'test': {
-                'data_dir': 'images_largescale/',
-                'imglist_path': 'benchmark_imglist/aircraft/test_id.txt'
-            }
-        },
-        'csid': {
-            'datasets': [],
-        },
-        'ood': {
-            'val': {
-                'data_dir': 'images_largescale/',
-                'imglist_path': 'benchmark_imglist/aircraft/val_ood.txt'
-            },
-            'near': {
-                'datasets': ['hardood'],
-                'hardood': {
-                    'data_dir': 'images_largescale/',
-                    'imglist_path':
-                    'benchmark_imglist/aircraft/test_ood_hard.txt'
-                },
-            },
-            'far': {
-                'datasets': ['easyood'],
-                'easyood': {
-                    'data_dir': 'images_largescale/',
-                    'imglist_path':
-                    'benchmark_imglist/aircraft/test_ood_easy.txt'
-                },
-            },
-        }
-    },
-    'cub': {
-        'num_classes': 100,
-        'id': {
-            'train': {
-                'data_dir': 'images_largescale/',
-                'imglist_path': 'benchmark_imglist/cub/train_id.txt'
-            },
-            'val': {
-                'data_dir': 'images_largescale/',
-                'imglist_path': 'benchmark_imglist/cub/val_id.txt'
-            },
-            'test': {
-                'data_dir': 'images_largescale/',
-                'imglist_path': 'benchmark_imglist/cub/test_id.txt'
-            }
-        },
-        'csid': {
-            'datasets': [],
-        },
-        'ood': {
-            'val': {
-                'data_dir': 'images_largescale/',
-                'imglist_path': 'benchmark_imglist/cub/val_ood.txt'
-            },
-            'near': {
-                'datasets': ['hardood'],
-                'hardood': {
-                    'data_dir': 'images_largescale/',
-                    'imglist_path': 'benchmark_imglist/cub/test_ood_hard.txt'
-                },
-            },
-            'far': {
-                'datasets': ['easyood'],
-                'easyood': {
-                    'data_dir': 'images_largescale/',
-                    'imglist_path': 'benchmark_imglist/cub/test_ood_easy.txt'
-                },
-            },
-        }
-    }
 }
 
 download_id_dict = {
@@ -415,7 +312,8 @@ download_id_dict = {
     'places365': '1Ec-LRSTf6u5vEctKX9vRp9OA6tqnJ0Ay',
     'imagenet_1k': '1i1ipLDFARR-JZ9argXd2-0a6DXwVhXEj',
     'species_sub': '1-JCxDx__iFMExkYRMylnGJYTPvyuX6aq',
-    'imagenet_21k': '1PzkA-WGG8Z18h0ooL_pDdz9cO-DCIouE',
+    'ssb_hard': '1PzkA-WGG8Z18h0ooL_pDdz9cO-DCIouE',
+    'ninco': '1Z82cmvIB0eghTehxOGP5VTdLt7OD3nk6',
     'inaturalist': '1zfLfMvoUD0CUlKNnkk7LgxZZBnTBipdj',
     'places': '1fZ8TbPC4JGqUCm-VtvrmkYxqRNp2PoB3',
     'sun': '1ISK0STxWzWmg-_uUr4RQ8GSLFW7TZiKp',
@@ -423,7 +321,7 @@ download_id_dict = {
     'imagenet_v2': '1akg2IiE22HcbvTBpwXQoD7tgfPCdkoho',
     'imagenet_r': '1EzjMN2gq-bVV7lg-MEAdeuBuz-7jbGYU',
     'imagenet_c': '1JeXL9YH4BO8gCJ631c5BHbaSsl-lekHt',
-    'benchmark_imglist': '1kXO8ESkF2GemrycdWM0sFCKH31731GPp'
+    'benchmark_imglist': '1XKzBdWCqg3vPoj-D32YixJyJJ0hL63gP'
 }
 
 dir_dict = {
@@ -434,8 +332,8 @@ dir_dict = {
     ],
     'images_largescale/': [
         'imagenet_1k',
-        'species_sub',
-        'imagenet_21k',
+        'ssb_hard',
+        'ninco',
         'inaturalist',
         'places',
         'sun',
@@ -443,7 +341,6 @@ dir_dict = {
         'imagenet_v2',
         'imagenet_c',
         'imagenet_r',
-        # 'imagenet200_cae', 'imagenet200_edsr', 'imagenet200_stylized'
     ],
     'images_medical/': ['actmed', 'bimcv', 'ct', 'hannover', 'xraybone'],
 }
@@ -454,13 +351,12 @@ benchmarks_dict = {
     'cifar100':
     ['cifar100', 'cifar10', 'tin', 'mnist', 'svhn', 'texture', 'places365'],
     'imagenet200': [
-        'imagenet_1k', 'species_sub', 'imagenet_21k', 'inaturalist', 'places',
-        'sun', 'openimage_o', 'imagenet_v2', 'imagenet_c', 'imagenet_r'
+        'imagenet_1k', 'ssb_hard', 'ninco', 'inaturalist', 'texture',
+        'openimage_o', 'imagenet_v2', 'imagenet_c', 'imagenet_r'
     ],
     'imagenet': [
-        'imagenet_1k', 'species_sub', 'imagenet_21k', 'inaturalist', 'places',
-        'sun', 'openimage_o', 'texture', 'imagenet_v2', 'imagenet_c',
-        'imagenet_r'
+        'imagenet_1k', 'ssb_hard', 'ninco', 'inaturalist', 'texture',
+        'openimage_o', 'imagenet_v2', 'imagenet_c', 'imagenet_r'
     ],
 }
 

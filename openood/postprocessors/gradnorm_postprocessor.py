@@ -6,12 +6,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from .base_postprocessor import BasePostprocessor
+from .info import num_classes_dict
 
 
 class GradNormPostprocessor(BasePostprocessor):
     def __init__(self, config):
         super().__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
+        self.num_classes = num_classes_dict[self.config.dataset.name]
 
     def gradnorm(self, x, w, b):
         fc = torch.nn.Linear(*w.shape[::-1])
@@ -19,7 +21,7 @@ class GradNormPostprocessor(BasePostprocessor):
         fc.bias.data[...] = torch.from_numpy(b)
         fc.cuda()
 
-        targets = torch.ones((1, self.config.dataset.num_classes)).cuda()
+        targets = torch.ones((1, self.num_classes)).cuda()
 
         confs = []
         for i in x:

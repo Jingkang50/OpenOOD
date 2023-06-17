@@ -1,5 +1,6 @@
 from typing import Callable, List, Type
 
+import os
 import numpy as np
 import pandas as pd
 import torch
@@ -9,6 +10,8 @@ from tqdm import tqdm
 
 from openood.evaluators.metrics import compute_all_metrics
 from openood.postprocessors import BasePostprocessor
+from openood.networks.ash_net import ASHNet
+from openood.networks.react_net import ReactNet
 
 from .datasets import DATA_INFO, data_setup, get_id_ood_dataloader
 from .postprocessor import get_postprocessor
@@ -78,6 +81,23 @@ class Evaluator:
         if id_name not in DATA_INFO:
             raise ValueError(f'Dataset [{id_name}] is not supported')
 
+        # get data preprocessor
+        if preprocessor is None:
+            preprocessor = get_default_preprocessor(id_name)
+
+        # set up config root
+        if config_root is None:
+            filepath = os.path.dirname(os.path.abspath(__file__))
+            config_root = os.path.join(*filepath.split('/')[:-2], 'configs')
+
+        # get postprocessor
+        if postprocessor is None:
+            postprocessor = get_postprocessor(config_root, postprocessor_name,
+                                              id_name)
+        if not isinstance(postprocessor, BasePostprocessor):
+            raise TypeError(
+                'postprocessor should inherit BasePostprocessor in OpenOOD')
+
         # load data
         data_setup(data_root, id_name)
         loader_kwargs = {
@@ -88,17 +108,11 @@ class Evaluator:
         dataloader_dict = get_id_ood_dataloader(id_name, data_root,
                                                 preprocessor, **loader_kwargs)
 
-        # get data preprocessor
-        if preprocessor is None:
-            preprocessor = get_default_preprocessor(id_name)
-
-        # get postprocessor
-        if postprocessor is None:
-            postprocessor = get_postprocessor(config_root, postprocessor_name,
-                                              id_name)
-        if not isinstance(postprocessor, BasePostprocessor):
-            raise TypeError(
-                'postprocessor should inherit BasePostprocessor in OpenOOD')
+        # wrap base model to work with certain postprocessors
+        if postprocessor_name == 'react':
+            net = ReactNet(net)
+        elif postprocessor_name == 'ash':
+            net = ASHNet(net)
 
         # postprocessor setup
         postprocessor.setup(net, dataloader_dict['id'], dataloader_dict['ood'])
