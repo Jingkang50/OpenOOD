@@ -4,6 +4,8 @@
 &nbsp;&nbsp;&nbsp;
 [![paper](https://img.shields.io/badge/PAPER-arXiv%20(v1.5)-yellowgreen?style=for-the-badge)](https://arxiv.org/abs/2306.09301)
 &nbsp;&nbsp;&nbsp;
+
+
 [![paper](https://img.shields.io/badge/Integrate-40+%20Methods-228c22?style=for-the-badge)]()
 &nbsp;&nbsp;&nbsp;
 [![paper](https://img.shields.io/badge/colab-tutorial-orange?style=for-the-badge)](https://colab.research.google.com/drive/1tvTpCM1_ju82Yygu40fy7Lc0L1YrlkQF?usp=sharing)
@@ -15,7 +17,7 @@
 
 
 This repository reproduces representative methods within the [`Generalized Out-of-Distribution Detection Framework`](https://arxiv.org/abs/2110.11334),
-aiming to make a fair comparison across methods that initially developed for anomaly detection, novelty detection, open set recognition, and out-of-distribution detection.
+aiming to make a fair comparison across methods that were initially developed for anomaly detection, novelty detection, open set recognition, and out-of-distribution detection.
 This codebase is still under construction.
 Comments, issues, contributions, and collaborations are all welcomed!
 
@@ -25,7 +27,7 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Updates
-- **16 June, 2023**: :boom::boom:We are releasing OpenOOD `v1.5`, which includes the following exciting updates. A detailed changelog is provided in the Wiki.
+- **16 June, 2023**: :boom::boom:We are releasing OpenOOD `v1.5`, which includes the following exciting updates. A detailed changelog is provided in the [Wiki](https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-change-log).
     - A new [report](https://arxiv.org/abs/2306.09301) which provides benchmarking results on ImageNet and for full-spectrum detection.
     - A unified, easy-to-use evaluator that allows evaluation by simply creating an evaluator instance and calling its functions. Check out this [colab tutorial](https://colab.research.google.com/drive/1tvTpCM1_ju82Yygu40fy7Lc0L1YrlkQF?usp=sharing)!
     - A live [leaderboard](https://zjysteven.github.io/OpenOOD/) that tracks the state-of-the-art of this field.
@@ -56,6 +58,7 @@ OpenOOD v1.5 focuses on 4 ID datasets, and we release pre-trained models accordi
 - ImageNet-200 [[Google Drive]](https://drive.google.com/file/d/1ddVmwc8zmzSjdLUO84EuV4Gz1c7vhIAs/view?usp=drive_link): ResNet-18 classifiers trained with cross-entropy loss from 3 training runs.
 - ImageNet-1K [[Google Drive]](https://drive.google.com/file/d/15PdDMNRfnJ7f2oxW6lI-Ge4QJJH3Z0Fy/view?usp=drive_link): ResNet-50 classifiers including 1) the one from torchvision, 2) the ones that are trained by us with specific methods such as MOS, CIDER, and 3) the official checkpoints of data augmentation methods such as AugMix, PixMix.
 
+Again, these checkpoints can be downloaded with the downloading script [here](https://github.com/Jingkang50/OpenOOD/tree/main/scripts/download).
 
 ### v1.0 (no longer maintained)
 To setup the environment, we use `conda` to manage our dependencies.
@@ -309,6 +312,7 @@ We sincerely welcome community users to participate in these projects. Please re
 ## Citation
 If you find our repository useful for your research, please consider citing our paper:
 ```bibtex
+# v1.5 report
 @article{zhang2023openood,
   title={OpenOOD v1.5: Enhanced Benchmark for Out-of-Distribution Detection},
   author={Zhang, Jingyang and Yang, Jingkang and Wang, Pengyun and Wang, Haoqi and Lin, Yueqian and Zhang, Haoran and Sun, Yiyou and Du, Xuefeng and Zhou, Kaiyang and Zhang, Wayne and Li, Yixuan and Liu, Ziwei and Chen, Yiran and Li, Hai},
@@ -316,6 +320,7 @@ If you find our repository useful for your research, please consider citing our 
   year={2023}
 }
 
+# v1.0 report
 @article{yang2022openood,
     author = {Yang, Jingkang and Wang, Pengyun and Zou, Dejian and Zhou, Zitang and Ding, Kunyuan and Peng, Wenxuan and Wang, Haoqi and Chen, Guangyao and Li, Bo and Sun, Yiyou and Du, Xuefeng and Zhou, Kaiyang and Zhang, Wayne and Hendrycks, Dan and Li, Yixuan and Liu, Ziwei},
     title = {OpenOOD: Benchmarking Generalized Out-of-Distribution Detection},
