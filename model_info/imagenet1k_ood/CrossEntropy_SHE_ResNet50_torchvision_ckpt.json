@@ -1,14 +1,14 @@
 {
   "Training": "CrossEntropy",
   "Postprocessor": "<a href=https://openreview.net/forum?id=KkazG4lgKL>SHE</a>",
-  "Near-OOD_AUROC": "73.50",
-  "Far-OOD_AUROC": "90.15",
+  "Near-OOD_AUROC": "73.78",
+  "Far-OOD_AUROC": "90.92",
   "ID_Accuracy": "76.18",
   "Outlier_Data": "No",
   "Arch": "ResNet50",
   "Additional_Description": "torchvision ckpt",
   "ID_Accuracy_Mean": "76.18",
-  "Near-OOD_AUROC_Mean": "73.50",
-  "Far-OOD_AUROC_Mean": "90.15",
-  "Rank": 25
+  "Near-OOD_AUROC_Mean": "73.78",
+  "Far-OOD_AUROC_Mean": "90.92",
+  "Rank": 39
 }

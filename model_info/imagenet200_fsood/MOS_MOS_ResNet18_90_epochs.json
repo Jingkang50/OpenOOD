@@ -1,14 +1,14 @@
 {
   "Training": "<a href=https://openaccess.thecvf.com/content/CVPR2021/html/Huang_MOS_Towards_Scaling_Out-of-Distribution_Detection_for_Large_Semantic_Space_CVPR_2021_paper.html>MOS</a>",
   "Postprocessor": "<a href=https://openaccess.thecvf.com/content/CVPR2021/html/Huang_MOS_Towards_Scaling_Out-of-Distribution_Detection_for_Large_Semantic_Space_CVPR_2021_paper.html>MOS</a>",
-  "Near-OOD_AUROC": "41.85 \u00b1 0.12",
-  "Far-OOD_AUROC": "60.32 \u00b1 0.32",
+  "Near-OOD_AUROC": "45.45 \u00b1 0.40",
+  "Far-OOD_AUROC": "58.82 \u00b1 0.65",
   "ID_Accuracy": "43.30 \u00b1 0.04",
   "Outlier_Data": "No",
   "Arch": "ResNet18",
   "Additional_Description": "90 epochs",
   "ID_Accuracy_Mean": "43.30",
-  "Near-OOD_AUROC_Mean": "41.85",
-  "Far-OOD_AUROC_Mean": "60.32",
-  "Rank": 59
+  "Near-OOD_AUROC_Mean": "45.45",
+  "Far-OOD_AUROC_Mean": "58.82",
+  "Rank": 41
 }

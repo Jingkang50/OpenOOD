@@ -1,14 +1,14 @@
 {
   "Training": "<a href=https://openreview.net/forum?id=5j6fWcPccO>RegMixup</a>",
   "Postprocessor": "<a href=https://openreview.net/forum?id=ndYXTEL6cZz>ASH</a>",
-  "Near-OOD_AUROC": "77.80 \u00b1 0.63",
-  "Far-OOD_AUROC": "91.30 \u00b1 0.18",
+  "Near-OOD_AUROC": "79.38 \u00b1 0.46",
+  "Far-OOD_AUROC": "92.74 \u00b1 0.18",
   "ID_Accuracy": "87.25 \u00b1 0.57",
   "Outlier_Data": "No",
   "Arch": "ResNet18",
   "Additional_Description": "90 epochs",
   "ID_Accuracy_Mean": "87.25",
-  "Near-OOD_AUROC_Mean": "77.80",
-  "Far-OOD_AUROC_Mean": "91.30",
-  "Rank": 48
+  "Near-OOD_AUROC_Mean": "79.38",
+  "Far-OOD_AUROC_Mean": "92.74",
+  "Rank": 34
 }

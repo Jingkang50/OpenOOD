@@ -1,14 +1,14 @@
 {
   "Training": "CrossEntropy",
   "Postprocessor": "<a href=https://papers.nips.cc/paper/2020/hash/f5496252609c43eb8a3d147ab9b9c006-Abstract.html>EBO</a>",
-  "Near-OOD_AUROC": "56.77",
-  "Far-OOD_AUROC": "64.99",
+  "Near-OOD_AUROC": "59.97",
+  "Far-OOD_AUROC": "69.04",
   "ID_Accuracy": "60.05",
   "Outlier_Data": "No",
   "Arch": "Swin-T",
   "Additional_Description": "torchvision ckpt",
   "ID_Accuracy_Mean": "60.05",
-  "Near-OOD_AUROC_Mean": "56.77",
-  "Far-OOD_AUROC_Mean": "64.99",
-  "Rank": 36
+  "Near-OOD_AUROC_Mean": "59.97",
+  "Far-OOD_AUROC_Mean": "69.04",
+  "Rank": 33
 }

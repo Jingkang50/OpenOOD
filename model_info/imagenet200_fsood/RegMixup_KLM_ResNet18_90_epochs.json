@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://openreview.net/forum?id=5j6fWcPccO>RegMixup</a>",
+  "Postprocessor": "<a href=https://proceedings.mlr.press/v162/hendrycks22a.html>KLM</a>",
+  "Near-OOD_AUROC": "57.94 \u00b1 0.51",
+  "Far-OOD_AUROC": "68.41 \u00b1 0.86",
+  "ID_Accuracy": "46.60 \u00b1 0.27",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "46.60",
+  "Near-OOD_AUROC_Mean": "57.94",
+  "Far-OOD_AUROC_Mean": "68.41",
+  "Rank": 13
+}

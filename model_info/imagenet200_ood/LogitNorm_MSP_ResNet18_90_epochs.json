@@ -1,14 +1,14 @@
 {
   "Training": "<a href=https://proceedings.mlr.press/v162/wei22d.html>LogitNorm</a>",
   "Postprocessor": "<a href=https://openreview.net/forum?id=Hkg4TI9xl>MSP</a>",
-  "Near-OOD_AUROC": "81.39 \u00b1 0.04",
-  "Far-OOD_AUROC": "93.87 \u00b1 0.11",
+  "Near-OOD_AUROC": "82.66 \u00b1 0.15",
+  "Far-OOD_AUROC": "93.04 \u00b1 0.21",
   "ID_Accuracy": "86.04 \u00b1 0.15",
   "Outlier_Data": "No",
   "Arch": "ResNet18",
   "Additional_Description": "90 epochs",
   "ID_Accuracy_Mean": "86.04",
-  "Near-OOD_AUROC_Mean": "81.39",
-  "Far-OOD_AUROC_Mean": "93.87",
+  "Near-OOD_AUROC_Mean": "82.66",
+  "Far-OOD_AUROC_Mean": "93.04",
   "Rank": 10
 }

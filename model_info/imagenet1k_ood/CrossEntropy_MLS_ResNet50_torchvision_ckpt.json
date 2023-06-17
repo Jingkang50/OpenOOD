@@ -1,14 +1,14 @@
 {
   "Training": "CrossEntropy",
   "Postprocessor": "<a href=https://proceedings.mlr.press/v162/hendrycks22a.html>MLS</a>",
-  "Near-OOD_AUROC": "72.67",
-  "Far-OOD_AUROC": "87.85",
+  "Near-OOD_AUROC": "76.46",
+  "Far-OOD_AUROC": "89.57",
   "ID_Accuracy": "76.18",
   "Outlier_Data": "No",
   "Arch": "ResNet50",
   "Additional_Description": "torchvision ckpt",
   "ID_Accuracy_Mean": "76.18",
-  "Near-OOD_AUROC_Mean": "72.67",
-  "Far-OOD_AUROC_Mean": "87.85",
-  "Rank": 29
+  "Near-OOD_AUROC_Mean": "76.46",
+  "Far-OOD_AUROC_Mean": "89.57",
+  "Rank": 24
 }

@@ -1,14 +1,14 @@
 {
   "Training": "CrossEntropy",
   "Postprocessor": "<a href=https://proceedings.mlr.press/v162/hendrycks22a.html>KLM</a>",
-  "Near-OOD_AUROC": "70.32",
-  "Far-OOD_AUROC": "85.17",
+  "Near-OOD_AUROC": "74.41",
+  "Far-OOD_AUROC": "87.70",
   "ID_Accuracy": "81.14",
   "Outlier_Data": "No",
   "Arch": "ViT-B/16",
   "Additional_Description": "torchvision ckpt",
   "ID_Accuracy_Mean": "81.14",
-  "Near-OOD_AUROC_Mean": "70.32",
-  "Far-OOD_AUROC_Mean": "85.17",
-  "Rank": 40
+  "Near-OOD_AUROC_Mean": "74.41",
+  "Far-OOD_AUROC_Mean": "87.70",
+  "Rank": 37
 }

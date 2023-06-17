@@ -1,14 +1,14 @@
 {
   "Training": "<a href=https://arxiv.org/pdf/2103.00953.pdf>ARPL</a>",
   "Postprocessor": "<a href=https://arxiv.org/pdf/2103.00953.pdf>ARPL</a>",
-  "Near-OOD_AUROC": "51.86 \u00b1 0.12",
-  "Far-OOD_AUROC": "66.03 \u00b1 0.06",
+  "Near-OOD_AUROC": "53.67 \u00b1 0.02",
+  "Far-OOD_AUROC": "66.09 \u00b1 0.34",
   "ID_Accuracy": "40.65 \u00b1 0.15",
   "Outlier_Data": "No",
   "Arch": "ResNet18",
   "Additional_Description": "90 epochs",
   "ID_Accuracy_Mean": "40.65",
-  "Near-OOD_AUROC_Mean": "51.86",
-  "Far-OOD_AUROC_Mean": "66.03",
-  "Rank": 34
+  "Near-OOD_AUROC_Mean": "53.67",
+  "Far-OOD_AUROC_Mean": "66.09",
+  "Rank": 22
 }

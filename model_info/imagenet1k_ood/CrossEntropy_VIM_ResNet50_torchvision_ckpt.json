@@ -1,14 +1,14 @@
 {
   "Training": "CrossEntropy",
   "Postprocessor": "<a href=https://openaccess.thecvf.com/content/CVPR2022/html/Wang_ViM_Out-of-Distribution_With_Virtual-Logit_Matching_CVPR_2022_paper.html>VIM</a>",
-  "Near-OOD_AUROC": "67.15",
-  "Far-OOD_AUROC": "88.26",
+  "Near-OOD_AUROC": "72.08",
+  "Far-OOD_AUROC": "92.68",
   "ID_Accuracy": "76.18",
   "Outlier_Data": "No",
   "Arch": "ResNet50",
   "Additional_Description": "torchvision ckpt",
   "ID_Accuracy_Mean": "76.18",
-  "Near-OOD_AUROC_Mean": "67.15",
-  "Far-OOD_AUROC_Mean": "88.26",
-  "Rank": 48
+  "Near-OOD_AUROC_Mean": "72.08",
+  "Far-OOD_AUROC_Mean": "92.68",
+  "Rank": 47
 }
