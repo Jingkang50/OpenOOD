@@ -44,6 +44,8 @@ class CiderPreprocessor():
                 tvs_trans.Normalize(mean=self.mean, std=self.std),
             ])
 
+        self.transform = TwoCropTransform(self.transform)
+
     def setup(self, **kwargs):
         pass
 
