@@ -1,7 +1,7 @@
 from openood.utils import Config
 
 from .base_preprocessor import BasePreprocessor
-from .cider_preprocessor import CiderPreprocessor, TwoCropTransform
+from .cider_preprocessor import CiderPreprocessor
 from .csi_preprocessor import CSIPreprocessor
 from .cutpaste_preprocessor import CutPastePreprocessor
 from .draem_preprocessor import DRAEMPreprocessor
@@ -31,10 +31,7 @@ def get_preprocessor(config: Config, split):
     }
 
     if split == 'train':
-        if config.preprocessor.name == 'cider':
-            return TwoCropTransform(CiderPreprocessor(config))
-        else:
-            return train_preprocessors[config.preprocessor.name](config)
+        return train_preprocessors[config.preprocessor.name](config)
     else:
         try:
             return test_preprocessors[config.preprocessor.name](config)
