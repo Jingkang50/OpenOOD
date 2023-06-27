@@ -47,3 +47,22 @@ From the repository folder
 ```shell
 pre-commit install
 ```
+
+## Contributing to OpenOOD leaderboard
+
+We welcome new entries submitted to the leaderboard. Please follow the instructions below to submit your results.
+
+1. Evaluate your model/method with OpenOOD's benchmark and evaluator such that the comparison is fair.
+
+2. Report your new results by opening an issue. Remember to specify the following information:
+
+- **`Training`**: The training method of your model, e.g., `CrossEntropy`.
+- **`Postprocessor`**: The postprocessor of your model, e.g., `MSP`, `ReAct`, etc.
+- **`Near-OOD AUROC`**: The AUROC score of your model on the near-OOD split.
+- **`Far-OOD AUROC`**: The AUROC score of your model on the far-OOD split.
+- **`ID Accuracy`**: The accuracy of your model on the ID test data.
+- **`Outlier Data`**: Whether your model uses the outlier data for training.
+- **`Model Arch.`**: The architecture of your base classifier, e.g., `ResNet18`.
+- **`Additional Description`**: Any additional description of your model, e.g., `100 epochs`, `torchvision pretrained`, etc.
+
+3. Ideally, send us a copy of your model checkpoint so that we can verify your results on our end. You can either upload the checkpoint to a cloud storage and share the link in the issue, or send us an email at [jz288@duke.edu](mailto:jz288@duke.edu).
