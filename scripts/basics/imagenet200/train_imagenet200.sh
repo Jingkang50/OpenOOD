@@ -4,6 +4,6 @@
 python main.py \
     --config configs/datasets/imagenet200/imagenet200.yml \
     configs/preprocessors/base_preprocessor.yml \
-    configs/networks/resnet18_32x32.yml \
+    configs/networks/resnet18_224x224.yml \
     configs/pipelines/train/baseline.yml \
     --seed 0
