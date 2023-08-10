@@ -1,0 +1,9 @@
+postprocessor:
+  name: gen
+  APS_mode: True
+  postprocessor_args:
+    gamma: 0.1
+    M: 100
+  postprocessor_sweep:
+    gamma_list: [0.01,0.1,0.5,1,2,5,10]
+    M_list: [10,50,100,200,500,1000]
