@@ -5,22 +5,11 @@ from sklearn import metrics
 def compute_all_metrics(conf, label, pred):
     np.set_printoptions(precision=3)
     recall = 0.95
-    fpr, thresh = fpr_recall(conf, label, recall)
-    auroc, aupr_in, aupr_out = auc(conf, label)
-
-    ccr_1 = ccr_fpr(conf, 0.1, pred, label)
-    ccr_2 = ccr_fpr(conf, 0.01, pred, label)
-    ccr_3 = ccr_fpr(conf, 0.001, pred, label)
-    ccr_4 = ccr_fpr(conf, 0.0001, pred, label)
+    auroc, aupr_in, aupr_out, fpr = auc_and_fpr_recall(conf, label, recall)
 
     accuracy = acc(pred, label)
 
-    results1 = np.array(
-        [fpr, auroc, aupr_in, aupr_out, ccr_4, ccr_3, ccr_2, ccr_1, accuracy])
-
-    results = [
-        fpr, auroc, aupr_in, aupr_out, ccr_4, ccr_3, ccr_2, ccr_1, accuracy
-    ]
+    results = [fpr, auroc, aupr_in, aupr_out, accuracy]
 
     return results
 
@@ -38,16 +27,8 @@ def acc(pred, label):
 
 # fpr_recall
 def fpr_recall(conf, label, tpr):
-    # ind_conf = conf[label != -1]
-    # ood_conf = conf[label == -1]
-    # num_ind = len(ind_conf)
-    # num_ood = len(ood_conf)
     gt = np.ones_like(label)
     gt[label == -1] = 0
-    # recall_num = int(np.floor(tpr * num_ind))
-    # thresh = np.sort(ind_conf)[-recall_num]
-    # num_fp = np.sum(ood_conf > thresh)
-    # fpr = num_fp / num_ood
 
     fpr_list, tpr_list, threshold_list = metrics.roc_curve(gt, conf)
     fpr = fpr_list[np.argmax(tpr_list >= tpr)]
@@ -56,24 +37,28 @@ def fpr_recall(conf, label, tpr):
 
 
 # auc
-def auc(conf, label):
+def auc_and_fpr_recall(conf, label, tpr_th):
+    # following convention in ML we treat OOD as positive
+    ood_indicator = np.zeros_like(label)
+    ood_indicator[label == -1] = 1
 
-    ind_indicator = np.zeros_like(label)
-    ind_indicator[label != -1] = 1
-
-    fpr, tpr, thresholds = metrics.roc_curve(ind_indicator, conf)
+    # in the postprocessor we assume ID samples will have larger
+    # "conf" values than OOD samples
+    # therefore here we need to negate the "conf" values
+    fpr_list, tpr_list, thresholds = metrics.roc_curve(ood_indicator, -conf)
+    fpr = fpr_list[np.argmax(tpr_list >= tpr_th)]
 
     precision_in, recall_in, thresholds_in \
-        = metrics.precision_recall_curve(ind_indicator, conf)
+        = metrics.precision_recall_curve(ood_indicator, -conf)
 
     precision_out, recall_out, thresholds_out \
-        = metrics.precision_recall_curve(1 - ind_indicator, 1 - conf)
+        = metrics.precision_recall_curve(1 - ood_indicator, conf)
 
-    auroc = metrics.auc(fpr, tpr)
+    auroc = metrics.auc(fpr_list, tpr_list)
     aupr_in = metrics.auc(recall_in, precision_in)
     aupr_out = metrics.auc(recall_out, precision_out)
 
-    return auroc, aupr_in, aupr_out
+    return auroc, aupr_in, aupr_out, fpr
 
 
 # ccr_fpr

@@ -143,9 +143,7 @@ class OODEvaluator(BaseEvaluator):
         return {'auroc': 100 * val_auroc}
 
     def _save_csv(self, metrics, dataset_name):
-        [fpr, auroc, aupr_in, aupr_out,
-         ccr_4, ccr_3, ccr_2, ccr_1, accuracy] \
-         = metrics
+        [fpr, auroc, aupr_in, aupr_out, accuracy] = metrics
 
         write_content = {
             'dataset': dataset_name,
@@ -153,10 +151,6 @@ class OODEvaluator(BaseEvaluator):
             'AUROC': '{:.2f}'.format(100 * auroc),
             'AUPR_IN': '{:.2f}'.format(100 * aupr_in),
             'AUPR_OUT': '{:.2f}'.format(100 * aupr_out),
-            'CCR_4': '{:.2f}'.format(100 * ccr_4),
-            'CCR_3': '{:.2f}'.format(100 * ccr_3),
-            'CCR_2': '{:.2f}'.format(100 * ccr_2),
-            'CCR_1': '{:.2f}'.format(100 * ccr_1),
             'ACC': '{:.2f}'.format(100 * accuracy)
         }
 
@@ -168,10 +162,6 @@ class OODEvaluator(BaseEvaluator):
               flush=True)
         print('AUPR_IN: {:.2f}, AUPR_OUT: {:.2f}'.format(
             100 * aupr_in, 100 * aupr_out),
-              flush=True)
-        print('CCR: {:.2f}, {:.2f}, {:.2f}, {:.2f},'.format(
-            ccr_4 * 100, ccr_3 * 100, ccr_2 * 100, ccr_1 * 100),
-              end=' ',
               flush=True)
         print('ACC: {:.2f}'.format(accuracy * 100), flush=True)
         print(u'\u2500' * 70, flush=True)
