@@ -18,6 +18,7 @@ CrossEntropy,DICE,73.07,90.95,76.18,No,ResNet50,torchvision ckpt
 CrossEntropy,RankFeat,50.99,53.93,76.18,No,ResNet50,torchvision ckpt
 CrossEntropy,ASH,78.17,95.74,76.18,No,ResNet50,torchvision ckpt
 CrossEntropy,SHE,73.78,90.92,76.18,No,ResNet50,torchvision ckpt
+CrossEntropy,GEN,76.85,89.76,76.18,No,ResNet50,torchvision ckpt
 ConfBranch,ConfBranch,70.66,83.94,75.63,No,ResNet50,finetuned 30 epochs
 RotPred,RotPred,76.52,90.00,76.55,No,ResNet50,finetuned 30 epochs
 G-ODIN,G-ODIN,70.77,85.51,74.85,No,ResNet50,finetuned 30 epochs
@@ -50,6 +51,7 @@ CrossEntropy,KNN,71.62,89.37,81.59,No,Swin-T,torchvision ckpt
 CrossEntropy,DICE,48.48,60.44,81.59,No,Swin-T,torchvision ckpt
 CrossEntropy,ASH,46.47,44.64,81.59,No,Swin-T,torchvision ckpt
 CrossEntropy,SHE,76.59,89.84,81.59,No,Swin-T,torchvision ckpt
+CrossEntropy,GEN,78.97,90.98,81.59,No,Swin-T,torchvision ckpt
 CrossEntropy,OpenMax,73.64,89.27,81.14,No,ViT-B/16,torchvision ckpt
 CrossEntropy,MSP,73.52,86.04,81.14,No,ViT-B/16,torchvision ckpt
 CrossEntropy,TempScale,73.18,86.32,81.14,No,ViT-B/16,torchvision ckpt
@@ -65,3 +67,4 @@ CrossEntropy,KNN,74.11,90.81,81.14,No,ViT-B/16,torchvision ckpt
 CrossEntropy,DICE,65.36,82.31,81.14,No,ViT-B/16,torchvision ckpt
 CrossEntropy,ASH,53.21,51.56,81.14,No,ViT-B/16,torchvision ckpt
 CrossEntropy,SHE,76.11,92.42,81.14,No,ViT-B/16,torchvision ckpt
+CrossEntropy,GEN,76.30,91.35,81.14,No,ViT-B/16,torchvision ckpt

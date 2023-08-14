@@ -31,7 +31,7 @@ CIDER,https://openreview.net/forum?id=aEFaE0W5pAd
 NPOS,https://openreview.net/forum?id=JHklpEZqduQ
 Cutout,https://arxiv.org/abs/1708.04552
 RandAugment,https://papers.nips.cc/paper_files/paper/2020/hash/d85b63ef0ccb114d0a3bb7b7d808028f-Abstract.html
-StyleAug,https://openreview.net/forum?id=Bygh9j09KX&source=techstories.org
+StyleAugment,https://openreview.net/forum?id=Bygh9j09KX&source=techstories.org
 AugMix,https://openreview.net/forum?id=S1gmrxHFvB
 DeepAugment,https://openaccess.thecvf.com/content/ICCV2021/html/Hendrycks_The_Many_Faces_of_Robustness_A_Critical_Analysis_of_Out-of-Distribution_ICCV_2021_paper.html
 PixMix,https://openaccess.thecvf.com/content/CVPR2022/html/Hendrycks_PixMix_Dreamlike_Pictures_Comprehensively_Improve_Safety_Measures_CVPR_2022_paper.html
@@ -41,3 +41,4 @@ UDG,https://openaccess.thecvf.com/content/ICCV2021/html/Yang_Semantically_Cohere
 MCD,https://openaccess.thecvf.com/content_ICCV_2019/papers/Yu_Unsupervised_Out-of-Distribution_Detection_by_Maximum_Classifier_Discrepancy_ICCV_2019_paper.pdf
 SSOE,https://ojs.aaai.org/index.php/AAAI/article/view/5966
 MixOE,https://openaccess.thecvf.com/content/WACV2023/html/Zhang_Mixture_Outlier_Exposure_Towards_Out-of-Distribution_Detection_in_Fine-Grained_Environments_WACV_2023_paper.html
+GEN,https://openaccess.thecvf.com/content/CVPR2023/papers/Liu_GEN_Pushing_the_Limits_of_Softmax-Based_Out-of-Distribution_Detection_CVPR_2023_paper.pdf
