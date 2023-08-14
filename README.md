@@ -28,7 +28,7 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Updates
-- **16 June, 2023**: :boom::boom: We are releasing OpenOOD `v1.5`, which includes the following exciting updates. A detailed changelog is provided in the [Wiki](https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-change-log).
+- **16 June, 2023**: :boom::boom: We are releasing OpenOOD `v1.5`, which includes the following exciting updates. A detailed changelog is provided in the [Wiki](https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-change-log). An overview of the supported methods and benchmarks (with paper links) is available [here](https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-methods-&-benchmarks-overview).
     - A new [report](https://arxiv.org/abs/2306.09301) which provides benchmarking results on ImageNet and for full-spectrum detection.
     - A unified, easy-to-use evaluator that allows evaluation by simply creating an evaluator instance and calling its functions. Check out this [colab tutorial](https://colab.research.google.com/drive/1tvTpCM1_ju82Yygu40fy7Lc0L1YrlkQF?usp=sharing)!
     -  A live [leaderboard](https://zjysteven.github.io/OpenOOD/) that tracks the state-of-the-art of this field.
@@ -61,21 +61,6 @@ OpenOOD v1.5 focuses on 4 ID datasets, and we release pre-trained models accordi
 
 Again, these checkpoints can be downloaded with the downloading script [here](https://github.com/Jingkang50/OpenOOD/tree/main/scripts/download).
 
-### v1.0 (no longer maintained)
-To setup the environment, we use `conda` to manage our dependencies.
-
-Our developers use `CUDA 10.1` to do experiments.
-
-You can specify the appropriate `cudatoolkit` version to install on your machine in the `environment.yml` file, and then run the following to create the `conda` environment:
-```bash
-conda env create -f environment.yml
-conda activate openood
-pip install libmr==0.1.9 # if necessary
-```
-
-Datasets and pretrained models are provided [here](https://entuedu-my.sharepoint.com/:f:/g/personal/jingkang001_e_ntu_edu_sg/Eso7IDKUKQ9AoY7hm9IU2gIBMWNnWGCYPwClpH0TASRLmg?e=kMrkVQ).
-Please unzip the files if necessary.
-We also provide an automatic data download script [here](https://github.com/Jingkang50/OpenOOD/blob/main/scripts/download/).
 
 Our codebase accesses the datasets from `./data/` and pretrained models from `./results/checkpoints/` by default.
 ```
@@ -83,7 +68,6 @@ Our codebase accesses the datasets from `./data/` and pretrained models from `./
 ├── data
 │   ├── benchmark_imglist
 │   ├── images_classic
-│   ├── images_medical
 │   └── images_largescale
 ├── openood
 ├── results
@@ -94,21 +78,8 @@ Our codebase accesses the datasets from `./data/` and pretrained models from `./
 ├── ...
 ```
 
-| OOD Benchmark |    MNIST    |    CIFAR-10    |   CIFAR-100  | ImageNet-1K |
-| ------------- | ----------- | -------------- | ------------ | ----------- |
-| Accuracy      |    98.50    |      95.24     |     77.10    |    76.17    |
-| Checkpoint    |   [link]()  |    [link]()    |   [link]()   |   [link]()  |
-
-| OSR Benchmark |   MNIST-6   |     CIFAR-6    |   CIFAR-50   |    TIN-20   |
-| ------------- | ----------- | -------------- | ------------ | ----------- |
-| Checkpoint    |    [links]()    |    [links]()    |   [links]()  | [links]() |
-
-
-The easiest hands-on script is to train LeNet-5 on MNIST and evaluate its OOD or FS-OOD performance with MSP baseline.
-```bash
-sh scripts/basics/mnist/train_mnist.sh
-sh scripts/ood/msp/mnist_test_ood_msp.sh
-```
+#### Training and evaluation scripts
+We provide training and evaluation scripts for all the methods we support in [scripts folder](https://github.com/Jingkang50/OpenOOD/tree/main/scripts).
 
 ---
 ## Supported Benchmarks (10)
@@ -250,7 +221,7 @@ distance: f4d5b3 -->
 > - [x] [![rankfeat](https://img.shields.io/badge/NEURIPS'22-RANKFEAT-fdd7e6?style=for-the-badge)](https://github.com/KingJamesSong/RankFeat) &nbsp;&nbsp; ![postprocess]
 > - [x] [![ash](https://img.shields.io/badge/ICLR'23-ASH-fdd7e6?style=for-the-badge)](https://andrijazz.github.io/ash) &nbsp;&nbsp; ![postprocess]
 > - [x] [![she](https://img.shields.io/badge/ICLR'23-SHE-fdd7e6?style=for-the-badge)](https://github.com/zjs975584714/SHE) &nbsp;&nbsp; ![postprocess]
-
+> - [x] [![gen](https://img.shields.io/badge/CVPR'23-GEN-fdd7e6?style=for-the-badge)](https://openaccess.thecvf.com/content/CVPR2023/papers/Liu_GEN_Pushing_the_Limits_of_Softmax-Based_Out-of-Distribution_Detection_CVPR_2023_paper.pdf) &nbsp;&nbsp; ![postprocess]
 
 > Training Methods (6):
 > - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]

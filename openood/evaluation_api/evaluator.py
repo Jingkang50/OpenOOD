@@ -306,10 +306,7 @@ class Evaluator:
                 index=list(self.dataloader_dict['ood']['near'].keys()) +
                 ['nearood'] + list(self.dataloader_dict['ood']['far'].keys()) +
                 ['farood'],
-                columns=[
-                    'FPR@95', 'AUROC', 'AUPR_IN', 'AUPR_OUT', 'CCR_4', 'CCR_3',
-                    'CCR_2', 'CCR_1', 'ACC'
-                ],
+                columns=['FPR@95', 'AUROC', 'AUPR_IN', 'AUPR_OUT', 'ACC'],
             )
         else:
             print('Evaluation has already been done!')
@@ -364,9 +361,7 @@ class Evaluator:
         return np.concatenate([metrics_list, metrics_mean], axis=0) * 100
 
     def _print_metrics(self, metrics):
-        [fpr, auroc, aupr_in, aupr_out,
-         ccr_4, ccr_3, ccr_2, ccr_1, _] \
-         = metrics
+        [fpr, auroc, aupr_in, aupr_out, _] = metrics
 
         # print ood metric results
         print('FPR@95: {:.2f}, AUROC: {:.2f}'.format(100 * fpr, 100 * auroc),
@@ -374,10 +369,6 @@ class Evaluator:
               flush=True)
         print('AUPR_IN: {:.2f}, AUPR_OUT: {:.2f}'.format(
             100 * aupr_in, 100 * aupr_out),
-              flush=True)
-        print('CCR: {:.2f}, {:.2f}, {:.2f}, {:.2f},'.format(
-            ccr_4 * 100, ccr_3 * 100, ccr_2 * 100, ccr_1 * 100),
-              end=' ',
               flush=True)
         print(u'\u2500' * 70, flush=True)
         print('', flush=True)
