@@ -1,0 +1,40 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'_tau'@{network.tau}'_'@{mark}'"
+output_dir: ./results/
+save_output: True
+force_merge: False
+merge_option: default
+mark: T2FNorm
+seed: 42
+
+num_gpus: 1
+num_workers: 4
+num_machines: 1
+machine_rank: 0
+
+preprocessor:
+  name: base
+
+network:
+  pretrained: False
+  modification: t2fnorm
+  tau: 0.1
+
+pipeline:
+  name: train
+
+trainer:
+  name: base
+
+evaluator:
+  name: base
+
+optimizer:
+  name: sgd
+  num_epochs: 100
+  lr: 0.1
+  momentum: 0.9
+  weight_decay: 0.0005
+
+recorder:
+  name: base
+  save_all_models: False

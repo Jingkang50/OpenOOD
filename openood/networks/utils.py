@@ -12,6 +12,7 @@ from .bit import KNOWN_MODELS
 from .conf_branch_net import ConfBranchNet
 from .csi_net import get_csi_linear_layers, CSINet
 from .cider_net import CIDERNet
+from .t2fnorm_net import T2FNormNet
 from .de_resnet18_256x256 import AttnBasicBlock, BN_layer, De_ResNet18_256x256
 from .densenet import DenseNet3
 from .draem_net import DiscriminativeSubNetwork, ReconstructiveSubNetwork
@@ -41,7 +42,16 @@ def get_network(network_config):
 
     num_classes = network_config.num_classes
 
-    if network_config.name == 'resnet18_32x32':
+    if hasattr(network_config, 'modification') and network_config.modification == 't2fnorm':
+        network_config.modification = 'none'
+        backbone = get_network(network_config)
+        backbone.fc = nn.Identity()
+
+        net = T2FNormNet(backbone=backbone,
+                         tau=network_config.tau,
+                         num_classes=num_classes)
+
+    elif network_config.name == 'resnet18_32x32':
         net = ResNet18_32x32(num_classes=num_classes)
 
     elif network_config.name == 'resnet18_256x256':
