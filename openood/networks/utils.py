@@ -42,7 +42,7 @@ def get_network(network_config):
 
     num_classes = network_config.num_classes
 
-    if network_config.modification and network_config.modification == 't2fnorm':
+    if hasattr(network_config, 'modification') and network_config.modification == 't2fnorm':
         network_config.modification = 'none'
         backbone = get_network(network_config)
         backbone.fc = nn.Identity()
