@@ -131,7 +131,10 @@ class Config(dict):
 
     # access by '.' -> access by '[]'
     def __getattr__(self, key):
-        return self[key]
+        try:
+            return self[key]
+        except KeyError:
+            return None
 
     def __setattr__(self, key, value):
         self[key] = value
