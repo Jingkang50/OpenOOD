@@ -17,6 +17,7 @@ from .kl_matching_postprocessor import KLMatchingPostprocessor
 from .knn_postprocessor import KNNPostprocessor
 from .maxlogit_postprocessor import MaxLogitPostprocessor
 from .mcd_postprocessor import MCDPostprocessor
+from .mcm_postprocessor import MCMPostprocessor
 from .mds_postprocessor import MDSPostprocessor
 from .mds_ensemble_postprocessor import MDSEnsemblePostprocessor
 from .mos_postprocessor import MOSPostprocessor

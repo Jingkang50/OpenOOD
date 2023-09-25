@@ -1,4 +1,5 @@
 from .ash_net import ASHNet
+from .clip import CLIPZeroshot
 from .densenet import DenseNet3
 # from .mmcls_featext import ImageClassifierWithReturnFeature
 from .resnet18_32x32 import ResNet18_32x32

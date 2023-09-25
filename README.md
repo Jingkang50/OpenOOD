@@ -1,5 +1,10 @@
 # OpenOOD: Benchmarking Generalized OOD Detection
 
+
+| :exclamation:  We are looking forward to further extending the scope and building OpenOOD v2.0. Specifically, we are interested in 1) incorporating more modalities (e.g., text/language), 2) OOD in vision-language models, multi-modal foundation models, and large language models. If you want to join us or have any other ideas/thoughts, please don't heisitate to contact [jingkang001@e.ntu.edu.sg](mailto:jingkang001@e.ntu.edu.sg)! |
+|-----------------------------------------|
+
+
 [![paper](https://img.shields.io/badge/Paper-OpenReview%20(v1.0)-b31b1b?style=for-the-badge)](https://openreview.net/pdf?id=gT6j4_tskUt)
 &nbsp;&nbsp;&nbsp;
 [![paper](https://img.shields.io/badge/PAPER-arXiv%20(v1.5)-yellowgreen?style=for-the-badge)](https://arxiv.org/abs/2306.09301)
@@ -28,6 +33,7 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Updates
+- **25 Sept, 2023**: OpenOOD now supports OOD detection with foundation models including zero-shot CLIP and DINOv2 linear probe. Check out the example evaluation script [here](https://github.com/Jingkang50/OpenOOD/blob/main/scripts/eval_ood_imagenet_foundation_models.py).
 - **16 June, 2023**: :boom::boom: We are releasing OpenOOD `v1.5`, which includes the following exciting updates. A detailed changelog is provided in the [Wiki](https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-change-log). An overview of the supported methods and benchmarks (with paper links) is available [here](https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-methods-&-benchmarks-overview).
     - A new [report](https://arxiv.org/abs/2306.09301) which provides benchmarking results on ImageNet and for full-spectrum detection.
     - A unified, easy-to-use evaluator that allows evaluation by simply creating an evaluator instance and calling its functions. Check out this [colab tutorial](https://colab.research.google.com/drive/1tvTpCM1_ju82Yygu40fy7Lc0L1YrlkQF?usp=sharing)!
@@ -47,6 +53,8 @@ Comments, issues, contributions, and collaborations are all welcomed!
 OpenOOD now supports installation via pip.
 ```
 pip install git+https://github.com/Jingkang50/OpenOOD
+# optional, if you want to use CLIP
+# pip install git+https://github.com/openai/CLIP.git
 ```
 
 #### Data

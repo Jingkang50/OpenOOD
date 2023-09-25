@@ -1,0 +1,7 @@
+postprocessor:
+  name: mcm
+  APS_mode: False
+  postprocessor_args:
+    tau: 1
+  postprocessor_sweep:
+    tau_list: [0.01, 1, 10]
