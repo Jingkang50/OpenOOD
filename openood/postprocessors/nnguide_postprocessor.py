@@ -83,12 +83,7 @@ class NNGuidePostprocessor(BasePostprocessor):
 
     def set_hyperparam(self, hyperparam: list):
         self.K = hyperparam[0]
-        self.percentile = hyperparam[1]
-        self.threshold = np.percentile(self.activation_log.flatten(),
-                                       self.percentile)
-        print('Threshold at percentile {:2d} over id data is: {}'.format(
-            self.percentile, self.threshold))
-
+        self.alpha = hyperparam[1]
 
     def get_hyperparam(self):
-        return [self.K, self.percentile]
+        return [self.K, self.alpha]

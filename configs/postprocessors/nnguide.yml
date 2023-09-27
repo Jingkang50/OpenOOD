@@ -6,3 +6,4 @@ postprocessor:
     K: 100
   postprocessor_sweep:
     K_list: [100]
+    alpha_list: [0.01]
