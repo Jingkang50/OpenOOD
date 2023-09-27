@@ -11,13 +11,13 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from torchvision.models import ResNet50_Weights, Swin_T_Weights, ViT_B_16_Weights
+from torchvision.models import ResNet50_Weights, Swin_T_Weights, ViT_B_16_Weights, RegNet_Y_16GF_Weights
 from torchvision import transforms as trn
 from torch.hub import load_state_dict_from_url
 
 from openood.evaluation_api import Evaluator
 
-from openood.networks import ResNet50, Swin_T, ViT_B_16
+from openood.networks import ResNet50, Swin_T, ViT_B_16, RegNet
 from openood.networks.conf_branch_net import ConfBranchNet
 from openood.networks.godin_net import GodinNet
 from openood.networks.rot_net import RotNet
@@ -35,8 +35,8 @@ def update(d, u):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--arch',
-                    default='resnet50',
-                    choices=['resnet50', 'swin-t', 'vit-b-16'])
+                    default='regnet',
+                    choices=['resnet50', 'swin-t', 'vit-b-16', 'regnet'])
 parser.add_argument('--tvs-version', default=1, choices=[1, 2])
 parser.add_argument('--ckpt-path', default=None)
 parser.add_argument('--tvs-pretrained', action='store_true')
@@ -89,6 +89,24 @@ if args.tvs_pretrained:
         weights = eval(f'ViT_B_16_Weights.IMAGENET1K_V{args.tvs_version}')
         net.load_state_dict(load_state_dict_from_url(weights.url))
         preprocessor = weights.transforms()
+    elif args.arch == 'regnet':
+        if postprocessor_name == 'conf_branch':
+            model = RegNet()
+        elif postprocessor_name == 'godin':
+            backbone = RegNet()
+            net = GodinNet(backbone=backbone,
+                           feature_size=backbone.feature_size,
+                           num_classes=1000)
+        elif postprocessor_name == 'rotpred':
+            net = RotNet(backbone=RegNet(), num_classes=1000)
+        elif postprocessor_name == 'cider':
+            net = CIDERNet(backbone=RegNet(),
+                           head='mlp',
+                           feat_dim=128,
+                           num_classes=1000)
+        else:
+            net = RegNet()
+        preprocessor = RegNet_Y_16GF_Weights.IMAGENET1K_SWAG_E2E_V1.transforms()
     else:
         raise NotImplementedError
 else:
@@ -136,7 +154,7 @@ evaluator = Evaluator(
     postprocessor=postprocessor,
     batch_size=args.
     batch_size,  # for certain methods the results can be slightly affected by batch size
-    shuffle=False,
+    shuffle=True,
     num_workers=8)
 
 # load pre-computed scores if exists

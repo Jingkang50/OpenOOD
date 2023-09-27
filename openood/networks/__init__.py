@@ -8,3 +8,4 @@ from .utils import get_network
 from .wrn import WideResNet
 from .swin_t import Swin_T
 from .vit_b_16 import ViT_B_16
+from .regnet import RegNet
