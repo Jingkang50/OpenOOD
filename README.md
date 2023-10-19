@@ -230,6 +230,7 @@ distance: f4d5b3 -->
 > - [x] [![ash](https://img.shields.io/badge/ICLR'23-ASH-fdd7e6?style=for-the-badge)](https://andrijazz.github.io/ash) &nbsp;&nbsp; ![postprocess]
 > - [x] [![she](https://img.shields.io/badge/ICLR'23-SHE-fdd7e6?style=for-the-badge)](https://github.com/zjs975584714/SHE) &nbsp;&nbsp; ![postprocess]
 > - [x] [![gen](https://img.shields.io/badge/CVPR'23-GEN-fdd7e6?style=for-the-badge)](https://openaccess.thecvf.com/content/CVPR2023/papers/Liu_GEN_Pushing_the_Limits_of_Softmax-Based_Out-of-Distribution_Detection_CVPR_2023_paper.pdf) &nbsp;&nbsp; ![postprocess]
+> - [x] [![nnguide](https://img.shields.io/badge/ICCV'23-NNGuide-fdd7e6?style=for-the-badge)](https://arxiv.org/abs/2309.14888) &nbsp;&nbsp; ![postprocess]
 
 > Training Methods (6):
 > - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]
