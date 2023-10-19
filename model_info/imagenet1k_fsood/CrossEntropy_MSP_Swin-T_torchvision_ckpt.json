@@ -10,5 +10,5 @@
   "ID_Accuracy_Mean": "60.05",
   "Near-OOD_AUROC_Mean": "61.81",
   "Far-OOD_AUROC_Mean": "73.38",
-  "Rank": 15
+  "Rank": 16
 }

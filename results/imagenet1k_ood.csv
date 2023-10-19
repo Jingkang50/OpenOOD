@@ -68,3 +68,4 @@ CrossEntropy,DICE,65.36,82.31,81.14,No,ViT-B/16,torchvision ckpt
 CrossEntropy,ASH,53.21,51.56,81.14,No,ViT-B/16,torchvision ckpt
 CrossEntropy,SHE,76.11,92.42,81.14,No,ViT-B/16,torchvision ckpt
 CrossEntropy,GEN,76.30,91.35,81.14,No,ViT-B/16,torchvision ckpt
+CrossEntropy,NNGuide,84.87,97.17,86.10,No,RegNet_Y_16GF,torchvision ckpt
