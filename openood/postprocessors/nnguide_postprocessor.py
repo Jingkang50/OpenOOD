@@ -8,26 +8,24 @@ from tqdm import tqdm
 from scipy.special import logsumexp
 from copy import deepcopy
 from .base_postprocessor import BasePostprocessor
-from torch.utils.data import DataLoader
 
 normalizer = lambda x: x / np.linalg.norm(x, axis=-1, keepdims=True) + 1e-10
+
 
 def knn_score(bankfeas, queryfeas, k=100, min=False):
 
     bankfeas = deepcopy(np.array(bankfeas))
     queryfeas = deepcopy(np.array(queryfeas))
 
-
     index = faiss.IndexFlatIP(bankfeas.shape[-1])
     index.add(bankfeas)
-    D, I = index.search(queryfeas, k)
-
+    D, _ = index.search(queryfeas, k)
     if min:
         scores = np.array(D.min(axis=1))
     else:
         scores = np.array(D.mean(axis=1))
-
     return scores
+
 
 class NNGuidePostprocessor(BasePostprocessor):
     def __init__(self, config):
@@ -42,32 +40,33 @@ class NNGuidePostprocessor(BasePostprocessor):
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         if not self.setup_flag:
             net.eval()
-            ## NNGuide
             bank_feas = []
             bank_logits = []
             with torch.no_grad():
                 for batch in tqdm(id_loader_dict['train'],
-                                desc='Setup: ',
-                                position=0,
-                                leave=True):
+                                  desc='Setup: ',
+                                  position=0,
+                                  leave=True):
                     data = batch['data'].cuda()
                     data = data.float()
 
                     logit, feature = net(data, return_feature=True)
-                    bank_feas.append(
-                        normalizer(feature.data.cpu().numpy()))
+                    bank_feas.append(normalizer(feature.data.cpu().numpy()))
                     bank_logits.append(logit.data.cpu().numpy())
-                    if len(bank_feas) * id_loader_dict['train'].batch_size > int(len(id_loader_dict['train'].dataset) * self.alpha):
+                    if len(bank_feas
+                           ) * id_loader_dict['train'].batch_size > int(
+                               len(id_loader_dict['train'].dataset) *
+                               self.alpha):
                         break
 
             bank_feas = np.concatenate(bank_feas, axis=0)
-            bank_confs = logsumexp(np.concatenate(bank_logits, axis=0), axis=-1)
+            bank_confs = logsumexp(np.concatenate(bank_logits, axis=0),
+                                   axis=-1)
             self.bank_guide = bank_feas * bank_confs[:, None]
 
             self.setup_flag = True
         else:
             pass
-
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
