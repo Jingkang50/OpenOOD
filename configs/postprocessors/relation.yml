@@ -1,0 +1,7 @@
+postprocessor:
+  name: relation
+  APS_mode: True
+  postprocessor_args:
+    pow: 1
+  postprocessor_sweep:
+    pow_list: [1, 2, 4, 6, 8]

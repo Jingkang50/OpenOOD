@@ -39,3 +39,4 @@ from .rotpred_postprocessor import RotPredPostprocessor
 from .rankfeat_postprocessor import RankFeatPostprocessor
 from .gen_postprocessor import GENPostprocessor
 from .nnguide_postprocessor import NNGuidePostprocessor
+from .relation_postprocessor import RelationPostprocessor
