@@ -42,3 +42,4 @@ AugMix,MSP,89.43 ± 0.26,91.66 ± 0.15,95.01 ± 0.34,No,ResNet18,100 epochs
 PixMix,MSP,93.07 ± 0.15,95.65 ± 0.14,95.15 ± 0.09,No,ResNet18,100 epochs
 PixMix,KNN,93.10 ± 0.16,95.94 ± 0.16,95.15 ± 0.09,No,ResNet18,100 epochs
 RegMixup,MSP,87.47 ± 0.49,90.25 ± 1.90,95.75 ± 0.15,No,ResNet18,100 epochs
+CrossEntropy,Relation,89.77 ± 0.16,92.21 ± 0.20,95.06 ± 0.30,No,ResNet18,100 epochs
