@@ -49,10 +49,10 @@ def auc_and_fpr_recall(conf, label, tpr_th):
     fpr = fpr_list[np.argmax(tpr_list >= tpr_th)]
 
     precision_in, recall_in, thresholds_in \
-        = metrics.precision_recall_curve(ood_indicator, -conf)
+        = metrics.precision_recall_curve(1 - ood_indicator, conf)
 
     precision_out, recall_out, thresholds_out \
-        = metrics.precision_recall_curve(1 - ood_indicator, conf)
+        = metrics.precision_recall_curve(ood_indicator, -conf)
 
     auroc = metrics.auc(fpr_list, tpr_list)
     aupr_in = metrics.auc(recall_in, precision_in)
