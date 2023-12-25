@@ -1,7 +1,12 @@
 # OpenOOD: Benchmarking Generalized OOD Detection
 
-
+<!--
 | :exclamation:  We are looking forward to further extending the scope and building OpenOOD v2.0. Specifically, we are interested in 1) incorporating more modalities (e.g., text/language), 2) OOD in vision-language models, multi-modal foundation models, and large language models. If you want to join us or have any other ideas/thoughts, please don't heisitate to contact [jingkang001@e.ntu.edu.sg](mailto:jingkang001@e.ntu.edu.sg)! |
+|-----------------------------------------|
+---> 
+
+
+| :exclamation: When using OpenOOD in your research, it is vital to cite both the OpenOOD benchmark (versions 1 and 1.5) and the individual works that have contributed to your research. Accurate citation acknowledges the efforts and contributions of all researchers involved. For example, if your work involves the NINCO benchmark within OpenOOD, please include a citation for NINCO apart of OpenOOD.|
 |-----------------------------------------|
 
 
