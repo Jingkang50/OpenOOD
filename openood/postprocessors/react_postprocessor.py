@@ -13,6 +13,8 @@ class ReactPostprocessor(BasePostprocessor):
         super(ReactPostprocessor, self).__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
         self.percentile = self.args.percentile
+        self.threshold = np.percentile(self.activation_log.flatten(),
+                                       self.percentile)
         self.args_dict = self.config.postprocessor.postprocessor_sweep
         self.setup_flag = False
 
