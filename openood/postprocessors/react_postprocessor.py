@@ -13,8 +13,7 @@ class ReactPostprocessor(BasePostprocessor):
         super(ReactPostprocessor, self).__init__(config)
         self.args = self.config.postprocessor.postprocessor_args
         self.percentile = self.args.percentile
-        self.threshold = np.percentile(self.activation_log.flatten(),
-                                       self.percentile)
+        
         self.args_dict = self.config.postprocessor.postprocessor_sweep
         self.setup_flag = False
 
@@ -40,6 +39,8 @@ class ReactPostprocessor(BasePostprocessor):
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
+        self.threshold = np.percentile(self.activation_log.flatten(),
+                                       self.percentile)
         output = net.forward_threshold(data, self.threshold)
         score = torch.softmax(output, dim=1)
         _, pred = torch.max(score, dim=1)
