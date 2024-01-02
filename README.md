@@ -326,6 +326,14 @@ If you find our repository useful for your research, please consider citing our 
     journal={arXiv preprint arXiv:2110.11334},
     year={2021}
 }
+
+@inproceedings{bitterwolf2023ninco,
+title={In or Out? Fixing ImageNet Out-of-Distribution Detection Evaluation},
+author={Julian Bitterwolf and Maximilian Mueller and Matthias Hein},
+booktitle={ICML},
+year={2023},
+url={https://proceedings.mlr.press/v202/bitterwolf23a.html}
+}
 ```
 
 
