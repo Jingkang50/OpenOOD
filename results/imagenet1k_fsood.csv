@@ -69,3 +69,5 @@ CrossEntropy,ASH,52.54,50.97,61.49,No,ViT-B/16,torchvision ckpt
 CrossEntropy,SHE,61.07,80.30,61.49,No,ViT-B/16,torchvision ckpt
 CrossEntropy,GEN,59.73,78.22,61.49,No,ViT-B/16,torchvision ckpt
 CrossEntropy,NNGuide,71.85,92.24,73.28,No,RegNet_Y_16GF,torchvision ckpt
+CrossEntropy,SCALE,64.67,88.85,54.35,No,ResNet50,torchvision ckpt
+ISH,SCALE,68.04,89.46,54.88,No,ResNet50,official ckpt

@@ -39,3 +39,4 @@ RandAugment,MSP,80.27 ± 0.14,75.66 ± 0.20,78.16 ± 0.39,No,ResNet18,100 epochs
 PixMix,MSP,79.86 ± 0.34,84.06 ± 1.06,77.63 ± 0.16,No,ResNet18,100 epochs
 RegMixup,MSP,80.83 ± 0.16,79.04 ± 0.35,79.23 ± 0.22,No,ResNet18,100 epochs
 CrossEntropy,Relation,80.67 ± 0.04,80.82 ± 0.31,77.25 ± 0.09,No,ResNet18,100 epochs
+CrossEntropy,SCALE,80.99 ± 0.12,81.42 ± 0.43,77.26 ± 0.09,No,ResNet18,100 epochs
