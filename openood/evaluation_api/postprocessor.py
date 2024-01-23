@@ -8,10 +8,10 @@ from openood.postprocessors import (
     GradNormPostprocessor, GRAMPostprocessor, KLMatchingPostprocessor, KNNPostprocessor,
     MaxLogitPostprocessor, MCDPostprocessor, MDSPostprocessor, MDSEnsemblePostprocessor,
     MOSPostprocessor, ODINPostprocessor, OpenGanPostprocessor, OpenMax, PatchcorePostprocessor,
-    Rd4adPostprocessor, ReactPostprocessor, ResidualPostprocessor, SSDPostprocessor,
-    TemperatureScalingPostprocessor, VIMPostprocessor, RotPredPostprocessor, RankFeatPostprocessor,
-    RMDSPostprocessor, SHEPostprocessor, CIDERPostprocessor, NPOSPostprocessor, GENPostprocessor,
-    NNGuidePostprocessor, RelationPostprocessor)
+    Rd4adPostprocessor, ReactPostprocessor, ResidualPostprocessor, ScalePostprocessor,
+    SSDPostprocessor, TemperatureScalingPostprocessor, VIMPostprocessor, RotPredPostprocessor, 
+    RankFeatPostprocessor, RMDSPostprocessor, SHEPostprocessor, CIDERPostprocessor, NPOSPostprocessor, 
+    GENPostprocessor, NNGuidePostprocessor, RelationPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
@@ -48,6 +48,7 @@ postprocessors = {
     'opengan': OpenGanPostprocessor,
     'knn': KNNPostprocessor,
     'dice': DICEPostprocessor,
+    'scale': ScalePostprocessor,
     'ssd': SSDPostprocessor,
     'she': SHEPostprocessor,
     'rd4ad': Rd4adPostprocessor,
