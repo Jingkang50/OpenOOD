@@ -1,5 +1,6 @@
 #!/bin/bash
 # sh scripts/ood/ish/imagenet_train_ish.sh
+# pretrained model: https://drive.google.com/file/d/1EQimcdbJsKdU2uw4-BrqZO6tu4kXKtbG
 
 python main.py  \
     --config configs/datasets/imagenet/imagenet.yml \
