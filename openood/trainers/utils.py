@@ -31,6 +31,7 @@ from .rts_trainer import RTSTrainer
 from .rotpred_trainer import RotPredTrainer
 from .regmixup_trainer import RegMixupTrainer
 from .mixoe_trainer import MixOETrainer
+from .ish_trainer import ISHTrainer
 
 
 def get_trainer(net, train_loader: DataLoader, val_loader: DataLoader,
@@ -63,7 +64,8 @@ def get_trainer(net, train_loader: DataLoader, val_loader: DataLoader,
             'logitnorm': LogitNormTrainer,
             'rd4ad': Rd4adTrainer,
             'rts': RTSTrainer,
-            'rotpred': RotPredTrainer
+            'rotpred': RotPredTrainer,
+            'ish': ISHTrainer,
         }
         if config.trainer.name in ['cider', 'npos']:
             return trainers[config.trainer.name](net, train_loader, val_loader,
