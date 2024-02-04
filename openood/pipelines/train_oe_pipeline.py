@@ -30,6 +30,8 @@ class TrainOEPipeline:
 
         # init network
         net = get_network(self.config.network)
+        if self.config.num_gpus * self.config.num_machines > 1:
+            net = torch.nn.SyncBatchNorm.convert_sync_batchnorm(net)
 
         # init trainer and evaluator
         trainer = get_trainer(net, [train_loader, train_oe_loader], None,
@@ -39,9 +41,13 @@ class TrainOEPipeline:
         if comm.is_main_process():
             # init recorder
             recorder = get_recorder(self.config)
-
             print('Start training...', flush=True)
+
         for epoch_idx in range(1, self.config.optimizer.num_epochs + 1):
+            if isinstance(train_loader.sampler,
+                          torch.utils.data.distributed.DistributedSampler):
+                train_loader.sampler.set_epoch(epoch_idx - 1)
+
             # train and eval the model
             net, train_metrics = trainer.train_epoch(epoch_idx)
             val_metrics = evaluator.eval_acc(net, val_loader, None, epoch_idx)
