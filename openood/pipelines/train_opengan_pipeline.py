@@ -32,6 +32,8 @@ class TrainOpenGanPipeline:
 
         # init network
         net = get_network(self.config.network)
+        if self.config.num_gpus * self.config.num_machines > 1:
+            net = torch.nn.SyncBatchNorm.convert_sync_batchnorm(net)
 
         # init trainer
         trainer = get_trainer(net, dataloaders['id_train'],
@@ -46,6 +48,10 @@ class TrainOpenGanPipeline:
 
         print('Start training...', flush=True)
         for epoch_idx in range(1, self.config.optimizer.num_epochs + 1):
+            if isinstance(dataloaders['id_train'].sampler,
+                          torch.utils.data.distributed.DistributedSampler):
+                dataloaders['id_train'].sampler.set_epoch(epoch_idx - 1)
+
             # train the model
             net, train_metrics = trainer.train_epoch(epoch_idx)
             val_metrics = evaluator.eval_ood_val(net, id_loaders, ood_loaders,
