@@ -11,6 +11,7 @@ import openood.utils.comm as comm
 class BasePostprocessor:
     def __init__(self, config):
         self.config = config
+        self.args_dict = self.config.postprocessor.postprocessor_sweep
 
     def setup(self, net: nn.Module, id_loader_dict, ood_loader_dict):
         pass
@@ -43,3 +44,9 @@ class BasePostprocessor:
         label_list = torch.cat(label_list).numpy().astype(int)
 
         return pred_list, conf_list, label_list
+    
+    def set_hyperparam(self, hyperparam: list):
+        raise NotImplementedError("set_hyperparam method is not implemented.")
+    
+    def get_hyperparam(self):
+        raise NotImplementedError("get_hyperparam method is not implemented.")

@@ -1,6 +1,7 @@
 import argparse
 import os
 import re
+from typing import Any
 
 import yaml
 
@@ -130,7 +131,7 @@ class Config(dict):
         return d
 
     # access by '.' -> access by '[]'
-    def __getattr__(self, key):
+    def __getattr__(self, key) -> Any:
         try:
             return self[key]
         except KeyError:

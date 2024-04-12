@@ -1,3 +1,5 @@
+
+from openood.recorders.recorder import RecorderProtocol
 from openood.utils import Config
 
 from .ad_recorder import ADRecorder
@@ -10,9 +12,10 @@ from .dsvdd_recorder import DCAERecorder, DSVDDRecorder
 from .kdad_recorder import KdadRecorder
 from .opengan_recorder import OpenGanRecorder
 from .rd4ad_recorder import Rd4adRecorder
+from .wandb_wrapper import WandbWrapper
 
 
-def get_recorder(config: Config):
+def get_recorder(config: Config) -> RecorderProtocol:
     recorders = {
         'base': BaseRecorder,
         'cider': CiderRecorder,
@@ -27,4 +30,10 @@ def get_recorder(config: Config):
         'rd4ad': Rd4adRecorder,
     }
 
-    return recorders[config.recorder.name](config)
+
+    base_recorder = recorders[config.recorder.name.removeprefix('wandb_')](config)
+
+    if config.recorder.name.startswith('wandb_'):
+        return WandbWrapper(recorder=base_recorder)
+    else:     
+        return base_recorder

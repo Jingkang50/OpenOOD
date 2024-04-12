@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn import metrics
 
+any_float = float | np.floating
 
 def compute_all_metrics(conf, label, pred):
     np.set_printoptions(precision=3)
@@ -14,8 +15,36 @@ def compute_all_metrics(conf, label, pred):
     return results
 
 
+def compute_der(*, conf: np.ndarray, label: np.ndarray, pred: np.ndarray, 
+                p: float = 0.95, 
+                id_pred: np.ndarray | None = None) -> np.floating:
+    id_pred = conf[label != -1] if id_pred is None else id_pred
+    gamma = np.quantile(id_pred, p)
+    y_cor = label == pred
+    der = detection_error_rate(y_cor= y_cor, ood_conf= conf, gamma = gamma)
+    return der
+
+def detection_error_rate(*, y_cor: np.ndarray, ood_conf: np.ndarray, gamma: np.floating) -> np.floating:
+    """
+    As described in the paper
+    "Rethinking Out-of-Distribution Detection From a Human-Centric Perspective" 
+    https://arxiv.org/pdf/2211.16778.pdf
+    """
+
+    tp_cor = np.sum(y_cor * (ood_conf >= gamma))
+    fn_cor = np.sum(y_cor * (ood_conf < gamma))
+    fp_cor = np.sum((1 - y_cor) * (ood_conf >= gamma))
+    tn_cor = np.sum((1 - y_cor) * (ood_conf < gamma))
+
+
+    DER = (fn_cor + fp_cor) / (tp_cor + fn_cor + fp_cor + tn_cor)
+
+    return DER
+
+
+
 # accuracy
-def acc(pred, label):
+def acc(pred, label) -> np.floating:
     ind_pred = pred[label != -1]
     ind_label = label[label != -1]
 
@@ -37,7 +66,7 @@ def fpr_recall(conf, label, tpr):
 
 
 # auc
-def auc_and_fpr_recall(conf, label, tpr_th):
+def auc_and_fpr_recall(conf, label, tpr_th) -> tuple[any_float, any_float, any_float, any_float]:
     # following convention in ML we treat OOD as positive
     ood_indicator = np.zeros_like(label)
     ood_indicator[label == -1] = 1
@@ -46,7 +75,7 @@ def auc_and_fpr_recall(conf, label, tpr_th):
     # "conf" values than OOD samples
     # therefore here we need to negate the "conf" values
     fpr_list, tpr_list, thresholds = metrics.roc_curve(ood_indicator, -conf)
-    fpr = fpr_list[np.argmax(tpr_list >= tpr_th)]
+    fpr : np.floating = fpr_list[np.argmax(tpr_list >= tpr_th)]
 
     precision_in, recall_in, thresholds_in \
         = metrics.precision_recall_curve(1 - ood_indicator, conf)
@@ -97,8 +126,8 @@ def detection(ind_confidences,
     all_thresholds = []
     all_errors = []
     for delta in np.arange(start, end, gap):
-        tpr = np.sum(np.sum(X1 < delta)) / np.float(len(X1))
-        error2 = np.sum(np.sum(Y1 > delta)) / np.float(len(Y1))
+        tpr = np.sum(np.sum(X1 < delta)) / len(X1)
+        error2 = np.sum(np.sum(Y1 > delta)) / len(Y1)
         detection_error = (tpr + error2) / 2.0
 
         if return_data:

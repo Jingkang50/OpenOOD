@@ -4,11 +4,14 @@ import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
+from timm import list_models, create_model
+
 # from mmcls.apis import init_model
 
+from openood.networks.timm_adapter import TimmAdapter
 import openood.utils.comm as comm
 
-from .bit import KNOWN_MODELS
+from .bit import KNOWN_MODELS, ResNetV2
 from .conf_branch_net import ConfBranchNet
 from .csi_net import get_csi_linear_layers, CSINet
 from .cider_net import CIDERNet
@@ -347,11 +350,47 @@ def get_network(network_config):
         bn = BN_layer(AttnBasicBlock, 2)
         decoder = De_ResNet18_256x256()
         net = {'encoder': encoder, 'bn': bn, 'decoder': decoder}
+    elif timm_models := list_models(network_config.name):
+        if len(timm_models) > 1:
+            print("Available matching models:")
+            for model in timm_models:
+                print(model)
+            raise Exception('Multiple matching models found!')
+        timm_model = timm_models[0]
+        net = create_model(
+            model_name=timm_model, 
+            pretrained=False,
+            num_classes=num_classes, 
+            drop_path_rate=network_config.drop_path,
+            layer_scale_init_value=network_config.layer_scale_init_value,
+            head_init_scale=network_config.head_init_scale,
+        )
+        def timm_forward(self, x, return_feature=False, return_feature_list=False):
+            feature = self.forward_features(x)
+            logits_cls = self.forward_head(feature)
+            if return_feature:
+                return logits_cls, feature.flatten(start_dim=1)
+            if return_feature_list:
+                raise NotImplementedError('return_feature_list is not implemented.')
+            return logits_cls
+        def timm_get_fc(self):
+            try:
+                fc = self.fc
+            except AttributeError:
+                fc = self.head.fc # if there is no head, it will raise an error
+            w = fc.weight.cpu().detach().squeeze().numpy()
+            b = fc.bias.cpu().detach().squeeze().numpy()
+            return w, b
+        # monkey patching forward method
+        net.get_fc = timm_get_fc.__get__(net)
+        net.forward = timm_forward.__get__(net)
     else:
         raise Exception('Unexpected Network Architecture!')
+    
+    assert net is not None
 
     if network_config.pretrained:
-        if type(net) is dict:
+        if isinstance(net, dict):
             if isinstance(network_config.checkpoint, list):
                 for subnet, checkpoint in zip(net.values(),
                                               network_config.checkpoint):
@@ -389,7 +428,7 @@ def get_network(network_config):
         print('Model Loading {} Completed!'.format(network_config.name))
 
     if network_config.num_gpus > 1:
-        if type(net) is dict:
+        if isinstance(net, dict):
             for key, subnet in zip(net.keys(), net.values()):
                 net[key] = torch.nn.parallel.DistributedDataParallel(
                     subnet.cuda(),
@@ -402,7 +441,7 @@ def get_network(network_config):
                 broadcast_buffers=True)
 
     if network_config.num_gpus > 0:
-        if type(net) is dict:
+        if isinstance(net, dict):
             for subnet in net.values():
                 subnet.cuda()
         else:

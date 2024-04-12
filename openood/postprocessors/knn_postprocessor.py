@@ -35,7 +35,7 @@ class KNNPostprocessor(BasePostprocessor):
                     _, feature = net(data, return_feature=True)
                     activation_log.append(
                         normalizer(feature.data.cpu().numpy()))
-
+            
             self.activation_log = np.concatenate(activation_log, axis=0)
             self.index = faiss.IndexFlatL2(feature.shape[1])
             self.index.add(self.activation_log)

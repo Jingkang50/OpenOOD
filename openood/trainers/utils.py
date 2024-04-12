@@ -34,9 +34,10 @@ from .mixoe_trainer import MixOETrainer
 from .ish_trainer import ISHTrainer
 
 
-def get_trainer(net, train_loader: DataLoader, val_loader: DataLoader,
-                config: Config):
-    if type(train_loader) is DataLoader:
+def get_trainer(net, train_loader: DataLoader | list[DataLoader], val_loader: DataLoader | None = None,
+                config: Config | None = None):
+    assert config is not None, 'Config is required to get the trainer.'
+    if isinstance(train_loader, DataLoader):
         trainers = {
             'base': BaseTrainer,
             'augmix': AugMixTrainer,

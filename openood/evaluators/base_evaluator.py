@@ -23,7 +23,7 @@ class BaseEvaluator:
     def eval_acc(self,
                  net: nn.Module,
                  data_loader: DataLoader,
-                 postprocessor: BasePostprocessor = None,
+                 postprocessor: BasePostprocessor | None = None,
                  epoch_idx: int = -1):
         net.eval()
 
@@ -52,7 +52,9 @@ class BaseEvaluator:
                 loss_avg += float(loss.data)
 
         loss = loss_avg / len(data_loader)
-        acc = correct / len(data_loader.dataset)
+        
+        # Cannot statically verify that dataset is Sized
+        acc = correct / len(data_loader.dataset)  # type: ignore[assignment, arg-type]
 
         metrics = {}
         metrics['epoch_idx'] = epoch_idx
@@ -89,9 +91,9 @@ class BaseEvaluator:
                  feat_list=feat_list,
                  label_list=label_list)
 
-    def save_metrics(self, value):
-        all_values = comm.gather(value)
-        temp = 0
+    def save_metrics(self, value: float):
+        all_values: list[float] = comm.gather(value)
+        temp: float = 0
         for i in all_values:
             temp = temp + i
         # total_value = np.add([x for x in all_values])s

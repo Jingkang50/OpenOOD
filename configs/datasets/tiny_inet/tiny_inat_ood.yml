@@ -1,0 +1,32 @@
+ood_dataset:
+  name: tiny_inat_ood
+  num_classes: 200
+
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+
+  dataset_class: ImglistDataset
+  batch_size: 4
+  shuffle: False
+
+  split_names: [val, nearood, farood]
+  val:
+    data_dir: ./data/images/
+    imglist_pth: ./data/imglist/near_ood_tiny_inat.txt
+  nearood:
+    datasets: [tiny_inat]
+    tiny_inat:
+      data_dir: ./data/images/
+      imglist_pth: ./data/imglist/near_ood_tiny_inat.txt
+  farood:
+    datasets: [mnist, tin, texture]
+    mnist:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/imglist/test_only_mnist.txt
+    tin:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_tin.txt
+    texture:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_texture.txt

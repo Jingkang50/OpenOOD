@@ -1,0 +1,26 @@
+{
+    "name": "OpenOOD CUDA Container",
+    "dockerFile": "Dockerfile",
+    "runArgs": [
+        "--gpus=all",
+        "--ipc=host"
+    ],
+    "customizations" :{
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash"
+            },
+            // Python, CUDA and PyTorch extensions
+            "extensions": [
+                "ms-python.python",
+                "ms-toolsai.jupyter",
+                "ms-vscode.cpptools",
+                "nvidia.vscode-cudacpp",
+                "nvidia.vcuda"
+            ]
+        }
+    },
+    "remoteUser": "developer",
+    "workspaceFolder": "/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated"
+}
