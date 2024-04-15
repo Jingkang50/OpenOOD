@@ -34,6 +34,6 @@ def get_recorder(config: Config) -> RecorderProtocol:
     base_recorder = recorders[config.recorder.name.removeprefix('wandb_')](config)
 
     if config.recorder.name.startswith('wandb_'):
-        return WandbWrapper(recorder=base_recorder)
+        return WandbWrapper(recorder=base_recorder, config=config)
     else:     
         return base_recorder

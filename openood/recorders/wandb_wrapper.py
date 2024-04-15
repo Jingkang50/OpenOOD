@@ -3,6 +3,8 @@ from numbers import Real
 from openood.recorders.recorder import RecorderProtocol
 import torch.nn as nn
 
+from openood.utils.config import Config
+
 
 def get_metadata(model: nn.Module) -> dict:
     """
@@ -18,7 +20,7 @@ def get_metadata(model: nn.Module) -> dict:
 
 
 class WandbWrapper:
-    def __init__(self, recorder: RecorderProtocol, args: dict | str | None = None):
+    def __init__(self, recorder: RecorderProtocol, config: Config | None = None):
         self._recorder = recorder
         self.output_dir = self._recorder.output_dir
         try:
@@ -33,8 +35,8 @@ class WandbWrapper:
         # Initialize a W&B run 
         if self._wandb.run is None:
             self._wandb.init(
-                project=args.project,
-                config=args
+                project=config.exp_name if config is not None else None,
+                config=config
             )
 
     def report(self, train_metrics: dict[str, Real], val_metrics: dict[str, Real]):

@@ -44,6 +44,7 @@ from .rts_net import RTSNet
 def get_network(network_config):
 
     num_classes = network_config.num_classes
+    load_pretrained_weights: bool = network_config.pretrained
 
     if hasattr(network_config, 'modification') and network_config.modification == 't2fnorm':
         network_config.modification = 'none'
@@ -350,21 +351,22 @@ def get_network(network_config):
         bn = BN_layer(AttnBasicBlock, 2)
         decoder = De_ResNet18_256x256()
         net = {'encoder': encoder, 'bn': bn, 'decoder': decoder}
-    elif timm_models := list_models(network_config.name):
+    elif timm_models := list_models(network_config.name.split('.')[0]):
         if len(timm_models) > 1:
             print("Available matching models:")
             for model in timm_models:
                 print(model)
             raise Exception('Multiple matching models found!')
-        timm_model = timm_models[0]
         net = create_model(
-            model_name=timm_model, 
-            pretrained=False,
+            model_name=network_config.name, 
+            pretrained=load_pretrained_weights and network_config.checkpoint is None,
             num_classes=num_classes, 
             drop_path_rate=network_config.drop_path,
             layer_scale_init_value=network_config.layer_scale_init_value,
             head_init_scale=network_config.head_init_scale,
         )
+        # Do not load again if the model is already loaded
+        load_pretrained_weights = not (load_pretrained_weights and network_config.checkpoint is None)
         def timm_forward(self, x, return_feature=False, return_feature_list=False):
             feature = self.forward_features(x)
             logits_cls = self.forward_head(feature)
@@ -389,7 +391,7 @@ def get_network(network_config):
     
     assert net is not None
 
-    if network_config.pretrained:
+    if load_pretrained_weights:
         if isinstance(net, dict):
             if isinstance(network_config.checkpoint, list):
                 for subnet, checkpoint in zip(net.values(),

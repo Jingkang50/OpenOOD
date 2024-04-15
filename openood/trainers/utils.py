@@ -32,6 +32,7 @@ from .rotpred_trainer import RotPredTrainer
 from .regmixup_trainer import RegMixupTrainer
 from .mixoe_trainer import MixOETrainer
 from .ish_trainer import ISHTrainer
+from .wanb_trainer import WandBTrainer
 
 
 def get_trainer(net, train_loader: DataLoader | list[DataLoader], val_loader: DataLoader | None = None,
@@ -39,6 +40,7 @@ def get_trainer(net, train_loader: DataLoader | list[DataLoader], val_loader: Da
     assert config is not None, 'Config is required to get the trainer.'
     if isinstance(train_loader, DataLoader):
         trainers = {
+            'wandb': WandBTrainer,
             'base': BaseTrainer,
             'augmix': AugMixTrainer,
             'mixup': MixupTrainer,

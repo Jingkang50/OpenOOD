@@ -2,6 +2,7 @@ from openood.utils import Config
 
 from .feat_extract_pipeline import FeatExtractPipeline
 from .feat_extract_opengan_pipeline import FeatExtractOpenGANPipeline
+from .sweep_pipeline import SweepPipeline
 from .finetune_pipeline import FinetunePipeline
 from .test_acc_pipeline import TestAccPipeline
 from .test_ad_pipeline import TestAdPipeline
@@ -18,6 +19,7 @@ from .test_ood_pipeline_aps import TestOODPipelineAPS
 def get_pipeline(config: Config):
     pipelines = {
         'train': TrainPipeline,
+        'sweep': SweepPipeline,
         'finetune': FinetunePipeline,
         'test_acc': TestAccPipeline,
         'feat_extract': FeatExtractPipeline,

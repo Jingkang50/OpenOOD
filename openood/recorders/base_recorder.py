@@ -55,6 +55,7 @@ class BaseRecorder:
             torch.save(state_dict, save_pth)
 
         # save last path
+        # Sweep compatibility
         if val_metrics['epoch_idx'] == self.config.optimizer.num_epochs:
             save_fname = 'last_epoch{}_acc{:.4f}.ckpt'.format(
                 val_metrics['epoch_idx'], val_metrics['acc'])

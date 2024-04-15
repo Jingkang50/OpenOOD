@@ -1,0 +1,6 @@
+network:
+  name: convnextv2_base.fcmae_ft_in22k_in1k
+  num_classes: '@{dataset.num_classes}'
+  pretrained: True          # set 'True' to load pretrained model
+  checkpoint: null           # ignore if pretrained is false
+  num_gpus: '@{num_gpus}'
