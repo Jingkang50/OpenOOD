@@ -52,3 +52,4 @@ RegMixup,MSP,56.26 ± 0.27,68.36 ± 0.12,46.60 ± 0.27,No,ResNet18,90 epochs
 RegMixup,RMDS,58.87 ± 0.48,63.25 ± 1.14,46.60 ± 0.27,No,ResNet18,90 epochs
 RegMixup,KLM,57.94 ± 0.51,68.41 ± 0.86,46.60 ± 0.27,No,ResNet18,90 epochs
 CrossEntropy,SCALE,56.27 ± 1.20,74.82 ± 1.71,43.92 ± 0.12,No,ResNet18,90 epochs
+CrossEntropy,NAC,49.61 ± 0.06,67.01 ± 0.53,43.92 ± 0.12,No,ResNet18,90 epochs
