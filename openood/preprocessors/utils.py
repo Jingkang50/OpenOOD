@@ -10,6 +10,7 @@ from .pixmix_preprocessor import PixMixPreprocessor
 from .randaugment_preprocessor import RandAugmentPreprocessor
 from .cutout_preprocessor import CutoutPreprocessor
 from .test_preprocessor import TestStandardPreProcessor
+from .palm_preprocessor import PALMPreprocessor
 
 
 def get_preprocessor(config: Config, split):
@@ -23,6 +24,7 @@ def get_preprocessor(config: Config, split):
         'cutout': CutoutPreprocessor,
         'csi': CSIPreprocessor,
         'cider': CiderPreprocessor,
+        'palm': PALMPreprocessor,
     }
     test_preprocessors = {
         'base': TestStandardPreProcessor,
