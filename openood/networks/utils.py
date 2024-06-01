@@ -36,13 +36,15 @@ from .udg_net import UDGNet
 from .vit_b_16 import ViT_B_16
 from .wrn import WideResNet
 from .rts_net import RTSNet
+from .palm_net import PALMNet
 
 
 def get_network(network_config):
 
     num_classes = network_config.num_classes
 
-    if hasattr(network_config, 'modification') and network_config.modification == 't2fnorm':
+    if hasattr(network_config,
+               'modification') and network_config.modification == 't2fnorm':
         network_config.modification = 'none'
         backbone = get_network(network_config)
         backbone.fc = nn.Identity()
@@ -124,6 +126,20 @@ def get_network(network_config):
                        head=network_config.head,
                        feat_dim=network_config.feat_dim,
                        num_classes=num_classes)
+
+    elif network_config.name == 'palm_net':
+        # don't wrap ddp here cuz we need to modify
+        # backbone
+        network_config.backbone.num_gpus = 1
+        backbone = get_network(network_config.backbone)
+        # remove fc otherwise ddp will
+        # report unused params
+        backbone.fc = nn.Identity()
+
+        net = PALMNet(backbone=backbone,
+                      head=network_config.head,
+                      feat_dim=network_config.feat_dim,
+                      num_classes=num_classes)
 
     elif network_config.name == 'npos_net':
         # don't wrap ddp here cuz we need to modify
