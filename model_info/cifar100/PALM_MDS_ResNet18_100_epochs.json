@@ -1,5 +1,5 @@
 {
-  "Training": "PALM",
+  "Training": "<a href=https://openreview.net/forum?id=uNkKaD3MCs>PALM</a>",
   "Postprocessor": "<a href=https://papers.nips.cc/paper/2018/hash/abdeb6f575ac5c6676b747bca8d09cc2-Abstract.html>MDS</a>",
   "Near-OOD_AUROC": "77.27 \u00b1 0.00",
   "Far-OOD_AUROC": "89.08 \u00b1 0.00",
