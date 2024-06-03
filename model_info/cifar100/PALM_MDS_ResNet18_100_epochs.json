@@ -1,0 +1,14 @@
+{
+  "Training": "PALM",
+  "Postprocessor": "<a href=https://papers.nips.cc/paper/2018/hash/abdeb6f575ac5c6676b747bca8d09cc2-Abstract.html>MDS</a>",
+  "Near-OOD_AUROC": "77.27 \u00b1 0.00",
+  "Far-OOD_AUROC": "89.08 \u00b1 0.00",
+  "ID_Accuracy": "/",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "100 epochs",
+  "ID_Accuracy_Mean": "/",
+  "Near-OOD_AUROC_Mean": "77.27",
+  "Far-OOD_AUROC_Mean": "89.08",
+  "Rank": 26
+}

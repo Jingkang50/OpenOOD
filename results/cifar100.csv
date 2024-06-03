@@ -41,3 +41,4 @@ RegMixup,MSP,80.83 ± 0.16,79.04 ± 0.35,79.23 ± 0.22,No,ResNet18,100 epochs
 CrossEntropy,Relation,80.67 ± 0.04,80.82 ± 0.31,77.25 ± 0.09,No,ResNet18,100 epochs
 CrossEntropy,SCALE,80.99 ± 0.12,81.42 ± 0.43,77.26 ± 0.09,No,ResNet18,100 epochs
 CrossEntropy,NAC,75.90 ± 0.42,86.98 ± 0.37,77.26 ± 0.09,No,ResNet18,100 epochs
+PALM,MDS,77.27 ± 0.00,89.08 ± 0.00,/,No,ResNet18,100 epochs
