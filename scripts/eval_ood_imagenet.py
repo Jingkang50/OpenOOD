@@ -22,6 +22,7 @@ from openood.networks.conf_branch_net import ConfBranchNet
 from openood.networks.godin_net import GodinNet
 from openood.networks.rot_net import RotNet
 from openood.networks.cider_net import CIDERNet
+from openood.networks.t2fnorm_net import T2FNormNet
 
 
 def update(d, u):
@@ -113,6 +114,8 @@ else:
                            head='mlp',
                            feat_dim=128,
                            num_classes=1000)
+        elif postprocessor_name == 't2fnorm':
+            net = T2FNormNet(backbone=ResNet50(), num_classes=1000)
         else:
             net = ResNet50()
 

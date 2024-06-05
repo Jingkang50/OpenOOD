@@ -33,6 +33,7 @@ from .regmixup_trainer import RegMixupTrainer
 from .mixoe_trainer import MixOETrainer
 from .ish_trainer import ISHTrainer
 from .palm_trainer import PALMTrainer
+from .t2fnorm_trainer import T2FNormTrainer
 
 
 def get_trainer(net, train_loader: DataLoader, val_loader: DataLoader,
@@ -68,6 +69,7 @@ def get_trainer(net, train_loader: DataLoader, val_loader: DataLoader,
             'rotpred': RotPredTrainer,
             'ish': ISHTrainer,
             'palm': PALMTrainer,
+            't2fnorm': T2FNormTrainer,
         }
         if config.trainer.name in ['cider', 'npos']:
             return trainers[config.trainer.name](net, train_loader, val_loader,

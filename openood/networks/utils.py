@@ -43,17 +43,7 @@ def get_network(network_config):
 
     num_classes = network_config.num_classes
 
-    if hasattr(network_config,
-               'modification') and network_config.modification == 't2fnorm':
-        network_config.modification = 'none'
-        backbone = get_network(network_config)
-        backbone.fc = nn.Identity()
-
-        net = T2FNormNet(backbone=backbone,
-                         tau=network_config.tau,
-                         num_classes=num_classes)
-
-    elif network_config.name == 'resnet18_32x32':
+    if network_config.name == 'resnet18_32x32':
         net = ResNet18_32x32(num_classes=num_classes)
 
     elif network_config.name == 'resnet18_256x256':
@@ -126,6 +116,12 @@ def get_network(network_config):
                        head=network_config.head,
                        feat_dim=network_config.feat_dim,
                        num_classes=num_classes)
+
+    elif network_config.name == 't2fnorm_net':
+        network_config.backbone.num_gpus = 1
+        backbone = get_network(network_config.backbone)
+
+        net = T2FNormNet(backbone=backbone, num_classes=num_classes)
 
     elif network_config.name == 'palm_net':
         # don't wrap ddp here cuz we need to modify
