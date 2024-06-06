@@ -36,6 +36,7 @@ from .rankfeat_postprocessor import RankFeatPostprocessor
 from .ssd_postprocessor import SSDPostprocessor
 from .she_postprocessor import SHEPostprocessor
 from .temp_scaling_postprocessor import TemperatureScalingPostprocessor
+from .t2fnorm_postprocessor import T2FNormPostprocessor
 from .vim_postprocessor import VIMPostprocessor
 from .rts_postprocessor import RTSPostprocessor
 from .gen_postprocessor import GENPostprocessor
@@ -83,7 +84,8 @@ def get_postprocessor(config: Config):
         'rotpred': RotPredPostprocessor,
         'rankfeat': RankFeatPostprocessor,
         'gen': GENPostprocessor,
-        'relation': RelationPostprocessor
+        'relation': RelationPostprocessor,
+        't2fnorm': T2FNormPostprocessor,
     }
 
     return postprocessors[config.postprocessor.name](config)

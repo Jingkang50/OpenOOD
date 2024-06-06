@@ -1,0 +1,15 @@
+network:
+  name: t2fnorm_net
+  num_classes: '@{dataset.num_classes}'
+  image_size: '@{dataset.image_size}'
+  num_gpus: '@{num_gpus}'
+  pretrained: False
+  checkpoint: none
+
+  backbone:
+    name: resnet18_32x32
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    num_gpus: '@{num_gpus}'
+    pretrained: False
+    checkpoint: none
