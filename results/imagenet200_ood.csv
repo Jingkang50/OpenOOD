@@ -47,3 +47,4 @@ RegMixup,MSP,84.13 ± 0.27,90.81 ± 0.38,87.25 ± 0.57,No,ResNet18,90 epochs
 RegMixup,ASH,79.38 ± 0.46,92.74 ± 0.18,87.25 ± 0.57,No,ResNet18,90 epochs
 CrossEntropy,SCALE,84.84 ± 0.28,93.98 ± 0.25,86.37 ± 0.08,No,ResNet18,90 epochs
 CrossEntropy,NAC,78.52 ± 0.20,91.02 ± 0.29,86.37 ± 0.08,No,ResNet18,90 epochs
+T2FNorm,T2FNorm,83.00 ± 0.07,93.55 ± 0.17,86.87 ± 0.19,No,ResNet18,90 epochs

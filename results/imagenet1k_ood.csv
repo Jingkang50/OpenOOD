@@ -72,3 +72,4 @@ CrossEntropy,NNGuide,84.87,97.17,86.10,No,RegNet_Y_16GF,torchvision ckpt
 CrossEntropy,SCALE,81.36,96.53,76.18,No,ResNet50,torchvision ckpt
 ISH,SCALE,84.01,96.79,76.73,No,ResNet50,official ckpt
 CrossEntropy,NAC,74.43,95.29,76.19,No,ResNet50,torchvision ckpt
+T2FNorm,T2FNorm,73.08,91.92,76.76,No,ResNet50,finetuned 30 epochs
