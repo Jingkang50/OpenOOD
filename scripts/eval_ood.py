@@ -110,7 +110,7 @@ for subfolder in sorted(glob(os.path.join(root, 's*'))):
         net = UDGNet(backbone=backbone,
                      num_classes=num_classes,
                      num_clusters=1000)
-    elif postprocessor_name == 'cider':
+    elif postprocessor_name in ['cider', 'reweightood']:
         backbone = model_arch(num_classes=num_classes)
         net = CIDERNet(backbone,
                        head='mlp',
