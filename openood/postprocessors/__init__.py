@@ -42,3 +42,4 @@ from .gen_postprocessor import GENPostprocessor
 from .nnguide_postprocessor import NNGuidePostprocessor
 from .relation_postprocessor import RelationPostprocessor
 from .t2fnorm_postprocessor import T2FNormPostprocessor
+from .reweightood_postprocessor import ReweightOODPostprocessor

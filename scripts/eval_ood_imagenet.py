@@ -109,7 +109,7 @@ else:
                            num_classes=1000)
         elif postprocessor_name == 'rotpred':
             net = RotNet(backbone=ResNet50(), num_classes=1000)
-        elif postprocessor_name == 'cider':
+        elif postprocessor_name in ['cider', 'reweightood']:
             net = CIDERNet(backbone=ResNet50(),
                            head='mlp',
                            feat_dim=128,

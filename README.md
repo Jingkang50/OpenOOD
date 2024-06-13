@@ -3,7 +3,7 @@
 <!--
 | :exclamation:  We are looking forward to further extending the scope and building OpenOOD v2.0. Specifically, we are interested in 1) incorporating more modalities (e.g., text/language), 2) OOD in vision-language models, multi-modal foundation models, and large language models. If you want to join us or have any other ideas/thoughts, please don't heisitate to contact [jingkang001@e.ntu.edu.sg](mailto:jingkang001@e.ntu.edu.sg)! |
 |-----------------------------------------|
----> 
+--->
 
 
 | :exclamation: When using OpenOOD in your research, it is vital to cite both the OpenOOD benchmark (versions 1 and 1.5) and the individual works that have contributed to your research. Accurate citation acknowledges the efforts and contributions of all researchers involved. For example, if your work involves the NINCO benchmark within OpenOOD, please include a citation for NINCO apart of OpenOOD.|
@@ -251,9 +251,10 @@ distance: f4d5b3 -->
 > - [x] [![logitnorm](https://img.shields.io/badge/ICML'22-LogitNorm-fdd7e6?style=for-the-badge)](https://github.com/hongxin001/logitnorm_ood) &nbsp;&nbsp; ![training] &nbsp; ![preprocess]
 > - [x] [![cider](https://img.shields.io/badge/ICLR'23-CIDER-f4d5b3?style=for-the-badge)](https://github.com/deeplearning-wisc/cider) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![npos](https://img.shields.io/badge/ICLR'23-NPOS-f4d5b3?style=for-the-badge)](https://github.com/deeplearning-wisc/npos) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
-> - [x] [![t2fnorm](https://img.shields.io/badge/arXiv'23-T2FNorm-f4d5b3?style=for-the-badge)](https://arxiv.org/abs/2305.17797) &nbsp;&nbsp; ![training]
+> - [x] [![t2fnorm](https://img.shields.io/badge/CVPRW'24-T2FNorm-fdd7e6?style=for-the-badge)](https://github.com/sudarshanregmi/T2FNorm) &nbsp;&nbsp; ![training]
 > - [x] [![ish](https://img.shields.io/badge/ICLR'24-ish-fdd7e6?style=for-the-badge)](https://github.com/kai422/SCALE) &nbsp;&nbsp; ![training]
 > - [x] [![palm](https://img.shields.io/badge/ICLR'24-PALM-f4d5b3?style=for-the-badge)](https://github.com/jeff024/PALM) &nbsp;&nbsp; ![training]
+> - [x] [![reweightood](https://img.shields.io/badge/CVPRW'24-ReweightOOD-f4d5b3?style=for-the-badge)](https://github.com/sudarshanregmi/ReweightOOD) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 
 > Training With Extra Data (3):
 > - [x] [![oe](https://img.shields.io/badge/ICLR'19-OE-fdd7e6?style=for-the-badge)](https://openreview.net/forum?id=HyxCxhRcY7) &nbsp;&nbsp; ![extradata] &nbsp; ![training]
