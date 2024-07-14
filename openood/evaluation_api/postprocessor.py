@@ -15,10 +15,11 @@ from openood.postprocessors import (
     VIMPostprocessor, RotPredPostprocessor, RankFeatPostprocessor,
     RMDSPostprocessor, SHEPostprocessor, CIDERPostprocessor, NPOSPostprocessor,
     GENPostprocessor, NNGuidePostprocessor, RelationPostprocessor,
-    T2FNormPostprocessor, ReweightOODPostprocessor)
+    T2FNormPostprocessor, ReweightOODPostprocessor, fDBDPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
+    'fdbd':fDBDPostprocessor,
     'ash': ASHPostprocessor,
     'cider': CIDERPostprocessor,
     'conf_branch': ConfBranchPostprocessor,

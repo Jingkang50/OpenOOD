@@ -1,3 +1,4 @@
+from .fdbd_postprocessor import fDBDPostprocessor
 from .ash_postprocessor import ASHPostprocessor
 from .base_postprocessor import BasePostprocessor
 from .cider_postprocessor import CIDERPostprocessor
