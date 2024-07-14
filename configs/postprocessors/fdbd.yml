@@ -1,0 +1,7 @@
+postprocessor:
+  name: fdbd
+  APS_mode: True
+  postprocessor_args:
+    distance_as_normalizer: True
+  postprocessor_sweep:
+    distance_as_normalizer_list: [True, False]
