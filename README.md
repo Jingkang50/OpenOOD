@@ -50,7 +50,7 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Contributing
-We appreciate all contributions to improve OpenOOD. We sincerely welcome community users to participate in these projects. 
+We appreciate all contributions to improve OpenOOD. We sincerely welcome community users to participate in these projects.
 - For contributing to this repo, please refer to [CONTRIBUTING.md](https://github.com/Jingkang50/OpenOOD/blob/main/CONTRIBUTING.md) for the guideline.
 - For adding your method to our [leaderboard](https://zjysteven.github.io/OpenOOD/), simply open an issue where you will see the template that has detailed instructions.
 
@@ -170,7 +170,7 @@ This part lists all the backbones we will support in our codebase, including CNN
 </details>
 
 ---
-## Supported Methods (50+)
+## Supported Methods (60+)
 This part lists all the methods we include in this codebase. Up to `v1.5`, we totally support **more than 50 popular methods** for generalized OOD detection.
 
 All the supported methodolgies can be placed in the following four categories.
@@ -203,7 +203,7 @@ distance: f4d5b3 -->
 <details open>
 <summary><b>Open Set Recognition (3)</b></summary>
 
-> Post-Hoc Methods (1):
+> Post-Hoc Methods (2):
 > - [x] [![](https://img.shields.io/badge/CVPR'16-OpenMax-d0e9ff?style=for-the-badge)](https://github.com/13952522076/Open-Set-Recognition) ![postprocess]
 > - [x] [![](https://img.shields.io/badge/ICCV'21-OpenGAN-fdd7e6?style=for-the-badge)](https://github.com/aimerykong/OpenGAN/tree/main/utils) ![postprocess]
 
@@ -213,7 +213,7 @@ distance: f4d5b3 -->
 
 
 <details open>
-<summary><b>Out-of-Distribution Detection (22)</b></summary>
+<summary><b>Out-of-Distribution Detection (41)</b></summary>
 
 <!--
 density: d0e9ff,
@@ -221,7 +221,7 @@ reconstruction: c2e2de,
 classification: fdd7e6,
 distance: f4d5b3 -->
 
-> Post-Hoc Methods (13):
+> Post-Hoc Methods (23):
 > - [x] [![msp](https://img.shields.io/badge/ICLR'17-MSP-fdd7e6?style=for-the-badge)](https://openreview.net/forum?id=Hkg4TI9xl)
 > - [x] [![odin](https://img.shields.io/badge/ICLR'18-ODIN-fdd7e6?style=for-the-badge)](https://openreview.net/forum?id=H1VGkIxRZ) &nbsp;&nbsp; ![postprocess]
 > - [x] [![mds](https://img.shields.io/badge/NeurIPS'18-MDS-f4d5b3?style=for-the-badge)](https://papers.nips.cc/paper/2018/hash/abdeb6f575ac5c6676b747bca8d09cc2-Abstract.html) &nbsp;&nbsp; ![postprocess]
@@ -244,9 +244,9 @@ distance: f4d5b3 -->
 > - [x] [![nnguide](https://img.shields.io/badge/ICCV'23-NNGuide-fdd7e6?style=for-the-badge)](https://arxiv.org/abs/2309.14888) &nbsp;&nbsp; ![postprocess]
 > - [x] [![relation](https://img.shields.io/badge/NEURIPS'23-Relation-fdd7e6?style=for-the-badge)](https://arxiv.org/abs/2301.12321) &nbsp;&nbsp; ![postprocess]
 > - [x] [![scale](https://img.shields.io/badge/ICLR'24-Scale-fdd7e6?style=for-the-badge)](https://github.com/kai422/SCALE) &nbsp;&nbsp; ![postprocess]
-> - [x] [![fdbd](https://img.shields.io/badge/ICML'24-fDBD-f4d5b3?style=for-the-badge)](https://github.com/litianliu/fDBD-OOD) &nbsp;&nbsp; ![postprocess]  
+> - [x] [![fdbd](https://img.shields.io/badge/ICML'24-fDBD-f4d5b3?style=for-the-badge)](https://github.com/litianliu/fDBD-OOD) &nbsp;&nbsp; ![postprocess]
 
-> Training Methods (6):
+> Training Methods (14):
 > - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]
 > - [x] [![rotpred](https://img.shields.io/badge/neurips'19-RotPred-fdd7e6?style=for-the-badge)](https://github.com/hendrycks/ss-ood) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]
 > - [x] [![godin](https://img.shields.io/badge/CVPR'20-G&#8211;ODIN-fdd7e6?style=for-the-badge)](https://github.com/guyera/Generalized-ODIN-Implementation)  &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
@@ -262,7 +262,7 @@ distance: f4d5b3 -->
 > - [x] [![palm](https://img.shields.io/badge/ICLR'24-PALM-f4d5b3?style=for-the-badge)](https://github.com/jeff024/PALM) &nbsp;&nbsp; ![training]
 > - [x] [![reweightood](https://img.shields.io/badge/CVPRW'24-ReweightOOD-f4d5b3?style=for-the-badge)](https://github.com/sudarshanregmi/ReweightOOD) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 
-> Training With Extra Data (3):
+> Training With Extra Data (4):
 > - [x] [![oe](https://img.shields.io/badge/ICLR'19-OE-fdd7e6?style=for-the-badge)](https://openreview.net/forum?id=HyxCxhRcY7) &nbsp;&nbsp; ![extradata] &nbsp; ![training]
 > - [x] [![mcd](https://img.shields.io/badge/ICCV'19-MCD-fdd7e6?style=for-the-badge)](https://openaccess.thecvf.com/content_ICCV_2019/papers/Yu_Unsupervised_Out-of-Distribution_Detection_by_Maximum_Classifier_Discrepancy_ICCV_2019_paper.pdf) &nbsp;&nbsp; ![extradata] &nbsp; ![training]
 > - [x] [![udg](https://img.shields.io/badge/ICCV'21-UDG-fdd7e6?style=for-the-badge)](https://openaccess.thecvf.com/content/ICCV2021/html/Yang_Semantically_Coherent_Out-of-Distribution_Detection_ICCV_2021_paper.html) &nbsp;&nbsp; ![extradata] &nbsp; ![training]
@@ -281,7 +281,7 @@ distance: f4d5b3 -->
 
 
 <details open>
-<summary><b>Data Augmentation (3)</b></summary>
+<summary><b>Data Augmentation (8)</b></summary>
 
 > - [x] [![mixup](https://img.shields.io/badge/ICLR'18-Mixup-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
 > - [x] [![cutmix](https://img.shields.io/badge/ICCV'19-CutMix-fdd7e6?style=for-the-badge)]() &nbsp;&nbsp; ![preprocess]
@@ -303,7 +303,7 @@ distance: f4d5b3 -->
 
 
 ## Citation
-If you find our repository useful for your research, please consider citing our paper:
+If you find our repository useful for your research, please consider citing these papers:
 ```bibtex
 # v1.5 report
 @article{zhang2023openood,
@@ -320,6 +320,7 @@ If you find our repository useful for your research, please consider citing our 
     year = {2022}
 }
 
+# full-spectrum OOD detection
 @article{yang2022fsood,
     title = {Full-Spectrum Out-of-Distribution Detection},
     author = {Yang, Jingkang and Zhou, Kaiyang and Liu, Ziwei},
@@ -327,6 +328,7 @@ If you find our repository useful for your research, please consider citing our 
     year = {2022}
 }
 
+# generalized OOD detection framework & survey
 @article{yang2021oodsurvey,
     title={Generalized Out-of-Distribution Detection: A Survey},
     author={Yang, Jingkang and Zhou, Kaiyang and Li, Yixuan and Liu, Ziwei},
@@ -334,12 +336,22 @@ If you find our repository useful for your research, please consider citing our 
     year={2021}
 }
 
+# OOD benchmarks
+# NINCO
 @inproceedings{bitterwolf2023ninco,
     title={In or Out? Fixing ImageNet Out-of-Distribution Detection Evaluation},
     author={Julian Bitterwolf and Maximilian Mueller and Matthias Hein},
     booktitle={ICML},
     year={2023},
     url={https://proceedings.mlr.press/v202/bitterwolf23a.html}
+}
+
+# SSB
+@inproceedings{vaze2021open,
+    title={Open-Set Recognition: A Good Closed-Set Classifier is All You Need},
+    author={Vaze, Sagar and Han, Kai and Vedaldi, Andrea and Zisserman, Andrew},
+    booktitle={ICLR},
+    year={2022}
 }
 ```
 
