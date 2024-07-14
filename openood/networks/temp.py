@@ -1,8 +1,8 @@
-"""ResNet in PyTorch.
-ImageNet-Style ResNet
-[1] Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun
-    Deep Residual Learning for Image Recognition. arXiv:1512.03385
-Adapted from: https://github.com/bearpaw/pytorch-classification
+"""ResNet in PyTorch. ImageNet-Style ResNet.
+
+[1] Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun     Deep Residual
+Learning for Image Recognition. arXiv:1512.03385 Adapted from:
+https://github.com/bearpaw/pytorch-classification
 """
 import torch
 import torch.nn as nn
@@ -15,13 +15,19 @@ class BasicBlock(nn.Module):
     def __init__(self, in_planes, planes, stride=1, is_last=False):
         super(BasicBlock, self).__init__()
         self.is_last = is_last
-        self.conv1 = nn.Conv2d(
-            in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False
-        )
+        self.conv1 = nn.Conv2d(in_planes,
+                               planes,
+                               kernel_size=3,
+                               stride=stride,
+                               padding=1,
+                               bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(
-            planes, planes, kernel_size=3, stride=1, padding=1, bias=False
-        )
+        self.conv2 = nn.Conv2d(planes,
+                               planes,
+                               kernel_size=3,
+                               stride=1,
+                               padding=1,
+                               bias=False)
         self.bn2 = nn.BatchNorm2d(planes)
 
         self.shortcut = nn.Sequential()
@@ -57,13 +63,17 @@ class Bottleneck(nn.Module):
         self.is_last = is_last
         self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(
-            planes, planes, kernel_size=3, stride=stride, padding=1, bias=False
-        )
+        self.conv2 = nn.Conv2d(planes,
+                               planes,
+                               kernel_size=3,
+                               stride=stride,
+                               padding=1,
+                               bias=False)
         self.bn2 = nn.BatchNorm2d(planes)
-        self.conv3 = nn.Conv2d(
-            planes, self.expansion * planes, kernel_size=1, bias=False
-        )
+        self.conv3 = nn.Conv2d(planes,
+                               self.expansion * planes,
+                               kernel_size=1,
+                               bias=False)
         self.bn3 = nn.BatchNorm2d(self.expansion * planes)
 
         self.shortcut = nn.Sequential()
@@ -93,13 +103,20 @@ class Bottleneck(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, num_blocks, in_channel=3, zero_init_residual=False):
+    def __init__(self,
+                 block,
+                 num_blocks,
+                 in_channel=3,
+                 zero_init_residual=False):
         super(ResNet, self).__init__()
         self.in_planes = 64
 
-        self.conv1 = nn.Conv2d(
-            in_channel, 64, kernel_size=3, stride=1, padding=1, bias=False
-        )
+        self.conv1 = nn.Conv2d(in_channel,
+                               64,
+                               kernel_size=3,
+                               stride=1,
+                               padding=1,
+                               bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.layer1 = self._make_layer(block, 64, num_blocks[0], stride=1)
         self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
@@ -109,7 +126,9 @@ class ResNet(nn.Module):
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
+                nn.init.kaiming_normal_(m.weight,
+                                        mode='fan_out',
+                                        nonlinearity='relu')
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
@@ -162,15 +181,15 @@ def resnet101(**kwargs):
 
 
 model_dict = {
-    "resnet18": [resnet18, 512],
-    "resnet34": [resnet34, 512],
-    "resnet50": [resnet50, 2048],
-    "resnet101": [resnet101, 2048],
+    'resnet18': [resnet18, 512],
+    'resnet34': [resnet34, 512],
+    'resnet50': [resnet50, 2048],
+    'resnet101': [resnet101, 2048],
 }
 
 
 class SupResNet(nn.Module):
-    def __init__(self, arch="resnet50", num_classes=10, **kwargs):
+    def __init__(self, arch='resnet50', num_classes=10, **kwargs):
         super(SupResNet, self).__init__()
         m, fdim = model_dict[arch]
         self.encoder = m()
@@ -181,13 +200,12 @@ class SupResNet(nn.Module):
 
 
 class SSLResNet(nn.Module):
-    def __init__(self, arch="resnet50", out_dim=128, **kwargs):
+    def __init__(self, arch='resnet50', out_dim=128, **kwargs):
         super(SSLResNet, self).__init__()
         m, fdim = model_dict[arch]
         self.encoder = m()
-        self.head = nn.Sequential(
-            nn.Linear(fdim, fdim), nn.ReLU(inplace=True), nn.Linear(fdim, out_dim)
-        )
+        self.head = nn.Sequential(nn.Linear(fdim, fdim), nn.ReLU(inplace=True),
+                                  nn.Linear(fdim, out_dim))
 
     def forward(self, x, return_feature=False, return_feature_list=False):
         temp = F.normalize(self.head(self.encoder(x)), dim=-1)

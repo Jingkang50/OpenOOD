@@ -19,7 +19,7 @@ from openood.postprocessors import (
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
-    'fdbd':fDBDPostprocessor,
+    'fdbd': fDBDPostprocessor,
     'ash': ASHPostprocessor,
     'cider': CIDERPostprocessor,
     'conf_branch': ConfBranchPostprocessor,

@@ -63,8 +63,7 @@ def launch(
             logger = logging.getLogger(__name__)
             logger.warning(
                 'file:// is not a reliable init_method in multi-machine jobs.'
-                'Prefer tcp://'
-            )
+                'Prefer tcp://')
 
         mp.spawn(
             _distributed_worker,

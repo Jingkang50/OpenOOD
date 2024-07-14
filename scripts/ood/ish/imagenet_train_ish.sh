@@ -16,5 +16,4 @@ python main.py  \
     --dataset.train.batch_size 128 \
     --num_gpus 4 --num_workers 4 \
     --merge_option merge \
-    --seed ${SEED} 
-
+    --seed ${SEED}

@@ -8,11 +8,9 @@ class SimClrNet(nn.Module):
 
         self.backbone = backbone
         feature_dim = backbone.feature_size
-        self.simclr_head = nn.Sequential(
-            nn.Linear(feature_dim, feature_dim), 
-            nn.ReLU(inplace=True), 
-            nn.Linear(feature_dim, out_dim)
-        )
+        self.simclr_head = nn.Sequential(nn.Linear(feature_dim, feature_dim),
+                                         nn.ReLU(inplace=True),
+                                         nn.Linear(feature_dim, out_dim))
 
     def forward(self, x, return_feature=False, return_feature_list=False):
         _, feature = self.backbone.forward(x, return_feature=True)

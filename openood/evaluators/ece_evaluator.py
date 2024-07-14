@@ -91,9 +91,9 @@ class ECEEvaluator(BaseEvaluator):
         acc_tab = acc_tab[nb_items_bin > 0]
         nb_items_bin = nb_items_bin[nb_items_bin > 0]
         if sum(nb_items_bin) != 0:
-            ece = np.average(
-                np.absolute(mean_conf - acc_tab),
-                weights=nb_items_bin.astype(np.float) / np.sum(nb_items_bin))
+            ece = np.average(np.absolute(mean_conf - acc_tab),
+                             weights=nb_items_bin.astype(np.float) /
+                             np.sum(nb_items_bin))
         else:
             ece = 0.0
 
