@@ -48,9 +48,14 @@ Comments, issues, contributions, and collaborations are all welcomed!
 - **14 June, 2022**: We release `v0.5`.
 - **12 April, 2022**: Primary release to support [Full-Spectrum OOD Detection](https://arxiv.org/abs/2204.05306).
 
+
+## Contributing
+We appreciate all contributions to improve OpenOOD. We sincerely welcome community users to participate in these projects. 
+- For contributing to this repo, please refer to [CONTRIBUTING.md](https://github.com/Jingkang50/OpenOOD/blob/main/CONTRIBUTING.md) for the guideline.
+- For adding your method to our [leaderboard](https://zjysteven.github.io/OpenOOD/), simply open an issue where you will see the template that has detailed instructions.
+
 ## FAQ
 - `APS_mode` means Automatic (hyper)Parameter Searching mode, which enables the model to validate all the hyperparameters in the sweep list based on the validation ID/OOD set. The default value is False. Check [here](https://github.com/Jingkang50/OpenOOD/blob/main/configs/postprocessors/dice.yml) for example.
-
 
 ## Get Started
 
@@ -288,9 +293,7 @@ distance: f4d5b3 -->
 </details>
 
 ---
-## Contributing
-We appreciate all contributions to improve OpenOOD.
-We sincerely welcome community users to participate in these projects. Please refer to [CONTRIBUTING.md](https://github.com/Jingkang50/OpenOOD/blob/main/CONTRIBUTING.md) for the contributing guideline.
+
 
 ## Contributors
 <a href="https://github.com/jingkang50/openood/graphs/contributors">
