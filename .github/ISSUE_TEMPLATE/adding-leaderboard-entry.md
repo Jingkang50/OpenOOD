@@ -26,5 +26,6 @@ The easiest steps to provide the information would be as follows:
 
 1. Upload the output csv files that contain evaluation results in this issue. They should already include `Near/Far-OOD AUROC` and `ID Accuracy`. The `Model Arch` is currently predefined for each ID dataset (e.g., CIFAR-10 will have a ResNet-18), but let us know if you are using a different model backbone.
 2. Let us know about `Training`, `Postprocessor`, `Outlier Data`, and `Additional Description`.
+3. Lastly, don't forget to provide a link (e.g., arXiv, github, openreview etc.) of your method so that when people can know where to get more details about your method. 
 
 Then you are all set! Our maintainers will include your entries in the leaderboard as soon as possible.
