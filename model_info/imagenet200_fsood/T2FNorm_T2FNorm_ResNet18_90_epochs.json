@@ -1,0 +1,14 @@
+{
+  "Training": "<a href=https://arxiv.org/abs/2305.17797>T2FNorm</a>",
+  "Postprocessor": "<a href=https://arxiv.org/abs/2305.17797>T2FNorm</a>",
+  "Near-OOD_AUROC": "51.88 \u00b1 0.23",
+  "Far-OOD_AUROC": "73.53 \u00b1 0.30",
+  "ID_Accuracy": "45.00 \u00b1 0.23",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "45.00",
+  "Near-OOD_AUROC_Mean": "51.88",
+  "Far-OOD_AUROC_Mean": "73.53",
+  "Rank": 37
+}

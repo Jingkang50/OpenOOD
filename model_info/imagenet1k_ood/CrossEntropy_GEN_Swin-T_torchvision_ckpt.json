@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://openaccess.thecvf.com/content/CVPR2023/papers/Liu_GEN_Pushing_the_Limits_of_Softmax-Based_Out-of-Distribution_Detection_CVPR_2023_paper.pdf>GEN</a>",
+  "Near-OOD_AUROC": "78.97",
+  "Far-OOD_AUROC": "90.98",
+  "ID_Accuracy": "81.59",
+  "Outlier_Data": "No",
+  "Arch": "Swin-T",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "81.59",
+  "Near-OOD_AUROC_Mean": "78.97",
+  "Far-OOD_AUROC_Mean": "90.98",
+  "Rank": 9
+}

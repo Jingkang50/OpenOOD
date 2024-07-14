@@ -1,5 +1,5 @@
 {
-  "Training": "StyleAugment",
+  "Training": "<a href=https://openreview.net/forum?id=Bygh9j09KX&source=techstories.org>StyleAugment</a>",
   "Postprocessor": "<a href=https://arxiv.org/abs/2106.09022>RMDS</a>",
   "Near-OOD_AUROC": "59.26 \u00b1 0.27",
   "Far-OOD_AUROC": "62.43 \u00b1 1.34",

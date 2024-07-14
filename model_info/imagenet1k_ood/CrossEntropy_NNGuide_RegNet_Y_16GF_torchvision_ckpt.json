@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://arxiv.org/abs/2309.14888>NNGuide</a>",
+  "Near-OOD_AUROC": "84.87",
+  "Far-OOD_AUROC": "97.17",
+  "ID_Accuracy": "86.10",
+  "Outlier_Data": "No",
+  "Arch": "RegNet_Y_16GF",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "86.10",
+  "Near-OOD_AUROC_Mean": "84.87",
+  "Far-OOD_AUROC_Mean": "97.17",
+  "Rank": 1
+}
