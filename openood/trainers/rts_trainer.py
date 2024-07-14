@@ -9,7 +9,6 @@ from openood.utils import Config
 from .lr_scheduler import cosine_annealing
 
 
-
 class RTSTrainer:
     def __init__(self, net: nn.Module, train_loader: DataLoader,
                  config: Config) -> None:
@@ -36,8 +35,6 @@ class RTSTrainer:
             ),
         )
 
-
-
     def train_epoch(self, epoch_idx):
         self.net.train()
 
@@ -56,15 +53,21 @@ class RTSTrainer:
             # forward
             logits_classifier, variance = self.net(data, return_var=True)
             epsilon = torch.randn_like(variance)
-            temperature = torch.sum(variance * epsilon * epsilon, dim=1, keepdim=True) / (self.config.network.dof - 2)
-            loss_kl = ((variance - torch.log(variance + 1e-8) - 1) * 0.5).mean()
-            loss_head = F.cross_entropy(logits_classifier / temperature, target)
+            temperature = torch.sum(
+                variance * epsilon * epsilon, dim=1,
+                keepdim=True) / (self.config.network.dof - 2)
+            loss_kl = ((variance - torch.log(variance + 1e-8) - 1) *
+                       0.5).mean()
+            loss_head = F.cross_entropy(logits_classifier / temperature,
+                                        target)
             loss = loss_head + self.config.network.kl_scale * loss_kl
-            
+
             # backward
             self.optimizer.zero_grad()
             loss.backward()
-            nn.utils.clip_grad_norm_(parameters=self.net.parameters(), max_norm=2.5, norm_type=2)
+            nn.utils.clip_grad_norm_(parameters=self.net.parameters(),
+                                     max_norm=2.5,
+                                     norm_type=2)
             self.optimizer.step()
             self.scheduler.step()
 

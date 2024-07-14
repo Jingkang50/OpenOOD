@@ -1,7 +1,7 @@
 ood_dataset:
   name: cifar100_ood
   num_classes: 100
-  
+
   num_workers: '@{num_workers}'
   num_gpus: '@{num_gpus}'
   num_machines: '@{num_machines}'

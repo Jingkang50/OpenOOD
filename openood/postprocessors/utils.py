@@ -46,7 +46,7 @@ from .relation_postprocessor import RelationPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
-        'fdbd':fDBDPostprocessor,
+        'fdbd': fDBDPostprocessor,
         'ash': ASHPostprocessor,
         'cider': CIDERPostprocessor,
         'conf_branch': ConfBranchPostprocessor,

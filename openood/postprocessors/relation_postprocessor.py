@@ -17,14 +17,14 @@ def normalize(feat, nc=50000):
         for i in range(split):
             feat_ = feat[i * nc:(i + 1) * nc]
             feat[i * nc:(i + 1) *
-                 nc] = feat_ / torch.sqrt((feat_**2).sum(-1) + 1e-10).reshape(-1, 1)
+                 nc] = feat_ / torch.sqrt((feat_**2).sum(-1) + 1e-10).reshape(
+                     -1, 1)
 
     return feat
 
 
 def kernel(feat, feat_t, prob, prob_t, split=2):
-    """Kernel function (assume feature is normalized)
-    """
+    """Kernel function (assume feature is normalized)"""
     size = ceil(len(feat_t) / split)
     rel_full = []
     for i in range(split):
@@ -46,7 +46,7 @@ def kernel(feat, feat_t, prob, prob_t, split=2):
 
 def get_relation(feat, feat_t, prob, prob_t, pow=1, chunk=50, thres=0.03):
     """Get relation values (top-k and summation)
-    
+
     Args:
         feat (torch.Tensor [N,D]): features of the source data
         feat_t (torch.Tensor [N',D]): features of the target data
@@ -96,7 +96,10 @@ class RelationPostprocessor(BasePostprocessor):
             prob_log = []
             net.eval()
             with torch.no_grad():
-                for batch in tqdm(id_loader_dict['train'], desc='Setup: ', position=0, leave=True):
+                for batch in tqdm(id_loader_dict['train'],
+                                  desc='Setup: ',
+                                  position=0,
+                                  leave=True):
                     data = batch['data'].cuda()
                     data = data.float()
 
@@ -118,7 +121,11 @@ class RelationPostprocessor(BasePostprocessor):
         feature = normalize(feature)
         prob = torch.softmax(output, dim=1)
 
-        score = get_relation(feature, self.feat_train, prob, self.prob_train, pow=self.pow)
+        score = get_relation(feature,
+                             self.feat_train,
+                             prob,
+                             self.prob_train,
+                             pow=self.pow)
 
         _, pred = torch.max(prob, dim=1)
 

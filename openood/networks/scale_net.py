@@ -45,5 +45,5 @@ def scale(x, percentile=65):
 
     # apply sharpening
     scale = s1 / s2
-    
+
     return input * torch.exp(scale[:, None, None, None])
