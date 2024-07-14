@@ -44,3 +44,4 @@ CrossEntropy,NAC,75.90 ± 0.42,86.98 ± 0.37,77.26 ± 0.09,No,ResNet18,100 epoch
 PALM,MDS,77.27 ± 0.00,89.08 ± 0.00,/,No,ResNet18,100 epochs
 T2FNorm,T2FNorm,79.84 ± 0.40,82.73 ± 1.01,76.43 ± 0.13,No,ResNet18,100 epochs
 ReweightOOD,MDS,71.27 ± 0.41,91.12 ± 0.33,/,No,ResNet18,100 epochs
+CrossEntropy,fDBD,81.26 ± 0.00,79.85 ± 0.00,77.18 ± 0.00,No,ResNet18,100 epochs
