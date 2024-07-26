@@ -36,7 +36,7 @@ ood_dataset:
       data_dir: ./data/images_largescale/
       imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
   csid:
-    datasets: [imagenetv2, imagenetc, imagenetr]
+    datasets: [imagenetv2, imagenetc, imagenetr, imagenetes]
     imagenetv2:
       data_dir: ./data/images_largescale/
       imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_v2.txt
@@ -46,3 +46,6 @@ ood_dataset:
     imagenetr:
       data_dir: ./data/images_largescale/
       imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_r.txt
+    imagenetes:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_es.txt
