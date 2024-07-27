@@ -49,3 +49,4 @@ PALM,MDS,90.32 ± 0.00,96.55 ± 0.00,/,No,ResNet18,100 epochs
 T2FNorm,T2FNorm,92.79 ± 0.13,96.98 ± 0.23,94.69 ± 0.07,No,ResNet18,100 epochs
 ReweightOOD,MDS,91.86 ± 0.16,98.05 ± 0.10,/,No,ResNet18,100 epochs
 CrossEntropy,fDBD,90.42 ± 0.00,93.16 ± 0.00,95.22 ± 0.00,No,ResNet18,100 epochs
+OAL,EBO,93.32 ± 0.00,96.49 ± 0.00,95.02 ± 0.00,Yes,ResNet18,100 epochs; 224x224
