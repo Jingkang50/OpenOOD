@@ -243,7 +243,7 @@ DATA_INFO = {
             }
         },
         'csid': {
-            'datasets': ['imagenet_v2', 'imagenet_c', 'imagenet_r'],
+            'datasets': ['imagenet_v2', 'imagenet_c', 'imagenet_r', 'imagenet_es'],
             'imagenet_v2': {
                 'data_dir': 'images_largescale/',
                 'imglist_path':
@@ -258,6 +258,11 @@ DATA_INFO = {
                 'data_dir': 'images_largescale/',
                 'imglist_path':
                 'benchmark_imglist/imagenet/test_imagenet_r.txt'
+            },
+            'imagenet_es': {
+                'data_dir': 'images_largescale/',
+                'imglist_path':
+                'benchmark_imglist/imagenet/test_imagenet_es.txt'
             },
         },
         'ood': {
@@ -321,6 +326,7 @@ download_id_dict = {
     'imagenet_v2': '1akg2IiE22HcbvTBpwXQoD7tgfPCdkoho',
     'imagenet_r': '1EzjMN2gq-bVV7lg-MEAdeuBuz-7jbGYU',
     'imagenet_c': '1JeXL9YH4BO8gCJ631c5BHbaSsl-lekHt',
+    'imagenet_es': '1ATz11vKmPqyzfEaEDRaPTF9TXiC244sw',
     'benchmark_imglist': '1XKzBdWCqg3vPoj-D32YixJyJJ0hL63gP'
 }
 
@@ -341,6 +347,7 @@ dir_dict = {
         'imagenet_v2',
         'imagenet_c',
         'imagenet_r',
+        'imagenet_es',
     ],
     'images_medical/': ['actmed', 'bimcv', 'ct', 'hannover', 'xraybone'],
 }
@@ -356,7 +363,7 @@ benchmarks_dict = {
     ],
     'imagenet': [
         'imagenet_1k', 'ssb_hard', 'ninco', 'inaturalist', 'texture',
-        'openimage_o', 'imagenet_v2', 'imagenet_c', 'imagenet_r'
+        'openimage_o', 'imagenet_v2', 'imagenet_c', 'imagenet_r', 'imagenet_es'
     ],
 }
 
