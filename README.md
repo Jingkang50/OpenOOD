@@ -143,7 +143,7 @@ This part lists all the benchmarks we support. Feel free to include more.
 > - [x] [ImageNet-1K]()
 >      > Near-OOD: `SSB-hard`, `NINCO`;<br>
 >      > Far-OOD: `iNaturalist`, `Texture`, `OpenImage-O`;<br>
->      > Covariate-Shifted ID: `ImageNet-C`, `ImageNet-R`, `ImageNet-v2`;
+>      > Covariate-Shifted ID: `ImageNet-C`, `ImageNet-R`, `ImageNet-v2`, `ImageNet-ES`;
 </details>
 
 Note that OpenOOD v1.5 emphasizes and focuses on the last 4 benchmarks for OOD detection.
