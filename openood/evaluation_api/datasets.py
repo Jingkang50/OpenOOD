@@ -243,7 +243,8 @@ DATA_INFO = {
             }
         },
         'csid': {
-            'datasets': ['imagenet_v2', 'imagenet_c', 'imagenet_r', 'imagenet_es'],
+            'datasets':
+            ['imagenet_v2', 'imagenet_c', 'imagenet_r', 'imagenet_es'],
             'imagenet_v2': {
                 'data_dir': 'images_largescale/',
                 'imglist_path':
@@ -327,7 +328,7 @@ download_id_dict = {
     'imagenet_r': '1EzjMN2gq-bVV7lg-MEAdeuBuz-7jbGYU',
     'imagenet_c': '1JeXL9YH4BO8gCJ631c5BHbaSsl-lekHt',
     'imagenet_es': '1ATz11vKmPqyzfEaEDRaPTF9TXiC244sw',
-    'benchmark_imglist': '1XKzBdWCqg3vPoj-D32YixJyJJ0hL63gP'
+    'benchmark_imglist': '1lI1j0_fDDvjIt9JlWAw09X8ks-yrR_H1'
 }
 
 dir_dict = {

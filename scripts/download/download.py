@@ -70,7 +70,7 @@ download_id_dict = {
     'cifar100_res18_v1.5': '1s-1oNrRtmA0pGefxXJOUVRYpaoAML0C-',
     'imagenet200_res18_v1.5': '1ddVmwc8zmzSjdLUO84EuV4Gz1c7vhIAs',
     'imagenet_res50_v1.5': '15PdDMNRfnJ7f2oxW6lI-Ge4QJJH3Z0Fy',
-    'benchmark_imglist': '1XKzBdWCqg3vPoj-D32YixJyJJ0hL63gP',
+    'benchmark_imglist': '1lI1j0_fDDvjIt9JlWAw09X8ks-yrR_H1',
     'usps': '1KhbWhlFlpFjEIb4wpvW0s9jmXXsHonVl',
     'cifar100': '1PGKheHUsf29leJPPGuXqzLBMwl8qMF8_',
     'cifar10': '1Co32RiiWe16lTaiOU6JMMnyUYS41IlO1',
