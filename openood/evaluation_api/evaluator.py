@@ -89,7 +89,7 @@ class Evaluator:
         # set up config root
         if config_root is None:
             filepath = os.path.dirname(os.path.abspath(__file__))
-            config_root = os.path.join(*filepath.split('/')[:-2], 'configs')
+            config_root = os.path.join('/', *filepath.split('/')[:-2], 'configs')
 
         # get postprocessor
         if postprocessor is None:
