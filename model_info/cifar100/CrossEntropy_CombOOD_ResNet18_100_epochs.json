@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://github.com/rmagesh148/combood/tree/main>CombOOD</a>",
+  "Near-OOD_AUROC": "78.77 \u00b1 0.00",
+  "Far-OOD_AUROC": "85.87 \u00b1 0.00",
+  "ID_Accuracy": "77.25 \u00b1 0.10",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "100 epochs",
+  "ID_Accuracy_Mean": "77.25",
+  "Near-OOD_AUROC_Mean": "78.77",
+  "Far-OOD_AUROC_Mean": "85.87",
+  "Rank": 25
+}

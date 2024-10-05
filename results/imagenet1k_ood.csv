@@ -75,3 +75,4 @@ CrossEntropy,NAC,74.43,95.29,76.19,No,ResNet50,torchvision ckpt
 T2FNorm,T2FNorm,73.08,91.92,76.76,No,ResNet50,finetuned 30 epochs
 ReweightOOD,MDS,70.58,94.82,/,No,ResNet50,finetuned 30 epochs
 CrossEntropy,fDBD,76.63,92.77,76.19,No,ResNet50,torchvision ckpt
+CrossEntropy,CombOOD,95.22,90.24,76.18,No,ResNet50,torchvision ckpt
