@@ -38,8 +38,8 @@ Comments, issues, contributions, and collaborations are all welcomed!
 
 
 ## Updates
-- **17 Aug, 2024**: :bulb::bulb: Wondering how OOD detection evolves and what new research topics could be in the new era of *multimodal LLMs*? Don't hesistate to check out our recent work [Unsolvable Problem Detection: Evaluating Trustworthiness of Vision Language Models](https://github.com/AtsuMiyai/UPD) and [Generalized Out-of-Distribution Detection and Beyond in Vision Language Model Era: A Survey](https://github.com/AtsuMiyai/Awesome-OOD-VLM).
-  
+- **06 Nov, 2024**: OpenOOD `v1.5` full paper is accepted to The Journal of Data-centric Machine Learning Research (DMLR).
+- **17 Aug, 2024**: :bulb::bulb: Wondering how OOD detection evolves and what new research topics could be in the new era of *multimodal LLMs*? Don't hesistate to check out our recent work [Unsolvable Problem Detection: Evaluating Trustworthiness of Vision Language Models](https://github.com/AtsuMiyai/UPD) and [Generalized Out-of-Distribution Detection and Beyond in Vision Language Model Era: A Survey](https://github.com/AtsuMiyai/Awesome-OOD-VLM).  
 - **27 Oct, 2023**: A short version of OpenOOD `v1.5` is accepted to [NeurIPS 2023 Workshop on Distribution Shifts](https://sites.google.com/view/distshift2023/home?authuser=0) as an oral presentation. You may want to check out our [presentation slides](https://drive.google.com/file/d/1rnjTR0ho_hNhxR4TXgNRjdJf73rS8zHO/view?usp=sharing).
 - **25 Sept, 2023**: OpenOOD now supports OOD detection with foundation models including zero-shot CLIP and DINOv2 linear probe. Check out the example evaluation script [here](https://github.com/Jingkang50/OpenOOD/blob/main/scripts/eval_ood_imagenet_foundation_models.py).
 - **16 June, 2023**: :boom::boom: We are releasing OpenOOD `v1.5`, which includes the following exciting updates. A detailed changelog is provided in the [Wiki](https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-change-log). An overview of the supported methods and benchmarks (with paper links) is available [here](https://github.com/Jingkang50/OpenOOD/wiki/OpenOOD-v1.5-methods-&-benchmarks-overview).
