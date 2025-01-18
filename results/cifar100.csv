@@ -47,3 +47,4 @@ ReweightOOD,MDS,71.27 ± 0.41,91.12 ± 0.33,/,No,ResNet18,100 epochs
 CrossEntropy,fDBD,81.26 ± 0.00,79.85 ± 0.00,77.18 ± 0.00,No,ResNet18,100 epochs
 OAL,EBO,81.73 ± 0.58,85.40 ± 0.67,77.09 ± 0.43,No,ResNet18,100 epochs; 224x224
 CrossEntropy,CombOOD,78.77 ± 0.00,85.87 ± 0.00,77.25 ± 0.10,No,ResNet18,100 epochs
+CrossEntropy,WeiPer+KLD,81.37 ± 0.00,79.01 ± 0.00,77.25 ± 0.10,No,ResNet18,100 epochs

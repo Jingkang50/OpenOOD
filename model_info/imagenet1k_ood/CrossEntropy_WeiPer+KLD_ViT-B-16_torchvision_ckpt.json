@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://github.com/mgranz/weiper>WeiPer+KLD</a>",
+  "Near-OOD_AUROC": "75.00",
+  "Far-OOD_AUROC": "90.32",
+  "ID_Accuracy": "81.14",
+  "Outlier_Data": "No",
+  "Arch": "ViT-B/16",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "81.14",
+  "Near-OOD_AUROC_Mean": "75.00",
+  "Far-OOD_AUROC_Mean": "90.32",
+  "Rank": 43
+}
