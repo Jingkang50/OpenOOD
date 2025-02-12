@@ -59,6 +59,18 @@ class TestStandardPreProcessor(BasePreprocessor):
         ])
 
 
+class TestStandardPreProcessorAtt(BasePreprocessor):
+    """For test and validation dataset standard image transformation."""
+    def __init__(self, config: Config):
+        self.transform = tvs_trans.Compose([
+            Convert('RGB'),
+            tvs_trans.Resize(config.pre_size, interpolation=INTERPOLATION),
+            tvs_trans.CenterCrop(config.img_size),
+            tvs_trans.ToTensor(),
+            # tvs_trans.Normalize(*config.normalization),
+        ])
+
+
 class ImageNetCPreProcessor(BasePreprocessor):
     def __init__(self, mean, std):
         self.transform = tvs_trans.Compose([
@@ -67,13 +79,17 @@ class ImageNetCPreProcessor(BasePreprocessor):
         ])
 
 
-def get_default_preprocessor(data_name: str):
+def get_default_preprocessor(data_name: str, att=True):
     # TODO: include fine-grained datasets proposed in Vaze et al.?
-
+     
     if data_name not in default_preprocessing_dict:
         raise NotImplementedError(f'The dataset {data_name} is not supported')
 
     config = Config(**default_preprocessing_dict[data_name])
-    preprocessor = TestStandardPreProcessor(config)
+
+    if not att:
+        preprocessor = TestStandardPreProcessor(config)
+    else:
+        preprocessor = TestStandardPreProcessorAtt(config)
 
     return preprocessor
