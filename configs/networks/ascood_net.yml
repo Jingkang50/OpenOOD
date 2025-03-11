@@ -1,0 +1,15 @@
+network:
+  name: ascood_net
+  pretrained: False
+  checkpoint: none
+  num_classes: '@{dataset.num_classes}'
+  image_size: '@{dataset.image_size}'
+  num_gpus: '@{num_gpus}'
+
+  backbone:
+    name: resnet18_32x32
+    pretrained: False
+    checkpoint: none
+    num_classes: '@{dataset.num_classes}'
+    image_size: '@{dataset.image_size}'
+    num_gpus: '@{num_gpus}'

@@ -1,0 +1,44 @@
+exp_name: "'@{dataset.name}'_'@{network.name}'_'@{trainer.name}'_e'@{optimizer.num_epochs}'_lr'@{optimizer.lr}'_w'@{trainer.trainer_args.w}'_p'@{trainer.trainer_args.p_inv}'_otype_'@{trainer.trainer_args.ood_type}'_alpha_'@{trainer.trainer_args.alpha_min}'_'@{trainer.trainer_args.alpha_max}'_kl_div_'@{trainer.trainer_args.kl_div}'_'@{mark}'/s'@{seed}'"
+output_dir: ./results/
+save_output: True
+merge_option: default
+mark: default
+seed: 0
+
+num_gpus: 1
+num_workers: 8
+num_machines: 1
+machine_rank: 0
+
+preprocessor:
+  name: base
+
+pipeline:
+  name: train
+
+trainer:
+  name: ascood
+  trainer_args:
+    w: 1.0
+    sigma: 0.5
+    p_inv: 0.1
+    ood_type: gradient # shuffle
+    alpha_max: 10.0
+    alpha_min: 10.0
+    kl_div: True
+
+evaluator:
+  name: base
+
+optimizer:
+  name: sgd
+  num_epochs: 100
+  lr: 0.1
+  fc_lr_factor: 1.0
+  momentum: 0.9
+  weight_decay: 0.0005
+  nesterov: True
+
+recorder:
+  name: base
+  save_all_models: False
