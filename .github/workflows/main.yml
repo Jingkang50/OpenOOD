@@ -17,6 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # Uses GitHub's auto-generated token
           ref: leaderboard
           fetch-depth: 0
 
