@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://github.com/sudarshanregmi/ASCOOD/>i-ODIN</a>",
+  "Near-OOD_AUROC": "51.37 \u00b1 0.30",
+  "Far-OOD_AUROC": "65.31 \u00b1 0.59",
+  "ID_Accuracy": "43.91 \u00b1 0.11",
+  "Outlier_Data": "No",
+  "Arch": "ResNet18",
+  "Additional_Description": "90 epochs",
+  "ID_Accuracy_Mean": "43.91",
+  "Near-OOD_AUROC_Mean": "51.37",
+  "Far-OOD_AUROC_Mean": "65.31",
+  "Rank": 40
+}
