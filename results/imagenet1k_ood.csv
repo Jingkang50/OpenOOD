@@ -78,3 +78,4 @@ CrossEntropy,fDBD,76.63,92.77,76.19,No,ResNet50,torchvision ckpt
 CrossEntropy,CombOOD,95.22,90.24,76.18,No,ResNet50,torchvision ckpt
 CrossEntropy,WeiPer+KLD,80.05,95.54,76.18,No,ResNet50,torchvision ckpt
 CrossEntropy,WeiPer+KLD,75.00,90.32,81.14,No,ViT-B/16,torchvision ckpt
+CrossEntropy,i-ODIN,76.53,89.64,76.19,No,ResNet50,torchvision ckpt

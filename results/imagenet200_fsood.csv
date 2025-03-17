@@ -56,3 +56,4 @@ CrossEntropy,NAC,49.61 ± 0.06,67.01 ± 0.53,43.92 ± 0.12,No,ResNet18,90 epochs
 T2FNorm,T2FNorm,51.88 ± 0.23,73.53 ± 0.30,45.00 ± 0.23,No,ResNet18,90 epochs
 ReweightOOD,MDS,51.68 ± 0.18,78.31 ± 0.46,/,No,ResNet18,90 epochs
 CrossEntropy,fDBD,53.38 ± 0.16,71.26 ± 0.37,43.92 ± 0.12,No,ResNet18,90 epochs
+CrossEntropy,i-ODIN,51.37 ± 0.30,65.31 ± 0.59,43.91 ± 0.11,No,ResNet18,90 epochs
