@@ -9,6 +9,9 @@ on:
       - leaderboard
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
