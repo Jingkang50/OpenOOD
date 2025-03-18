@@ -249,6 +249,9 @@ distance: f4d5b3 -->
 > - [x] [![relation](https://img.shields.io/badge/NEURIPS'23-Relation-fdd7e6?style=for-the-badge)](https://arxiv.org/abs/2301.12321) &nbsp;&nbsp; ![postprocess]
 > - [x] [![scale](https://img.shields.io/badge/ICLR'24-Scale-fdd7e6?style=for-the-badge)](https://github.com/kai422/SCALE) &nbsp;&nbsp; ![postprocess]
 > - [x] [![fdbd](https://img.shields.io/badge/ICML'24-fDBD-f4d5b3?style=for-the-badge)](https://github.com/litianliu/fDBD-OOD) &nbsp;&nbsp; ![postprocess]
+> - [x] [![adascale-a](https://img.shields.io/badge/arXiv'25-AdaScale\_A-fdd7e6?style=for-the-badge)](https://github.com/sudarshanregmi/adascale) &nbsp;&nbsp; ![postprocess]
+> - [x] [![adascale-l](https://img.shields.io/badge/arXiv'25-AdaScale\_L-fdd7e6?style=for-the-badge)](https://github.com/sudarshanregmi/adascale) &nbsp;&nbsp; ![postprocess]
+> - [x] [![ascood](https://img.shields.io/badge/arXiv'25-iODIN-fdd7e6?style=for-the-badge)](https://github.com/sudarshanregmi/ASCOOD) &nbsp;&nbsp; ![postprocess]
 > - [x] [![nci](https://img.shields.io/badge/CVPR'25-NCI-KNN-fdd7e6?style=for-the-badge)](https://arxiv.org/pdf/2311.01479) &nbsp;&nbsp; ![postprocess]
 
 > Training Methods (14):

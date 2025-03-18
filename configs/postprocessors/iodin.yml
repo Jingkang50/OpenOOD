@@ -1,0 +1,9 @@
+postprocessor:
+  name: iodin
+  APS_mode: True
+  postprocessor_args:
+    temperature: 1000
+    noise: 0.0014
+  postprocessor_sweep:
+    temperature: [1, 10, 100, 1000]
+    noise: [0.0014, 0.0028]
