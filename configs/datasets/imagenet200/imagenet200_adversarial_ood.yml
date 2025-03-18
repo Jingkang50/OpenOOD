@@ -1,0 +1,34 @@
+ood_dataset:
+  name: imagenet200_adversarial_ood
+  num_classes: 200
+
+  dataset_class: ImglistDataset
+  interpolation: bilinear
+  batch_size: 256
+  shuffle: False
+
+  pre_size: 224
+  image_size: 224
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+  split_names: [val, nearood, farood]
+  val:
+    data_dir: ./data/images_largescale/
+    imglist_pth: ./data/benchmark_imglist/imagenet200/val_openimage_o.txt
+  nearood:
+    datasets: [pgd, fgsm, df]
+    pgd:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_pgd_ResNet18_224x224_imagenet200.txt
+    fgsm:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_fgsm_ResNet18_224x224_imagenet200.txt
+    df:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_df_ResNet18_224x224_imagenet200.txt
+  farood:
+    datasets: [masked_pgd]
+    masked_pgd:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/imagenet200/test_masked_pgd_ResNet18_224x224_imagenet200.txt
