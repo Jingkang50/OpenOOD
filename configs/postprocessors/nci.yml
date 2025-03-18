@@ -1,0 +1,7 @@
+postprocessor:
+  name: nci
+  APS_mode: True
+  postprocessor_args:
+    alpha: 0.0001
+  postprocessor_sweep:
+    alpha_list: [0.0001, 0.001, 0.01, 0.1]

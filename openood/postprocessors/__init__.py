@@ -1,3 +1,4 @@
+from .nci_postprocessor import NCIPostprocessor
 from .fdbd_postprocessor import fDBDPostprocessor
 from .ash_postprocessor import ASHPostprocessor
 from .base_postprocessor import BasePostprocessor
