@@ -225,7 +225,7 @@ reconstruction: c2e2de,
 classification: fdd7e6,
 distance: f4d5b3 -->
 
-> Post-Hoc Methods (23):
+> Post-Hoc Methods (24):
 > - [x] [![msp](https://img.shields.io/badge/ICLR'17-MSP-fdd7e6?style=for-the-badge)](https://openreview.net/forum?id=Hkg4TI9xl)
 > - [x] [![odin](https://img.shields.io/badge/ICLR'18-ODIN-fdd7e6?style=for-the-badge)](https://openreview.net/forum?id=H1VGkIxRZ) &nbsp;&nbsp; ![postprocess]
 > - [x] [![mds](https://img.shields.io/badge/NeurIPS'18-MDS-f4d5b3?style=for-the-badge)](https://papers.nips.cc/paper/2018/hash/abdeb6f575ac5c6676b747bca8d09cc2-Abstract.html) &nbsp;&nbsp; ![postprocess]
@@ -252,6 +252,7 @@ distance: f4d5b3 -->
 > - [x] [![adascale-a](https://img.shields.io/badge/arXiv'25-AdaScale\_A-fdd7e6?style=for-the-badge)](https://github.com/sudarshanregmi/adascale) &nbsp;&nbsp; ![postprocess]
 > - [x] [![adascale-l](https://img.shields.io/badge/arXiv'25-AdaScale\_L-fdd7e6?style=for-the-badge)](https://github.com/sudarshanregmi/adascale) &nbsp;&nbsp; ![postprocess]
 > - [x] [![ascood](https://img.shields.io/badge/arXiv'25-iODIN-fdd7e6?style=for-the-badge)](https://github.com/sudarshanregmi/ASCOOD) &nbsp;&nbsp; ![postprocess]
+> - [x] [![nci](https://img.shields.io/badge/CVPR'25-NCI-KNN-fdd7e6?style=for-the-badge)](https://arxiv.org/pdf/2311.01479) &nbsp;&nbsp; ![postprocess]
 
 > Training Methods (14):
 > - [x] [![confbranch](https://img.shields.io/badge/arXiv'18-ConfBranch-fdd7e6?style=for-the-badge)](https://github.com/uoguelph-mlrg/confidence_estimation) &nbsp;&nbsp; ![preprocess] &nbsp; ![training]

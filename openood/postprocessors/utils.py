@@ -1,5 +1,6 @@
 from openood.utils import Config
 
+from .nci_postprocessor import NCIPostprocessor
 from .fdbd_postprocessor import fDBDPostprocessor
 from .ash_postprocessor import ASHPostprocessor
 from .base_postprocessor import BasePostprocessor
@@ -46,6 +47,7 @@ from .relation_postprocessor import RelationPostprocessor
 
 def get_postprocessor(config: Config):
     postprocessors = {
+	'nci': NCIPostprocessor,
         'fdbd': fDBDPostprocessor,
         'ash': ASHPostprocessor,
         'cider': CIDERPostprocessor,
