@@ -16,6 +16,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'torch>=1.13.1',
+        'numpy<2',
         'torchvision>=0.13',
         'scikit-learn',
         'json5',
