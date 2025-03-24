@@ -1,0 +1,14 @@
+{
+  "Training": "CrossEntropy",
+  "Postprocessor": "<a href=https://github.com/sudarshanregmi/AdaSCALE/>AdaSCALE-L</a>",
+  "Near-OOD_AUROC": "73.45",
+  "Far-OOD_AUROC": "91.78",
+  "ID_Accuracy": "73.28",
+  "Outlier_Data": "No",
+  "Arch": "RegNet_Y_16GF",
+  "Additional_Description": "torchvision ckpt",
+  "ID_Accuracy_Mean": "73.28",
+  "Near-OOD_AUROC_Mean": "73.45",
+  "Far-OOD_AUROC_Mean": "91.78",
+  "Rank": 2
+}
