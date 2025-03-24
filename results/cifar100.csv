@@ -50,3 +50,8 @@ CrossEntropy,CombOOD,78.77 ± 0.00,85.87 ± 0.00,77.25 ± 0.10,No,ResNet18,100 e
 CrossEntropy,WeiPer+KLD,81.37 ± 0.00,79.01 ± 0.00,77.25 ± 0.10,No,ResNet18,100 epochs
 CrossEntropy,OTOD,80.98 ± 0.00,79.54 ± 0.00,77.25 ± 0.10,No,ResNet18,100 epochs
 CrossEntropy,i-ODIN,81.10 ± 0.07,79.69 ± 0.56,77.25 ± 0.10,No,ResNet18,100 epochs
+ASCOOD,AdaSCALE-A,77.28 ± 0.29,89.41 ± 0.16,76.75 ± 0.08,No,ResNet18,100 epochs
+ASCOOD,AdaSCALE-L,74.11 ± 0.14,89.79 ± 0.20,76.75 ± 0.08,No,ResNet18,100 epochs
+ASCOOD,T2FNorm,79.22 ± 0.28,87.90 ± 0.22,76.75 ± 0.08,No,ResNet18,100 epochs
+CrossEntropy,AdaSCALE-A,81.04 ± 0.11,81.84 ± 0.36,77.25 ± 0.10,No,ResNet18,100 epochs
+CrossEntropy,AdaSCALE-L,80.54 ± 0.16,83.38 ± 0.20,77.25 ± 0.10,No,ResNet18,100 epochs

@@ -79,3 +79,9 @@ CrossEntropy,CombOOD,95.22,90.24,76.18,No,ResNet50,torchvision ckpt
 CrossEntropy,WeiPer+KLD,80.05,95.54,76.18,No,ResNet50,torchvision ckpt
 CrossEntropy,WeiPer+KLD,75.00,90.32,81.14,No,ViT-B/16,torchvision ckpt
 CrossEntropy,i-ODIN,76.53,89.64,76.19,No,ResNet50,torchvision ckpt
+CrossEntropy,AdaSCALE-A,84.42,97.27,76.18,No,ResNet50,torchvision ckpt
+CrossEntropy,AdaSCALE-L,84.27,97.28,76.18,No,ResNet50,torchvision ckpt
+ISH,AdaSCALE-A,86.26,97.55,76.73,No,ResNet50,official ckpt
+ISH,AdaSCALE-L,85.88,97.44,76.73,No,ResNet50,official ckpt
+CrossEntropy,AdaSCALE-A,90.36,97.29,86.10,No,RegNet_Y_16GF,torchvision ckpt
+CrossEntropy,AdaSCALE-L,87.37,97.85,86.10,No,RegNet_Y_16GF,torchvision ckpt

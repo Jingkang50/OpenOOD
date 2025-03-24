@@ -76,3 +76,9 @@ T2FNorm,T2FNorm,54.86,78.52,55.27,No,ResNet50,finetuned 30 epochs
 ReweightOOD,MDS,53.16,85.01,/,No,ResNet50,finetuned 30 epochs
 CrossEntropy,fDBD,57.12,78.54,54.35,No,ResNet50,torchvision ckpt
 CrossEntropy,i-ODIN,57.55,73.96,54.35,No,ResNet50,torchvision ckpt
+CrossEntropy,AdaSCALE-A,67.10,89.30,54.35,No,ResNet50,torchvision ckpt
+CrossEntropy,AdaSCALE-L,66.65,89.35,54.35,No,ResNet50,torchvision ckpt
+ISH,AdaSCALE-A,69.15,89.67,54.88,No,ResNet50,official ckpt
+ISH,AdaSCALE-L,67.95,88.66,54.88,No,ResNet50,official ckpt
+CrossEntropy,AdaSCALE-A,75.04,89.77,73.28,No,RegNet_Y_16GF,torchvision ckpt
+CrossEntropy,AdaSCALE-L,73.45,91.78,73.28,No,RegNet_Y_16GF,torchvision ckpt
