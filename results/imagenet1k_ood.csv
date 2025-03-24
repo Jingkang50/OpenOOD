@@ -85,3 +85,4 @@ ISH,AdaSCALE-A,86.26,97.55,76.73,No,ResNet50,official ckpt
 ISH,AdaSCALE-L,85.88,97.44,76.73,No,ResNet50,official ckpt
 CrossEntropy,AdaSCALE-A,90.36,97.29,86.10,No,RegNet_Y_16GF,torchvision ckpt
 CrossEntropy,AdaSCALE-L,87.37,97.85,86.10,No,RegNet_Y_16GF,torchvision ckpt
+CrossEntropy,NCI,78.69,95.53,76.19,No,ResNet50,torchvision ckpt

@@ -55,3 +55,4 @@ ASCOOD,AdaSCALE-L,74.11 ± 0.14,89.79 ± 0.20,76.75 ± 0.08,No,ResNet18,100 epoc
 ASCOOD,T2FNorm,79.22 ± 0.28,87.90 ± 0.22,76.75 ± 0.08,No,ResNet18,100 epochs
 CrossEntropy,AdaSCALE-A,81.04 ± 0.11,81.84 ± 0.36,77.25 ± 0.10,No,ResNet18,100 epochs
 CrossEntropy,AdaSCALE-L,80.54 ± 0.16,83.38 ± 0.20,77.25 ± 0.10,No,ResNet18,100 epochs
+CrossEntropy,NCI,81.03 ± 0.00,81.32 ± 0.00,77.18 ± 0.00,No,ResNet18,100 epochs

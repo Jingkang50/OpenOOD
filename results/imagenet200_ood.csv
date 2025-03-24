@@ -54,3 +54,4 @@ CrossEntropy,CombOOD,95.74 ± 0.00,92.57 ± 0.00,86.37 ± 0.08,No,ResNet18,90 ep
 CrossEntropy,i-ODIN,82.99 ± 0.04,91.16 ± 0.18,86.37 ± 0.08,No,ResNet18,90 epochs
 CrossEntropy,AdaSCALE-A,85.52 ± 0.27,94.43 ± 0.21,86.37 ± 0.08,No,ResNet18,90 epochs
 CrossEntropy,AdaSCALE-L,85.73 ± 0.31,94.86 ± 0.12,86.37 ± 0.08,No,ResNet18,90 epochs
+CrossEntropy,NCI,83.50 ± 0.12,93.71 ± 0.12,86.37 ± 0.08,No,ResNet18,90 epochs
