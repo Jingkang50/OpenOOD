@@ -1,0 +1,33 @@
+ood_dataset:
+  name: cifar10_adversarial_ood
+  num_classes: 10
+
+  num_workers: '@{num_workers}'
+  num_gpus: '@{num_gpus}'
+  num_machines: '@{num_machines}'
+
+  dataset_class: ImglistDataset
+  batch_size: 128
+  shuffle: False
+
+  split_names: [val, nearood, farood]
+  val:
+    data_dir: ./data/images_classic/
+    imglist_pth: ./data/benchmark_imglist/cifar10/train_cifar10.txt
+  nearood:
+    datasets: [pgd, fgsm, df]
+    pgd:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_pgd_ResNet18_32x32_cifar10.txt
+    fgsm:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_fgsm_ResNet18_32x32_cifar10.txt
+    df:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_df_ResNet18_32x32_cifar10.txt
+  farood:
+    datasets: [masked_pgd]
+    masked_pgd:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar10/test_masked_pgd_ResNet18_32x32_cifar10.txt
+
