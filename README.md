@@ -72,6 +72,21 @@ pip install libmr
 # pip install git+https://github.com/openai/CLIP.git
 ```
 
+MWR Install steps
+```
+# Use python 3.10 via pyenv
+# Using MacOS 11
+# Use venv
+# Use   'faiss-cpu>=1.7.2',
+# To setup.py use
+install_requires=[
+    'torch>=1.13.1',
+    'numpy<2',
+python3 -m pip install -e .
+```
+
+I had to install libmr separately. In another directory, clone the repo and just follow the readme to install it. The pypi install doesn't seem to work.
+
 #### Data
 If you only use our evaluator, the benchmarks for evaluation will be automatically downloaded by the evaluator (again check out this [tutorial](https://colab.research.google.com/drive/1tvTpCM1_ju82Yygu40fy7Lc0L1YrlkQF?usp=sharing)). If you would like to also use OpenOOD for training, you can get all data with our [downloading script](https://github.com/Jingkang50/OpenOOD/tree/main/scripts/download). Note that ImageNet-1K training images should be downloaded from its official website.
 
