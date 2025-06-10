@@ -86,3 +86,13 @@ ISH,AdaSCALE-L,85.88,97.44,76.73,No,ResNet50,official ckpt
 CrossEntropy,AdaSCALE-A,90.36,97.29,86.10,No,RegNet_Y_16GF,torchvision ckpt
 CrossEntropy,AdaSCALE-L,87.37,97.85,86.10,No,RegNet_Y_16GF,torchvision ckpt
 CrossEntropy,NCI,78.69,95.53,76.19,No,ResNet50,torchvision ckpt
+CrossEntropy,MDS++,72.02,93.32,76.17,ResNet50,torchvision ckpt
+CrossEntropy,RMDS++,78.54,90.82,76.17,ResNet50,torchvision ckpt
+CrossEntropy,MDS++,86.29,97.47,86.11,RegNet_Y_16GF,torchvision ckpt
+CrossEntropy,RMDS++,85.16,94.2,86.11,RegNet_Y_16GF,torchvision ckpt
+CrossEntropy,MDS++,81.35,93.65,81.14,ViT-B/16,torchvision ckpt
+CrossEntropy,RMDS++,81.71,92.99,81.14,ViT-B/16,torchvision ckpt
+CrossEntropy,MDS++,80.54,94.6,81.6,Swin-T,torchvision ckpt
+CrossEntropy,RMDS++,81.5,93.27,81.6,Swin-T,torchvision ckpt
+CrossEntropy,MDS,79.83,94.06,86.11,RegNet_Y_16GF,torchvision ckpt
+CrossEntropy,RMDS,84.92,94.44,86.11,RegNet_Y_16GF,torchvision ckpt
