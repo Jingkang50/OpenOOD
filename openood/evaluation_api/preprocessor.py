@@ -79,7 +79,7 @@ class ImageNetCPreProcessor(BasePreprocessor):
         ])
 
 
-def get_default_preprocessor(data_name: str, att=True):
+def get_default_preprocessor(data_name: str, att=False):
     # TODO: include fine-grained datasets proposed in Vaze et al.?
      
     if data_name not in default_preprocessing_dict:
