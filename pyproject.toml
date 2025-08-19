@@ -1,0 +1,104 @@
+[tool.poetry]
+name = "openood"
+version = "1.5"
+description = "This package provides a unified test platform for Out-of-Distribution detection."
+authors = ["openood dev team <jingkang001@e.ntu.edu.sg>"]
+readme = "README.md"
+homepage = "https://github.com/Jingkang50/OpenOOD"
+repository = "https://github.com/Jingkang50/OpenOOD"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+packages = [{include = "openood"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+torch = ">=1.13.1"
+torchvision = ">=0.13"
+scikit-learn = "*"
+json5 = "*"
+matplotlib = "*"
+scipy = "*"
+tqdm = "*"
+pyyaml = ">=5.4.1"
+pre-commit = "*"
+opencv-python = ">=4.4.0.46"
+imgaug = ">=0.4.0"
+pandas = "*"
+diffdist = ">=0.1"
+Cython = ">=0.29.30"
+faiss-cpu = ">=1.7.2"
+gdown = ">=4.7.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.11.1"
+
+[tool.poetry.scripts]
+test = "pytest:main"
+tests = "pytest:main"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*", "*Test"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--cov=openood",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+    "--cov-fail-under=0",  # TODO: Set to 80 once tests are written
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["openood"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__init__.py",
+    "*/setup.py",
+    "*/venv/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+precision = 2
+show_missing = true
+skip_covered = false
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
