@@ -1,0 +1,9 @@
+postprocessor:
+  name: vra
+  APS_mode: True
+  postprocessor_args:
+    percentile_high: 90
+    percentile_low: 10
+  postprocessor_sweep:
+    percentile_high_list: [85, 90, 95, 99]
+    percentile_low_list: [1, 5, 10, 15]
