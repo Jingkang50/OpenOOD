@@ -54,7 +54,6 @@ class VIMPostprocessor(BasePostprocessor):
             pass
         
     def _compute_NS_and_alpha(self):
-        """根据当前的dim计算NS和alpha"""
         self.NS = np.ascontiguousarray(
             (self.eigen_vectors.T[np.argsort(self.eig_vals * -1)[self.dim:]]).T)
 
