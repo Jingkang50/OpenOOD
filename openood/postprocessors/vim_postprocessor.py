@@ -36,25 +36,34 @@ class VIMPostprocessor(BasePostprocessor):
                     _, feature = net(data, return_feature=True)
                     feature_id_train.append(feature.cpu().numpy())
                 feature_id_train = np.concatenate(feature_id_train, axis=0)
-                logit_id_train = feature_id_train @ self.w.T + self.b
+                self.logit_id_train = feature_id_train @ self.w.T + self.b
 
             self.u = -np.matmul(pinv(self.w), self.b)
             ec = EmpiricalCovariance(assume_centered=True)
             ec.fit(feature_id_train - self.u)
             eig_vals, eigen_vectors = np.linalg.eig(ec.covariance_)
-            self.NS = np.ascontiguousarray(
-                (eigen_vectors.T[np.argsort(eig_vals * -1)[self.dim:]]).T)
-
-            vlogit_id_train = norm(np.matmul(feature_id_train - self.u,
-                                             self.NS),
-                                   axis=-1)
-            self.alpha = logit_id_train.max(
-                axis=-1).mean() / vlogit_id_train.mean()
-            print(f'{self.alpha=:.4f}')
+            
+            self.feature_id_train = feature_id_train
+            self.eigen_vectors = eigen_vectors
+            self.eig_vals = eig_vals
+            
+            self._compute_NS_and_alpha()
 
             self.setup_flag = True
         else:
             pass
+        
+    def _compute_NS_and_alpha(self):
+        """根据当前的dim计算NS和alpha"""
+        self.NS = np.ascontiguousarray(
+            (self.eigen_vectors.T[np.argsort(self.eig_vals * -1)[self.dim:]]).T)
+
+        vlogit_id_train = norm(np.matmul(self.feature_id_train - self.u,
+                                         self.NS),
+                               axis=-1)
+        self.alpha = self.logit_id_train.max(
+            axis=-1).mean() / vlogit_id_train.mean()
+        print(f'dim={self.dim}, {self.alpha=:.4f}')
 
     @torch.no_grad()
     def postprocess(self, net: nn.Module, data: Any):
@@ -70,6 +79,8 @@ class VIMPostprocessor(BasePostprocessor):
 
     def set_hyperparam(self, hyperparam: list):
         self.dim = hyperparam[0]
+        if self.setup_flag:  
+            self._compute_NS_and_alpha()
 
     def get_hyperparam(self):
         return self.dim
