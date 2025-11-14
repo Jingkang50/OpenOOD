@@ -2,21 +2,55 @@ import os
 import urllib.request
 
 from openood.postprocessors import (
-    ASHPostprocessor, BasePostprocessor, ConfBranchPostprocessor,
-    CutPastePostprocessor, DICEPostprocessor, DRAEMPostprocessor,
-    DropoutPostProcessor, DSVDDPostprocessor, EBOPostprocessor,
-    EnsemblePostprocessor, GMMPostprocessor, GodinPostprocessor,
-    GradNormPostprocessor, GRAMPostprocessor, KLMatchingPostprocessor,
-    KNNPostprocessor, MaxLogitPostprocessor, MCDPostprocessor,
-    MDSPostprocessor, MDSEnsemblePostprocessor, MOSPostprocessor,
-    ODINPostprocessor, OpenGanPostprocessor, OpenMax, PatchcorePostprocessor,
-    Rd4adPostprocessor, ReactPostprocessor, ResidualPostprocessor,
-    ScalePostprocessor, SSDPostprocessor, TemperatureScalingPostprocessor,
-    VIMPostprocessor, RotPredPostprocessor, RankFeatPostprocessor,
-    RMDSPostprocessor, SHEPostprocessor, CIDERPostprocessor, NPOSPostprocessor,
-    GENPostprocessor, NNGuidePostprocessor, RelationPostprocessor,
-    T2FNormPostprocessor, ReweightOODPostprocessor, fDBDPostprocessor,
-    AdaScalePostprocessor, IODINPostprocessor, NCIPostprocessor)
+    AdaScalePostprocessor,
+    ASHPostprocessor,
+    BasePostprocessor,
+    CIDERPostprocessor,
+    ConfBranchPostprocessor,
+    CutPastePostprocessor,
+    DICEPostprocessor,
+    DRAEMPostprocessor,
+    DropoutPostProcessor,
+    DSVDDPostprocessor,
+    EBOPostprocessor,
+    EnsemblePostprocessor,
+    GENPostprocessor,
+    GMMPostprocessor,
+    GodinPostprocessor,
+    GradNormPostprocessor,
+    GRAMPostprocessor,
+    GrOODPostprocessor,
+    IODINPostprocessor,
+    KLMatchingPostprocessor,
+    KNNPostprocessor,
+    MaxLogitPostprocessor,
+    MCDPostprocessor,
+    MDSEnsemblePostprocessor,
+    MDSPostprocessor,
+    MOSPostprocessor,
+    NCIPostprocessor,
+    NNGuidePostprocessor,
+    NPOSPostprocessor,
+    ODINPostprocessor,
+    OpenGanPostprocessor,
+    OpenMax,
+    PatchcorePostprocessor,
+    RankFeatPostprocessor,
+    Rd4adPostprocessor,
+    ReactPostprocessor,
+    RelationPostprocessor,
+    ResidualPostprocessor,
+    ReweightOODPostprocessor,
+    RMDSPostprocessor,
+    RotPredPostprocessor,
+    ScalePostprocessor,
+    SHEPostprocessor,
+    SSDPostprocessor,
+    T2FNormPostprocessor,
+    TemperatureScalingPostprocessor,
+    VIMPostprocessor,
+    fDBDPostprocessor,
+)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
@@ -69,6 +103,7 @@ postprocessors = {
     'reweightood': ReweightOODPostprocessor,
     'adascale_a': AdaScalePostprocessor,
     'adascale_l': AdaScalePostprocessor,
+    'grood': GrOODPostprocessor,
 }
 
 link_prefix = 'https://raw.githubusercontent.com/Jingkang50/OpenOOD/main/configs/postprocessors/'
@@ -80,8 +115,10 @@ def get_postprocessor(config_root: str, postprocessor_name: str,
                                              f'{postprocessor_name}.yml')
     if not os.path.exists(postprocessor_config_path):
         os.makedirs(os.path.dirname(postprocessor_config_path), exist_ok=True)
-        urllib.request.urlretrieve(link_prefix + f'{postprocessor_name}.yml',
-                                   postprocessor_config_path)
+        urllib.request.urlretrieve(
+            link_prefix + f'{postprocessor_name}.yml',
+            postprocessor_config_path,
+        )
 
     config = Config(postprocessor_config_path)
     config = merge_configs(config,
