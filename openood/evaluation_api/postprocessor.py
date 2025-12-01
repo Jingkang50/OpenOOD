@@ -16,7 +16,8 @@ from openood.postprocessors import (
     RMDSPostprocessor, SHEPostprocessor, CIDERPostprocessor, NPOSPostprocessor,
     GENPostprocessor, NNGuidePostprocessor, RelationPostprocessor,
     T2FNormPostprocessor, ReweightOODPostprocessor, fDBDPostprocessor,
-    AdaScalePostprocessor, IODINPostprocessor, NCIPostprocessor,CFOODPostprocessor)
+    AdaScalePostprocessor, IODINPostprocessor, NCIPostprocessor,CFOODPostprocessor,
+    VRAPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
@@ -69,6 +70,7 @@ postprocessors = {
     'reweightood': ReweightOODPostprocessor,
     'adascale_a': AdaScalePostprocessor,
     'adascale_l': AdaScalePostprocessor,
+    'vra': VRAPostprocessor,
     'cfood': CFOODPostprocessor,
 }
 
