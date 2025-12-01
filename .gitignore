@@ -167,3 +167,9 @@ group_config/
 # local dev
 local/
 *legacy*
+
+# Claude settings
+.claude/
+
+# Poetry - DO NOT ignore poetry.lock
+# poetry.lock is intentionally not ignored to ensure consistent dependencies
