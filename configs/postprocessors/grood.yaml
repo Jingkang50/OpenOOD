@@ -1,0 +1,33 @@
+postprocessor:
+  name: grood
+  APS_mode: True
+  postprocessor_args:
+    pre_layer_indx: 3
+    lam: 0.8
+    k: 1
+    n_noise_samples: 100
+    sampling_ratio: 1.0
+    use_val: False
+    use_mixup_loss: True
+    use_cosine: False
+    distance_loss: False
+    use_nearest_proto: False
+    use_pseudo_prototype: False
+    no_gradients: False
+    use_grad_norm: False
+    use_gaussian_noise: False
+    use_val_ood: True
+    use_synthetic: False
+    synthetic_name: None
+    filter_ood: False
+    use_proto_mean: False
+    use_direct_grad: False
+  postprocessor_sweep:
+    pre_layer_indx_list: [1]
+    lam_list: [0.1,0.3,0.6,0.8, 0.9]
+    k: [1, 10, 20, 50, 100]
+    n_noise_samples: [10, 100, 1000]
+    sampling_ratio: [0.01, 0.1, 0.25, 0.5, 0.7, 1.0]
+    use_gaussian_noise: [True, False]
+    use_val_ood: [True, False]
+    no_gradients: [False]

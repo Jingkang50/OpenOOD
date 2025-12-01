@@ -17,7 +17,7 @@ from openood.postprocessors import (
     GENPostprocessor, NNGuidePostprocessor, RelationPostprocessor,
     T2FNormPostprocessor, ReweightOODPostprocessor, fDBDPostprocessor,
     AdaScalePostprocessor, IODINPostprocessor, NCIPostprocessor,CFOODPostprocessor,
-    VRAPostprocessor)
+    VRAPostprocessor, GrOODPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
@@ -70,6 +70,7 @@ postprocessors = {
     'reweightood': ReweightOODPostprocessor,
     'adascale_a': AdaScalePostprocessor,
     'adascale_l': AdaScalePostprocessor,
+    'grood': GrOODPostprocessor,
     'vra': VRAPostprocessor,
     'cfood': CFOODPostprocessor,
 }
@@ -83,8 +84,10 @@ def get_postprocessor(config_root: str, postprocessor_name: str,
                                              f'{postprocessor_name}.yml')
     if not os.path.exists(postprocessor_config_path):
         os.makedirs(os.path.dirname(postprocessor_config_path), exist_ok=True)
-        urllib.request.urlretrieve(link_prefix + f'{postprocessor_name}.yml',
-                                   postprocessor_config_path)
+        urllib.request.urlretrieve(
+            link_prefix + f'{postprocessor_name}.yml',
+            postprocessor_config_path,
+        )
 
     config = Config(postprocessor_config_path)
     config = merge_configs(config,
