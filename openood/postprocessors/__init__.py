@@ -48,3 +48,5 @@ from .t2fnorm_postprocessor import T2FNormPostprocessor
 from .reweightood_postprocessor import ReweightOODPostprocessor
 from .adascale_postprocessor import AdaScalePostprocessor
 from .vra_postprocessor import VRAPostprocessor
+from .cfood_postprocessor import CFOODPostprocessor
+
