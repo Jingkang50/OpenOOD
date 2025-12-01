@@ -1,0 +1,30 @@
+postprocessor:
+  name: cfood
+  APS_mode: false
+
+  
+  postprocessor_args:
+
+    alpha: 0.1
+    k: 0.01
+    avg_topk: false
+
+  postprocessor_sweep:
+    list:
+      
+      - [0.1, 0.001]
+      - [0.1, 0.005]
+      - [0.1, 0.01]
+      - [0.1, 0.05]
+
+      
+      - [0.5, 0.001]
+      - [0.5, 0.005]
+      - [0.5, 0.01]
+      - [0.5, 0.05]
+
+      - [1, 0.001]
+      - [1, 0.005]
+      - [1, 0.01]
+      - [1, 0.05]
+
