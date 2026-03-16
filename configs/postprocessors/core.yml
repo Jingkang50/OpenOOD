@@ -1,0 +1,7 @@
+postprocessor:
+  name: core
+  APS_mode: False
+  postprocessor_args:
+    dummy: 0
+  postprocessor_sweep:
+    dummy_list: [0]
