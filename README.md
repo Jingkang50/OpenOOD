@@ -246,6 +246,7 @@ distance: f4d5b3 -->
 > - [x] [![she](https://img.shields.io/badge/ICLR'23-SHE-fdd7e6?style=for-the-badge)](https://github.com/zjs975584714/SHE) &nbsp;&nbsp; ![postprocess]
 > - [x] [![gen](https://img.shields.io/badge/CVPR'23-GEN-fdd7e6?style=for-the-badge)](https://openaccess.thecvf.com/content/CVPR2023/papers/Liu_GEN_Pushing_the_Limits_of_Softmax-Based_Out-of-Distribution_Detection_CVPR_2023_paper.pdf) &nbsp;&nbsp; ![postprocess]
 > - [x] [![nnguide](https://img.shields.io/badge/ICCV'23-NNGuide-fdd7e6?style=for-the-badge)](https://arxiv.org/abs/2309.14888) &nbsp;&nbsp; ![postprocess]
+> - [x] [![pca-nre](https://img.shields.io/badge/ICCV'23-PCA\_NRE-fdd7e6?style=for-the-badge)](https://github.com/SYSU-MIA-GROUP/pca-based-out-of-distribution-detection) &nbsp;&nbsp; ![postprocess]
 > - [x] [![relation](https://img.shields.io/badge/NEURIPS'23-Relation-fdd7e6?style=for-the-badge)](https://arxiv.org/abs/2301.12321) &nbsp;&nbsp; ![postprocess]
 > - [x] [![vra](https://img.shields.io/badge/NeurIPS'23-VRA-fdd7e6?style=for-the-badge)](https://github.com/zeroQiaoba/VRA) &nbsp;&nbsp; ![postprocess]
 > - [x] [![scale](https://img.shields.io/badge/ICLR'24-Scale-fdd7e6?style=for-the-badge)](https://github.com/kai422/SCALE) &nbsp;&nbsp; ![postprocess]
