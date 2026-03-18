@@ -47,7 +47,8 @@ from .relation_postprocessor import RelationPostprocessor
 from .t2fnorm_postprocessor import T2FNormPostprocessor
 from .reweightood_postprocessor import ReweightOODPostprocessor
 from .adascale_postprocessor import AdaScalePostprocessor
+from .pca_nre_postprocessor import PCANREPostprocessor
 from .grood import GrOODPostprocessor
 from .vra_postprocessor import VRAPostprocessor
 from .cfood_postprocessor import CFOODPostprocessor
-
+from .mme_postprocessor import MMEPostprocessor

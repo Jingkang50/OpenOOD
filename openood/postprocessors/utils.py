@@ -43,8 +43,10 @@ from .vim_postprocessor import VIMPostprocessor
 from .rts_postprocessor import RTSPostprocessor
 from .gen_postprocessor import GENPostprocessor
 from .relation_postprocessor import RelationPostprocessor
+from .pca_nre_postprocessor import PCANREPostprocessor
 from .grood import GrOODPostprocessor
 from .vra_postprocessor import VRAPostprocessor
+from .mme_postprocessor import MMEPostprocessor
 
 
 def get_postprocessor(config: Config):
@@ -92,8 +94,10 @@ def get_postprocessor(config: Config):
         'gen': GENPostprocessor,
         'relation': RelationPostprocessor,
         't2fnorm': T2FNormPostprocessor,
+        'pca_nre': PCANREPostprocessor,
         'grood': GrOODPostprocessor,
         'vra': VRAPostprocessor,
+        'mme': MMEPostprocessor
     }
 
     return postprocessors[config.postprocessor.name](config)

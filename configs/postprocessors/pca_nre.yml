@@ -1,0 +1,6 @@
+postprocessor:
+  name: pca_nre
+  APS_mode: False
+  postprocessor_args:
+    k: 256
+    percentile: 92

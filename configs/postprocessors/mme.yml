@@ -1,0 +1,9 @@
+postprocessor:
+  name: mme
+  APS_mode: False
+  postprocessor_args:
+    temperature: 0.5
+    lambd: 2
+  postprocessor_sweep:
+    temperature_list: [0.05, 0.1, 0.5, 1]
+    lambd_list: [1.0, 2.0, 3.0]
