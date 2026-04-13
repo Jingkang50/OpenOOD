@@ -25,6 +25,7 @@ from .npos_net import NPOSNet
 from .openmax_net import OpenMax
 from .patchcore_net import PatchcoreNet
 from .projection_net import ProjectionNet
+from .ras_net import RASNet
 from .react_net import ReactNet
 from .resnet18_32x32 import ResNet18_32x32
 from .resnet18_64x64 import ResNet18_64x64
@@ -171,6 +172,10 @@ def get_network(network_config):
     elif network_config.name == 'react_net':
         backbone = get_network(network_config.backbone)
         net = ReactNet(backbone)
+
+    elif network_config.name == 'ras_net':
+        backbone = get_network(network_config.backbone)
+        net = RASNet(backbone)
 
     elif network_config.name == 'csi_net':
         # don't wrap ddp here cuz we need to modify
