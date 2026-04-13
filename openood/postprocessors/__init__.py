@@ -29,6 +29,7 @@ from .iodin_postprocessor import IODINPostprocessor
 from .opengan_postprocessor import OpenGanPostprocessor
 from .openmax_postprocessor import OpenMax
 from .patchcore_postprocessor import PatchcorePostprocessor
+from .ras_postprocessor import RASPostprocessor
 from .rd4ad_postprocessor import Rd4adPostprocessor
 from .react_postprocessor import ReactPostprocessor
 from .rmds_postprocessor import RMDSPostprocessor
@@ -50,4 +51,3 @@ from .adascale_postprocessor import AdaScalePostprocessor
 from .grood import GrOODPostprocessor
 from .vra_postprocessor import VRAPostprocessor
 from .cfood_postprocessor import CFOODPostprocessor
-
