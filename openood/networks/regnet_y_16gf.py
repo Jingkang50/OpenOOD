@@ -15,6 +15,10 @@ class RegNet_Y_16GF(RegNet):
         super(RegNet_Y_16GF, self).__init__(block_params=block_params,
                                             norm_layer=norm_layer)
 
+    def get_fc(self):
+        fc = self.fc
+        return fc.weight.cpu().detach().numpy(), fc.bias.cpu().detach().numpy()
+
     def forward(self, x, return_feature=False):
         x = self.stem(x)
         x = self.trunk_output(x)
