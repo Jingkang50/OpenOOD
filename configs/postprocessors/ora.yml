@@ -1,0 +1,7 @@
+postprocessor:
+  name: ora
+  APS_mode: False
+  postprocessor_args:
+    aggregation: mean
+  postprocessor_sweep:
+    aggregation_list: [mean, max, min]

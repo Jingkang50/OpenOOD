@@ -16,13 +16,14 @@ from openood.postprocessors import (
     RMDSPostprocessor, SHEPostprocessor, CIDERPostprocessor, NPOSPostprocessor,
     GENPostprocessor, NNGuidePostprocessor, RelationPostprocessor,
     T2FNormPostprocessor, ReweightOODPostprocessor, fDBDPostprocessor,
-    AdaScalePostprocessor, IODINPostprocessor, NCIPostprocessor,CFOODPostprocessor,
-    VRAPostprocessor, GrOODPostprocessor)
+    AdaScalePostprocessor, IODINPostprocessor, NCIPostprocessor,
+    CFOODPostprocessor, VRAPostprocessor, GrOODPostprocessor, ORAPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
     'nci': NCIPostprocessor,
     'fdbd': fDBDPostprocessor,
+    'ora': ORAPostprocessor,
     'ash': ASHPostprocessor,
     'cider': CIDERPostprocessor,
     'conf_branch': ConfBranchPostprocessor,
