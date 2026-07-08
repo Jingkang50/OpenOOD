@@ -254,8 +254,16 @@ class Evaluator:
         if self.metrics[task] is None:
             self.net.eval()
 
+            # two-sample postprocessors (e.g. Forte) score ID jointly with
+            # each OOD dataset, so ID scores are pair-specific and computed
+            # inside _eval_ood instead of once here
+            fused_two_sample = getattr(self.postprocessor,
+                                       'fused_two_sample', False)
+
             # id score
-            if self.scores['id']['test'] is None:
+            if fused_two_sample:
+                id_pred = id_conf = id_gt = None
+            elif self.scores['id']['test'] is None:
                 print(f'Performing inference on {self.id_name} test set...',
                       flush=True)
                 id_pred, id_conf, id_gt = self.postprocessor.inference(
@@ -264,7 +272,7 @@ class Evaluator:
             else:
                 id_pred, id_conf, id_gt = self.scores['id']['test']
 
-            if fsood:
+            if fsood and not fused_two_sample:
                 csid_pred, csid_conf, csid_gt = [], [], []
                 for i, dataset_name in enumerate(self.scores['csid'].keys()):
                     if self.scores['csid'][dataset_name] is None:
@@ -296,11 +304,13 @@ class Evaluator:
             # load nearood data and compute ood metrics
             near_metrics = self._eval_ood([id_pred, id_conf, id_gt],
                                           ood_split='near',
-                                          progress=progress)
+                                          progress=progress,
+                                          fsood=fsood)
             # load farood data and compute ood metrics
             far_metrics = self._eval_ood([id_pred, id_conf, id_gt],
                                          ood_split='far',
-                                         progress=progress)
+                                         progress=progress,
+                                         fsood=fsood)
 
             if self.metrics[f'{id_name}_acc'] is None:
                 self.eval_acc(id_name)
@@ -330,13 +340,33 @@ class Evaluator:
     def _eval_ood(self,
                   id_list: List[np.ndarray],
                   ood_split: str = 'near',
-                  progress: bool = True):
+                  progress: bool = True,
+                  fsood: bool = False):
         print(f'Processing {ood_split} ood...', flush=True)
         [id_pred, id_conf, id_gt] = id_list
+        fused_two_sample = getattr(self.postprocessor, 'fused_two_sample',
+                                   False)
         metrics_list = []
         for dataset_name, ood_dl in self.dataloader_dict['ood'][
                 ood_split].items():
-            if self.scores['ood'][ood_split][dataset_name] is None:
+            if fused_two_sample:
+                # ID and OOD form one fused evaluated sample per pair, so
+                # both score arrays are computed jointly and the ID scores
+                # are specific to this pairing (not cached or reused)
+                id_loaders = [self.dataloader_dict['id']['test']]
+                if fsood:
+                    id_loaders += list(self.dataloader_dict['csid'].values())
+                print(
+                    f'Performing joint inference on {self.id_name} + '
+                    f'{dataset_name}...',
+                    flush=True)
+                (id_pred, id_conf, id_gt, ood_pred, ood_conf,
+                 ood_gt) = self.postprocessor.inference_fused(
+                     self.net, id_loaders, ood_dl, progress)
+                self.scores['ood'][ood_split][dataset_name] = [
+                    ood_pred, ood_conf, ood_gt
+                ]
+            elif self.scores['ood'][ood_split][dataset_name] is None:
                 print(f'Performing inference on {dataset_name} dataset...',
                       flush=True)
                 ood_pred, ood_conf, ood_gt = self.postprocessor.inference(
