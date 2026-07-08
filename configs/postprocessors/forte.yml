@@ -1,0 +1,14 @@
+postprocessor:
+  name: forte
+  APS_mode: False
+  postprocessor_args:
+    nearest_k: 5
+    variant: gmm
+    n_setup_samples: 100000
+    density_fit_cap: 20000
+    gmm_components: [1, 2, 4, 8, 16, 32, 64, 128, 256]
+    seed: 0
+    kde_jitter: 0.001
+    feature_cache_dir: null
+  postprocessor_sweep:
+    variant_list: [gmm, kde, ocsvm]
