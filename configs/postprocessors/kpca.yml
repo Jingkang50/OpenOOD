@@ -1,0 +1,14 @@
+postprocessor:
+  name: kpca
+  APS_mode: False
+  postprocessor_args:
+    approx: "NYS"
+    gamma: 0.15
+    M: 2048
+    exp_var_ratio: 0.995
+    temperature: 1.0
+  postprocessor_sweep:
+    approx_list: ["NYS", "RFF"]
+    gamma_list: [0.05, 0.15, 0.5, 1.0, 3.0]
+    M_list: [1024, 2048, 4096]
+    exp_var_ratio_list: [0.5, 0.9, 0.95, 0.99, 0.995, 0.999]
