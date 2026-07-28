@@ -266,7 +266,7 @@ distance: f4d5b3 -->
 > - [x] [![logitnorm](https://img.shields.io/badge/ICML'22-LogitNorm-fdd7e6?style=for-the-badge)](https://github.com/hongxin001/logitnorm_ood) &nbsp;&nbsp; ![training] &nbsp; ![preprocess]
 > - [x] [![cider](https://img.shields.io/badge/ICLR'23-CIDER-f4d5b3?style=for-the-badge)](https://github.com/deeplearning-wisc/cider) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![npos](https://img.shields.io/badge/ICLR'23-NPOS-f4d5b3?style=for-the-badge)](https://github.com/deeplearning-wisc/npos) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
-> - [x] [![t2fnorm](https://img.shields.io/badge/CVPRW'24-T2FNorm-fdd7e6?style=for-the-badge)](https://github.com/sudarshanregmi/T2FNorm) &nbsp;&nbsp; ![training]
+> - [x] [![t2fnorm](https://img.shields.io/badge/CVPRW'24-T2FNorm-fdd7e6?style=for-the-badge)](https://github.com/sudarshanregmi/T2FNorm) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
 > - [x] [![ish](https://img.shields.io/badge/ICLR'24-ish-fdd7e6?style=for-the-badge)](https://github.com/kai422/SCALE) &nbsp;&nbsp; ![training]
 > - [x] [![palm](https://img.shields.io/badge/ICLR'24-PALM-f4d5b3?style=for-the-badge)](https://github.com/jeff024/PALM) &nbsp;&nbsp; ![training]
 > - [x] [![reweightood](https://img.shields.io/badge/CVPRW'24-ReweightOOD-f4d5b3?style=for-the-badge)](https://github.com/sudarshanregmi/ReweightOOD) &nbsp;&nbsp; ![training] &nbsp; ![postprocess]
