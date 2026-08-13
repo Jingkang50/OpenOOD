@@ -1,0 +1,24 @@
+postprocessor:
+  name: lpf
+  APS_mode: True
+  postprocessor_args:
+    y_start: -2.0
+    y_end: 5.0
+    delta_y: 1.0
+    q1: 0.40
+    u: 0.10
+    m1: 0.1
+    m2: -2.0
+
+  # PLF is trained with BO.
+  # For the BO setup, please refer to our codebase:
+  # https://github.com/maryhadalittlecode/PLF-OpenOOD/tree/master
+  # The grid search here is provided just as an example.
+  postprocessor_sweep:
+    y_start: [1]
+    y_end: [-1]
+    delta_y: [2]
+    q1: [0.62]
+    u: [0.84]
+    m1: [2]
+    m2: [0]

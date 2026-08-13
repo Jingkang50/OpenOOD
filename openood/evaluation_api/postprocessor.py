@@ -16,8 +16,8 @@ from openood.postprocessors import (
     RMDSPostprocessor, SHEPostprocessor, CIDERPostprocessor, NPOSPostprocessor,
     GENPostprocessor, NNGuidePostprocessor, RelationPostprocessor,
     T2FNormPostprocessor, ReweightOODPostprocessor, fDBDPostprocessor,
-    AdaScalePostprocessor, IODINPostprocessor, NCIPostprocessor,CFOODPostprocessor,
-    VRAPostprocessor, GrOODPostprocessor)
+    AdaScalePostprocessor, IODINPostprocessor, NCIPostprocessor,
+    CFOODPostprocessor, VRAPostprocessor, GrOODPostprocessor, PLFPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
@@ -73,9 +73,11 @@ postprocessors = {
     'grood': GrOODPostprocessor,
     'vra': VRAPostprocessor,
     'cfood': CFOODPostprocessor,
+    'plf': PLFPostprocessor
 }
 
-link_prefix = 'https://raw.githubusercontent.com/Jingkang50/OpenOOD/main/configs/postprocessors/'
+link_prefix = ('https://raw.githubusercontent.com/Jingkang50/'
+               'OpenOOD/main/configs/postprocessors/')
 
 
 def get_postprocessor(config_root: str, postprocessor_name: str,
