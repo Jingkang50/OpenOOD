@@ -38,6 +38,11 @@ def fpr_recall(conf, label, tpr):
 
 # auc
 def auc_and_fpr_recall(conf, label, tpr_th):
+    """Compute OOD metrics with OOD as the ROC positive class.
+
+    At a TPR of 0.95, FPR is the fraction of ID samples flagged as OOD
+    when 95% of OOD samples are detected. AUPR-In treats ID as positive.
+    """
     # following convention in ML we treat OOD as positive
     ood_indicator = np.zeros_like(label)
     ood_indicator[label == -1] = 1
