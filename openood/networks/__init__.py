@@ -11,5 +11,8 @@ from .resnet50 import ResNet50
 from .utils import get_network
 from .wrn import WideResNet
 from .swin_t import Swin_T
+# forte_net imports its optional `transformers` dependency lazily inside
+# ForteNet.__init__, so this import needs no guard
+from .forte_net import ForteNet
 from .vit_b_16 import ViT_B_16
 from .regnet_y_16gf import RegNet_Y_16GF
